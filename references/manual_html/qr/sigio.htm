@@ -1,0 +1,463 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>QuickRef: Signal Input and Output</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body text="black" link="black" vlink="black" alink="black" bgcolor="white">
+<table align="right" cellpadding="1" cellspacing="1" border="0"><tr>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td class="qr" width="10"></td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="spectral.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="score.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h1>Signal Input and Output</h1>
+
+<a class="qr" name="input"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Input and Output: Input</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637"><tr><td class="qr" nowrap width="14%" valign="TOP">
+ar1</td>
+<td class="qr" nowrap width="86%" valign="TOP" colspan="2">
+<a class="qr" href="../sigio/in.htm"><strong>in</strong></a></td>
+</tr>
+<tr><td class="qr" nowrap width="14%" valign="TOP">
+ar1, ar2</td>
+<td class="qr" nowrap width="86%" valign="TOP" colspan="2">
+<a class="qr" href="../sigio/in.htm"><strong>ins</strong></a></td>
+</tr>
+<tr><td class="qr" nowrap width="14%" valign="TOP">
+ar1, ar2, ar3, ar4</td>
+<td class="qr" nowrap width="86%" valign="TOP" colspan="2">
+<a class="qr" href="../sigio/in.htm"><strong>inq</strong></a></td>
+</tr>
+<tr><td class="qr" nowrap width="14%" valign="TOP">
+ar1, ar2, ar3, ar4, ar5, ar6</td>
+<td class="qr" nowrap width="86%" valign="TOP" colspan="2">
+<a class="qr" href="../sigio/in.htm"><strong>inh</strong></a></td>
+</tr>
+<tr><td class="qr" nowrap width="14%" valign="TOP">
+ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8</td>
+<td class="qr" nowrap width="86%" valign="TOP" colspan="2">
+<a class="qr" href="../sigio/in.htm"><strong>ino</strong></a></td>
+</tr>
+<tr><td class="qr" nowrap width="14%" valign="TOP">
+ar1</td>
+<td class="qr" nowrap width="14%" valign="TOP">
+<a class="qr" href="../sigio/in.htm"><strong>soundin</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ifilcod[, iskptim[, iformat]]</td>
+</tr>
+<tr><td class="qr" nowrap width="14%" valign="TOP">
+ar1, ar2</td>
+<td class="qr" nowrap width="14%" valign="TOP">
+<a class="qr" href="../sigio/in.htm"><strong>soundin</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ifilcod[, iskptim[, iformat]]</td>
+</tr>
+<tr><td class="qr" nowrap width="14%" valign="TOP">
+ar1,...ar24</td>
+<td class="qr" nowrap width="14%" valign="TOP">
+<a class="qr" href="../sigio/in.htm"><strong>soundin</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ifilcod[, iskptim[, iformat]]</td>
+</tr>
+<tr><td class="qr" nowrap width="14%" valign="TOP">
+ar1[,ar2
+[,ar3,ar4]]</td>
+<td class="qr" nowrap width="14%" valign="TOP">
+<a class="qr" href="../sigio/in.htm"><strong>diskin</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ifilcod, kpitch[, iskiptim[, iwraparound[, iformat]]]</td>
+</tr>
+
+<tr><td class="qr" nowrap width="14%" valign="TOP">
+ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8,<br>         
+                                            ar9, ar10, ar11, ar12, ar13, ar14, ar15, ar16
+</td>
+<td class="qr" nowrap width="14%" valign="TOP">
+<a class="qr" href="../sigio/inx.htm"><strong>inx</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+&nbsp;</td>
+</tr>
+
+<tr><td class="qr" nowrap width="14%" valign="TOP">
+ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8,<br>         
+                                            ar9, ar10, ar11, ar12, ar13, ar14, ar15, ar16<br>
+                                            ar17, ar18, ar19, ar20, ar21, ar22, ar23, ar24,<br>
+                                            ar25, ar26, ar27, ar28, ar29, ar30, ar31, ar32
+</td>
+<td class="qr" nowrap width="14%" valign="TOP">
+<a class="qr" href="../sigio/inx.htm"><strong>in32</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+&nbsp;</td>
+</tr>
+
+
+<tr><td class="qr" nowrap width="14%" valign="TOP">
+ar
+</td>
+<td class="qr" nowrap width="14%" valign="TOP">
+<a class="qr" href="../sigio/inx.htm"><strong>inch</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig1</td>
+</tr>
+
+<tr><td class="qr" nowrap width="14%" valign="TOP">
+&nbsp;
+</td>
+<td class="qr" nowrap width="14%" valign="TOP">
+<a class="qr" href="../sigio/inx.htm"><strong>inz</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig1</td>
+</tr>
+
+</table>
+
+<a class="qr" name="output"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Input and Output: Output</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637"><tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/out.htm"><strong>out</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/out.htm"><strong>outs1</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/out.htm"><strong>outs2</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/out.htm"><strong>outs</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig1, asig2</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/out.htm"><strong>outq1</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/out.htm"><strong>outq2</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/out.htm"><strong>outq3</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/out.htm"><strong>outq4</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/out.htm"><strong>outq</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig1, asig2, asig3, asig4</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/out.htm"><strong>outh</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig1, asig2, asig3, asig4, asig5, asig6</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/out.htm"><strong>outo</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig1, asig2, asig3, asig4, asig5, asig6, asig7, asig8</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/out.htm"><strong>soundout</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig1, ifilcod[, iformat]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/out.htm"><strong>soundouts</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig1, asig2, ifilcod[, iformat] (**Not implemented***)</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/outx.htm"><strong>outx</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig1, asig2, asig3, asig4, asig5, asig6, asig7, asig8, asig10, asig11, asig12, asig13, asig14, asig15, asig16</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/outx.htm"><strong>out32</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig1, asig2, asig3, asig4, asig5, asig6, asig7, asig8, asig10, asig11, asig12, asig13, asig14, asig15, asig16, asig17, asig18, asig19, asig20, asig21, asig22, asig23, asig24, asig25, asig26, asig27, asig28, asig29, asig30, asig31, asig32</td>
+</tr>
+
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/outx.htm"><strong>outc</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig1[, asig2,...]</td>
+</tr>
+
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/outx.htm"><strong>outch</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig1, asig1, ksig2, asig2, ...</td>
+</tr>
+
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/outx.htm"><strong>outz</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig1</td>
+</tr>
+</table>
+
+
+<a class="qr" name="fileio"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Input and Output: File I/O</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637"><tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/dumpk.htm"><strong>dumpk</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig, ifilname, iformat, iprd</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/dumpk.htm"><strong>dumpk2</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig1, ksig2, ifilname, iformat, iprd</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/dumpk.htm"><strong>dumpk3</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig1, ksig2, ksig3, ifilname, iformat, iprd</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/dumpk.htm"><strong>dumpk4</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig1, ksig2, ksig3, ksig4, ifilname, iformat, iprd</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/dumpk.htm"><strong>readk</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ifilname, iformat[, ipol]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr1, kr2</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/dumpk.htm"><strong>readk2</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ifilname, iformat[, ipol]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr1, kr2, kr3</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/dumpk.htm"><strong>readk3</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ifilname, iformat[, ipol]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr1, kr2,
+kr3, kr4</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/dumpk.htm"><strong>readk4</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ifilname, iformat[, ipol]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/fout.htm"><strong>fout</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+&quot;ifilename&quot;, iformat, aout1[, aout2, aout3,...,aoutN]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/fout.htm"><strong>foutk</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+&quot;ifilename&quot;, iformat, aout1[, aout2, aout3,...,aoutN]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/fout.htm"><strong>fouti</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ihandle, iformat, iflag, iout1[, iout2, iout3,....,ioutN]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/fout.htm"><strong>foutir</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ihandle, iformat, iflag, iout1[, iout2, out3,....,ioutN]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ihandle</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/fout.htm"><strong>fiopen</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+&quot;ifilename&quot;,imode</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/fin.htm"><strong>fin</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+&quot;ifilename&quot;, iskipframes, iformat, ain1[, ain2, ain3,...,ainN]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/fin.htm"><strong>fink</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+&quot;ifilename&quot;, iskipframes, iformat, kin1[, kin2, kin3,...,kinN]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/fin.htm"><strong>fini</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+&quot;ifilename&quot;, iskipframes, iformat, in1[, in2, in3,...,inN]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vincr.htm"><strong>vincr</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, aincr</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vincr.htm"><strong>clear</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+avar1[,avar2, avar3,...,avarN]</td>
+</tr>
+</table>
+
+<a class="qr" name="fileinfo"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Input and Output: Sound File Queries</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="642"><tr><td class="qr" nowrap width="12%" valign="TOP">
+ir</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../valcnv/filefax.htm"><strong>filelen</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+&quot;ifilcod&quot;</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ir</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../valcnv/filefax.htm"><strong>filesr</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+&quot;ifilcod&quot;</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ir</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../valcnv/filefax.htm"><strong>filenchnls</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+&quot;ifilcod&quot;</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ir</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../valcnv/filefax.htm"><strong>filepeak</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+&quot;ifilcod&quot;[, ichnl]</td>
+</tr>
+</table>
+
+<a class="qr" name="printing"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Input and Output: Printing and Display</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637"><tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/print.htm"><strong>print</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+iarg[, iarg, ...]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/print.htm"><strong>display</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+xsig, iprd[, inprds[, iwtflg]]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/print.htm"><strong>dispfft</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+xsig, iprd, iwsiz[, iwtyp[, idbouti[, iwtflg]]]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/printk.htm"><strong>printk</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+kval, ispace[, itime]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/printk.htm"><strong>printks</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+&quot;txtstring&quot;, itime, kval1, kval2, kval3, kval4</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/printk2.htm"><strong>printk2</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+kvar[, numspaces]</td>
+</tr>
+
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/flashtxt.htm"><strong>flashtxt</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+inum, &quot;text string&quot;</td>
+</tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table align="right" cellpadding="1" cellspacing="1" border="0"><tr>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td class="qr" width="10"></td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="spectral.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="score.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+</body>
+</html>

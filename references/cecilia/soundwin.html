@@ -1,0 +1,111 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>THE CECILIA INTERFACE</title>
+	</head>
+
+	<body>
+		&nbsp;
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="tut3.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="interfac.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<h2>THE&nbsp; MAIN CECILIA WINDOW</h2>
+		</center>
+		<center>
+			<a href="#gen">General</a></center>
+		<center>
+			<a href="#Main">Menus</a></center>
+		<center>
+			<hr>
+		</center>
+		<center>
+			<img src="cecMAIN.gif" border="0" height="648" width="672"></center>
+		<hr width="100%">
+		<h3><a name="gen"></a>General <b><font size="-2"><a href="#">top</a></font></b></h3>
+		The Main CECILIA window is where computation controls are situated. It lets you start, stop and (on some platforms) pause sound output. This is also where you select the principal computation flags such as sampling rate, control rate and size of functions.
+		<p>Two buttons (<b>DAC</b> and <b>Disk</b>) allow the selection of output to converters or to file. If <b>Disk</b> is chosen, the name entry field is enabled and you can type in a name for the sound file (one is proposed by default and if the <b>Auto-Rename</b> feature is selected under the Csound Menu, the name will be automatically incremented if a file with the same name already exists.
+		<p>The <b>sr, kr, ksmps</b> and <b>gen size</b> popup menus offer a number of common computation rates. If another rate is desired, the user can select &quot;other...&quot; and type in the desired rate. CECILIA will attempt to adjust all rates to reflect a correct proportion of sr vs kr vs ksmps.
+		<p>The <b>channels</b> selector allow to choose between various multi-channel versions of a given module. The versions availlable will be enabled.
+		<p>The scissors&nbsp;<img src="edi.gif" height="24" width="27"> and loudspeaker&nbsp;<img src="play.gif" height="24" width="27">&nbsp; buttons will open up the&nbsp; soundeditor or soundplayer (as defined in the <b>Preferences</b>) with the computed sound and will only be available if the computation was directed to a sound file.
+		<p>The&nbsp;<img src="cycle.gif" height="24" width="27"> button allows to automatically send to most recently computed soundfile to the first Input sound selector. This is a and efficient way of making multiple successive processing on an original file.
+		<p>Any soundfile selector object defined in the modules will also appear&nbsp; at the bottom of the Main window. The file selector button will open the CECILIA fileselector to allow choosing a soundfile for processing. The<b> offset </b>slider allows to specify a <i>skip </i>time for the soundfile to be processed. Some modules may not use this feature. The scissors&nbsp;<img src="edi.gif" height="24" width="27"> and loudspeaker&nbsp;<img src="play.gif" height="24" width="27"> buttons will open up the&nbsp; soundeditor or soundplayer (as defined in the <b>Preferences</b>)&nbsp; with the chosen sound.<br>
+		&nbsp;
+		<p>&nbsp;<br>
+		&nbsp;
+		<hr width="100%">
+		<h3><a name="Main"></a><b>Main Window Menus <font size="-2"><a href="#">top</a></font></b></h3>
+		<ul>
+			<li><b>File</b>
+			<ul>
+				<li><b>New</b>
+				<ul>
+					<li><b>Module...</b>&nbsp; ; Prepares CECILIA for a new module and opens the Editor.
+					<li><b>builtin</b>&nbsp; ;&nbsp; Select a builtin sound processing module.
+					<li><b>Others modules</b> ; Modules and Snapshots from the Module Preference folder.
+					<li><b>Update menu </b>;<b> </b>Update the <b>New</b> cascade to include just-created items.
+				</ul>
+				<li><b>Open...</b> ; Open the fileselector to choose Modules, Snapshots or Csound orchestras.
+				<li><b>Save snapshot</b> ; Save the current interface state in a Sanpshot file.
+				<li><b>Save snapshot as...</b>
+				<li><b>Reinit module</b> ; Reinitializes a module after modifications to the interface.
+				<li><b>Preferences...</b>&nbsp; ; Open the Preferences window.
+				<li><b>Quit ; </b>Quit and save current preferences.
+			</ul>
+			<li><a name="Csound"></a><b>Csound (Control of the main Csound computation flags)</b>
+			<ul>
+				<li><b>Preview Command</b>&nbsp; ; opens a window before computation showing the Csound command line.&nbsp; <a href="#ast">(*)</a>
+				<li><b>Open Csound window</b> ; On Unix, opens up the Csound execution shell. Error reporting will be deactivated. <a href="#ast">(*)</a>
+				<li><b>Midi Control</b>&nbsp; : Open up the Midi control port for the computation.
+				<li><b>Audio in</b>&nbsp; : Open up the audio port for real-time signal input.
+				<li><b>Table Graphics</b> ; Show Csound function graphics.
+				<li><b>Print Heartbeat</b> ; Print heatbeat symbol in Csound execution shell during computation <a href="#ast">(*)</a>
+				<li><b>ASCII Graphics</b>&nbsp; ; Print ASCII graphics in Csound execution shell. <a href="#ast">(*)</a>
+				<li><b>Tempo</b> ; Open score tempo selection window.
+				<li><b>Sample Type</b> ; Select output sample type.
+				<li><b>Verbosity</b>&nbsp; ;&nbsp; Select level of Csound execution shell messaging.&nbsp; <a href="#ast">(*)</a>
+				<li><b>DAC Buffers</b> ; slect size of b and B buffers for DAC output.
+				<li><b>Disk Buffers</b>&nbsp; ; Select&nbsp; size of b and B buffers for Disk output.
+				<li><b>Set MIDI Port</b> ; Select MIDI port on Unix.
+				<li><b>Default Headers</b> ; Select default Sr, Kr, Ksmps, Channels and Gen size for CECILIA.
+				<li><b>AutoPlay</b> ; Play the soundfile automatically after computation to Disk.
+				<li><b>Auto (re)Name</b> ; Automatically rename the output file name to Disk.
+				<li><b>Remember Input File</b> ; When changing Modules, the current input soundfile is automatically re-selected.
+				<li><b>Use Speedo on Write ; </b>Use speedometer on write to soundfile (Unix).
+			</ul>
+			<li><b>Analysis</b>
+			<ul>
+				<li><b>LPCanal</b>&nbsp; ; Open parameter specification window for Lpanal analysis.
+				<li><b>PVanal</b> ; Open parameter specification window for Pvanal analysis.
+				<li><b>Hetro</b> ; Open parameter specification window for Hetro analysis.
+				<li><b>Convolution</b> ; Open parameter specification window for Convolution analysis.
+			</ul>
+			<li><a name="Windows"></a><b>Windows</b>
+			<ul>
+				<li><b>Show Editor </b>; Open the CECILIA Editor
+				<li><b>Hide/Show All </b>; Iconize/Deiconize all windows
+				<li><b>Main/Grapher/Editor/Vertical Sliders/etc... </b>; Raise the window to the top of the desktop.
+			</ul>
+			<li><a name="Help"></a><b>Help</b>
+			<ul>
+				<li><b>Contextual Help </b>; Open Netscape with the current contextual subject.
+				<li><b>Assistance</b> ; Turn on/off the assistance line.
+				<li><b>About Cecilia... </b>; Compulsory bragging.<br>
+				&nbsp;<br>
+				&nbsp;
+			</ul>
+		</ul>
+		&nbsp;<a name="ast"></a>(*) Unix only, when <b>Open Csound Window</b> is selected.
+	</body>
+
+</html>

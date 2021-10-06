@@ -1,0 +1,790 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>QuickRef: MIDI Support</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body text="black" link="black" vlink="black" alink="black" bgcolor="white">
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent">
+      <img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" width="10">
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="pitch.htm">
+      <img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="siggen.htm">
+      <img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h1>MIDI Support</h1>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="converters"><h2>MIDI Support: Converters</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      ival
+    </td>
+    <td class="qr" nowrap width="88%" valign="TOP" colspan="2">
+      <a class="qr" href="../midi/notnum.htm">
+      <strong>notnum</strong></a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      ival
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/notnum.htm">
+      <strong>veloc</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      [ilow, ihigh]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      icps
+    </td>
+    <td class="qr" nowrap width="88%" valign="TOP" colspan="2">
+      <a class="qr" href="../midi/notnum.htm">
+      <strong>cpsmidi</strong></a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/kcps
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/notnum.htm">
+      <strong>cpsmidib</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      [irange]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      ioct
+    </td>
+    <td class="qr" nowrap width="88%" valign="TOP" colspan="2">
+      <a class="qr" href="../midi/notnum.htm">
+      <strong>octmidi</strong></a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/koct
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/notnum.htm">
+      <strong>octmidib</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      [irange]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      ipch
+    </td>
+    <td class="qr" nowrap width="88%" valign="TOP" colspan="2">
+      <a class="qr" href="../midi/notnum.htm">
+      <strong>pchmidi</strong></a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/kpch
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/notnum.htm">
+      <strong>pchmidib</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      [irange]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      iamp
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/notnum.htm">
+      <strong>ampmidi</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      iscal[, ifn]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kaft
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/notnum.htm">
+      <strong>aftouch</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      [imin[, imax]]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/kbend
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/notnum.htm">
+      <strong>pchbend</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      [imin[, imax]]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/kval
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/notnum.htm">
+      <strong>midictrl</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      inum[, imin[, imax]]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      icps
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/cpstmid.htm">
+      <strong>cpstmid</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ifn
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/kval
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/notnum.htm">
+      <strong>polyaft</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      inum[, imin[, imax]]
+    </td>
+  </tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="input"><h2>MIDI Support: Controller Input</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/initc7.htm">
+      <strong>initc7</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlno, ivalue
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/initc7.htm">
+      <strong>initc14</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlno1, ictlno2, ivalue
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/initc7.htm">
+      <strong>initc21</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlno1, ictlno2, ictlno3, ivalue
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/kdest
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/midic7.htm">
+      <strong>midic7</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ictlno, i/kmin, i/kmax[, ifn]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/kdest
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/midic7.htm">
+      <strong>midic14</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ictlno1, ictlno2, i/kmin, i/kmax[, ifn]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/kdest
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/midic7.htm">
+      <strong>midic21</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ictlno1, ictlno2, ictlno3, i/kmin, i/kmax[, ifn]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/kdest
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/midic7.htm">
+      <strong>ctrl7</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlno, i/kmin, i/kmax[, ifn]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/kdest
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/midic7.htm">
+      <strong>ctrl14</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlno1, ictlno2, i/kmin, i/kmax[, ifn]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/kdest
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/midic7.htm">
+      <strong>ctrl21</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlno1, ictlno2, ictlno3, i/kmin, i/kmax[, ifn]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/kval
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/chanctrl.htm">
+      <strong>chanctrl</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichnl, ictlno[, ilow, ihigh]
+    </td>
+  </tr>
+</table>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="sliders"><h2>MIDI Support: Slider Banks</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/k1, ..., i/k8
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/slider8.htm">
+      <strong>slider8</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlnum1, imin1, imax1, init1, ifn1, ..., ictlnum8, imin8, imax8, init8, ifn8
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/k1, ..., i/k16
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/slider8.htm">
+      <strong>slider16</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlnum1, imin1, imax1, init1, ifn1, ..., ictlnum16, imin16, imax16, init16, ifn16
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/k1, ..., i/k32
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/slider8.htm">
+      <strong>slider32</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlnum1, imin1, imax1, init1, ifn1, ..., ictlnum32, imin32, imax32, init32, ifn32
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/k1, ..., i/k64
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/slider8.htm">
+      <strong>slider64</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlnum1, imin1, imax1, init1, ifn1, ..., ictlnum64, imin64, imax64, init64, ifn64
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      k1, ..., k8
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/slider8.htm">
+      <strong>slider8f</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlnum1, imin1, imax1, init1, ifn1, icutoff1, ..., ictlnum8, imin8, imax8, init8, ifn8, icutoff8
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      k1, ..., k16
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/slider8.htm">
+      <strong>slider16f</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlnum1, imin1, imax1, init1, ifn1, icutoff1, ..., ictlnum16, imin16, imax16, init16, ifn16, icutoff16
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      k1, ..., k32
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/slider8.htm">
+      <strong>slider32f</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlnum1, imin1, imax1, init1, ifn1, icutoff1, ..., ictlnum32, imin32, imax32, init32, ifn32, icutoff32
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      k1, ..., k64
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/slider8.htm">
+      <strong>slider64f</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlnum1, imin1, imax1, init1, ifn1, icutoff1, ..., ictlnum64, imin64, imax64, init64, ifn64, icutoff64
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/k1, ..., i/k16
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/slider8.htm">
+      <strong>s16b14</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlno_msb1, ictlno_lsb1, imin1, imax1, initvalue1, ifn1, ..., ictlno_msb16, ictlno_lsb16, imin16, imax16, initvalue16, ifn16
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/k1, ..., i/k32
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/slider8.htm">
+      <strong>s32b14</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichan, ictlno_msb1, ictlno_lsb1, imin1, imax1, initvalue1, ifn1, ..., ictlno_msb32, ictlno_lsb32, imin32, imax32, initvalue32, ifn32
+    </td>
+  </tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="generic"><h2>MIDI Support: Generic I/O</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kstatus,<br>kchan,<br>kdata1,<br>kdata2
+    </td>
+    <td class="qr" nowrap width="88%" valign="TOP" colspan="2">
+      <a class="qr" href="../midi/midiin.htm">
+      <strong>midiin</strong></a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/midiout.htm">
+      <strong>midiout</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      kstatus, kchan, kdata1, kdata2
+    </td>
+  </tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="note"><h2>MIDI Support: Note-on/Note-off</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/noteon.htm">
+      <strong>noteon</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichn, inum, ivel
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/noteon.htm">
+      <strong>noteoff</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichn, inum, ivel
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/noteon.htm">
+      <strong>noteondur</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichn, inum, ivel, idur
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/noteon.htm">
+      <strong>noteondur2</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichn, inum, ivel, idur
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/moscil.htm">
+      <strong>moscil</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      kchn, knum, kvel, kdur, kpause
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/moscil.htm">
+      <strong>midion</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      kchn, knum, kvel
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/midion2.htm">
+      <strong>midion2</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      kchn, knum, kvel, ktrig
+    </td>
+  </tr>
+</table>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="message"><h2>MIDI Support: MIDI Message Output</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/outic.htm">
+      <strong>outic</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichn, inum, ivalue, imin, imax
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/outic.htm">
+      <strong>outkc</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      kchn, knum, kvalue, kmin, kmax
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/outic.htm">
+      <strong>outic14</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichn, imsb, ilsb, ivalue, imin, imax
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/outic.htm">
+      <strong>outkc14</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      kchn, kmsb, klsb, kvalue, kmin, kmax
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/outic.htm">
+      <strong>outipb</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichn, ivalue, imin, imax
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/outic.htm">
+      <strong>outkpb</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      kchn, kvalue, kmin, kmax
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/outic.htm">
+      <strong>outiat</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichn, ivalue, imin, imax
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/outic.htm">
+      <strong>outkat</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      kchn, kvalue, kmin, kmax
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/outic.htm">
+      <strong>outipc</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichn, iprog, imin, imax
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/outic.htm">
+      <strong>outkpc</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      kchn, kprog, kmin, kmax
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/outic.htm">
+      <strong>outipat</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ichn, inotenum, ivalue, imin, imax
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/outic.htm">
+      <strong>outkpat</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      kchn, knotenum, kvalue, kmin, kmax
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/nrpn.htm">
+      <strong>nrpn</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      kchan, kparmnum, kparmvalue
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/mdelay.htm">
+      <strong>mdelay</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      kstatus, kchan, kd1, kd2, kdelay
+    </td>
+  </tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="realtime"><h2>MIDI Support: Realtime Messages</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/mclock.htm">
+      <strong>mclock</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ifreq
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/mclock.htm">
+      <strong>mrtmsg</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      imsgtype
+    </td>
+  </tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="event"><h2>MIDI Support: MIDI Event Extenders</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/xtratim.htm">
+      <strong>xtratim</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      iextradur
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kflag
+    </td>
+    <td class="qr" nowrap width="88%" valign="TOP" colspan="2">
+      <a class="qr" href="../midi/xtratim.htm">
+      <strong>release</strong></a>
+    </td>
+  </tr>
+</table>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent">
+      <img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" width="10">
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="pitch.htm">
+      <img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="siggen.htm">
+      <img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+</body>
+</html>

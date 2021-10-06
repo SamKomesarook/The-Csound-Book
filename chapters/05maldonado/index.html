@@ -1,0 +1,430 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Using Real-Time Csound MIDI with Windows</TITLE>
+</HEAD>
+<BODY BGCOLOR="#eeeeee">
+
+<H1><FONT FACE="Times New Roman">4. Using Real-time Csound MIDI
+with Windows</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Gabriel Maldonado</FONT></H2>
+
+<P><FONT FACE="Times New Roman">This proposal concerns the well-known
+sound-synthesis language Csound. Some additions have been made
+in order to use Csound in real-time. These additions allow a live
+control of the synthesis process with the Windows operating system.
+The aim is to give the user a powerful and low-cost workstation
+to produce new sounds and new music interactively and also to
+make live performances. Try to imagine Csound being a universal
+musical instrument.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Why Real-Time?</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Csound is one of the most famous
+sound-synthesis languages. At the beginning of the &#145;90s its
+author, Berry Vercoe, has added some MIDI oriented opcodes to
+use it in real-time. At that time the only machines capable to
+run Csound in real-time, were the Silicon Graphics and some other
+expensive UNIX workstations. Some years later the Intel-based
+PCs became fast enough to run Csound in real-time, but at first
+they were capable to accomplish this task only under the LINUX
+OS, and without any MIDI support. DOS and Windows were rigorously
+kept off the real-time dream.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Now low-latency AUDIO support,
+MIDI support and many MIDI opcodes have been implemented under
+Windows, to allow the user to control Csound as it could be a
+sort of musical instrument.</FONT></P>
+
+<P><FONT FACE="Times New Roman">What is the difference in using
+Csound in real-time rather than using it in deferred-time? For
+what reason should a composer prefer to use it in real-time? The
+more trivial reason is that running Csound redirecting its output
+to the audio-DACs (instead of writing the output on a file) saves
+both space on the hard-disk and time to listen to the result;
+it can be quite useful when composing a piece, because normally
+a lot of tests are necessary to achieve the composer expectations.
+In this case real-time is not essential, it is only more convenient.</FONT></P>
+
+<P><FONT FACE="Times New Roman">But there are cases in which real-time
+is indispensable. What about if a composer decides to make a piece
+in which some musical parameters are fixed, but other ones are
+modifiable during the performance? And if he wants to control
+a MIDI synthesiser by means of his favourite Csound algorithm
+or pitch tables? And if a performer needs a synthesiser capable
+of completely new synthesis methods, which aren&#146;t implemented
+in any hardware synths yet? Real-time becomes also necessary when
+some non-intuitive parameters of the composition need to be defined
+accurately by means of the composer&#146;s ears.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Initialisation Parameters and
+Continuous Parameters from the Real-Time Point of View</FONT></H3>
+
+<P><FONT FACE="Times New Roman">In Csound there are three kinds
+of signals:<B><I> i-rate</I></B> (initialisation stage variables),
+<B><I>k-rate</I></B> (control rate variables) and <B><I>a-rate</I></B>
+(audio rate variables) signals.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The<I> k-rate</I> and<B><I> </I></B><I>a-rate</I>
+signals can be considered <I>continuous</I> from the user point
+of view. This means that these two kinds of signals can be thought
+as slanting-straight lines or curves (Fig.1 a,b,c).<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/fig1.gif" HEIGHT="300"
+WIDTH="421" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><FONT FACE="Times New Roman">The<I> k-rate</I> signals are
+normally used to control the behaviour of a generator unit or
+a modifier unit. Sometimes it is recommended to use <I>a-rate</I>
+for control signals too, for example when the amplitude envelope
+of an audio generator has got fast transients, or when an LFO
+must control a flanger delay. In these cases audible distortion
+occurs if <I>k-rate</I> is used, so it is necessary to use <I>a-rate</I>.</FONT></P>
+
+<P><FONT FACE="Times New Roman">On the other hand, <I>i-rate</I>
+values cannot be considered exactly as signals. In fact they remain
+constant for the entire duration of a Csound note event. If one
+imagined them in a graph, he could think them as a stepped picture
+(Fig.2). Each step refers to an<I> i-statement</I> of Csound score
+or to a note-on MIDI message recognised by the MIDI IN port.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/fig2.gif" HEIGHT="383"
+WIDTH="526" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><FONT FACE="Times New Roman">Further, <I>i-rate</I>, <I>k-rate</I>
+and <I>a-rate</I> signals can be considered in two different ways
+from Csound instruments point of view:</FONT></P>
+
+<P><B><I><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">internally-generated<BR>
+</FONT></I></B></P>
+
+<P><B><I><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">externally-received<BR>
+</FONT></I></B></P>
+
+<P><FONT FACE="Times New Roman">For example, Csound score <I>p-fields</I>
+are <I>externally-received</I> <I>i-rate</I> values, because they
+are not defined inside the instrument block, but externally, in
+the score. Global <I>k-rate</I> and <I>a-rate</I> signals are
+<I>internally-generated</I> by an instrument, but they can be
+considered as <I>externally-received</I> from the target-instruments
+point of view. Obviously incoming MIDI control-change messages
+are <I>externally-received</I> signals. Signals sent to the MIDI
+OUT port are <I>internally-generated</I>.</FONT></P>
+
+<P><I><FONT FACE="Times New Roman">Externally-received</FONT></I><FONT
+ FACE="Times New Roman"> <I>k-rate</I> signals will be named <B><I>continuous
+parameters</I></B>, and <I>externally-received i-rate</I> values
+<B><I>init parameters</I></B>. <I>a-rate</I> signals will not
+be taken into account, because normally they are not used as real-time
+control signals, but they are as audio signals. So it is possible
+to draw a table:<BR>
+&nbsp;&nbsp; </FONT><TABLE BORDER="0" CELLSPACING="2" CELLPADDING="3"
+WIDTH="595">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="19%" BGCOLOR="#ffffff"><B><FONT SIZE="-1"
+       FACE="Courier New">SIGNALS</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="7%" BGCOLOR="#ffffff"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%" BGCOLOR="#ffffff"><B><FONT SIZE="-1"
+       FACE="Courier New">Initialisation values</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="11%" BGCOLOR="#ffffff"><B><FONT SIZE="-1"
+       FACE="Courier New">Control signals</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="8%" BGCOLOR="#ffffff"><B><FONT SIZE="-1"
+       FACE="Courier New">Audio signals</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="13%" BGCOLOR="#ffffff"><B><FONT SIZE="-1"
+       FACE="Courier New">Continuous parameters</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="13%" BGCOLOR="#ffffff"><B><FONT SIZE="-1"
+       FACE="Courier New">Init parameters</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="8%" BGCOLOR="#ffffff"><B><FONT SIZE="-1"
+       FACE="Courier New">MIDI input</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="8%" BGCOLOR="#ffffff"><B><FONT SIZE="-1"
+       FACE="Courier New">MIDI output</FONT></B></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="19%" BGCOLOR="#ffffff"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT SIZE="-1" FACE="Courier New">i-rate</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%">
+      <P><CENTER><FONT SIZE="-1" FACE="Courier New">yes</FONT></CENTER></TD>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%">
+      <P><CENTER><FONT SIZE="-1" FACE="Courier New">yes</FONT></CENTER></TD>
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="19%" BGCOLOR="#ffffff"><B><I><FONT SIZE="-1"
+       FACE="Courier New">internally-generated</FONT></I></B></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT SIZE="-1" FACE="Courier New">k-rate</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%">
+      <P><CENTER><FONT SIZE="-1" FACE="Courier New">yes</FONT></CENTER></TD>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%">
+      <P><CENTER><FONT SIZE="-1" FACE="Courier New">yes</FONT></CENTER></TD>
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="19%" BGCOLOR="#ffffff"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT SIZE="-1" FACE="Courier New">a-rate</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%">
+      <P><CENTER><FONT SIZE="-1" FACE="Courier New">sometimes<sup>1</sup></FONT></CENTER></TD>
+    <TD VALIGN="TOP" WIDTH="8%">
+      <P><CENTER><FONT SIZE="-1" FACE="Courier New">yes</FONT></CENTER></TD>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="19%" BGCOLOR="#ffffff"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT SIZE="-1" FACE="Courier New">i-rate</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%">
+      <P><CENTER><FONT SIZE="-1" FACE="Courier New">yes</FONT></CENTER></TD>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%">
+      <P><CENTER><FONT SIZE="-1" FACE="Courier New">yes<sup>2</sup></FONT></CENTER></TD>
+    <TD VALIGN="TOP" WIDTH="8%">
+      <P><CENTER><FONT SIZE="-1" FACE="Courier New">yes<sup>2</sup></FONT></CENTER></TD>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="19%" BGCOLOR="#ffffff"><B><I><FONT SIZE="-1"
+       FACE="Courier New">externally - received&nbsp;</FONT></I></B></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT SIZE="-1" FACE="Courier New">k-rate</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%">
+      <P><CENTER><FONT SIZE="-1" FACE="Courier New">yes</FONT></CENTER></TD>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%">
+      <P><CENTER><FONT SIZE="-1" FACE="Courier New">yes<sup>2</sup></FONT></CENTER></TD>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%">
+      <P><CENTER><FONT SIZE="-1" FACE="Courier New">yes<sup>2</sup></FONT></CENTER></TD>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="19%" BGCOLOR="#ffffff"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT SIZE="-1" FACE="Courier New">a-rate</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%">
+      <P><CENTER><FONT SIZE="-1" FACE="Courier New">yes</FONT></CENTER></TD>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE><BR>
+<B><FONT FACE="Times New Roman">note 1:</FONT></B><I><FONT FACE="Times New Roman">
+Sometimes a-rate signals are used to control the amplitude envelope
+of an audio generator to avoid distortion in fast transients when
+k-rate is very low.</FONT></I></P>
+
+<P><B><FONT FACE="Times New Roman">note 2: </FONT></B><I><FONT
+ FACE="Times New Roman">Signals received by the MIDI-input opcodes
+operate at i-rate and k-rate. Note-on messages are init-parameters.
+Control-change, aftertouch and pitch-bend messages are continuous
+parameters.</FONT></I></P>
+
+<P><FONT FACE="Times New Roman">Notice also that signals received
+by the MIDI-input opcodes operate at <I>i-rate</I> and <I>k-rate</I>.
+Note-on messages <I>are init-parameters</I>, whereas control-change,
+aftertouch and pitch-bend messages are <I>continuous parameters</I>.<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman">SA and MA Instruments</FONT></H3>
+
+<P><FONT FACE="Times New Roman">A running instance of a Csound-orchestra&#146;s
+instrument can be activated in two ways: by the score and by a
+MIDI note-on message. So there are two kinds of instruments:</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">SA Instruments</FONT></B><FONT
+ FACE="Times New Roman"> (Score Activated instruments)</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">MA Instruments</FONT></B><FONT
+ FACE="Times New Roman"> (MIDI Activated instruments)</FONT></P>
+
+<P><I><FONT FACE="Times New Roman">MA</FONT></I><FONT FACE="Times New Roman">
+and <I>SA</I> instruments can coexist in the same Csound orchestra.
+If an orchestra contains only <I>MA</I> instruments, and function
+tables are not used (for example when using the &#145;<I>pluck&#146;</I>
+opcode to produce the sound), a Csound score could be an almost
+empty file. In that case, the only statement which must be present
+in the score is the <B><I>f0 </I></B>statement, followed by the
+action time (which must be equal to the total duration of the
+performance). This statement is required to avoid a zero-seconds
+duration of the real-time session.</FONT></P>
+
+<P><B><I><FONT FACE="Times New Roman">MA</FONT></I><FONT FACE="Times New Roman">
+</FONT></B><FONT FACE="Times New Roman">instruments can contain
+the following Csound opcodes (whereas <B><I>SA</I> </B>instruments
+cannot):</FONT></P>
+
+<P><I><FONT FACE="Times New Roman">notnum, veloc, cpsmidi, cpsmidib,
+cpsmidib, octmidi, octmidib, octmidib, pchmidi, pchmidib, pchmidib,
+ampmidi, aftouch, chpress, pchbend, midictrl, midictrl, midictrlsc,
+imidic7, midic7, imidic14, midic14, imidic21, midic21</FONT></I></P>
+
+<P><FONT FACE="Times New Roman">Notice that none of these opcode
+contains MIDI channel as an argument. If one of these opcodes
+is included into an <I>SA</I> instrument, unpredictable errors
+could occur.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In most cases the midi-channel
+number of a note-on or control-change message is the same as the
+instr number to be activated, however they can be reassigned by
+means of the <B><I>massign</I></B> opcode. If <I>massign</I> is
+not used, <I>MA</I> instruments must be numbered 1 to 16.</FONT></P>
+
+<P><FONT FACE="Times New Roman">As in the following MIDI-oriented
+opcodes an input argument with MIDI channel information is present,
+they can be used in <B><I>SA</I> </B>instruments:</FONT></P>
+
+<P><I><FONT FACE="Times New Roman">ictrl7, ctrl7, ictrl14, ctrl14,
+ictrl21, ctrl21, chanctrl, chanctrl, initc7, initc14, initc21,
+slider8, slider16, slider8f, slider16f, islider8, islider16.</FONT></I></P>
+
+<P><I><FONT FACE="Times New Roman">SA</FONT></I><FONT FACE="Times New Roman">
+and <I>MA</I> instruments can cooperate in the same orchestra.
+For example, an <I>SA</I> instrument can contain several instances
+of &#145;<I>ctrl7&#146;</I> opcode, each one defining a different
+<I>continuous-parameter. </I>Each parameter is stored in a global
+variable. So the corresponding <I>continuous-parameter</I> is
+shared by all the instances of the <I>MA</I> instrument. It is
+a sort of sending/receiving process inside the same Csound orchestra:
+performer actions are received by the MIDI-IN port; an <I>SA</I>
+instrument containing some midi opcodes transforms these messages
+in global variables; these global variables (which are the actual
+<I>continuous-parameters</I>) are read by an <I>MA</I> instrument.
+In this case, the <I>SA-</I>instrument-instance&#146;s life begins
+at the start of Csound and lasts all the duration of the real-time
+session, whereas <I>MA-</I>instrument-instances&#146;s action-times
+and durations depend on the performer&#146;s actions.</FONT></P>
+
+<H2><FONT FACE="Times New Roman">Four Different Ways to Use Csound
+in Real-Time</FONT></h3></H2>
+
+<P><FONT FACE="Times New Roman">The first way can be considered
+as the most trivial one. A normal orchestra contains only <I>SA</I>
+instruments and no parameters are modified during the performance,
+because all the informations are contained in the orchestra/score
+pair. No MIDI opcodes are used in this case, and sound output
+is identical to that of the wave-file produced by running a deferred-time
+Csound session with the same orchestra/score pair. This way can
+be useful to reduce the waiting time of wave-file processing and
+to eliminate the necessity of a big hard-disk storage space, but
+in every respect this method is identical to deferred-time by
+the hearing point of view.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The second way is the opposite
+to the first. According to this way, it is possible to consider
+Csound a MIDI synthesiser (the most powerful synth in the world!).
+This synth can be connected to a MIDI master-keyboard for a piano-like
+performance; furthermore it is possible to play Csound with controllers
+different from a piano keyboard, such as wind controllers, guitar
+controllers, drum controllers etc. In this case no <I>p-fields</I>
+are present in the score. All the <I>init</I> and <I>continuous
+parameters</I> are received via MIDI. Each note is activated by
+a MIDI note-on message and deactivated by a note-off message.
+So <I>init parameters</I> are defined by the informations contained
+in a note-on message: the orchestra instrument number is selected
+by the MIDI channel, the MIDI note-number and the velocity can
+be used to set two additional <I>init parameters </I>(this task
+can be accomplished by using the <I>notnum, cpsmidi, octmidi,
+pchmidi, veloc </I>and<I> ampmidi </I>opcodes)<I>. </I>Other <I>init
+parameters</I> can be set by sampling and holding the current
+status of Csound controller array at the instr initialisation
+stage (this task can be accomplished by using <I>imidic7, imidic14,
+imidic21, ictrl7, ictrl14, ictrl21, islider8, islider16, islider32,
+islider64, is16b14 </I>and<I> is32b14</I> opcodes in an <I>MA</I>
+instrument). It is suggested to use a MIDI mixer or the VMCI program
+(see below for more informations on it) to control a controllers
+bank. It is possible to use VMCI as a synth-editor for Csound
+by designing an instrument with a big number of init-rate controller
+opcodes, each one defining a particular patch-parameter. For example,
+the amplitude envelope ADSR durations and levels of an instrument
+can be assigned to a bank of sliders. So a Csound instrument can
+be considered as the type of synth-algorithm used, in which each
+slider configuration (when using VMCI this configuration can be
+saved on disk) becomes the particular synth-patch that can be
+edited according to user taste. Continuous parameters can be modified
+via MIDI by gestural actions of the performer by means of devices
+such as control-sliders, modulation-wheels, breath-controls, pitch-wheels,
+aftertouch etc. (the opcodes implemented to accomplish these tasks
+are: <I>aftouch, chpress, pchbend, midictrl, midictrlsc, midic7,
+midic14, midic21, ctrl7, ctrl14, ctrl21, slider8, slider16, slider32,
+slider64, slider8f, slider16f, slider32f, slider64f, s16b14 </I>and<I>
+s32b14)</I>.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The third way to use Csound in
+real-time is joining SA instruments to some parameters which are
+modifiable in real-time by a MIDI controller during the score
+performance. In this case each note has its p-fields already defined
+in the score, but there can be some additional <I>init</I> or
+<I>continuous parameters</I> that can be modified at performance
+time. The action-time and the duration of each note are fixed,
+but the metronomic speed of the performance can be changed in
+real-time by the user. Any kind of parameter can be assigned to
+a live controller. This can enrich the concert performances: each
+time the composition will acquire a new flavour, it will never
+be exactly the same.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The fourth way to use Csound reminds
+us a little the old and cheap Casio keyboards &quot;<I>one-key-play</I>&quot;
+mode. In this mode, note-on messages are used to trigger the note-events,
+that are pulled out from a queue of note-parameter blocks stored
+into a table, i.e. all the <I>init-parameters</I> of each note
+have to be stored into a table. Note-off messages are used to
+deactivate a playing note. Overlapping notes, as well as polyphony
+are allowed. All the init parameters used in a conventional <I>SA</I>
+instrument can be ported to a real-time activated instrument (<I>MA</I>
+instrument) when using this method. I like to play Csound in this
+way very much, because it is possible to define a lot of very
+precise parameters for each note, but the activation time and
+the duration of each note is decided by the performer at performance
+time. This enables the user to control all these interpretative
+nuances of time such as <I>ritardando</I> and <I>accelerando</I>,
+very difficult to define with precision at the score-design time.
+Also, two additional init-values can be used to control any kind
+of parameter; these values are obtained by the note-number and
+the velocity of each note played at performance time. A section
+of an <I>SA</I> instrument of a standard score can be easily converted
+to be used with the &quot;<I>one-key-play</I>&quot; mode. The
+new GEN 23 function-table generator subroutine, which reads numeric
+values from an external ASCII file, can be used to do this job.</FONT></P>
+
+<H2><FONT FACE="Times New Roman">New Features</FONT></h3></H2>
+
+<P><FONT FACE="Times New Roman">The main features added to this
+Windows version of Csound are:</FONT></P>
+
+<OL>
+  <LI><FONT FACE="Times New Roman">Real-time audio input and audio
+  output in parallel, before available only in UNIX platforms (now
+  the <I>DirectSound</I> API functions enable a very low latency
+  to audio output, giving the performer a short time response for
+  gestural actions).<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">Real-time MIDI IN and MIDI OUT
+  (new feature).<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">Command line oriented real-time
+  output (before implemented only in UNIX platforms).<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">Hard-disk recording of the real-time
+  audio output in the same machine (completely new feature).<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">Several real-time-oriented opcodes.</FONT>
+</OL>
+
+</BODY>
+</HTML>

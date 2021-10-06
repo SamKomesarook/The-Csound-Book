@@ -1,0 +1,2077 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Csound-based Microtonal Synthesis and Control with MIDI</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">1. Csound-based Microtonal Synthesis
+and Control with MIDI</FONT></H1>
+
+<H2><FONT SIZE="+1" FACE="Times New Roman">Bill Alves</FONT></H2>
+
+<P><FONT FACE="Times New Roman">Even in the recent past, making
+music with alternate tuning systems was not for the faint of heart.
+The imposition of the twelve-tone equal temperament standard in
+the West meant that alternate-tuning pioneers like Harry Partch
+had to tune or even build their own instruments. Nevertheless,
+in recognition of the small but growing group of alternate-tuning
+musicians, some manufacturers added re-tuning features to early
+MIDI instruments. While this capability was a great leap forward
+for those of us with limited carpentry skills, MIDI instruments
+still had significant tuning limitations.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Only in a software-based system
+such as Csound is the full palette of possible pitch systems available
+to the composer. Csound not only removes the practical necessity
+for compromises inherent in most tuning systems, it also allows
+the tuning explorer to chart new potentials previously unavailable
+for practical music-making. This chapter will provide an introduction
+to the techniques used for a variety of types of alternate tunings
+in Csound.</FONT>&nbsp;</P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman">Pitch Specification
+and Resolution in Csound</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">Csound provides three different
+methods for pitch specification: <I>cps</I> (frequency in Hertz,
+required by most functions), <I>pch</I> (a twelve-tone equal temperament
+specification with microtones in cents) and <I>oct</I> (a specification
+with decimal divisions of the octave). The <I>pch</I> specification
+is most commonly used in score files to specify pitches. The number
+to the left of the decimal point represents the octave, with 8
+being the octave beginning on middle C. The two digits immediately
+to the right of the decimal point represent the pitch class, that
+is, the key number within the octave for a standard piano keyboard,
+beginning with C=00.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Thus 8.00 is middle C, 8.01 is
+C# or Db, and so on, up to 8.11 which is B. 8.12 is equivalent
+to 9.00, or C of the next octave. The next two decimal points
+represent cents, that is, hundredths of equally-tempered semitones.
+Thus 8.0050 is a pitch halfway between C and C#, or 50 cents (a
+quarter-tone) sharp of C. In the <I>oct</I> format, the numbers
+to the left of the decimal point, again, represent the octave,
+but the numbers to the right of the decimal point represent decimal
+divisions of the octave. Therefore, 8.06 (F#) in <I>pch</I> notation
+is equivalent to 8.50 (halfway between the C of octave 8 and the
+C of octave 9) in <I>oct</I> notation.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Csound provides six functions
+to convert between these specifications: <B>cpspch</B> (convert
+from pch to <I>cps</I> in twelve-tone equal temperament), <B>cpsoct</B>
+(convert from oct to <I>cps</I>), <B>pchoct</B> (convert from
+<I>oct</I> to <I>pch</I>), <B>pchcps</B> (convert from <I>cps</I>
+to <I>pch</I>),<B>octcps</B> (convert from <I>cps</I> to <I>oct</I>),
+and <B>octpch</B> (convert from <I>pch</I> to <I>oct</I>).</FONT></P>
+
+<P><FONT FACE="Times New Roman">While pitches in a score may be
+specified directly with <I>cps</I>, few musicians think in such
+terms. For composers who use twelve-tone equal temperament (12TET),
+or who know their pitches relationship to 12TET, <I>pch</I> notation
+can be useful. For example, a quarter-tone scale could be rendered:
+8.000, 8.005, 8.010, 8.015, 8.020, 8.025, and so on. However,
+many composers in alternate tunings have no desire to express
+themselves in relation to the 12TET reference.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The <I>oct</I> specification would
+be mainly useful in equal temperaments easily represented in decimal
+format, such as 10TET or 100TET. John Fitch's <I>Drums and Different
+Canons #1</I> is a work in 100TET that uses <I>oct</I> format
+for all pitches. The complete orchestra and score for this piece
+is available on the CD-ROM accompanying this book.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Pitch resolution in Csound is
+generally very good (especially in comparison to most MIDI instruments),
+though the frequency output of analysis programs such as <B>hetro
+</B>and <B>pvanal</B> may be coarse. Frequencies in <I>cps</I>
+format are represented by floating point variables in Csound,
+which on most systems means that the difference between 20 Hz
+and the next highest representable frequency is only about 0.00021cents.</FONT>&nbsp;</P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman">Frequency Tables</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">Many MIDI manufacturers allow
+the specification of a &quot;tuning table,&quot; which is a specification
+of frequencies for each of the twelve MIDI pitches peroctave,
+though some instruments allow the user to specify a tuning across
+the entire gamut of MIDI pitches. Tuning tables in Csound offer
+simplicity and efficiency, and unlike most MIDI instrument tuning
+tables, they need not be limited to 12 pitches per octave.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Let us say, taking a simple case,
+that one has a series of twelve or fewer frequencies that you
+would simply like to use instead of the standard equaltempered
+versions. In this example, I have chosen a tuning of an African
+<I>mbira</I> player, John Kunaka, published in Berliner (1981).
+(Actually these mbira tunings do not stay constant in different
+octaves, but we will use only the central octave for now.) With
+the help of the <B>int</B> function (which returns the integer
+part of the argument) and <B>frac</B> function (which returns
+thefractional part of the argument), you can essentially have
+your own replacement for <B>cpspch</B> conversion. In the score
+file, the <I>mbira</I> tunings for the central octave in Hz are
+stored in a <I>f-table</I>. Those pitches not found on the <I>mbira</I>
+(shown by asterisks in the comments) have been arbitrarily filled
+in:</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="691" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">; table#</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">time</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">size</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New">fn</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New">C</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">C#*</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">D</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">EB</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New">E*</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">F</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">F#*</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New">G</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">Ab</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">A*</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">Bb</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">B*</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">f 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">16</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New">-2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New">269</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">287</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">291</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">313</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New">336</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">353</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">380</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New">392</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">431</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">448</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="49"><FONT FACE="Courier New">469</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">504</FONT></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Courier New,Courier">A sample arpeggio:</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="477" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">; instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">start</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">dur</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">amp</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">pitch</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">i 201</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">8.00</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">; 269 Hz</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">i 201</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">8.03</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">; 313 Hz</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">i 201</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">8.07</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">; 392 Hz</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">i 201</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">9.00</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">; 538 Hz
+      (don't use 8.12!)</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">(Notice that, though we are only
+using12 spaces in the <I>f-table</I>, its length still must be
+a power of two. The GEN2<B> </B>function must be negative to inhibit
+rescaling). Then in the .orc file, the following init-time conversion
+would be used for each of the instruments:</FONT></P>
+
+<P><IMG SRC="figures/01.gif" HEIGHT="286" WIDTH="280" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM"></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman">Figure 2.1</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman"> Block diagram of init-time
+conversion algoritm to index into a tuning table and return appropriate
+grequency ratio.</FONT></P>
+
+<P>&nbsp;&nbsp; <TABLE BORDER="0" CELLSPACING="0" WIDTH="549"
+CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New,Courier">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New,Courier">instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New,Courier">201</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="53%"><FONT FACE="Courier New,Courier">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New,Courier">ioct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New,Courier">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New,Courier">int(p5)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="53%"><FONT FACE="Courier New,Courier">;returns
+      the octave part of the pitch #</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New,Courier">ipchclass</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New,Courier">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New,Courier">100*frac(p5)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="53%"><FONT FACE="Courier New,Courier">;returns
+      the pitch class number (0-11)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New,Courier">ipch</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New,Courier">itable</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New,Courier">ipchclass,
+      1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="53%"><FONT FACE="Courier New,Courier">;any
+      fraction left will be truncated</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New,Courier">ioctfact</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New,Courier">ipow</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New,Courier">2,
+      ioct-8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="53%"><FONT FACE="Courier New,Courier">;the
+      8th octave is in the table</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New,Courier">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New,Courier">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New,Courier">ipch*ioctfact</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="53%"><FONT FACE="Courier New,Courier">;each
+      octave is a power of two</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New,Courier">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New,Courier">...</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New,Courier">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="53%"><FONT FACE="Courier New,Courier">;go
+      on to use ifreq as normal</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman">Figure 2.2</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman"> Orchestra code excerpt from
+<I>instr 201</I> which uses a tuning table and a <B>pow</B> function
+to replace the <B>cpspch</B> conversion with alternate tuning.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">There is nothing here restricting
+the use of only twelve pitch classes per octave. In the above
+example one may use up to 100 pitches per octave, though the size
+of the f-table would have to be adjusted.</FONT></P>
+
+<P><FONT FACE="Times New Roman">It is also possible to use the
+same technique over several octaves. In the following example,
+I have used the data collected by Surjodiningrat et Al (1969)
+on the tuning of the Javanese gamelan Kyahi Kanyutmesem of the
+Mangkunegaran Palace in Surakarta. I have assigned the data so
+that the slendro (five-tone) tuning appears on the five black
+keys and the pelog (seven-tone) tuning appears on the seven white
+keys (a few pitches not present in the gamelan have been filled
+in with octave equivalents):</FONT></P>
+
+<P><FONT FACE="Times New Roman">Tuning table for gamelan:</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="547" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">f 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">64</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">-2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">59</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">62</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">62</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">73</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">73</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">80</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">84</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">86</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">93</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">102</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">109</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">110</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">118</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">126</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">128</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">146</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">145</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">159</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">167</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">172</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">189</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">204</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">219</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">20</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">234</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">248</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">257</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">287</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">294</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">321</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">332</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">348</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">381</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">406</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">437</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">439</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">471</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">501</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">519</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">580</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">597</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">641</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">671</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">698</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">778</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">817</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">898</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">886</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">946</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1040</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1041</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1202</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">124</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1318</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1388</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1432</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1604</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1656</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">1824</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">1820</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1935</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">2134</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="13"><FONT FACE="Courier New">2142</FONT></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman">Figure 2.3</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman"> Tuning table for the Gamelan.</FONT></P>
+
+<P><IMG SRC="figures/2.gif" HEIGHT="272" WIDTH="235" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM"></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman">Figure 2.4</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman"> Block diagram of init-time
+conversion algorithm in which black keys map to the 5 tone &quot;Slendro&quot;
+tuning and the white keys map to the 7 tone &quot;Pelog&quot;
+tuning.</FONT></P>
+
+<P>&nbsp;&nbsp; <TABLE BORDER="0" CELLSPACING="0" WIDTH="598"
+CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="31%"><FONT FACE="Courier New">202</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">ioct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="31%"><FONT FACE="Courier New">int(p5)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">;returns
+      the octave</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">ipchclass</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="31%"><FONT FACE="Courier New">100*frac(p5)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">;returns
+      the pitch class number</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">ilookup</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="31%"><FONT FACE="Courier New">12*(ioct-6)+ipchclass</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">;octaves
+      below 6 are not valid</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">itable</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="31%"><FONT FACE="Courier New">ilookup,
+      1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">;tuning
+      table is fn table #1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">...</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="31%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">;go on
+      to use ifreq as normal</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman">Figure 2.5</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman"> Orchestra code excerpt from
+<I>instr 202</I>, which maps two tunings to black and white keys.</FONT></P>
+
+<P><FONT FACE="Times New Roman">This simple example only works
+with pitches between 6.00 and 11.01. With some more work, it would
+be possible to return octave equivalents when the pitches fall
+outside of this range.</FONT>&nbsp;</P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman">Csound and Non-12
+Equal Temperaments</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">While it is possible to use frequency
+tables to reproduce virtually any tuning, it mainly makes sense
+when, as in the above examples, you wish to reproduce an empirical
+tuning. When, as in many tuning systems, the frequencies may be
+generated mathematically, why not let the computer do the work
+for you ?</FONT></P>
+
+<P><FONT FACE="Times New Roman">One common class of tuning systems
+is equal temperament, where the interval between adjacent pitches
+is always the same. Most of the time, it is assumed that a whole
+number of pitches will fit in an octave, though this need not
+be the case. Nevertheless, when one speaks of 12-tone equal temperament
+(12TET) or 19-tone equal temperament (19TET), that means the octave
+is divided evenly into 12 or 19 tones.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Say we want to implement a pitch
+format similar to <I>pch</I> representation, but where the tenths
+and hundredths digits range from 00 to 47, to 48-tone equal temperament
+(eighths oftones). Here is one way conversion might be accomplished
+in Csound.</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="524" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">instr</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">203</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">ioct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="34%"><FONT FACE="Courier New">int(p5)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">; the octave</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">ipchclass</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="34%"><FONT FACE="Courier New">100*frac(p5)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">; the pitch
+      class # (0-47)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="34%"><FONT FACE="Courier New">cpsoct(ioct+ipchclass/48)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">; covert
+      it to oct format</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">...</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="34%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">; go on
+      to use ifreq as normal</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">The same translation can also
+be effected with the <B>cps2pch</B> opcode:</FONT></P>
+
+<P>&nbsp;&nbsp; <TABLE BORDER="0" CELLSPACING="0" WIDTH="528"
+CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="28%"><FONT FACE="Courier New">204</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">cps2pch</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="28%"><FONT FACE="Courier New">p5, 48</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">; 48 =
+      # of pitches per octave</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">...</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="28%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">; go on
+      to use ifreq as normal</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">The specification of pitch this
+way translates very nicely from the notation used by some composers,
+notably Julian Carillo. He notated pitches as numbers of scale
+steps within an octave, as in the following example from his <I>Preludio
+a Colon</I>:</FONT></P>
+
+<P>&nbsp;&nbsp; <TABLE BORDER="0" CELLSPACING="0" WIDTH="477"
+CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="5"><FONT FACE="Courier New">; Measure
+      1</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">; instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">start</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">dur</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">amp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">pitch</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 205</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">7.32</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 205</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">7.34</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 205</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">7.36</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 205</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">7.38</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 205</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">7.36</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 205</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">7.34</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="5"><FONT FACE="Courier New">; Measure
+      2</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 205</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">7.32</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 205</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">7.34</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 205</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">7.36</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 205</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">7.38</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 205</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">7.36</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 205</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">7.34</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="5"><FONT FACE="Courier New">; Measure
+      3</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 205</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">7.32</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 206</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">7.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">2.167</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">9.32</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i 207</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">7.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">12</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">8.32</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman">Figure 2.6 </FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman">Score file excerpt of the music
+of Julian Carillo in which uses a 48-tone equal tempered scale.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Multiplier Tables</FONT></H3>
+
+<P><FONT FACE="Times New Roman">In the <B>cps2pch</B> opcode shown
+above, if the second parameter is negative, then its absolute
+value is the number of a table that is used for the frequency
+multipliers. This use of a <I>f-table</I> is different from the
+examples in section 2, where the table stored the actual frequencies
+in Hz. In this case, Csound will <I>multiply</I> the reference
+frequency (middle C of whatever octave) by the corresponding table
+entry. For example, if you store the following multipliers in
+a <I>f-table</I>.</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="464" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New">f1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">16</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">-2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">1.000000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">1.065041</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">1.134313</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT FACE="Courier New">1.208089</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">1.246758</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">1.327849</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">1.414214</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">1.506196</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">1.604160</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">1.708495</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT FACE="Courier New">1.819619</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">1.877861</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">and use it together with the following
+conversion in your instrument:</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="470" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">cps2pch</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">p5, -1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="56%"><FONT FACE="Courier New">;refer
+      to multiplier table #1</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">it will reproduce Bhatkande's
+theoretical North Indian tuning, a subset of 2TET (Levy 1982).
+In this example, every time the score calls for a C# (such as
+8.01), the frequency reference for C of that octave is multiplied
+by 1.065041 to find the corresponding frequency.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The use of a multiplier tuning
+table such as this is useful whenever you are using an octave
+(or other interval) replicating a tuning system that is not otherwise
+easily expressible. For example, historical mean-tone and well-temperament
+tunings might have different derivations for different pitch classes.
+Here is a multiplier table for one-quarter-comma meantone temperament:</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="486" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New">f1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">16</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">-2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">1.000000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">1.044906</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">1.118034</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">1.196279</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">1.250000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">1.337481</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">1.397542</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">1.495349</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">1.562500</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">1.671850</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">1.788854</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">1.869185</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">Other so-called non-just non-equaltemperaments
+are good candidates for the use of a multiplier tuning table,
+as long as the number of pitches can be practically stored in
+a table.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Csound and Just Intonation</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Just intonation is a class of
+tuning systems in which the frequency ratios can be expressed
+by relatively small numbers. The acoustic purity of just ratios
+have been an ideal for many composers, even when in practice the
+compromises of temperament are adopted, usually in order to freely
+modulate. As we shall see, though modulation restrictions are
+not always necessary when working with Csound.</FONT></P>
+
+<P><FONT FACE="Times New Roman">While other techniques, such as
+multiplier tables, can be used as easily with just intonation,
+most just intonation composers find it most convenient to express
+their pitches in terms of ratios. For example, the interval between
+a C and an E might be expressed as a 5/4. This assumes that you
+have some absolute point of reference of course, so that, given
+C as 262 hz, you can easily find the frequency for E.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Lydia Ayers proposed a simple
+wayof using several Csound <I>p-fields</I> to express pitches
+in just intonation: one for the numerator (<I>p5</I>), one for
+the denominator (<I>p6</I>), and one for the octave multiplier
+(<I>p7</I>) (Ayers 1994). I used a variation of this idea in thescore
+for my own piece, <I>Highway 70</I>.</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="478" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">;p1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">p2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">p3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">p4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">p5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">p6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">p7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">;instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">start</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">dur</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">amp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">num</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">den</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">octave</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">132.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">0.125</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">10</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">;7/4 ratio</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">I2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">132.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">;1/1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">132.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">;1/1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">132.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">29.0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">;1/1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">132.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">29.0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">;1/1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">132.625</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">0.125</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">11</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">10</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">;11/8</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">132.750</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">0.125</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">;1/1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">132.875</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">0.125</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">10</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">;7/4</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">133.0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">0.125</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">10</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">;3/2</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">133.0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">;3/2</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">133.0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">;7/6</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT FACE="Times">Figure 2.7</FONT></B><FONT FACE="Times">
+Score file in which several P-fields are used to specify the frequency
+ratio for the specified note.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In each instrument of the .orc
+file, the frequency is determined by the following conversion:</FONT></P>
+
+<P>&nbsp; <TABLE BORDER="0" CELLSPACING="0" WIDTH="473" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">ioct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">ipow</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="25%"><FONT FACE="Courier New">2, p7-8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="56%"><FONT FACE="Courier New">;8 is the
+      octave of the ref pitch</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="25%"><FONT FACE="Courier New">440*ioct*p5/p6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="56%"><FONT FACE="Courier New">;ref pitch*oct*num/den</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">440 (A of octave 8) in this example
+represents the pitch reference, that is, the 1/1 pitch.</FONT></P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman">Dynamic Just Intonation</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">In the just intonation example
+above, the pitch reference was set to 440hz, and all pitches were
+expressed in ratios relative to that frequency. Most music in
+just intonation is written in this manner, with a single pitch
+reference, what Lou Harrison calls a &quot;strict style&quot;
+(Harrison 1971). However, if a composer wants to modulate, the
+ratios that were small integers relative to one tonic may not
+be relative to another. Instruments of fixed pitch, such as a
+piano, are tied to a strict style. This is not the case with Csound.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In Csound there are several possible
+waysto implement a dynamic just intonation, which Harrison calls
+a &quot;free style&quot; and Polansky a &quot;paratactical tuning&quot;
+(Polansky 1987). In <I>Highway 70</I>, referenced above, I stored
+the 1/1 pitch reference in a global variable, which could then
+be changed through a call to an instrument that does not otherwise
+make sound.</FONT></P>
+
+<P>&nbsp;&nbsp; <TABLE BORDER="0" CELLSPACING="0" WIDTH="735"
+CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">gref</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">init</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT FACE="Courier New">440</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="56%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="56%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">instr 206</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="56%"><FONT FACE="Courier New">;number
+      this instrument 1 so it gets called first</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">gref</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT FACE="Courier New">p4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="56%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="56%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="56%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">instr 2306</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="56%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">ioct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">ipow</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT FACE="Courier New">2, p7-8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="56%"><FONT FACE="Courier New">;get octave
+      factor</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT FACE="Courier New">gref*ioct*p5/p6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="56%"><FONT FACE="Courier New">;freq =
+      1/1 ref*oct*num/den</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">...</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="56%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times">Figure 2.8</FONT></B><FONT
+ SIZE="-1" FACE="Times"> Orchestra code excerpt from <I>instr
+206 </I>showing init-time conversion of global refrence and providing
+the means for a dynamic just intonation which can be changed on
+a not by note basis.</FONT></P>
+
+<P>&nbsp;&nbsp; <TABLE BORDER="0" CELLSPACING="0" WIDTH="513"
+CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">;p1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">p2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">p3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">p4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">p5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">p6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">p7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="45%"><FONT FACE="Courier New">;1/1 =
+      440 Hz</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">;instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">start</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">dur</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">amp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">num</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">den</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">octave</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="45%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">160.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="45%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">160.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="45%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">161.0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="45%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">161.0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="45%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">161.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">385</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="45%"><FONT FACE="Courier New">;set new
+      1/1 to 440*7/8</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">161.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="45%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">161.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">0.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="45%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">161.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">3.0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="45%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">161.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">3.0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="45%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">i3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">161.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">6.0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="45%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">i3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">161.5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">6.0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="45%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times">Figure 2.9 </FONT></B><FONT
+ SIZE="-1" FACE="Times">Score file for <I>instr 205</I>, dynamic
+just intonation.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The score for Lou Harrison's <I>Simfony
+in Free Style</I> was written mostly in successive ratios, that
+is, each note is defined in relation to the one before it. Such
+a score could be realized with separate global references for
+each instrument.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The first two measures of Lou
+Harrison's <I>Simfony in Free Style</I></FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="352" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">;instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">start</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">dur</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">amp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">num</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">den</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">ref</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">396</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">0.1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">10</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">0.1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">1.8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">396</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">0.1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">10</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">110</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">7.1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">0.1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">7.2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">1.8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">i2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">10</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0.9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times">Figure 23.10</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman"> Score file of the music of
+Lou harrison requiring unique dynamic just intonation tuning reference
+per instrument.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Once again, <I>p5</I> is the numerator
+and <I>p6</I> the denominator, but now they refer to the previous
+pitch for that instrument, unless <I>p7</I> is non-zero, in which
+case they refer to it:</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="549" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">instr 207</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="3"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="3%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">if</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="3"><FONT FACE="Courier New">p7=0 igoto
+      suc</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="3%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">gref1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="3"><FONT FACE="Courier New">p7</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="3%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">;if p7
+      != 0, it is the new 1/1</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="3"><FONT FACE="Courier New">gref1*p5/p6</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="3%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">;calculate
+      freq</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">igoto</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">cont</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="3"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="3%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">;go on
+      to the rest of the instr</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">suc:</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="5"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">gref1*p5/p6</FONT></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="3"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">;if p7
+      = 0, use last reference</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">gref1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="3"><FONT FACE="Courier New">ifreq</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="3%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">;and set
+      it to current freq</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">cont:</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="3"><FONT FACE="Courier New">...</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="3%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times">Figure 2.11</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman"> Orchestra code exceprt for
+<I>instr 207</I> in which global pitch reference is derived from
+previous notes played on that instrument.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Each instrument would have to
+have its own global variable pitch reference and could only play
+a single line. Note that successive intervals going down require
+the smaller number in the numerator.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Non-Octave Based Tuning</FONT></H3>
+
+<P><FONT FACE="Times New Roman">There is some evidence that average
+listeners tend to identify as octaves intervals that are slightly
+larger than 2/1 (Sundberg 1973). If we wanted to create a system
+in which the octaves are 1215 instead of 1200 cents, while still
+using <B>pch</B> notation for example, we could convert our pitches
+to <B>oct</B> format and then multiply them by the appropriate
+ratio.</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="608" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">instr 208</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="48%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">ioct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">octpch(p5)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="48%"><FONT FACE="Courier New">;convert
+      from pch to oct format</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">istretch</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">ioct*1215/1200</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="48%"><FONT FACE="Courier New">;multiply
+      by stretch factor</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">cpsoct(istretch)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="48%"><FONT FACE="Courier New">;go on
+      to use ifreq as normal</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman">Figure 2.12</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman"> Orchestra code excerpt for
+<I>instr 208</I>, i-time conversion for &quot;stretched&quot;
+tuning.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Stretched scales still use the
+perceptual equivalent of octaves. However, scales do not have
+to be based on the octave at all. One example of a non-octave
+based scale is the one proposed by H. Bohlen, John Pierce, andothers,
+known as the Bohlen-Pierce scale (Bohlen 1978, Pierce 1990). This
+scale contains 13 equal steps with in the span of a 3/1, that
+is, a perfect twelfth or &quot;tritave,&quot; rather than an octave.
+The resulting step sizes provide good approximations to several
+interesting just triads and tetrads. In a pitch specification
+format comparable to <B>pch</B> format, the ones digit would indicate
+the tritave number, and the tenths and hundredths digits the step
+number (00 to 12). In standard Csound, such a specification could
+be converted as follows:</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="509" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">instr</FONT></TD>
+    <TD VALIGN="TOP" WIDTH="33%"><FONT FACE="Courier New">209</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">itritave</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="33%"><FONT FACE="Courier New">int(p5)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT FACE="Courier New">;returns
+      the tritave number</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">istepno</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="33%"><FONT FACE="Courier New">100*frac(p5)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT FACE="Courier New">;returns
+      the step # (00 to 12)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">ifact</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">ipow</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="33%"><FONT FACE="Courier New">3, itritave+istepno/13</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT FACE="Courier New">;multiplication
+      factor</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="33%"><FONT FACE="Courier New">ifact*cpspch(1.00)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT FACE="Courier New">;1.00 (C1)
+      is the base pitch</FONT></TD> 
+  </TR>
+</TABLE>&nbsp;</P>
+
+<P><B><FONT FACE="Times New Roman">Figure 2.13</FONT></B><FONT
+ FACE="Times New Roman"> Orchestra code excerpt for <I>instr 209</I>
+showing i-time conversion for calculating the transposition factor
+for &quot;Bohlen-Pierce&quot; scale in which the frequency ratio
+is 3:1.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In Csound there is now a function
+that performs this conversion automatically,</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="338" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">icps</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">cpsxpch</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="69%"><FONT FACE="Courier New">ipch, iequal,
+      irepeat, ibase</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">where <I>ipch</I> is the pitch
+representation (analogous to pch format, as in the previous example),
+<I>iequal</I> the number of steps perrepeating interval (e.g.
+13 in Bohlen-Pierce), irepeat is the repeating interval expressed
+as a ratio (2 for an octave, 3 forPierce-Bohlen), and <I>ibase</I>
+is the base frequency (the frequency of the first step of the
+first repeating interval, that is, the pitch 1.00 in <B>pch</B>
+format).</FONT></P>
+
+<P><FONT FACE="Times New Roman">Some tuning systems, such as Gary
+Morrison's 88CET (88 Cents per step Equal Temperament) are based
+on a certain fixed size per scale step, a size that does not divide
+evenly into an octave. Because <I>ibase</I> does not have to be
+an integer, such scales can be specified divisions of an irrational
+ratio. For example, 88CET can be specified in terms of 8 scale
+steps per 1.501773 (about a perfect fifth).</FONT></P>
+
+<P><FONT FACE="Times New Roman">Of course, non-replicating tuning
+systems do not have to have equal stepsizes. Computer composers
+such as Jonathan Harvey have derived tunings from the inharmonic
+partials in much the same ways that just intonation scales are
+derived from harmonic partials (Harvey 1981). James Dashow has
+used modulation summation and difference tones as the basis for
+chordal structures (Dashow 1980). Brian McLaren has proposed a
+variety of methods for generating series of irrational numbers
+for scales (McLaren 1993). Such systems would probably best be
+implementedusing multiplier tables.</FONT></P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman">Real Time MIDI and
+Alternate Tunings</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">MIDI note on pitch numbers can
+be convertedto any of the three Csound pitch specification formats
+with the <I>cpsmidi</I>, <I>octmidi</I>, and <I>pchmidi</I> functions.
+While these conversions assume 12-tone equal temperament, once
+converted to <I>pch</I> format, a pitch can be further manipulated
+using the techniques shown in previous sections.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Because MIDI allows for only 128
+possible pitches, there are much greater limitations for those
+wishing to use more than twelve pitches per octave. In the following
+example, the MIDI note number is converted to a pitch in 53TET.</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="635" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">instr 210</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="50%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">inote</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">notnum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="50%"><FONT FACE="Courier New">;receive
+      the note number from MIDI</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">ifact</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">ipow</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT FACE="Courier New">2, inote/53</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="50%"><FONT FACE="Courier New">;each note
+      is one step in 53TET</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT FACE="Courier New">ifact*cpspch(7.00)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="50%"><FONT FACE="Courier New">;7.00 is
+      the lowest pitch available</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">...</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="50%"><FONT FACE="Courier New">;go on
+      to use ifreq as normal</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times">Figure 2.14</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman"> Orchestra code excerpt for
+<I>instr 210</I> which converts a MIDI note number to 53-tone
+equal temperment.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In this example, the range of
+pitches is severely limited. Even if your MIDI controller makes
+all 128 note numbers available, the total range available will
+only be 128/53, or just over two octaves.</FONT></P>
+
+<P><FONT FACE="Times New Roman">One possibility is to use another
+MIDI message to transpose the available range. The following example
+uses control change messages to reset the current bottom octave.</FONT></P>
+
+<P><IMG SRC="figures/3.gif" HEIGHT="244" WIDTH="372" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM"></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman">Figure 2.15</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman"> Block diagram of <I>instr 211</I>,
+a MIDI instrument in which a controller is used to &quot;reset&quot;
+the bottem octave in a 53 tone scale - thus re-scaling the playable
+range of the standard midi keyboard.</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="602" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">gtrans</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">init 9</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="55%"><FONT FACE="Courier New">;initialize
+      transposition</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">instr 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="55%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">itrans</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">midictrl</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="55%"><FONT FACE="Courier New">;receive
+      controller 8 value</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">if</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">itrans=0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">igoto play</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="55%"><FONT FACE="Courier New">;if 0 use
+      last value</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">gtrans</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">itrans</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="55%"><FONT FACE="Courier New">;else reset
+      transposition</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">play:</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="55%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">inote</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">notnum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="55%"><FONT FACE="Courier New">;receive
+      note number from MIDI</FONT></TD> 
+  </TR>
+</TABLE><TABLE BORDER="0" CELLSPACING="0" WIDTH="596" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="64"><FONT FACE="Courier New">ifact</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">ipow</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="29"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="124"><FONT FACE="Courier New">2, inote/53</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="53%"><FONT FACE="Courier New">;convert
+      note # to 53TET</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="64"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="29"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="124"><FONT FACE="Courier New">ifact*cpspch(gtrans)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="53%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="64"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">...</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="29"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="124"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="53%"><FONT FACE="Courier New">;go on
+      to use ifreq as normal</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman">Figure 2.16</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman"> Orchestra code for <I>instr
+2311</I> A microtonal midi instrument with scalable range.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Another possibility is to set
+aside some MIDI note numbers to indicate a transposition. While
+this technique reduces the available pitches on your controller,
+it is helpful in another situation: to provide a pitch reference
+for dynamic just intonation. In this case, you could set your
+lowest octave to indicate your current tonic. Pressing a key in
+this range would not result in any sound, but would transpose
+the pitches following. Here is an example using a simple 5-limit,
+12 pitch per octave just scale.</FONT></P>
+
+<P><FONT FACE="Times New Roman">A table of multipliers for a 5-limit
+just scale</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="477" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New,Courier">f1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New,Courier">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New,Courier">16</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New,Courier">-2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New,Courier">1.000000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New,Courier">1.066667</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New,Courier">1.125000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New,Courier">1.200000</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New,Courier">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New,Courier">1.250000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New,Courier">1.333333</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New,Courier">1.406250</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New,Courier">1.500000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New,Courier">1.600000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New,Courier">1.666667</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New,Courier">1.777778</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="5%"><FONT FACE="Courier New,Courier">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New,Courier">1.875000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New,Courier">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New,Courier">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New,Courier">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New,Courier">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New,Courier">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New,Courier">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman">Figure 2.17</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman"> Function table mapping lowest
+5 mini note numbers to transposition facors inicating and setting
+the current tonic.</FONT></P>
+
+<P>&nbsp;<IMG SRC="figures/4.gif" HEIGHT="553" WIDTH="417" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM"></P>
+
+<P><B><FONT FACE="Times New Roman">Figure 2.18</FONT></B><FONT
+ FACE="Times New Roman"> Block diagram of <I>instr 212</I>, a
+more comprehensive midi mapped microtonic instrument.</FONT></P>
+
+<P><TABLE BORDER="0" CELLSPACING="0" WIDTH="625" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">gref</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">init 10</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">;initialize
+      pitch reference to C</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">gbase</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">init</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">cpspch(1.00)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">instr 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">ipch</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">pchmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">;receive
+      pch format from MIDI</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">ioct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">int(ipch)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">;gets the
+      octave number</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">inote</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">100*frac(ipch)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">;gets the
+      note number (00-11)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">if</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">ioct&gt;3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">igoto play</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">;3 is lowest
+      MIDI octave</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">gref</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">inote</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">;reset
+      pitch reference</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">ifact</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">itable</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">gref</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">;reset
+      pitch base</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">gbase</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">cpspch(1.00)*ifact</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">igoto</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">end</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">play:</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">ilookup</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">inote-gref</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">;offset
+      lookup point by ref</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">if</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">ilookup&gt;=0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">igoto nomod</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">;if offset
+      goes below zero</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">ilookup</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">ilookup+12</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">;add 12</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">nomod:</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">ifact</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">itable</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">ilookup</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">;look up
+      the just factor</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">ioctfact</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">ipow</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">2, ioct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">;octave
+      multiplication factor</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">ioctfact*gbase*ifact</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman">Figure 2.19</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman"> Orchestra code excerpt of init-time
+conversion and mapping of note numbers to tuning, transpose, and
+scaling factors.</FONT>&nbsp;</P>
+
+<P><FONT FACE="Times New Roman">These examples could probably
+be improvised significantly for real time performance, following
+the suggestions in the real-time Csound chapter. If your MIDI
+controller allows it, you could set another channel or instrument
+to set the pitch reference or transposition message, thus increasing
+the pitch range of your melodic instrument and avoiding the costly
+conditional in the above example.</FONT>&nbsp;</P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman">Conclusion</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">There is a small but growing bibliography
+for the interested alternatetuning novice. Chalmers 1993 is an
+excellent survey of a variety of tuning methods, historical, non-Western,
+and modern. For those interested in justintonation, there is no
+better introduction than Doty (1994). Barbour (1951), though biased
+in favor of 12TET, is a fairly complete survey of the history
+of tuning systems in the Western European tradition. Many other
+tuning issues are discussed at length in journal articles, especially
+in the periodicals <U>1/1</U> and <U>Xenharmonik&ocirc;n</U>.</FONT></P>
+
+<P><FONT FACE="Times New Roman">There is a large bibliography
+compiled by Brian McLaren, Franck Jedrzejewski, and Manuel Op
+de Coul available on the internet at :ftp://ella.mills.edu/ccm/tuning/papers/bib.html.
+A discography which includes many pieces of computer music can
+be found at :ftp://ella.mills.edu/ccm/tuning/papers/discs.html.
+Other tuning-related links can be found at http://www.dnai.com:80/~jinetwk/other.html.
+Examples of alternate tuning Csound compositions by Bill Alves,
+Lydia Ayers, and JohnFitch are on the CD-ROM accompanying this
+book.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Frederick Moore pointed out the
+computer's &quot;absolute neutrality in questions of tuning&quot;
+(Moore 1990). In Csound then, the use of alternate tunings is
+mainly a question of finding the pitch specification technique
+best suited for your own musical purposes. Such a challenge is
+still a welcome alternative to carpentry for many composers.</FONT>&nbsp;</P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman">References</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">Ayers, Lydia. 1994. &quot;Exploring
+Microtonal Tunings: A Kaleidoscopeof Extended Just Tunings and
+their Compositional Applications.&quot; DMA thesis, University
+of Illinois at Urbana-Champaign.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Barbour, J. Murray. 1972. <U>Tuning
+and Temperament</U><I>: </I><U>A Historical Survey</U>. East Lansing:
+Michigan State University Press, 1951.Rpt. New York: Da Capo Press.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Berliner, Paul. 1978. <U>The Soul
+of Mbira: Music and Traditionsof the Shona People of Zimbabwe</U>.
+Berkeley: University of California Press.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Bohlen, H. 1978. &quot;13 Tonstufen
+in der Duodezeme,&quot; <U>Acoustica</U>. 39, 76-86.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Chalmers, John. 1993. <U>Divisions
+of the Tetrachord</U>. HanoverNH: Frog Peak Music.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Dashow, James. 1980. &quot;Spectra
+as Chords&quot;, <U>Computer Music Journal</U>. vol. 4 no. 1,
+43-52.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Doty, David B. 1993. <U>The Just
+Intonation Primer</U>. San Francisco:The Just Intonation Network.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Harrison, Lou. 1971. <U>Lou Harrison's
+Music Primer</U>. New York:Peters.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Harvey, Jonathan. 1981. &quot;Mortuos
+Plango Vivos Voco: A Realization at IRCAM&quot;, <I>Computer Music
+Journal.</I> vol. 5 no. 4, 2-24.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Levy, Mark. 1982. <U>Intonation
+in North Indian Music: A SelectComparison of Theories with Contemporary
+Practice</U>. New Delhi: Biblia ImpexPrivate Ltd.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Mathews, Max and Pierce, John
+R. 1989. &quot;The Bohlen-Pierce Scale&quot;, <U>Current </U><I>Directions
+in Computer Music Research</I>, ed. Max Mathews andJohn R. Pierce.
+Cambridge MA: MIT Press.</FONT></P>
+
+<P><FONT FACE="Times New Roman">McLaren, Brian. 1993. &quot;The
+Uses and Characteristics of Non-JustNon-Equal-Tempered Scales,&quot;
+<I>Xenharmonik&ocirc;n</I> 15:27-41.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Moore, Frederick. 1990.<I>Elements
+of Computer Music</I>. EnglewoodCliffs, NJ: Prentice Hall.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Mathews, Max and Pierce, John
+R. 1989. &quot;The Bohlen-Pierce Scale&quot;,<I>in Current Directions
+in Computer Music Research</I>, ed. Max Mathews andJohn R. Pierce.
+Cambridge MA: MIT Press.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Polansky, Larry. Spring 1987 &quot;Paratactical
+Tuning: An Agenda for theUse of Computers in Experimental Intonation&quot;,
+<I>Computer Music Journal</I>vol. 11 no. 1, 61-68.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Polansky, Larry. 1987. &quot;Paratactical
+Tuning: An Agenda for theUse of Computers in Experimental Intonation&quot;,
+<I>Computer Music Journal</I>. vol. 11 no. 1, 61-68.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Sundberg, J. E. F. and J. Linkqvist.
+Dec. 1973. &quot;Musical octaves andpitch<I>.&quot; Journal of
+the Acoustical Society of America</I>. 54 #4 92-29.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Surjodiningrat, Wasisto, P. J.
+Sudarjana, and AdhiSusanto. 1969, rpt. 1972, 1993. <I>Penjelidikan
+dalam pengukuran nada gamelan-gamelan djawaterkemuka di Jogjakarta
+dan Surakarta</I>. Yogyakarta: Gadjah Mada UniversityPress; translated
+by the authors as: <I>Tone measurements of outstanding Javanese
+Gamelan</I>. Yogyakarta: GadjahMada University Press.</FONT>
+
+</BODY>
+</HTML>

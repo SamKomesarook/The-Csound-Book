@@ -1,0 +1,77 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>trigger</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigmod/follow.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../sigmod/peak.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</font></a>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>trigger</h2>
+
+
+
+<pre>
+  kout    <strong>trigger</strong>    ksig, kthreshold, kmode</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Informs when a krate signal crosses a threshold.
+</p>
+<h3>Performance</h3>
+<p><em>ksig</em> &#8211; input signal
+</p>
+<p><em>kthreshold</em> &#8211; trigger threshold
+</p>
+<p><em>kmode</em> &#8211; can be 0 , 1 or 2
+</p>
+<p>Normally <strong>trigger</strong> outputs zeroes: only each time <em>ksig</em> crosses <em>kthreshold</em> <strong>trigger</strong> outputs a 1. There are three modes of using <em>ktrig</em>:
+</p>
+<ul>
+	<li><em>kmode</em> = 0 - (down-up) <em>ktrig</em> outputs a 1 when current value of <em>ksig</em> is higher than <em>kthreshold,</em> while old value of <em>ksig</em> was equal to or lower than <em>kthreshold</em>.</li>
+	<li><em>kmode</em> = 1 - (up-down) <em>ktrig</em> outputs a 1 when current value of <em>ksig</em> is lower than <em>kthreshold</em> while old value of <em>ksig</em> was equal or higher than <em>kthreshold</em>.</li>
+	<li><em>kmode</em> = 2  - (both) <em>ktrig</em> outputs a 1 in both the two previous cases.</li>
+</ul>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy
+</p>
+<p>New in Csound version 3.49<br>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigmod/follow.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../sigmod/peak.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</font></a>
+</body>
+</html>

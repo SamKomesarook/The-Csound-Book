@@ -1,0 +1,148 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>#define, $NAME, #undef</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="conditn.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="mult.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#macros">Instrument Control: Macros</font></a>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>#define, $NAME, #undef</h2>
+
+<pre>
+<strong>    #define</strong>  NAME # replacement text #
+<strong>    #define</strong>  NAME(a&#146; b&#146; c&#146;) # replacement text #
+<strong>    $NAME.
+    #undef</strong>  NAME</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Macros are textual replacements which are made in the orchestra as it is being read.  The macro system in Csound is a very simple one, and uses the characters # and $ to define and call macros. This can save typing, and can lead to a coherent structure and consistent style.  This is similar to, but independent of, the <a href="../score/macros.htm">macro system in the score language</a>.
+</p>
+<p><strong>#define NAME</strong> &#8211; defines a simple macro. The name of the macro must begin with a letter and can consist of any combination of letters and numbers. Case is significant. This form is limiting, in that the variable names are fixed.  More flexibility can be obtained by using a macro with arguments, described below.
+</p>
+<p><strong>#define NAME</strong>(<em>a&#146; b&#146; c&#146;</em>) &#8211; defines a macro with arguments. This can be used in more complex situations. The name of the macro must begin with a letter and can consist of any combination of letters and numbers. Within the replacement text, the arguments can be substituted by the form: $A.  In fact, the implementation defines the arguments as simple macros.  There may be up to 5 arguments, and the names may be any choice of letters.  Remember that case is significant in macro names.
+</p>
+<p><strong>$NAME.</strong> &#8211;  calls a defined macro.  To use a macro, the name is used following a $ character.  The name is terminated by the first character which is neither a letter nor a number.  If it is necessary for the name not to terminate with a space, a period, which will be ignored, can be used to terminate the name.  The string, <strong>$NAME</strong>., is replaced by the replacement text from the definition.  The replacement text can also include macro calls.
+</p>
+
+<p><strong>#undef NAME</strong> &#8211; undefines a macro name. If a macro is no longer required, it can be undefined with <strong>#undef NAME</strong>.
+</p>
+<h3>Initialization</h3>
+<p><em># replacement text #</em> &#8211;  The replacement text is any character string (not containing a #) and can extend over mutliple lines. The replacement text is enclosed within the # characters, which ensure that additional characters are not inadvertently captured.
+</p>
+<h3>Performance</h3>
+<p>Some care is needed with textual replacement macros, as they can sometimes do strange things.  They take no notice of any meaning, so spaces are significant. This is why, unlike the C programming language, the definition has the replacement text surrounded by # characters. Used carefully, this simple macro system is a powerful concept, but it can be abused.
+</p>
+<h3>Examples</h3>
+
+<h4>Simple Macro</h4>
+
+
+<pre><strong>#define</strong> REVERB #ga = ga+a1
+    <strong>out</strong> a1#
+
+<strong>instr</strong> 1
+  a1    <strong>oscil
+</strong>  $REVERB.
+<strong>endin
+</strong>
+<strong>instr</strong> 2
+  a1    <strong>repluck
+</strong>  $REVERB.
+<strong>endin</strong></pre>
+<p>This will get expanded before compilation into:
+</p>
+<pre><strong>instr</strong> 1
+  a1    <strong>oscil
+</strong>  ga = ga+a1
+  <strong>out</strong> a1
+<strong>endin
+</strong>
+<strong>instr</strong> 2
+  a1    <strong>repluck
+</strong>  ga = ga+a1
+  <strong>out</strong> a1
+<strong>endin
+</strong>
+
+
+
+</pre>
+
+
+<h4>Macro With Arguments</h4>
+
+
+<pre>  #define REVERB(A) #ga = ga+$A.
+    out $A.#
+  <strong>instr</strong> 1
+    a1    <strong>oscil
+</strong>    $REVERB(a1)
+  <strong>endin
+</strong>
+  <strong>instr</strong> 2
+    a2    <strong>repluck
+</strong>    $REVERB(a2)
+  <strong>endin</strong></pre>
+<p>This will get expanded before compilation into:
+</p>
+<pre>  <strong>instr</strong> 1
+    a1    <strong>oscil
+</strong>    ga = ga+a1
+    <strong>out</strong> a1
+  <strong>endin
+</strong>
+  <strong>instr</strong> 2
+    a2    <strong>repluck
+</strong>    ga = ga+a2
+    <strong>out</strong> a2
+  <strong>endin</strong>
+  
+  
+</pre>
+
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath/Codemist Ltd.<br>
+Bath, UK<br>
+April, 1998 (New in Csound version 3.48)<br>
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="conditn.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="mult.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#macros">Instrument Control: Macros</font></a>
+</body>
+</html>

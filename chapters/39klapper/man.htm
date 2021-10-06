@@ -1,0 +1,169 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>Opcodes Description</title>
+	</head>
+
+	<body bgcolor="white">
+		<a name="soundin"></a>&nbsp;
+		<pre>
+
+
+
+
+   a1             <b>soundin</b>   ifilcod[, iskptim][, iformat]
+   a1, a2         <b>soundin</b>   ifilcod[, iskptim][, iformat]
+   a1, a2, a3, a4 <b>soundin</b>   ifilcod[, iskptim][, iformat]</pre>
+		<p>These unit read/write audio data from/to an external device or stream.</p>
+		<p>INITIALIZATION</p>
+		<p>filcod - integer or character-string denoting the source soundfile name. An integer denotes the file soundin.filcod; a character-string (in double quotes, spaces permitted) gives the filename itself, optionally a full pathname. If not a full path, the named file is sought first in the current directory, then in that given by the environment variable SSDIR (if defined) then by SFDIR. See also GEN01.</p>
+		<p>iskptim (optional) - time in seconds of input sound to be skipped. The default value is 0.</p>
+		<p>iformat (optional) - specifies the audio data file format (1 = 8-bit signed char, 2 = 8-bit A-law bytes, 3 = 8-bit U-law bytes, 4 = 16-bit short integers, 5 = 32bit long integers, 6 = 32-bit floats). If iformat = 0 it is taken from the soundfile header, and if no header from the csound -o command flag. The default value is 0.</p>
+		<p>PERFORMANCE</p>
+		<p>soundin is functionally an audio generator that derives its signal from a pre-existing file. The number of channels read in is set by the number of result cells, a1, a2, etc. A soundin unit opens this file whenever the host instrument is initialized, then closes it again each time the instrument is turned off. There can be any number of soundin units within a single instrument or orchestra; also, two or more of them can read simultaneously from the same external file.</p>
+		<p>
+		<hr>
+		<a name="loscil"></a></p>
+		<pre>
+
+
+
+
+   ar1 [,ar2]     <b>loscil</b>    xamp, kcps, ifn[, ibas][,imod1,ibeg1,iend1][, imod2,ibeg2,iend2]</pre>
+		<p>Read sampled sound (mono or stereo) from a table, with optional sustain and release looping.</p>
+		<p>INITIALIZATION</p>
+		<p>ifn - function table number, typically denoting an AIFF sampled sound segment with prescribed looping points. The source file may be mono or stereo.</p>
+		<p>ibas (optional) - base frequency in cps of the recorded sound. This optionally overrides the frequency given in the AIFF file, but is required if the file did not contain one. The default value is 0 (no override).</p>
+		<p>imod1, mod2 (optional) - play modes for the sustain and release loops. A value of 1 denotes normal looping, 2 denotes forward &amp; backward looping, 0 denotes no looping. The default value (-1) will defer to the mode and the looping points given in the source file.</p>
+		<p>ibeg1, iend1, ibeg2, iend2 (optional, dependent on mod1, mod2) - begin and end points of the sustain and release loops. These are measured in sample frames from the beginning of the file, so will look the same whether the sound segment is monaural or stereo.</p>
+		<p>PERFORMANCE</p>
+		<p>loscil samples the ftable audio at a rate determined by kcps, then multiplies the result by xamp. The sampling increment for kcps is dependent on the table's base-note frequency ibas, and is automatically adjusted if the orchestra sr value differs from that at which the source was recorded. In this unit, ftable is always sampled with interpolation.</p>
+		<p>If sampling reaches the sustain loop endpoint and looping is in effect, the point of sampling will be modified and loscil will continue reading from within that loop segment. Once the instrument has received a turnoff signal (from the score or from a MIDI noteoff event), the next sustain endpoint encountered will be ignored and sampling will continue towards the release loop end-point, or towards the last sample (henceforth to zeros).</p>
+		<p>locscil is the basic unit for building a sampling synthesizer. Given a sufficient set of recorded piano tones, for example, this unit can resample them to simulate the missing tones. Locating the sound source nearest a desired pitch can be done via table lookup. Once a sampling instrument has begun, its turnoff point may be unpredictable and require an external release envelope; this is often done by gating the sampled audio with linenr, which will extend the duration of a turned-off instrument by a specific period while it implements a decay.</p>
+		<p>
+		<hr>
+		<a name="comb"></a></p>
+		<pre>
+
+
+
+
+   ar             <b>comb</b>      asig, krvt, ilpt[, istor]</pre>
+		<p>An input signal is reverberated for krvt seconds with &quot;colored&quot; (comb), frequency response.</p>
+		<p>INITIALIZATION</p>
+		<p>ilpt - loop time in seconds, which determines the &quot;echo density&quot; of the reverberation. This in turn characterizes the &quot;color&quot; of the comb filter whose frequency response curve will contain ilpt * sr/2 peaks spaced evenly between 0 and sr/2 (the Nyquist frequency). Loop time can be as large as available memory will permit. The space required for an n second loop is 4n * sr bytes. comb and alpass delay space is allocated and returned as in delay.</p>
+		<p>istor (optional) - initial disposition of delay-loop data space (cf. reson). The default value is 0.</p>
+		<p>PERFORMANCE</p>
+		<p>These filters reiterate input with an echo density determined by loop time ilpt. The attenuation rate is independent and is determined by krvt, the reverberation time (defined as the time in seconds for a signal to decay to 1/1000, or 60dB down from its original amplitude). Output from a comb filter will appear only after ilpt seconds; alpass output will begin to appear immediately.</p>
+		<p>A standard reverb unit is composed of four comb filters in parallel followed by two alpass units in series. Looptimes are set for optimal &quot;natural room response.&quot; Core storage requirements for this unit are proportional only to the sampling rate, each unit requiring approximately 3K words for every 10KC. The comb, alpass, delay, tone and other Csound units provide the means for experimenting with alternate reverberator designs.</p>
+		<p>Since output from the standard reverb will begin to appear only after 1/20 second or so of delay, and often with less than three-fourths of the original power, it is normal to output both the source and the reverberated signal. Also, since the reverberated sound will persist long after the cessation of source events, it is normal to put reverb in a separate instrument to which sound is passed via a global variable, and to leave that instrument running throughout the performance.</p>
+		<p>
+		<hr>
+		<a name="adsyn"></a></p>
+		<pre>
+
+
+
+
+   ar             <b>adsyn</b>     kamod, kfmod, ksmod, ifilcod</pre>
+		<p>Output is an additive set of individually controlled sinusoids, using an oscillator bank resynthesis.</p>
+		<p>INITIALIZATION</p>
+		<p>ifilcod - integer or character-string denoting a control-file derived from analysis of an audio signal. An integer denotes the suffix of a file adsyn.m or pvoc.m; a character-string (in double quotes) gives a filename, optionally a full pathname. If not fullpath, the file is sought first in the current directory, then in the one given by the environment variable SADIR (if defined). adsyn control contains breakpoint amplitude- and frequency-envelope values organized for oscillator resynthesis, while pvoc control contains similar data organized for fft resynthesis. Memory usage depends on the size of the files involved, which are read and held entirely in memory during computation but are shared by multiple calls (see also lpread).</p>
+		<p>PERFORMANCE</p>
+		<p>adsyn synthesizes complex time-varying timbres through the method of additive synthesis. Any number of sinusoids, each individually controlled in frequency and amplitude, can be summed by high-speed arithmetic to produce a high-fidelity result.</p>
+		<p>Component sinusoids are described by a control file describing amplitude and frequency tracks in millisecond breakpoint fashion. Tracks are defined by sequences of 16-bit binary integers:</p>
+		<pre>
+
+
+
+
+               -1, time, amp, time, amp,...
+               -2, time, freq, time, freq,...</pre>
+		<p>such as from hetrodyne filter analysis of an audio file. (For details see the Appendix on hetro.) The instantaneous amplitude and frequency values are used by an internal fixed-point oscillator that adds each active partial into an accumulated output signal. While there is a practical limit (currently 50) on the number of contributing partials, there is no restriction on their behavior over time. Any sound that can be described in terms of the behavior of sinusoids can be synthesized by adsyn alone.
+		<p>Sound described by an adsyn control file can also be modified during re-synthesis. The signals kamod, kfmod, ksmod will modify the amplitude, frequency, and speed of contributing partials. These are multiplying factors, with kfmod modifying the cps frequency and ksmod modifying the speed with which the millisecond bread-point line-segments are traversed. Thus .7, 1.5, and 2 will give rise to a softer sound, a perfect fifth higher, but only half as long. The values 1,1,1 will leave the sound unmodified. Each of these inputs can be a control signal.</p>
+		<p>
+		<hr>
+		<a name="rms"></a></p>
+		<pre>
+
+
+
+
+   kr             <b>rms</b>       asig[, ihp, istor]</pre>
+		<p>The rms power of asig can be interrogated, set, or adjusted to match that of a comparator signal.</p>
+		<p>INlTlALIZATlON</p>
+		<p>ihp (optional) - half-power point (in cps) of a special internal low-pass filter. The default value is 10.</p>
+		<p>istor (optional) - initial disposition of internal data space (see reson). The default value is 0.</p>
+		<p>PERFORMANCE</p>
+		<p>rms output values kr will trace the rms value of the audio input asig. This unit is not a signal modifier, but functions rather as a signal power-guage.</p>
+		<p>
+		<hr>
+		<a name="downsamp"></a><a name="integ"></a></p>
+		<pre>
+
+
+
+
+   kr             <b>downsamp</b>  asig[, iwlen]
+   kr             <b>integ</b>     ksig[, istor]
+   ar             <b>integ</b>     asig[, istor]</pre>
+		<p>Modify a signal by down-sampling or integration.</p>
+		<p>INITIALIZATION</p>
+		<p>iwlen (optional) - window length in samples over which the audio signal is averaged to determine a downsampled value. Maximum length is ksmps; 0 and 1 imply no window averaging. The default value is 0.</p>
+		<p>istor (optional) - initial disposition of internal save space (see reson). The default value is 0.</p>
+		<p>PERFORMANCE</p>
+		<p>downsamp converts an audio signal to a control signal by downsampling. It produces one kval for each audio control period. The optional window invokes a simple averaging process to suppress foldover.</p>
+		<p>integ, perform integration on an input control signal or audio signal. Each is the converse of theother, and applying both will reconstruct the original signal. Since these units are special cases of low-pass and high-pass filters, they produce a scaled (and phase shifted) output that is frequency-dependent. Thus diff of a sine produces a cosine, with amplitude 2 * sin(pi * cps / sr) that of the original (for each component partial); integ will inversely affect the magnitudes of its component inputs. With this understanding, these units can provide useful signal modification.</p>
+		<p>
+		<hr>
+		<a name="hetro"></a></p>
+		<p>HETRO - hetrodyne filter analysis for the Csound adsyn generator.</p>
+		<pre>
+
+
+
+
+csound -U <b>hetro</b>  [flags]  infilename  outfilename or   hetro  [flags]  infilename  outfilename</pre>
+		<p>hetro takes an input soundfile, decomposes it into component sinusoids, and outputs a description of the components in the form of breakpoint amplitude and frequency tracks. Analysis is conditioned by the control flags below. A space is optional between flag and value.</p>
+		<p>-s<srate>sampling rate of the audio input file. This will over-ride the srate of the soundfile header, which otherwise applies. If neither is present, the default is 10000. Note that for adsyn synthesis the srate of the source file and the generating orchestra need not be the same.</p>
+		<p>-c<channel>channel number sought. The default is 1.</p>
+		<p>-b<begin>beginning time (in seconds) of the audio segment to be analyzed. The default is 0.0</p>
+		<p>-d<duration>duration (in seconds) of the audio segment to be analyzed. The default of 0.0 means to the end of the file. Maximum length is 32.766 seconds.</p>
+		<p>-f<begfreq>estimated starting frequency of the fundamental, necessary to initialize the filter analysis. The default is 100 (cps).</p>
+		<p>-h<partials>number of harmonic partials sought in the audio file. Default is 10, maximum 50.</p>
+		<p>-M<maxamp>maximum amplitude summed across all concurrent tracks. The default is 32767.</p>
+		<p>-m<minamp>amplitude threshold below which a single pair of amplitude/frequency tracks is considered dormant and will not contribute to output summation. Typical values: 128 (48 db down from full scale), 64 (54 db down), 32 (60 db down), 0 (no thresholding). The default threshold is 64 (54 db down).</p>
+		<p>-n<brkpts>initial number of analysis breakpoints in each amplitude and frequency track, prior to thresholding (-m) and linear breakpoint consolidation. The initial points are spread evenly over the duration. The default is 256.</p>
+		<p>-l<cutfreq>substitute a 3rd order Butterworth low-pass filter with cutoff frequency cutfreq (in cps), in place of the default averaging comb filter. The default is 0 (don't use).</p>
+		<p>EXAMPLE</p>
+		<pre>
+
+
+
+
+          hetro     -s44100  -b.5  -d2.5  -h16  -M24000 audiofile.test  adsynfile7</pre>
+		<p>This will analyze 2.5 seconds of channel 1 of a file &quot;audiofile.test&quot;, recorded at 44.1 KHz, beginning .5 seconds from the start, and place the result in a file &quot;adsynfile7&quot;. We request just the first 16 harmonics of the sound, with 256 initial breakpoint values per amplitude or frequency track, and a peak summation amplitude of 24000. The fundamental is estimated to begin at 100 Hz. Amplitude thresholding is at 54 db down. The Butterworth LPF is not enabled.
+		<p>FILE FORMAT</p>
+		<p>The output file contains time-sequenced amplitude and frequency values for each partial of an additive complex audio source. The information is in the form of breakpoints (time, value, time, value, ....) using 16-bit integers in the range 0 - 32767. Time is given in milliseconds, and frequency in Hertz (cps). The breakpoint data is exclusively non-negative, and the values -1 and -2 uniquely signify the start of new amplitude and frequency tracks. A track is terminated by the value 32767. Before being written out, each track is data-reduced by amplitude thresholding and linear breakpoint consolidation. A component partial is defined by two breakpoint sets: an amplitude set, and a frequency set. Within a composite file these sets may appear in any order (amplitude, frequency, amplitude ....; or amplitude, amplitude..., then frequency, frequency,...). During adsyn resynthesis the sets are automatically paired (amplitude, frequency) from the order in which they were found. There should be an equal number of each.</p>
+		<p>A legal adsyn control file could have following format:</p>
+		<pre>
+
+
+
+
+-1  time1  value1  ...   timeK  valueK   32767    ; amplitude breakpoints for partial 1
+-2  time1  value1  ...   timeL   valueL   32767   ; frequency breakpoints for partial 1
+-1  time1  value1  ...   timeM  valueM  32767     ; amplitude breakpoints for partial 2
+-2  time1  value1  ...   timeN   valueN  32767    ; frequency breakpoints for partial 2
+-2  time1  value1  ..........
+-2  time1  value1  ..........                ; pairable tracks for partials 3 and 4
+-1  time1  value1  ..........
+-1  time2  value1  ..........</pre>
+		<p>
+		<hr>
+		<a href="index.htm">Back</a> to the article.
+	</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>Syntax of the Orchestra</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../preface/list.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="dirfiles.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm"><font size="-2" color="#000000" face="Verdana, Arial, Helvetica, Century Gothic">
+Syntax of the Orchestra</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h1>Syntax of the Orchestra</h1>
+<hr size="2" color="#A9A9A9" noshade>
+
+
+<p>An orchestra statement in Csound has the format:
+</p>
+<pre>     label:   result    <strong>opcode</strong>    argument1, argument2, ... ;comments</pre>
+<p>The label is optional and identifies the basic statement that follows as the potential target of a go-to operation (see <a href="../pgmctl/igoto.htm">Instrument Control: Program Flow Control</a>). A label has no effect on the statement per se. 
+Comments are optional and are for the purpose of letting the user document his orchestra code. Comments always begin with a semicolon (;) and extend to the end of the line.
+</p>
+<p>The remainder (result, opcode, and arguments) form the basic statement. This also is optional, i.e. a line may have only a label or comment or be entirely blank. If present, the basic statement must be complete on one line, and is terminated by a carriage return and line feed. 
+</p>
+<p>The opcode determines the operation to be performed; it usually takes some number of input values (or arguments, with a maximum value of about 800); and it usually has a result field variable to which it sends output values at some fixed rate. There are four possible rates:</p>
+<ol>
+	<li>once only, at orchestra setup time (effectively a permanent assignment)</li>
+	<li>once at the beginning of each note (at initialization (init) time: i-rate)</li>
+	<li>once every performance-time control loop (perf-time control rate, or k-rate)</li>
+	<li>once each sound sample of every control loop 
+    (perf-time audio rate, or a-rate)</li>
+</ol>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../preface/list.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="dirfiles.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm"><font size="-2" color="#000000" face="Verdana, Arial, Helvetica, Century Gothic">
+Syntax of the Orchestra</font></a>
+</body>
+
+</html>

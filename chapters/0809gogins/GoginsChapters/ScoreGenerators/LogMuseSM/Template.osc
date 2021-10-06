@@ -1,0 +1,4443 @@
+<CsScoreManager>
+<CsFunctions>
+f   1  0 4096 10 1 ; Sine wave.
+f   2  0 4096 10 1 .2 .08 .07 ; Flute-like.
+f   3  0 4096 10 1 .4 .2 .1 .1 .05
+f   4  0 512 7 0 1 0 49 .2 90 .6 40 .99 25 .9 45 .5 50 .25 50 .12 50 .06 50 .02 62 0
+f   5  0 512 7 0 1 0 49 .2 100 .6 50 .99 150 .2 162 0
+f   6  0 512 7 0 1 0 49 .2 200 .5 100 .2 162 0
+f   7  0 512 7 0 1 0 79 .5 60 .5 20 .99 120 .4 140 .6 92 0
+f   8 .0 513 5 .001 513 1 ; Exponential rise.
+f  12  0 512 9 1 .26 0
+f  13  0 512 9 1 .3 0
+f  23  0 512 9 1 1 0
+f  24  0 512 -7 3000 71 3000 168 2300 100 2100 71 2000 102 2000
+f  25  0 512 -7 .025 71 .02 102 .025 71 .05 268 .06
+f  26  0 512 -7 .25 71 .25 102 .08 .05 339 .05
+f  27  0 512 -7 5 71 2.3 102 1.5 237 2.5 102 2.3
+f  28  0 512 -7 5 512 6.5
+f  30  0 8192 10 1
+f  31  0 2048 19 .5 1 270 1
+f  32  0 512 -7 -1 150 .1 110 0 252 0
+f  33  0 1024 10 .3 0 0 0 .1 .1 .1 .1 .1 .1
+f  34  0  8192  9  1 1 90 ; Cosine for Fitch instruments.
+f  41  0 8193 10 1  ; Sine wave.
+f  42  0 8193 11 1  ; Cosine wave.
+f  43  0 8192 -12 20.0  ; Unscaled ln(I(x)) from 0 to 20.0.
+f  44  0 4097 10 1 .25 .1 ; Kelley flute.
+f  45  0 2049 7 -1 1800 1 249 -1 ; Kelley string.
+f  46  0 2049 7 -1 1024 1 1024 -1 ; Kelley harpsichord.
+f  47  0 2049 10 1 0 1 0 1 ; Kelley oboe.
+f  48  0  10 3 1 0 .25 .3 .76 ; Nelson Chebyshev.
+f  49  0  13 1 1 .9 .8 .7 .6 .5 .4 .3 .2 .1 ; Nelson table lookup.
+f  50  0 8193 20 2 1 ; Hanning window.
+f  51  0 8193 -10  809 14581 2030 990 522 1545 2030 262 61 45 45 64 465  139 19 75 29 42 39 96 86 75 39 45 ; Horner Erhu
+f  52  0 8193 -10 1567 910 870  3119 595 151 45  111 123 31 41 127  148 196 124 142 49 22 22 59 74 37 ; Horner Erhu
+f  53  0 8193 -10 2411 1158 352 922 854 70 66 152 83 15 69 69 92 91 60 30  42 78 38 41 59 22 ; Horner Erhu
+f  54  0 8193 -10 18607 805 771 832 115 166 115 21 66 22 135 165 18 41 85  27 93 23 8 15 23 7 ; Horner Erhu
+f  55  0 8193 7  0 819 1.1 819 1.2 820 1.4 819 1.2 819 1.15 820 0 8200 0 ; Horner Erhu
+f  61  0 8193 -10  30 37 282 99 29 327 96 77 102 11 45 7 4 3 1 1; Horner Pipa
+f  62  0 8193 -10  324 300 144 160 383 847 1311 1121 885 586 125 174 269  100 428 190 563 294 178 236 169 173 75 57 52 57 131 43 134 77 54 51  60 107 51 274 54 30 23 66 20 12 ; Horner Pipa
+f  63  0 8193 -10  79 51 133 10 21 20 7 3 11 4 3 2 1 2 1 2 ; Horner Pipa
+f  64  0 8193 -10  475 207 545 323 104 1890 1304 1031 350 269 245 180  200 43 45 14 13 8 13 34 16 28 16 3 3 ; Horner Pipa
+f  65  0 8193 -10  8 24 10 14 35 30 19 31 16 16 11 6 2 7 8 9 13 11 3 2 3  1 4 2 2 2 1 2 2 1 3 3 1 4 2 3 1; Horner Pipa
+f  66  0  13 1 1 .9 .8 .7 .6 .5 .4 .3 .2 .1 ;gen 13 table lookup (was 31)
+f  67  0  13 1 1 .9 .8 .7 .6 .7 .8 .9 1 ;gen 13 table lookup (was 32)
+f  68  0 8193  20 7 1 2 ; Semi-rectangular Kaiser window.
+f  69  0 16384 9 .5 1 0 ; Half-sine window.
+f  77  0 4096 10 .28 1 .74 .66 .78 .48 .05 .33 .12 .08 .01 .54 .19 .08 .05 .16 .01 .11 .3 .02 .2 ; Bergeman f1
+
+</CsFunctions>
+<CsInstruments>
+instr 1 ; Schottstaedt FM String
+; INITIALIZATION
+irise 	= 	.2
+idecay 	= 	.2
+ivibdel 	= 	.4
+ivibwth 	= 	.01
+ivibrte 	= 	5
+ifc 	= 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 5000.0
+ileftpan 	= 	(0.5 - p6) / 2
+irightpan 	= 	(0.5 + p6) / 2
+ifm1 	= 	ifc
+ifm2 	= 	ifc * 3
+ifm3 	= 	ifc * 4
+; Range from carrier 2 to 1.
+index1 	= 	7.5 / log(ifc)
+; Range from carrier 2.6 to .5.
+index2 	= 	15 / sqrt(ifc)
+; Range from carrier .2 to .083
+index3 	= 	1.25 / sqrt(ifc)
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+kvibrato 	init 	0
+; Delays vibrato for ivibdel seconds.
+timout 	0, 	ivibdel, transient
+; Vibrato control envelope.
+kvbctl 	linen 	1, .5, p3 - ivibdel, .1
+; Random deviation in vibrato width.
+krnd 	randi 	.005, 11
+; Vibrato generator.
+kvibrato 	oscili 	kvbctl * ivibwth + krnd, ivibrte * kvbctl, 1
+	transient:
+; Execute for .2 seconds only.
+	timout 	.2, 	p3, continue
+; Transient envelope.
+ktrans 	linseg 	1, .2, 0, 1, 0
+; AUDIO
+; Noise...
+anoise 	randi 	ktrans, .4 * ifc
+; ...centered around 2 KHz.
+attack 	oscili 	anoise, 2000, 1
+	continue:
+amod1 	oscili 	ifm1 * (index1 + ktrans), ifm1, 1
+amod2 	oscili 	ifm2 * (index2 + ktrans), ifm2, 1
+amod3 	oscili 	ifm3 * (index3 + ktrans), ifm3, 1
+aenvelope linen 	iamplitude + attack, irise, p3, idecay
+asignal 	oscili 	aenvelope, (ifc + amod1 + amod2 + amod3) * (1 + kvibrato), 1
+	outs 	asignal * ileftpan, asignal * irightpan
+
+endin
+
+instr 2 ; Risset Pseudo-Flanger
+; INITIALIZATION
+iattack 	= 	.015
+idecay 	= 	.5
+ifrequency = 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 42633.1
+ileftpan 	= 	(0.5 - p6) / 2
+irightpan 	= 	(0.5 + p6) / 2
+; Offsets for oscillators based on original p6.
+ioffset 	= 	0.04
+i1 	= 	ioffset
+i2 	= 	2 * ioffset
+i3 	= 	3 * ioffset
+i4 	= 	4 * ioffset
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; AUDIO
+; A simple envelope to prevent clicking.
+aenvelope linen 	iamplitude, iattack, p3, idecay
+; Nine oscillators with the same envelope
+; and waveform, but slightly different
+; frequencies to create the beating effect.
+a1 	oscili 	aenvelope, ifrequency, 33
+a2 	oscili 	aenvelope, ifrequency + i1, 33
+a3 	oscili 	aenvelope, ifrequency + i2, 33
+a4 	oscili 	aenvelope, ifrequency + i3, 33
+a5 	oscili 	aenvelope, ifrequency + i4, 33
+a6 	oscili 	aenvelope, ifrequency - i1, 33
+a7 	oscili 	aenvelope, ifrequency - i2, 33
+a8 	oscili 	aenvelope, ifrequency - i3, 33
+a9 	oscili 	aenvelope, ifrequency - i4, 33
+asignal 	= 	a1 + a2 + a3 + a4 + a5 + a6 + a7 + a8 + a9
+	outs 	asignal * ileftpan, asignal * irightpan
+
+endin
+
+instr 3 ; Nelson Finger Cymbals
+; INITIALIZATION
+ifrequency = 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 /  2491
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+; Amplitude envelope.
+k1 	expseg  	.0001, .05, iamplitude, p3 - .05, .0001
+; Power to partials.
+k2 	linseg 	1.69, .1, 1.75, p3 -.1, 1.69
+; AUDIO
+a1 	foscili	k1, ifrequency, 1, 2.01, k2, 1
+	outs 	a1 * ileftpan, a1 * irightpan
+
+endin
+
+instr 4 ; Cook Plucked Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5)
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal plucked ifrequency, iamplitude, 0, 0, 0, 0
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 5 ; Horner Pipa
+; Inital values of the original modelled tone:
+;                       p3      p4      p5
+;       pipa:      7.4     6.07    1
+; Note: If you use the pipa above about middle C (higher than the  modelled range), then you'll want
+; to bandlimit the wavetables so they stay below the Nyquist  frequency. Just delete the higher
+; harmonics of the wavetables appropriately (especially wavetable  #12).
+; INITIALIZATION
+giseed 	= 	.5
+ipch 	= 	p4
+iamplitude = 	ampdb(p5) * 15858.0 / 65413648.0
+ileftpan 	= 	(0.5 - p6) / 2.0 * iamplitude
+irightpan 	= 	(0.5 + p6) / 2.0 * iamplitude
+iampscale = 	1
+ip5 	= 	1
+; frequency envelope
+ifreq 	= 	cpsoct(ipch)
+; 0.15% freq.  variation.
+kfreqr 	randi 	.0015*ifreq,10, giseed
+giseed 	= 	frac(giseed*3.14159)
+kfreq 	= 	kfreqr + ifreq
+;  allow wavetable synchronization to vary by +-10%
+i1 	= 	giseed/5 + .9
+giseed 	= 	frac(giseed*3.14159)   ; update random seed
+i2 	= 	giseed/5 + .9
+giseed 	= 	frac(giseed*3.14159)
+i3 	= 	giseed/5 + .9
+giseed 	= 	frac(giseed*3.14159)
+i4 	= 	giseed/5 + .9
+giseed 	= 	frac(giseed*3.14159)
+i5 	= 	giseed/5 + .9
+giseed 	= 	frac(giseed*3.14159)
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+; ip5 	= 	Amplitude scaling factor.
+; KONTROL
+; Wavetable amplitude envelopes.
+kamp1 	linseg 	0, .01*i1, 11, .02*i1, 20, .03*i1, 18, .02*i1,  9, .04*i1, 14, .06*i1, 11, .62*i1, 7, .4*i1, 0, .7*i1, 4, 1.5*i1, .4,  1.0*i1, .7, 1.2*i1, -.1, 1.8*i1, 0, p3, 0
+; kamp2 	linseg 	0, .01*i2, 2, .02*i2, 2.5, .15*i2, 1.5, .15*i2,  .8, .17*i2, .5, .15*i2, 0, 6.75*i2, 0, p3, 0
+kamp2 	linseg 	0, .01*i2, 2, .02*i2, 2.5, .15*i2, 1.5, .15*i2,  .8, .17*i2, .5, .4*i2, -.7, .5*i2, .16, .4*i2, .02, .5*i2, .1, .6*i2,  -.03, .2*i2, 0, .5*i2, -.06, .6*i2, .05, 1.4*i2, -.02, 1.8*i2, 0, p3,  0
+kamp3 	linseg 	0, .01*i3, -17, .05*i3, 8, .12*i3, 1, .22*i3,  -2, .04*i3, -.5, .14*i3, .2, .32*i3, -6, .6*i3, 2, .5*i3, -.2, .4*i3,  2.5, .8*i3, .2, 1.4*i3, 1.6, .8*i3, .7, 2.0*i3, 0, p3, 0
+kamp4 	linseg 	0, .015*i4, 1.5, .035*i4, -1.2, .03*i4, .8, .14*i4, 1, .4*i4, .25, .48*i4, 1.3, .6*i4, -.1, 1.9*i4, .1, .6*i4,  -.1, 3.2*i4, 0, p3, 0
+kamp5 	linseg 	0, .01*i5, 10, .02*i5, -40, .11*i5, -10, .46*i5, -5, .3*i5, 12, .5*i5, -1.5, .4*i5, 2, .4*i5, -2.5, 1.4*i5, 1, .8*i5, -1.2, 1.2*i5, .2, 1.8*i5, 0, p3, 0
+; AUDIO
+; Wavetable  synthesis.
+awt1 	oscili 	kamp1, kfreq, 61
+awt2 	oscili 	kamp2, kfreq, 62
+awt3 	oscili 	kamp3, kfreq, 63
+awt4 	oscili 	kamp4, kfreq, 64
+awt5 	oscili 	kamp5, kfreq, 65
+; Allow  wavetable overall amplitude to vary by +-25%.
+iamp1 	= 	giseed/2 + .75
+giseed 	= 	frac(giseed*3.14159)
+iamp2 	= 	giseed/2 + .75
+giseed 	= 	frac(giseed*3.14159)
+iamp3 	= 	giseed/2 + .75
+giseed 	= 	frac(giseed*3.14159)
+iamp4 	= 	giseed/2 + .75
+giseed 	= 	frac(giseed*3.14159)
+iamp5 	= 	giseed/2 + .75
+giseed 	= 	frac(giseed*3.14159)
+aout = 	iamp1*awt1 + iamp2*awt2 + iamp3*awt3 + iamp4*awt4  +  iamp5*awt5
+; Ramp decay for shorter notes.
+kramp 	linseg 	1, p3, 0
+aout 	= 	kramp*aout
+; Time-varying lowpass filter for spectral decay.
+	filt:
+kcutoff 	linseg 	sr/2, 7.4, ifreq, p3, ifreq
+afilt 	tone 	aout, kcutoff
+afilt 	balance 	afilt, aout
+aout2 	= 	iampscale*afilt
+	outs 	aout2 * ileftpan, aout2 * irightpan
+
+endin
+
+instr 6 ; Cook Hammond Organ Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal hammond ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 7 ; Gogins Elementary Signal (Cosine FM Grain with Hanning Envelope)
+; INITIALIZATION
+ienvelopehz = 	1.0 / p3
+icarrierhz 	= 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 /  1405.0
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+icarrierratio = 	1.0
+imodulationratio = 	1.0
+imodulationindex =	1.0
+; LOGGING
+; Elementary Signal Instrument (Cosine FM grain with Hanning envelope)
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length (time/frequency aspect ratio)
+; p4 	= 	Octave of carrier
+; p5 	= 	Decibels at peak
+; p6 	= 	Pan
+; p7 	= 	Ratio (modulator Hz = Carrier Hz * Ratio)
+; p8 	= 	iNdex of modulation
+print p2, p3, p4, p5, p6, p6
+; KONTROL
+ihanningwindow = 	50
+kenvelope 	oscili 	iamplitude, ienvelopehz, ihanningwindow
+; AUDIO
+icosinewave = 	42
+asignal 	foscili 	kenvelope, icarrierhz, icarrierratio, imodulationratio, imodulationindex, icosinewave
+	outs 	asignal * ileftpan, asignal * irightpan
+
+endin
+
+instr 8 ; FM Moderate Index
+; INITIALIZATION
+icarrier 	= 	1
+iratio 	= 	1.25
+ifmamplitude = 	8
+index 	= 	5.4
+iattack 	= 	.02
+irelease 	= 	.05
+isustain 	= 	p3  - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain 	= 	0
+p3 	= 	iattack + isustain + irelease
+	longenvelope:
+ifrequency = 	cpsoct(p4)
+ifrequencyb = 	ifrequency * 1.003
+icarrierb 	= 	icarrier * 1.004
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 12748.1
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print 	p2, p3, p4, p5, p6
+; KONTROL
+kindenv 	expseg 	.000001, iattack, 1, isustain, .125, irelease, .000001
+kindex 	= 	kindenv * index * ifmamplitude
+; AUDIO
+aouta 	foscili 	iamplitude, ifrequency, icarrier, iratio, index, 1
+aoutb 	foscili 	iamplitude, ifrequencyb, icarrierb, iratio, index, 1
+; Plus amplitude correction.
+afmout 	= 	(aouta + aoutb) * kindenv * 2.565
+	outs 	ileftpan * afmout, irightpan * afmout
+
+endin
+
+instr 9 ; Cook Agogobell Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal agogobell ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 10 ; Cook Wurlitzer Electric Piano Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal wurlitzer ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 11 ; Steinway sampled
+; INITIALIZATION
+iamplitude 	= ampdb(p5) * 15848.926 / 2500.0
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+ifrequency = 	cpsoct(p4)
+ioctave 	= 	int(p4 * 100)
+itablenumber table 	ioctave + 100, 100
+itableoctave table 	ioctave, 101
+itablefrequency = 	cpsoct (itableoctave)
+	if p3 > .20  then goto longenvelope
+p3 	= 	.20
+	longenvelope:
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+print itablenumber, 	itableoctave, itablefrequency
+; KONTROL
+kamplitude linen 	iamplitude, -1, p3, .012
+; AUDIO
+asignal 	loscil 	kamplitude, ifrequency, int(itablenumber), itablefrequency
+	outs 	ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 12 ; Kelley Harpsichord
+; INITIALIZATION
+; Envelope initialization.
+iduration 	= 	p3
+ifrequency = 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 4739
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+kenvelope 	expon 	iamplitude, iduration, 1
+; AUDIO
+apluck 	pluck 	iamplitude, ifrequency, ifrequency, 0, 1
+aharp 	oscili 	kenvelope, ifrequency, 46
+aoutsignal = 	apluck + aharp
+	outs 	aoutsignal * ileftpan, aoutsignal * irightpan
+
+endin
+
+instr 13 ; Sampled string bass
+; INITIALIZATION
+iamplitude = ampdb(p5) * 15848.926 / 15848.926
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+ifrequency = cpsoct(p4)
+itablefrequency = cpsoct(7)
+itablenumber = 97
+if p3 > .06 then goto longenvelope
+p3 = .06
+longenvelope:
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; KONTROL
+kamplitude linen iamplitude, -1, p3, .02
+; AUDIO
+asignal loscil kamplitude, ifrequency, itablenumber, itablefrequency
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 14 ; Cook Clarinet Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal clarinet ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 15 ; Steinway sampled with reverberation
+; INITIALIZATION
+iamplitude = 	ampdb(p5) * 15848.926 /  15848.926
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+idetune	=	.013
+ifrequency1 = 	cpsoct(p4 - idetune)
+ifrequency2 = 	cpsoct(p4 +idetune)
+ioctave 	=	int(p4 * 100)
+itablenumber table 	ioctave + 100, 100
+itableoctave table 	ioctave, 101
+itablefrequency = 	cpsoct (itableoctave)
+if p3 > .20  then goto longenvelope
+p3 	= 	.20
+longenvelope:
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print 	p2, p3, p4, p5, p6
+	print 	itablenumber, itableoctave, itablefrequency
+; KONTROL
+kamplitude linen 	iamplitude, -1, p3, .012
+kc	line 	30, p3, 100
+; AUDIO
+asignal1 	loscil 	kamplitude, ifrequency1, int(itablenumber), itablefrequency
+asignal2 	loscil 	kamplitude, ifrequency2, int(itablenumber), itablefrequency
+asignal3 	comb 	asignal1 + asignal2, kc, .02
+	outs 	ileftpan * asignal3, irightpan * asignal3
+
+endin
+
+instr 16 ; Cook Flute Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal flute ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 17 ; Cook FM Voices Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal fmvoices ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 18 ; Chowning Soprano
+; INITIALIZATION
+iattack 	= 	.02
+irelease 	= 	.1
+isustain 	= 	p3 - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain 	= 	0
+p3 	= 	iattack + isustain + irelease
+	longenvelope:
+ifrequency = 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude 	= 	ampdb(p5) * 15848.926 / 18000.0
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+i7 	= 	ifrequency
+i2 	= 	i7 * 7 ; Old p6.
+i2 	= 	(i2 / i7) + .5
+i2 	= 	int(i2)
+i3 	= 	.009 ; Old p7.
+i4 	= 	p4 / 150 ; Old p8.
+i5 	= 	p4 / 6 * .4 ; .09 = old p9.
+i6 	= 	p4 / 5 + 1 ; Old p10.
+i8 	= 	i5 / i4
+i9 	= 	exp(1.5 * log(iamplitude / 32767))
+i10 	= 	.00311 * log(ifrequency)
+i11 	= 	sqrt(iamplitude / 32767)
+i12 	= 	(1 - i3) * i11
+i13 	= 	i4 * i7
+i14 	= 	i9 * i3
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; AUDIO
+a1 	linen 	i12, .1, p3, .08
+a2 	oscili 	i13, i7, 3
+a8 	= 	i7 + a2
+a4 	linen 	i10, .6, p3, .1
+a4 	oscili 	a4, i6, 3
+a5 	randi 	i10, 15
+a6 	linseg 	-.03, .07, .03, .03, 0, p3 - irelease, 0
+a6 	= 	a4 + a5 + a6 + 1.
+a1 	oscili 	a1, (a8 + a2) * a6, 3
+a7 	= 	(a2 * i8) + i2
+a3 	linseg 	0, .07, .1, .03, 1., p3 - .18, 1, .02, .1, .06, 0
+a3 	= 	a3 * (i9 * i3)
+a3 	oscili 	a3, a7 * a6, 3
+asignal 	= 	(a1 + a3) * iamplitude * 14.0350
+	outs 	asignal * ileftpan, asignal * irightpan
+
+endin
+
+instr 19 ; Kelley Oboe
+; INITIALIZATION
+icpsp   	= 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+ip6 	= 	ampdb(p5) * 15848.926 / 2500
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+ip4 	= 	0
+	if (ip4 == int(ip4/2) * 2) goto initslurs
+	ihold
+	initslurs:
+iatttm  	= 	0.06
+idectm  	= 	0.05
+isustm  	= 	p3 - iatttm - idectm
+idec    	= 	p6
+ireinit 	= 	-1
+	if (ip4 > 1) goto checkafterslur
+ilast   	= 	0
+	checkafterslur:
+if (ip4 == 1 || ip4 == 3) goto doneslurs
+idec 	= 	0
+ireinit 	= 	0
+	doneslurs:
+	if (isustm <= 0) goto simpleenv
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+kamp 	linseg 	ilast, iatttm, ip6, isustm, ip6, idectm, idec, 0, idec
+	goto doneenv
+	simpleenv:
+kamp 	linseg 	ilast, p3 / 2, ip6, p3 / 2, idec, 0, idec
+	doneenv:
+ilast 	= 	ip6
+; Some vibrato.
+kvrandamp rand 	.003
+kvamp   	= 	icpsp * (0.007 + kvrandamp)
+kvrandfreq rand 	1
+kvfreq  	= 	5 + kvrandfreq
+kvbra  	oscili 	kvamp, kvfreq, 1, ireinit
+kfreq 	= 	icpsp + kvbra
+; AUDIO
+a1 	oscili 	kamp, kfreq, 47, ireinit
+	outs 	a1 * ileftpan, a1 * irightpan
+
+endin
+
+instr 20 ; Steinway with Karpen's sndwarp
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0 * iamplitude
+irightpan = (0.5 + p6) / 2.0 * iamplitude
+isample = 102
+istart = 0
+ishift = 1 + (p4 - 5.5)
+iwindowsize = sr / 20
+irandom = iwindowsize * .2
+ioverlap = 3
+; Window function.
+iwindow = 69
+
+; KONTROL AND AUDIO
+awarp line 1, p3, 10
+aresample line ishift, p3, ishift
+kenv line 1, p3, .1
+awet,adry sndwarp kenv, awarp, aresample, isample, istart, iwindowsize, irandom, ioverlap, iwindow, 0
+asignal balance awet, adry
+outs asignal * ileftpan, asignal * irightpan
+
+endin
+
+instr 21 ; Cook Voice Formant Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal voiceformant ifrequency, iamplitude, 0, 0, 0, 0
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 22 ; Risset Waveshaper
+; INITILIZATION
+iattack 	= 	0.015
+irelease 	= 	0.03
+isustain 	= 	p3 - (iattack + irelease)
+	if isustain > 0 goto longenvelope
+isustain 	= 	0
+p3 	= 	iattack + isustain + irelease
+	longenvelope:
+ifrequency = 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 12649.9
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	=	(0.5 + p6) / 2.0
+i1 	= 	1 / p3
+i2 	= 	ifrequency
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; AUDIO
+; Scaling factor.
+a1 	oscili 	iamplitude, i1, 2
+a2 	oscili 	a1, i2, 1
+a3 	linenr 	1, iattack, irelease, .01
+a4 	oscili 	a3, i2 * .7071, 1
+; Transfer function:
+; f(x)=1+.841x-.707x**2-.595x**3+.5x**4+.42x**5-;.354x**6.279x**7+.25x**8+.21x**9
+a5 	= 	a4 * a4
+a6 	= 	a5 * a4
+a7 	= 	a5 * a5
+a8 	= 	a7 * a4
+a9 	= 	a6 * a6
+a10 	= 	a9 * a4
+a11 	= 	a10 * a4
+a12 	= 	a11 * a4
+a13 	= 	1 + .841 * a4 - .707 * a5 - .595 * a6 + .5 * a7 + .42 * a8 - .354 * a9 - .297 * a10 + .25 * a11 + .21 * a12
+; Amplitude correction.
+a14 	=  	a13 * a2 * 5.06
+	outs 	a14 * ileftpan, a14 * irightpan
+
+endin
+
+instr 23 ; Cook Percussive Flute Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal percussiveflute ifrequency, iamplitude, 20, 20, 45, 4
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 24 ; Cook Brass Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5)
+ileftpan = (0.5 - p6) / 2.0 * iamplitude
+irightpan = (0.5 + p6) / 2.0 *iamplitude
+; AUDIO
+asignal brass ifrequency, 1, 10, 10, 10, 10
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 25 ; FM Very High Ratio
+; INITIALIZATION
+icarrier 	= 	2
+iratio 	= 	2.5
+ifmamplitude = 	8
+index 	= 	6
+iattack 	= 	.02
+irelease 	= 	.05
+isustain 	= 	p3  - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain 	= 	0
+p3 	= 	iattack + isustain + irelease
+	longenvelope:
+ifrequency = 	cpsoct(p4)
+ifrequencyb = 	ifrequency * 1.003
+icarrierb 	= 	icarrier * 1.004
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 12748.1
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print 	p2, p3, p4, p5, p6
+; KONTROL
+kindenv 	expseg 	.000001, iattack, 1, isustain, .125, irelease, .000001
+kindex 	= 	kindenv * index * ifmamplitude
+; AUDIO
+aouta 	foscili 	iamplitude, ifrequency, icarrier, iratio, index, 1
+aoutb 	foscili 	iamplitude, ifrequencyb, icarrierb, iratio, index, 1
+; Plus amplitude correction.
+afmout 	= 	(aouta + aoutb) * kindenv * 2.565
+	outs 	ileftpan * afmout, irightpan * afmout
+
+endin
+
+instr 26 ; Burt additive-synthesis piano
+ifrequency 	= 	cpsoct(p4)
+iamplitude 	= 	ampdb(p5) * 15848.926 /1119157.0
+ileftpan	= 	(0.5 - p6) / 2.0 * iamplitude
+irightpan	= 	(0.5 + p6) / 2.0  * iamplitude
+inharm      = 	.05
+;	Different timbres for different ranges of the piano.
+;	Caused by relative amplitudes for each of 10 partials derived from a spectral analysis.
+if p4 <=  5.0 igoto band1
+if p4 <=  5.5 igoto band2
+if p4 <=  6.0 igoto band3
+if p4 <=  6.5 igoto band4
+if p4 <=  7.0 igoto band5
+if p4 <=  7.5 igoto band6
+if p4 <=  8.0 igoto band7
+if p4 <=  8.5 igoto band8
+if p4 <=  9.0 igoto band9
+if p4 <=  9.5 igoto band10
+if p4 <= 10.0 igoto band11
+if p4 <= 10.5 igoto band12
+if p4 <= 11.0 igoto band13
+igoto band14
+band1:
+ii1  = 0.0645
+ii2  = 0.0637
+ii3  = 0.5298
+ii4  = 0.1291
+ii5  = 0.7614
+ii6  = 0.5413
+ii7  = 0.1826
+ii8  = 0.0381
+ii9  = 0.0843
+ii10 = 0.1000
+igoto endbands
+band2:
+ii1  = 0.0515
+ii2  = 0.1307
+ii3  = 0.9412
+ii4  = 0.1708
+ii5  = 0.2045
+ii6  = 0.1545
+ii7  = 0.1964
+ii8  = 0.0354
+ii9  = 0.0973
+ii10 = 0.1000
+igoto endbands
+band3:
+ii1  = 0.3300
+ii2  = 0.4269
+ii3  = 1.0000
+ii4  = 0.2288
+ii5  = 0.2500
+ii6  = 0.3307
+ii7  = 0.4292
+ii8  = 0.0419
+ii9  = 0.1078
+ii10 = 0.2000
+igoto endbands
+band4:
+ii1  = 0.8208
+ii2  = 0.9284
+ii3  = 1.0000
+ii4  = 0.3034
+ii5  = 0.4688
+ii6  = 0.7358
+ii7  = 0.8332
+ii8  = 0.0539
+ii9  = 0.1229
+i10 = 0.2000
+igoto endbands
+band5:
+ii1  = 0.7424
+ii2  = 1.0000
+ii3  = 0.9312
+ii4  = 0.2688
+ii5  = 0.3858
+ii6  = 0.5953
+ii7  = 0.6407
+ii8  = 0.0502
+ii9  = 0.0964
+ii10 = 0.1800
+igoto endbands
+band6:
+ii1  = 0.4825
+ii2  = 1.0000
+ii3  = 0.8109
+ii4  = 0.1882
+ii5  = 0.1860
+ii6  = 0.2480
+ii7  = 0.2028
+ii8  = 0.0407
+ii9  = 0.0464
+ii10 = 0.8000
+igoto endbands
+band7:
+ii1  = 0.6303
+ii2  = 0.7038
+ii3  = 0.6034
+ii4  = 0.1282
+ii5  = 0.1345
+ii6  = 0.1427
+ii7  = 0.1101
+ii8  = 0.0283
+ii9  = 0.0265
+ii10 = 0.0300
+igoto endbands
+band8:
+ii1  = 0.9076
+ii2  = 0.2595
+ii3  = 0.3179
+ii4  = 0.0555
+ii5  = 0.0999
+ii6  = 0.0592
+ii7  = 0.0647
+ii8  = 0.0117
+ii9  = 0.0074
+ii10 = 0.0240
+igoto endbands
+band9:
+ii1  = 1.0000
+ii2  = 0.1005
+ii3  = 0.1693
+ii4  = 0.0261
+ii5  = 0.0682
+ii6  = 0.0212
+ii7  = 0.0334
+ii8  = 0.0045
+ii9  = 0.0000
+ii10 = 0.0000
+igoto endbands
+band10:
+ii1  = 1.0000
+ii2  = 0.0842
+ii3  = 0.0892
+ii4  = 0.0182
+ii5  = 0.0379
+ii6  = 0.0061
+ii7  = 0.0091
+ii8  = 0.0019
+ii9  = 0.0000
+ii10 = 0.0000
+igoto endbands
+band11:
+ii1  = 1.0000
+ii2  = 0.0566
+ii3  = 0.0548
+ii4  = 0.0107
+ii5  = 0.0189
+ii6  = 0.0000
+ii7  = 0.0000
+ii8  = 0.0000
+ii9  = 0.0000
+ii10 = 0.0000
+igoto endbands
+band12:
+ii1  = 1.0000
+ii2  = 0.0235
+ii3  = 0.0432
+ii4  = 0.0034
+ii5  = 0.0055
+ii6  = 0.0000
+ii7  = 0.0000
+ii8  = 0.0000
+ii9  = 0.0000
+ii10 = 0.0000
+igoto endbands
+band13:
+ii1  = 1.0000
+ii2  = 0.0097
+ii3  = 0.0303
+ii4  = 0.0000
+ii5  = 0.0000
+ii6  = 0.0000
+ii7  = 0.0000
+ii8  = 0.0000
+ii9  = 0.0000
+ii10 = 0.0000
+igoto endbands
+band14:
+ii1  = 1.0000
+ii2  = 0.0057
+ii3  = 0.0168
+ii4  = 0.0000
+ii5  = 0.0000
+ii6  = 0.0000
+ii7  = 0.0000
+ii8  = 0.0000
+ii9  = 0.0000
+ii10 = 0.0000
+igoto endbands
+;
+endbands:
+i1  = ii1 ; * iamplitude
+i2  = ii2 ; * iamplitude
+i3  = ii3 ; * iamplitude
+i4  = ii4 ; * iamplitude
+i5  = ii5 ; * iamplitude
+i6  = ii6 ; * iamplitude
+i7  = ii7 ; * iamplitude
+i8  = ii8 ; * iamplitude
+i9  = ii9 ; * iamplitude
+i10 = ii10 ;* iamplitude
+;	Partials derived from Young's formula of inharm:
+;	PartialHz = PartialIndex * FundamentalHz * sqrt(1 + Inharmonicity * (PartialIndex * PartialIndex))
+i11 = cpsoct(p4)			;	Convert to Hertz.
+i33 = cpsoct(p4 + .0025)	;	Left string sharp 25 cents.
+i34 = cpsoct(p4 - .0025)    ;	Right string flat 25 cents.
+i12 =  1 * i11 * sqrt(1 + inharm *   1)
+i35 =  1 * i33 * sqrt(1 + inharm *   1)
+i36 =  1 * i34 * sqrt(1 + inharm *   1)
+i13 =  2 * i11 * sqrt(1 + inharm *   4)
+i37 =  2 * i33 * sqrt(1 + inharm *   4)
+i38 =  2 * i34 * sqrt(1 + inharm *   4)
+i14 =  3 * i11 * sqrt(1 + inharm *   9)
+i39 =  3 * i33 * sqrt(1 + inharm *   9)
+i40 =  3 * i34 * sqrt(1 + inharm *   9)
+i15 =  4 * i11 * sqrt(1 + inharm *  16)
+i41 =  4 * i33 * sqrt(1 + inharm *  16)
+i42 =  4 * i34 * sqrt(1 + inharm *  16)
+i16 =  5 * i11 * sqrt(1 + inharm *  25)
+i43 =  5 * i33 * sqrt(1 + inharm *  25)
+i44 =  5 * i34 * sqrt(1 + inharm *  25)
+i17 =  6 * i11 * sqrt(1 + inharm *  36)
+i45 =  6 * i33 * sqrt(1 + inharm *  36)
+i46 =  6 * i34 * sqrt(1 + inharm *  36)
+i18 =  7 * i11 * sqrt(1 + inharm *  49)
+i47 =  7 * i33 * sqrt(1 + inharm *  49)
+i48 =  7 * i34 * sqrt(1 + inharm *  49)
+i19 =  8 * i11 * sqrt(1 + inharm *  64)
+i49 =  8 * i33 * sqrt(1 + inharm *  64)
+i50 =  8 * i34 * sqrt(1 + inharm *  64)
+i20 =  9 * i11 * sqrt(1 + inharm *  81)
+i51=   9 * i33 * sqrt(1 + inharm *  81)
+i52 =  9 * i34 * sqrt(1 + inharm *  81)
+i21 = 10 * i11 * sqrt(1 + inharm * 100)
+i53 = 10 * i33 * sqrt(1 + inharm * 100)
+i54 = 10 * i34 * sqrt(1 + inharm * 100)
+;
+;   Randomness.
+;
+i22 = 12
+k1  randi i1  * .3, i22, i1
+k2  randi i2  * .3, i22, i2
+k3  randi i3  * .3, i22, i3
+k4  randi i4  * .3, i22, i4
+k5  randi i5  * .3, i22, i5
+k6  randi i6  * .3, i22, i6
+k7  randi i7  * .3, i22, i7
+k8  randi i8  * .3, i22, i8
+k9  randi i9  * .3, i22, i9
+k10 randi i10 * .3, i22, i10
+i23 = 22
+i24 = 18.5
+i25 = 17.8
+i26 = 4
+i27 = 10.5
+i28 = 6.5
+i29 = 5.5
+i30 = 3.8
+i31 = 3.0
+i32 = 2.0
+;
+;   Basic envelopes.
+;
+a1  linseg 0, .01, 1, 22,   0
+a2  linseg 0, .01, 1, 18.5, 0
+a3  linseg 0, .01, 1, 17.8, 0
+a4  linseg 0, .01, 1, 4,    0
+a5  linseg 0, .01, 1, 10.5, 0
+a6  linseg 0, .01, 1, 6.5,  0
+a7  linseg 0, .01, 1, 5.5,  0
+a8  linseg 0, .01, 1, 3.8,  0
+a9  linseg 0, .01, 1, 3,    0
+a10 linseg 0, .01, 1, 2,    0
+;
+;   Mid-dip envelopes.
+;
+a11 linseg 1, i23 * .6,  1, i23 * .05, .5, i23 * .05, 1, i23 * .3,   1
+a12 linseg 1, i24 * .5,  1, i24 * .05, .5, i24 * .05, 1, i24 * .4,   1
+a13 linseg 1, i25 * .35, 1, i25 * .05, .5, i25 * .05, 1, i25 * .55,  1
+a14 linseg 1, i26 * .37, 1, i26 * .05, .5, i26 * .05, 1, i26 * .53,  1
+a15 linseg 1, i27 * .27, 1, i27 * .05, .5, i27 * .05, 1, i27 * .63,  1
+a16 linseg 1, i28 * .27, 1, i28 * .05, .5, i28 * .05, 1, i28 * .63,  1
+a17 linseg 1, i29 * .2,  1, i29 * .05, .5, i29 * .05, 1, i29 * .70,  1
+a18 linseg 1, i30 * .18, 1, i30 * .05, .5, i30 * .05, 1, i30 * .72,  1
+a19 linseg 1, i31 * .15, 1, i31 * .05, .5, i31 * .05, 1, i31 * .75,  1
+a20 linseg 1, i32 * .1,  1, i32 * .05, .5, i32 * .05, 1, i32 * .80,  1
+;
+;	Randomize the mid-dip envelopes.
+;
+a11 = sqrt(a11) + abs(k1 )
+a12 = sqrt(a12) + abs(k2 )
+a13 = sqrt(a13) + abs(k3 )
+a14 = sqrt(a14) + abs(k4 )
+a15 = sqrt(a15) + abs(k5 )
+a16 = sqrt(a16) + abs(k6 )
+a17 = sqrt(a17) + abs(k7 )
+a18 = sqrt(a18) + abs(k8 )
+a19 = sqrt(a19) + abs(k9 )
+a20 = sqrt(a20) + abs(k10)
+;
+;   Damping envelope.
+;
+a21 linseg 1, p3 - .15, 1, .15, 0
+;
+;   Total envelope = middip * basic * damping
+;
+a31 = a11 * a1  * sqrt(a21)
+a32 = a12 * a2  * sqrt(a21)
+a33 = a13 * a3  * sqrt(a21)
+a34 = a14 * a4  * sqrt(a21)
+a35 = a15 * a5  * sqrt(a21)
+a36 = a16 * a6  * sqrt(a21)
+a37 = a17 * a7  * sqrt(a21)
+a38 = a18 * a8  * sqrt(a21)
+a39 = a19 * a9  * sqrt(a21)
+a40 = a20 * a10 * sqrt(a21)
+;
+;   Oscillators.
+;
+a41  oscili a31 * i1,  i12, 41
+a42  oscili a31 * i1,  i35, 41
+a43  oscili a31 * i1,  i36, 41
+aout =        a41  + a42  + a43
+a51  oscili a32 * i2,  i13, 41
+a52  oscili a32 * i2,  i37, 41
+a53  oscili a32 * i2,  i38, 41
+aout = aout + a51  + a52  + a53
+a61  oscili a33 * i3,  i14, 41
+a62  oscili a33 * i3,  i39, 41
+a63  oscili a33 * i3,  i40, 41
+aout = aout + a61  + a62  + a63
+a71  oscili a34 * i4,  i15, 41
+a72  oscili a34 * i4,  i41, 41
+a73  oscili a34 * i4,  i42, 41
+aout = aout + a71  + a72  + a73
+a81  oscili a35 * i5,  i16, 41
+a82  oscili a35 * i5,  i43, 41
+a83  oscili a35 * i5,  i44, 41
+aout = aout + a81  + a82  + a83
+a91  oscili a36 * i6,  i17, 41
+a92  oscili a36 * i6,  i45, 41
+a93  oscili a36 * i6,  i46, 41
+aout = aout + a91  + a92  + a93
+a101 oscili a37 * i7,  i18, 41
+a102 oscili a37 * i7,  i47, 41
+a103 oscili a37 * i7,  i48, 41
+aout = aout + a101 + a102 + 1103
+a111 oscili a38 * i8,  i19, 41
+a112 oscili a38 * i8,  i49, 41
+a113 oscili a38 * i8,  i50, 41
+aout = aout + a111 + a112 + 1113
+a121 oscili a39 * i9,  i20, 41
+a122 oscili a39 * i9,  i51, 41
+a123 oscili a39 * i9,  i52, 41
+aout = aout + a121 + a122 + 1123
+a131 oscili a40 * i10, i21, 41
+a132 oscili a40 * i10, i53, 41
+a133 oscili a40 * i10, i54, 41
+aout = aout + a131 + a132 + 1133
+;   Signal.
+	outs 	aout * ileftpan, aout * irightpan
+
+endin
+
+instr 27 ; Horner Erhu
+; INITIALIZATION
+; Inital values of modelled tones:
+;                      p3      p4       p5       p6     p7   p8      p9
+;       tone1:   3.3     7.11    8.03    1       5       51      52
+;       tone2:   3.9     8.06    8.10    1       5       53      54
+iamplitude = 	ampdb(p5)
+ip6 	= 	1
+ip7 	= 	5
+ip8 	= 	51
+ip9 	= 	52
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+giseed 	= 	.5
+ipch1 	= 	p4
+ipch2 	= 	p4 + 1 + 3/12
+iampscale =	1
+ivibrate 	= 	ip7
+iwt1 	= 	ip8
+iwt2 	= 	ip9
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+; ip6 	= 	Amplitude scaling factor
+; ip7 	= 	Tremolo rate in Hz
+; ip8 	= 	Wavetable number to use with first pitch in tremolo
+; ip9 	= 	Wavetable number to use with second pitch in tremolo
+	print p2, p3, p4, p5, p6, ip6, ip7, ip8, ip9
+; KONTROL
+; Frequency envelope
+ifreq1 	= 	cpsoct(ipch1)
+ifreq2 	= 	cpsoct(ipch2)
+kfreq 	= 	ifreq1
+;       kfreqr randi .0015*ifreq1,10, giseed            ; 0.15% freq.  variation
+;       giseed = frac(giseed*3.14159)
+;       kfreq = kfreq + kfreqr
+ivibrate 	= 	ivibrate *(giseed/50 + .99)          ; +-1% vib  rate variation
+giseed 	= 	frac(giseed*3.14159)
+; print ivibrate
+; Start vibrato with a slow cycle.
+kvibrate 	linseg 	ivibrate/2, 1.0/(ivibrate), ivibrate/2, .01, ivibrate, p3, ivibrate
+; 1% t.v.  vib. rate variation.
+kvibr 	randi 	.01*ivibrate, ivibrate/2, giseed
+giseed 	= 	frac(giseed*3.14159)
+kvibrate 	= 	kvibrate + kvibr
+kvib 	oscili 	(ifreq2 - ifreq1), kvibrate, 55, .5
+kfreq 	= 	kfreq + kvib
+;display kvib, p3
+; Allow ampEnv brkpts to vary by +-10%.
+i1 	= 	.15*(giseed/5 + .9)
+; Update random seed.
+giseed 	= 	frac(giseed*3.14159)
+i2 	= 	.6*(giseed/5 + .9)
+giseed 	= 	frac(giseed*3.14159)
+i3 	= 	.35*(giseed/5 + .9)
+giseed 	= 	frac(giseed*3.14159)
+i4 	= 	(giseed/5 + .9)
+giseed 	= 	frac(giseed*3.14159)
+i5 	= 	(giseed/5 + .9)
+giseed 	= 	frac(giseed*3.14159)
+; Wavetable amplitude envelopes.
+; Overall amplitude.
+isum 	= 	i1+i2+i3+i4+i5
+if p3-isum < .1 goto ae2
+	ae1:
+kamp 	linseg 	0, i1, .8, i2, 1.7, i3, 1.3, p3-isum, .9, i4, .1,  i5, 0
+	goto 	ae3
+	ae2:
+kamp 	linseg 	0, i1, .8, i2, 1.7, i3, 1.3, .1, .9, i4, .1, i5,  0
+; Ramp decay  for shorter notes.
+kramp 	linseg 	1, .8*p3, 1, .2*p3, 0
+kamp 	= 	kamp*kramp
+	ae3:
+; 10% tremolo  amplitude variation.
+ktremr 	randi 	.05*kamp, ivibrate/2, giseed
+giseed 	= 	frac(giseed*3.14159)
+kamp 	= 	kamp + ktremr
+atrem1 	oscili 	kamp, kvibrate, 55, 0
+atrem2 	oscili 	kamp, kvibrate, 55, .5
+; Wavetable  synthesis.
+awt1 	oscili 	atrem1, kfreq, iwt1
+awt2 	oscili 	atrem2, kfreq, iwt2
+; Allow  wavetable overall amplitude to vary by +-10%.
+iamp1 	= 	giseed/5 + .9
+giseed 	= 	frac(giseed*3.14159)
+iamp2 	= 	giseed/5 + .9
+giseed 	= 	frac(giseed*3.14159)
+;print iamp1
+;print iamp2
+; AUDIO
+asrc 	= 	iamp1*awt1 + iamp2*awt2
+; Time-varying lowpass filter for spectral decay.
+	filt:
+kcutoff 	linseg 	sr/2, .5*p3, sr/2, .5*p3, ifreq1
+afilt 	tone 	asrc, kcutoff
+afilt 	balance 	afilt, asrc
+asrc 	= 	iampscale*asrc
+	outs 	asrc * ileftpan, asrc * irightpan
+
+; Chorus.
+ig1 = 0.8
+ig2 = 0.7
+ig3 = 0.6
+ig4 = 0.5
+kdt linseg .005, p3, .028
+adump delayr .1
+ad1 deltapi kdt
+delayw asrc
+kdt linseg .009, p3/2, .023, p3/2, .017
+adump delayr .1
+ad2 deltapi kdt
+delayw asrc
+kdt linseg .021, p3, .007
+adump delayr .1
+ad3 deltapi kdt
+delayw asrc
+kdt linseg .012, p3, .019
+adump delayr .1
+ad4 deltapi kdt
+delayw asrc
+achorus = ig1*ad1 +  ig2*ad2 +  ig3*ad3 +  ig4*ad4
+outs achorus * ileftpan, achorus * irightpan
+
+endin
+
+instr 28 ; Vercoe Plucked String FM Vox
+; INITIALIZATION
+itime 	= 	p2
+iduration 	= 	p3
+ifrequency = 	cpsoct(p4)
+iformant = 	cpsoct(p4 / 3)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 12000
+ileftpan 	= 	(0.5 - p6) / 2
+irightpan 	= 	(0.5 + p6) / 2
+ipluckamplitude = 	1
+ipluckduration = 	.9 * p3
+ipluckoff 	= 	p3 - ipluckduration
+ifmamplitude = 	1
+ifmattack 	= 	.2 * p3
+ifmdecay 	= 	.35
+ifmoff 	= 	p3 - (ifmattack + ifmdecay)
+index 	= 	5
+ivibratodepth = 	1
+ivibratorate = 	5
+iformantamplitude = 	p4 / 3
+iformantattack = 	.6
+iformantdecay = 	p3 - iformantattack
+ioverlaps 	= 	200
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+print 	p2, p3, p4, p5, p6
+; KONTROL
+kpluck 	linseg 	ipluckamplitude, ipluckduration, 0, ipluckoff, 0
+; AUDIO
+apluck1 	pluck 	iamplitude, ifrequency, ifrequency, 0, 1
+apluck2 	pluck 	iamplitude, ifrequency * 1.003, ifrequency * 1.003, 0, 1
+apluck 	= 	kpluck * (apluck1 + apluck2)
+kfm 	linseg 	0, ifmattack, ifmamplitude, ifmdecay, 0, ifmoff, 0
+kindex 	= 	kfm * index
+afm1 	foscili 	iamplitude, ifrequency, 1, 2, kindex, 30
+afm2 	foscili 	iamplitude, ifrequency * 1.003, 1.003, 2.003, kindex, 30
+afm 	= 	kfm * (afm1 + afm2)
+kformant 	linseg 	0, iformantattack, iformantamplitude, iformantdecay, 0
+kvibrato 	oscili 	ivibratodepth, ivibratorate, 30
+aformant1 	fof 	iamplitude, ioverlaps + kvibrato, iformant, 0, 40, .003, .017, .007, 4, 30, 31, p3
+aformant2 	fof 	iamplitude, (ioverlaps * 1.001) + kvibrato * .009, iformant, 0, 40, .003, .017, .007, 10, 30, 31, p3
+aformant 	= 	kformant * (aformant1 + aformant2)
+asignal 	= 	apluck + afm + aformant
+	outs 	asignal * ileftpan, asignal * irightpan
+
+endin
+
+instr 29 ; FM Low Index
+; INITIALIZATION
+imodulator 	= 	6.166667
+ifmamplitude 	= 	3
+index 	= 	.05
+iattack 	= 	.015
+irelease 	= 	.125
+isustain 	= 	p3  - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain 	= 	0.03
+p3 	= 	iattack + isustain + irelease
+	longenvelope:
+ifrequency = 	cpsoct(p4)
+icarrier 	=  	.998
+icarrierb 	=  	1.002
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 12729.0
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+kindenv 	expseg 	.00001, iattack, 1, isustain, .1, irelease, .00001
+kindex 	= 	kindenv * index * ifmamplitude
+; AUDIO
+aouta 	foscili 	iamplitude, ifrequency, icarrier, imodulator, kindex, 1
+aoutb 	foscili 	iamplitude, ifrequency, icarrierb, imodulator, kindex, 1
+afmout 	= 	(aouta + aoutb) * kindenv * 2.556
+	outs 	ileftpan * afmout, irightpan * afmout
+
+endin
+
+instr 30 ; Cook Heavy Metal Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal heavymetal ifrequency, iamplitude, 100, 100, 10, 1
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 31 ; Kelley Violin
+; INITIALIZATION
+; p3 = duration
+; ip4 = slur information
+ip4 	= 	0
+icpsp   	= 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+ip6 	= 	ampdb(p5) * 15848.926 /  2727.7
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+	if (ip4 == int(p4/2) * 2) goto initslurs
+	ihold
+	initslurs:
+iatttm  	= 	0.075
+idectm  	= 	0.1
+isustm  	= 	p3 - iatttm - idectm
+idec    	= 	p6
+ireinit 	= 	-1
+	if (ip4 > 1) goto checkafterslur
+ilast   	= 	0
+	checkafterslur:
+	if (ip4 == 1 || ip4 == 3) goto doneslurs
+idec 	= 	0
+ireinit 	= 	0
+	doneslurs:
+	if (isustm <= 0) goto simpleenv
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+kamp 	linseg 	ilast, iatttm, ip6, isustm, ip6, idectm, idec, 0, idec
+	goto doneenv
+	simpleenv:
+kamp 	linseg 	ilast, p3 / 2, ip6, p3 / 2, idec, 0, idec
+	doneenv:
+ilast 	= 	ip6
+; Some randomness for fun.
+krnd 	randi  	.1, 10
+krnd 	= 	krnd + 1
+kamp 	= 	kamp * krnd
+; Some vibrato.
+kvrandamp  rand 	.0125
+kvamp   	= 	icpsp * (0.0125 + kvrandamp)
+kvrandfreq rand 1
+kvfreq  	= 	5 + kvrandfreq
+kvbra  	oscili 	kvamp, kvfreq, 1, ireinit
+kfreq 	= 	icpsp + kvbra
+; AUDIO
+a1 	oscili 	kamp, kfreq, 45, ireinit
+; Some resonance cavities.
+a2 	tone 	a1, 3500, ireinit
+a3 	comb 	a2, .15, .01, ireinit
+a4 	comb 	a3, .15, .02, ireinit
+	outs 	a1 * ileftpan, a1 * irightpan
+
+endin
+
+instr 32 ; Nelson Melody Instrument (Chebyshev / FM / Additive)
+; INITIALIZATION
+i1 	= 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 /  15848.926
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+;ip6	=	cheby#
+ip6 	= 	32
+;ip7	=	choice
+ip7 	=	1
+iattack 	= 	.05
+irelease 	= 	.1
+isustain 	= 	p3 - (iattack + irelease)
+	if isustain > 0 goto longenvelope
+isustain 	= 	0
+p3 	=	 iattack + isustain + irelease
+	longenvelope:
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+k100 	randi   	1,10
+k101 	oscili  	i1 / 65, 5 + k100, 1
+k102 	linseg  	0, .5, 1, p3 - .5, 1
+k100 	=  	i1 + (k101 * k102)
+; Envelope for driving oscillator.
+k1 	linen 	.5, p3 * .4, p3 , p3 * .2
+k2 	line 	1, p3, .5
+k1 	=  	k2 * k1
+	if ip7 = 2 goto cresc
+	if ip7 = 3 goto dim
+	if ip7 = 4 goto sfz
+	if ip7 = 5 goto slow
+; Amplitude envelope.
+k10 	expseg  	.0001, iattack, iamplitude , isustain, iamplitude * .8, irelease, .0001
+; Power to partials.
+k20 	linseg 	1.485, iattack, 1.5, isustain + irelease, 1.485
+	goto next
+	cresc:
+; Amplitude envelope.
+k8 	expseg  	.0001, iattack, p5 * .25, isustain, p5, irelease, .0001
+k9 	linseg 	1, p3 - .15, 1.5, .1, 0
+k10  	= 	(k8 * k9) / 2
+; Power to partials.
+k20 	line 	1.475, p3, 1.5
+	goto next
+	dim:
+; Amplitude envelope.
+k10 	linseg  	0, .05, iamplitude, .05, iamplitude * .8, p3 * .33, p5 *.7, (p3 * .66) - .1, 0
+; Power to partials.
+k20 	line 	1.5, p3, 1.475
+	goto next
+	sfz:
+; Amplitude envelope.
+k10 	linseg  	0, .03, p5, .04, p5, .03, p5 * .3, p3 - .15, p5 * .3, .05, 0
+; Power to partials.
+k20 	linseg  	1.4, .03, 1.7, .04, 1.7, .03, 1.4, p3 - .1, 1.385
+	goto next
+	slow:
+; Amplitude envelope.
+k10 	linseg  	0,.06, p5 * .45, .04, p5 * .2, (p3 / 3) - .1, p5, p3 / 3, p5 * .9, p3 / 3, 0
+; Power to partials.
+k20 	linseg 	1.475, p3 / 3, 1.5, p3 / 3, 1.4999, p3 / 3, 1.475
+	next:
+;a1-3 are for cheby with p6=1-4
+a1 	oscili  	k1, k100 - .025, 3
+; Tables a1 to fn13, others normalize,
+a2 	tablei  	a1, ip6, 1, .5
+a3 	balance 	a2,a1
+; Try other waveforms as well.
+a4 	foscil  	1, k100 + .04, 1, 2.005, k20, 1
+a5 	oscili  	1, k100, 1
+a6  	=  	((a3 * .1) + (a4 * .1) + (a5 * .8)) * k10
+a7 	comb 	a6, .5, 1 / i1
+a6  	= 	(a6 * .9) + (a7 * .1)
+	outs a6 * ileftpan, a6 * irightpan
+
+endin
+
+instr 33 ; Guitar Harmonics
+; INITIALIZATION
+iattack 	= 	.015
+irelease 	= 	.02
+isustain 	= 	p3 - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain 	= 	0
+p3 	= 	iattack + isustain + irelease
+	longenvelope:
+ifrequency	 = 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80)
+iamplitude = 	ampdb(p5) * 15848.926 / 1220
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	=	(0.5 + p6) / 2.0
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+print p2, p3, p4, p5, p6
+; KONTROL
+kamp	linseg 	0.0, iattack, iamplitude, isustain, iamplitude,irelease, 0.0
+; AUDIO
+asig	pluck	kamp, ifrequency, ifrequency, 0, 6
+	outs 	asig * ileftpan, asig * irightpan
+
+endin
+
+instr 34 ; Pinkston Koto
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;         basic koto orchestra file                              ;
+;                                                                ;
+;         	p3 = duration
+;	p4 = amplitude                    ;
+;         	p5 = pitch in pch
+;	p6 = pitch bend in oct.decimal    ;
+;                                                                ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ip4 	= 	ampdb(p5)
+ileftpan 	= 	(0.5 -  p6) / 2.0 * 15848.0 / 15848.0
+irightpan 	= 	(0.5 + p6) / 2.0 * 15858.0 / 15848.0
+ip6 	= 	0
+ihz	=	cpsoct(p4)
+ihz2	=       	ihz * 2.0006
+ihz3	=	ihz * 1.9999
+ihz4	=	ihz * 1.0005
+ihz5	=	ihz * .9998
+koct	init	octcps(ihz)
+koct2	init	octcps(ihz2)
+koct3	init	octcps(ihz3)
+koct4	init	octcps(ihz4)
+koct5	init	octcps(ihz5)
+kbend   	oscil1i 	0.15, ip6, p3,8;   /* p6 in oct.decimal */
+khz	=	cpsoct(koct+kbend)
+khz2	=	cpsoct(koct2+kbend)
+khz3	=	cpsoct(koct3+kbend)
+khz4	=	cpsoct(koct4+kbend)
+khz5	=	cpsoct(koct5+kbend)
+aplk1	pluck	(ip4*.42),khz,ihz,6,3,1
+	timout	0.0,p3*.2,continue         ;.002 not p3;
+	koto2:	aplk2	pluck	(ip4*.62),khz2,ihz2,6,3,1
+	timout	0.0,p3*.4,continue        ; .oo4 not p3;
+	koto3:	aplk3	pluck	(ip4*.62),khz3,ihz3,6,3,1
+	timout	0.0,p3*.6,continue       ;  .005 not p3;
+	koto4:	aplk4	pluck	(ip4*.62),khz4,ihz4,6,3,1
+	timout	0.0,p3*.8,continue      ;.oo7 not  p3;
+	koto5:	aplk5	pluck	(ip4*.62),khz5,ihz5,6,3,1
+	continue:
+asignal	=	aplk1+aplk2+aplk3+aplk4+aplk5
+asig	envlpx	asignal,.001,p3,(p3*.001),8,1.02,.008
+;asig	envlpx	asignal,.06,p3,(p3*.1),8,1.02,.008 ;
+	outs	asig * ileftpan, asig * irightpan
+
+endin
+
+instr 35 ; Cook Tubular Bell Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal tubularbell ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 36 ; Bergeman 1
+; INITIALIZATION
+; Original pfields
+; p1  p2 p3   p4 p5      p6 p7    p8       p9
+; ins  st  dur  db func   at  dec freq1  freq2
+ip3	= 	p3
+ip4 	= 	p5
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+ip5 	= 	77
+ip6 	= 	ip3 * .25
+ip7 	= 	ip3 * .75
+ip8 	= 	cpsoct(p4 - .01)
+ip9 	= 	cpsoct(p4 + .01)
+idb	=	ampdb(ip4) * 10
+isc	=	idb * .333
+; KONTROL
+k1 	line 	40, ip3, 800
+k2 	line 	440, ip3, 220
+k3 	linen 	isc, ip6, p3, ip7
+k4 	line 	800, ip3,40
+k5 	line 	220,ip3,440
+k6 	linen 	isc, ip6, ip3, ip7
+; AUDIO
+a5 	oscili 	k3, ip8, ip5
+a6 	oscili 	k3, ip8 * .999, ip5
+a7 	oscili 	k3, ip8 * 1.001, ip5
+a1	=	a5 + a6 + a7
+a8 	oscili 	k6, ip9, ip5
+a9 	oscili 	k6, ip9 * .999, ip5
+a10 	oscili 	k6, ip9 * 1.001, ip5
+a11	=	a8 + a9 + a10
+a2 	butterbp 	a1, k1, 40
+a3 	butterbp 	a2, k5, k2 * .8
+a4 	balance 	a3, a1
+a12 	butterbp 	a11, k4, 40
+a13 	butterbp 	a12, k2, k5 * .8
+a14 	balance a13, a11
+	outs 	ileftpan * a4, irightpan * a14
+
+endin
+
+instr 37 ; Cook Rhodes Electric Piano Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal rhodes ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 38 ; Plucked String Filtered
+; INITIALIZATION
+iattack 	= 	.02
+irelease 	= 	.075
+isustain 	= 	p3  - (iattack + irelease)
+	if isustain > 0 goto longenvelope
+isustain 	= 	0
+p3 	= 	iattack + isustain + irelease
+	longenvelope:
+ifrequency = 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 24681.1
+ileftpan 	= 	(0.5 - p6) / 2
+irightpan 	= 	(0.5 + p6) / 2
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+kenvelope expseg 	.00001, iattack, iamplitude, isustain, iamplitude, irelease, .00001
+; AUDIO
+asignal1 	pluck 	1, ifrequency, ifrequency * 1.002, 0, 6
+asignal2 	pluck 	1, ifrequency * 1.003, ifrequency, 0, 6
+apluckout 	= 	(asignal1 + asignal2) * kenvelope * 7.5257
+	outs 	ileftpan * apluckout, irightpan * apluckout
+
+endin
+
+instr 39 ; Guitar
+; INITIALIZATION
+iattack 	= 	.015
+irelease 	= 	.065
+isustain 	= 	p3 - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain 	= 	0
+p3 	= 	iattack + isustain + irelease
+	longenvelope:
+ifrequency = 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 1848
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+kamp	linseg	0.0, iattack, iamplitude, isustain, iamplitude, irelease, 0.0
+; AUDIO
+asig	pluck 	kamp, ifrequency, ifrequency, 0, 1
+af1	reson	asig, 110, 80
+af2	reson	asig, 220, 100
+af3	reson	asig, 440, 80
+aout	balance 0.6*af1+af2+0.6*af3+0.4*asig, asig
+	outs 	aout * ileftpan, aout* irightpan
+
+endin
+
+instr 40 ; Kung FM with variable delay
+; INITIALIZATION
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 9000
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+iattack 	= 	.05
+irelease 	= 	.1
+	if p3 > .15 then goto longenvelope
+p3 	= 	.15
+	longenvelope:
+iattack 	= 	p3/3
+isustain 	= 	p3/3
+irelease 	= 	p3 - (iattack + isustain)
+ip6 	= 	.4
+ip7 	= 	2.2
+ishift	=	8.0 / 1200.0
+ipch	=	cpsoct(p4)
+ioct	=	p4
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+kadsr	linseg	0,iattack,1,isustain,1,irelease,0
+kmodi	linseg	0,iattack,5,isustain,3,irelease,0
+kmodr	linseg	ip6,p3,ip7	;r moves from ip6 to ip7 in p3 secs.
+; AUDIO
+a1	=	kmodi*(kmodr - 1/kmodr)/2
+a1ndx	=	abs(a1*2/20)	;a1*2 is argument normalized from 0-1.
+a2	=	kmodi*(kmodr + 1/kmodr)/2
+a3	tablei	a1ndx,43,1	;look up table is in f43, normalized index.
+ao1	oscili	a1,ipch,42		;cosine
+a4	=	exp(-0.5*a3+ao1)
+ao2	oscili	a2*ipch,ipch,42		;cosine
+aoutl	oscili	iamplitude*kadsr*a4,ao2+cpsoct(ioct+ishift),1	;final output left
+aoutr	oscili	iamplitude*kadsr*a4,ao2+cpsoct(ioct-ishift),1	;final output right
+aoutl1 	vdelay 	aoutl, sr/10, sr/10
+aoutr1	vdelay 	aoutr, sr/12, sr/12
+	outs	ileftpan * (aoutl + aoutl1), irightpan * (aoutr + aoutr1)
+
+endin
+
+instr 41 ; Morrill FM Trumpet
+; INITIALIZATION
+iduration 	= 	p3
+icarrier1 	= 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 2998.7
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+icarrier2 	= 	1500
+index1 	= 	2.66
+index2 	= 	1.8
+imodulator = 	icarrier1
+iratio = 	index2 / index1
+ivibratowidth = 	.007
+irandev 	= 	.007
+ifqr 	= 	125
+ivibratorate = 	7
+iportamentodeviation = .03
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+; Vibrato signal.
+kwidth 	linseg 	0, .6, ivibratowidth, iduration - .6 - .2, ivibratowidth, .2, 0
+kv1 	randi 	irandev, ifqr
+kv2 	oscili 	kwidth, ivibratorate, 1
+kv3 	oscili 	iportamentodeviation, 1 / iduration, 32
+kvibrato 	= 	(1 + kv1) * (1 + kv2) * (1 + kv3)
+; Double carrier, single modulator frequency modulation signal.
+kdynamic 	linseg 	0, .03, 1, iduration - .03 - .01, .9, .01, 0
+; AUDIO
+amodulator oscili 	kdynamic * imodulator * index1, imodulator * kvibrato, 1
+kamplitude1 linseg 	0, .03, 1, iduration - .03 - .15, .9, .15, 0
+a1 	oscili 	kamplitude1 * iamplitude, amodulator + (icarrier1 * kvibrato), 1
+kamplitude2 linseg 	0, .03, 1, iduration - .03 - .3, .9, .3, 0
+a2 	oscili 	kamplitude2 * iamplitude * .2, ((amodulator * iratio) + (icarrier2 * kvibrato)), 1
+asignal 	= 	a1 + a2
+	outs 	asignal * ileftpan, asignal * irightpan
+
+endin
+
+instr 42 ; Yamaha DX7 Algorithm  5
+;====================================================================;
+;                       Yamaha DX7 Algorithm  5                      ;
+;                                                                    ;
+;       p02 = start     p03 = dur       p04 = pch       p05 = vel    ;
+;       p06 = panfac    p07 = vibdel    p08 = vibwth    p09 = vibhz  ;
+;       p10 = op1fn     p11 = op2fn     p12 = op3fn     p13 = op4fn  ;
+;       p14 = op5fn     p15 = op6fn     p16 = ampfn     p17 = pkamp  ;
+;       p18 = rsfn      p19 = devfn     p20 = erisfn    p21 = edecfn ;
+;       p22 = vsfn      p23 = velfn     p24 = feedfn    p25 = feedbk ;
+;                                                                    ;
+;       RFP 3:30 P.M. 7-7-89                                         ;
+;====================================================================;
+koff    	init    	0                       ;...use off flag instead
+idur    	=       	abs(p3)
+ibase   	=       	cpspch(p4)              ;p4 is keyboard pitch
+iroct   	=       	octpch(p4)
+irbase  	=       	octpch(4.09)            ;base of rate scl table
+irrange 	=       	octpch(13.06)-irbase
+iveloc  	=       	p5                      ;0 <= p5 <= 127
+iop1fn  	=       	p10                     ;param tables for ops
+ iop2fn  	=       	p11
+iop3fn  	=       	p12
+iop4fn  	=       	p13
+iop5fn  	=       	p14
+iop6fn  	=       	p15
+iampfn  	=       	p16                     ;amp/level map function
+ipkamp  	=       	p17                     ;scale for converter
+irsfn   	=       	p18                     ;rate scaling function
+idevfn  	=       	p19                     ;level/pkdev map func
+irisefn 	=       	p20                     ;eg rise rate fn
+idecfn  	=       	p21                     ;eg decay rate fn
+ivsfn   	=       	p22                     ;vel sensitivity fn
+ivelfn  	=       	p23                     ;vel/amp fac map fn
+iveloc  	table   	iveloc,ivelfn           ;map this note's veloc
+iveloc  	=       	iveloc * 1.10           ;range 0 -> 110 %
+ifeedfn 	=       	p24
+ifeed   	table   	p25,ifeedfn             ;0 <= p25 <= 7 (feedbk)
+ifeed   	=       	ifeed/(2 * 3.14159)     ;dev in radians
+idetfac 	=       	4                       ;max detuning divisor
+imap128 	=       	127/99                  ;mapping constant 99->127
+irscl   	table   	(iroct-irbase)/irrange*127,irsfn
+irscl   	=       	irscl*6
+iop     	=       	1                       ;start loop with op1
+iopfn   	=       	iop1fn
+	loop:
+;---------------------------------read operator parameters
+ilvl    	table   	0, iopfn
+ivel    	table   	1, iopfn
+iegr1   	table   	2, iopfn
+iegr2   	table   	3, iopfn
+        iegr3   table   4,iopfn
+        iegr4   table   5,iopfn
+        iegl1   table   6,iopfn
+        iegl2   table   7,iopfn
+        iegl3   table   8,iopfn
+        iegl4   table   9,iopfn
+        iams    table   10,iopfn
+        imode   table   11,iopfn
+        ifreq   table   12,iopfn
+        idet    table   13,iopfn
+        irss    table   14,iopfn
+;----------------------------------initialize operator
+        ihz     =       (imode > 0 ? ifreq : ibase * ifreq) + idet/idetfac
+        iamp    =       ilvl/99         ;rescale to 0 -> 1
+        ivfac   table   ivel,ivsfn
+
+        iegl1   =       iamp*iegl1
+        iegl2   =       iamp*iegl2
+        iegl3   =       iamp*iegl3
+        iegl4   =       iamp*iegl4
+
+        iegl1   =       iegl1*(1-ivfac)+iegl1*ivfac*iveloc
+        iegl2   =       iegl2*(1-ivfac)+iegl2*ivfac*iveloc
+        iegl3   =       iegl3*(1-ivfac)+iegl3*ivfac*iveloc
+        iegl4   =       iegl4*(1-ivfac)+iegl4*ivfac*iveloc
+
+        irs     =       irscl*irss
+        iegr1   =       (iegr1+irs > 99 ? 99 : iegr1+irs)
+        iegr2   =       (iegr2+irs > 99 ? 99 : iegr2+irs)
+        iegr3   =       (iegr3+irs > 99 ? 99 : iegr3+irs)
+        iegr4   =       (iegr4+irs > 99 ? 99 : iegr4+irs)
+
+        irfn    =       (iegl1 > iegl4 ? irisefn : idecfn)
+        iegd1   table   iegr1,irfn               ;convert rate->dur
+        ipct1   table   iegl4,irfn+1             ;pct fn is next one
+        ipct2   table   iegl1,irfn+1
+        iegd1   =       abs(iegd1*ipct1-iegd1*ipct2)
+        iegd1   =       (iegd1 == 0 ? .001 : iegd1)
+
+        irfn    =       (iegl2 > iegl1 ? irisefn : idecfn)
+        iegd2   table   iegr2,irfn
+        ipct1   table   iegl1,irfn+1
+        ipct2   table   iegl2,irfn+1
+        iegd2   =       abs(iegd2*ipct1-iegd2*ipct2)
+        iegd2   =       (iegd2 == 0 ? .001 : iegd2)
+
+        irfn    =       (iegl3 > iegl2 ? irisefn : idecfn)
+        iegd3   table   iegr3,irfn
+        ipct1   table   iegl2,irfn+1
+        ipct2   table   iegl3,irfn+1
+        iegd3   =       abs(iegd3*ipct1-iegd3*ipct2)
+        iegd3   =       (iegd3 == 0 ? .001 : iegd3)
+
+        iegd4   table   iegr4,idecfn
+                if      (iegl3 <= iegl4) igoto continue
+        ipct1   table   iegl3,irfn+1
+        ipct2   table   iegl4,irfn+1
+        iegd4   =       abs(iegd4*ipct1-iegd4*ipct2)
+        iegd4   =       (iegd4 == 0 ? .001 : iegd4)
+continue:
+                if      (iop > 1) igoto op2
+op1:
+        i1egd1  =       iegd1
+        i1egd2  =       iegd2
+        i1egd3  =       iegd3
+        i1egd4  =       iegd4
+        i1egl1  =       iegl1
+        i1egl2  =       iegl2
+        i1egl3  =       iegl3
+        i1egl4  =       iegl4
+        i1ams   =       iams
+        i1hz    =       ihz
+        iop     =       iop + 1
+        iopfn   =       iop2fn
+                igoto   loop
+
+op2:            if      (iop > 2) igoto op3
+        i2egd1  =       iegd1
+        i2egd2  =       iegd2
+        i2egd3  =       iegd3
+        i2egd4  =       iegd4
+        i2egl1  =       iegl1
+        i2egl2  =       iegl2
+        i2egl3  =       iegl3
+        i2egl4  =       iegl4
+        i2ams   =       iams
+        i2hz    =       ihz
+        iop     =       iop + 1
+        iopfn   =       iop3fn
+                igoto   loop
+
+op3:            if      (iop > 3) igoto op4
+        i3egd1  =       iegd1
+        i3egd2  =       iegd2
+        i3egd3  =       iegd3
+        i3egd4  =       iegd4
+        i3egl1  =       iegl1
+        i3egl2  =       iegl2
+        i3egl3  =       iegl3
+        i3egl4  =       iegl4
+        i3ams   =       iams
+        i3hz    =       ihz
+        iop     =       iop + 1
+        iopfn   =       iop4fn
+                igoto   loop
+
+op4:            if      (iop > 4) igoto op5
+        i4egd1  =       iegd1
+        i4egd2  =       iegd2
+        i4egd3  =       iegd3
+        i4egd4  =       iegd4
+        i4egl1  =       iegl1
+        i4egl2  =       iegl2
+        i4egl3  =       iegl3
+        i4egl4  =       iegl4
+        i4ams   =       iams
+        i4hz    =       ihz
+        iop     =       iop + 1
+        iopfn   =       iop5fn
+                igoto   loop
+
+op5:            if      (iop > 5) igoto op6
+        i5egd1  =       iegd1
+        i5egd2  =       iegd2
+        i5egd3  =       iegd3
+        i5egd4  =       iegd4
+        i5egl1  =       iegl1
+        i5egl2  =       iegl2
+        i5egl3  =       iegl3
+        i5egl4  =       iegl4
+        i5ams   =       iams
+        i5hz    =       ihz
+        iop     =       iop + 1
+        iopfn   =       iop6fn
+                igoto   loop
+
+op6:
+        i6egd1  =       iegd1
+        i6egd2  =       iegd2
+        i6egd3  =       iegd3
+        i6egd4  =       iegd4
+        i6egl1  =       iegl1
+        i6egl2  =       iegl2
+        i6egl3  =       iegl3
+        i6egl4  =       iegl4
+        i6ams   =       iams
+        i6hz    =       ihz
+;=====================================================================
+                if      koff > 1 kgoto exit     ;use this for mtu csound
+                timout  idur,999,final          ;skip during final decay
+        k1sus   linseg  i1egl4,i1egd1,i1egl1,i1egd2,i1egl2,i1egd3,i1egl3,1,i1egl3
+        k2sus   linseg  i2egl4,i2egd1,i2egl1,i2egd2,i2egl2,i2egd3,i2egl3,1,i2egl3
+        k3sus   linseg  i3egl4,i3egd1,i3egl1,i3egd2,i3egl2,i3egd3,i3egl3,1,i3egl3
+        k4sus   linseg  i4egl4,i4egd1,i4egl1,i4egd2,i4egl2,i4egd3,i4egl3,1,i4egl3
+        k5sus   linseg  i5egl4,i5egd1,i5egl1,i5egd2,i5egl2,i5egd3,i5egl3,1,i5egl3
+        k6sus   linseg  i6egl4,i6egd1,i6egl1,i6egd2,i6egl2,i6egd3,i6egl3,1,i6egl3
+        k1phs   =       k1sus
+        k2phs   =       k2sus
+        k3phs   =       k3sus
+        k4phs   =       k4sus
+        k5phs   =       k5sus
+        k6phs   =       k6sus
+                kgoto   output
+final:
+        k1fin   linseg  1,i1egd4,0,1,0
+        k1phs   =       i1egl4+(k1sus-i1egl4)*k1fin
+        k2fin   linseg  1,i2egd4,0,1,0
+        k2phs   =       i2egl4+(k2sus-i2egl4)*k2fin
+        k3fin   linseg  1,i3egd4,0,1,0
+        k3phs   =       i3egl4+(k3sus-i3egl4)*k3fin
+        k4fin   linseg  1,i4egd4,0,1,0
+        k4phs   =       i4egl4+(k4sus-i4egl4)*k4fin
+        k5fin   linseg  1,i5egd4,0,1,0
+        k5phs   =       i5egl4+(k5sus-i5egl4)*k5fin
+        k6fin   linseg  1,i6egd4,0,1,0
+        k6phs   =       i6egl4+(k6sus-i6egl4)*k6fin
+                if      (k1fin + k3fin + k5fin) > 0 kgoto   output
+;                        turnoff                    ;n/a in mtu version
+        koff    =       1 ;                         ;use off flag instead
+output:
+        k1gate  tablei  k1phs,iampfn                ;use iampfn for carriers
+        k2gate  tablei  k2phs,idevfn                ;use idevfn for modulators
+ 	k3gate	tablei	k3phs,iampfn
+ 	k4gate	tablei	k4phs,idevfn
+ 	k5gate	tablei	k5phs,iampfn
+ 	k6gate	tablei	k6phs,idevfn
+
+        a6sig   init    0               ;initialize for feedback
+        a6phs   phasor  i6hz            ;ops to be modulated must use phase...
+        a6sig   tablei  a6phs+a6sig*ifeed,1,1,0,1 ; ...modulation, not fm!
+        a6sig   =       a6sig*k6gate
+
+        a5phs   phasor  i5hz
+        a5sig   tablei  a5phs+a6sig,1,1,0,1
+        a5sig   =       a5sig*k5gate
+
+        a4sig   oscili  k4gate,i4hz,1   ;unmodulated op; oscili is ok here.
+
+        a3phs   phasor  i3hz
+        a3sig   tablei  a3phs+a4sig,1,1,0,1
+        a3sig   =       a3sig*k3gate
+
+        a2sig   oscili  k2gate,i2hz,1
+
+        a1phs   phasor  i1hz
+        a1sig   tablei  a1phs+a2sig,1,1,0,1
+        a1sig   =       a1sig*k1gate
+                out     (a1sig + a3sig + a5sig) * ipkamp
+exit:
+
+endin
+
+instr 43 ; Kung Plucked String Chorused Pitch-Shifted Delayed
+; INITIALIZATION
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 4200
+iattack 	= 	.015
+irelease 	= 	.03
+isustain 	= 	p3 - (iattack + irelease)
+	if isustain > 0 goto longenvelope
+isustain 	= 	0
+	longenvelope:
+p3 	= 	iattack + isustain + irelease
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+ishift 	= 	8.0 / 1200.0
+ipch 	= 	cpsoct(p4)
+ioct 	= 	p4
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+kvib 	oscili 	1.0 / 120.0, ipch / 50.0, 41
+; AUDIO
+aenv 	expseg 	1.0 / 10000.0, iattack, 1.0, isustain, 1.0, irelease, 1.0 / 10000.0
+ag 	pluck 	iamplitude,cpsoct(ioct+kvib),iamplitude/2,1,1
+agleft 	pluck 	iamplitude,cpsoct(ioct+ishift),iamplitude/2,1,1
+agright 	pluck 	iamplitude,cpsoct(ioct-ishift),iamplitude/2,1,1
+adump 	delayr 	0.3
+	delayw 	ag * aenv ;put ag signal into delay line.
+	ad1 	deltap 	0.1
+	ad2 	deltap 	0.21
+	outs 	ileftpan * aenv * (agleft + ad1), irightpan * aenv * (agright + ad2)
+
+endin
+
+instr 44 ; Kung Plucked Strings Chorused Pitch-Shifted Delayed Exponentially
+; INITIALIZATION
+	if p3 > .015  then goto longenvelope
+p3 	= 	.015
+	longenvelope:
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 6375
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+ishift	=	8.0 / 1200.0
+ipch	=	cpsoct(p4)
+ioct	=	p4
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+kvib	oscil	1.0 / 120.0, ipch / 50.0, 41	;vibrato
+; AUDIO
+ag	pluck	iamplitude, cpsoct(ioct + kvib), iamplitude / 2, 1, 1
+agleft	pluck	iamplitude, cpsoct(ioct + ishift), iamplitude / 2, 1, 1
+agright	pluck	iamplitude, cpsoct(ioct - ishift), iamplitude / 2, 1, 1
+kf1	expon 	.1, p3, 1.0	;exponential from 0.1 to 1.0
+kf2	expon	1.0, p3, .1	;exponential from 1.0 to 0.1
+adump	delayr	2.0		;set delay line of 2.0 sec
+	delayw	ag		;put ag signal into delay line.
+atap1	deltapi	kf1		;tap delay line with kf1 function.
+atap2	deltapi      kf2		;tap delay line with kf2 function.
+ad1	deltap	2.0		;delay 2 sec.
+ad2	deltap	1.1		;delay 1.1 sec.
+	outs	ileftpan * (agleft+atap1+ad1), irightpan * (agright+atap2+ad2)
+
+endin
+
+instr 45 ; Fitch marimba
+; INITIALIZATION
+iamplitude = 	ampdb(p5) * 15848.926 /  2800.0
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+i1 	= 	cpsoct(p4)
+ip6 	= 	.15
+i2 	= 	log(i1)/10.0 - ip6
+icosinetable = 	34
+if p3 > .06 then goto longenvelope
+p3 	= 	.06
+	longenvelope:
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+; Envelope.
+k1 	expseg  	.0001, .03, iamplitude, p3 - .03, .001
+k25 	linseg  	1, .03, 1, p3- .03, 3
+k1	= 	k25 * k1
+; Power to partials.
+k10 	linseg 	2.25, .03, 3, p3 - .03, 2
+; AUDIO
+a1 	gbuzz 	k1, i1, k10, 0, 35, icosinetable
+a2 	reson 	a1, 500, 50, 1
+a3 	reson 	a2, 1500, 100, 1
+a4 	reson 	a3, 2500, 150, 1
+a5 	reson 	a4, 3500, 150, 1
+a6 	balance 	a5, a1
+i6 	= 	ip6
+a7 	= 	a6 * ileftpan
+a8 = 	a6 * irightpan
+	outs 	a7, a8
+
+endin
+
+instr 46 ; Kung FM Modulated Left and Right Detuned Chorusing
+; INITIALIZATION
+; Normalize to 80 dB = ampdb(80).
+iamplitude	 = 	ampdb(p5) * 15848.926 / 4901
+;ipp6	iunirand	1.5
+ipp6	=	p6
+ipp6	=	.75 - ipp6
+ileftpan 	=	(0.5  - ipp6) / 2.0
+irightpan 	= 	(0.5 + ipp6) / 2.0
+iattack 	= 	.05
+irelease	= 	.1
+	if p3 > .15 then goto longenvelope
+p3 	= 	.15
+	longenvelope:
+iattack 	= 	p3/3
+isustain 	= 	p3/3
+irelease 	= 	p3 - (iattack + isustain)
+ip6 	= 	.3
+ip7 	= 	2.2
+ishift	=	8.0 / 1200.0
+ipch	=	cpsoct(p4)
+ioct	=	p4
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+kadsr	linseg	0,iattack,1,isustain,1,irelease,0
+kmodi	linseg	0,iattack,5,isustain,3,irelease,0
+kmodr	linseg	ip6,p3,ip7	;r moves from ip6 to ip7 in p3 secs.
+; AUDIO
+a1	=	kmodi*(kmodr - 1/kmodr)/2
+a1ndx	=	abs(a1*2/20)	;a1*2 is argument normalized from 0-1.
+a2	=	kmodi*(kmodr + 1/kmodr)/2
+a3	tablei	a1ndx,43,1	;look up table is in f43, normalized index.
+ao1	oscil	a1,ipch,42		;cosine
+a4	=	exp(-0.5*a3+ao1)
+ao2	oscil	a2*ipch,ipch,42		;cosine
+aoutl	oscil	iamplitude*kadsr*a4,ao2+cpsoct(ioct+ishift),1	;final output left
+aoutr	oscil	iamplitude*kadsr*a4,ao2+cpsoct(ioct-ishift),1	;final output right
+	outs	ileftpan * aoutl, irightpan * aoutr
+
+endin
+
+instr 47 ; Nelson Marimba
+; INITIALIZATION
+ifrequency = 	cpsoct(p4)
+iattack 	= 	.02
+irelease 	= 	p3
+isustain 	= 	p3 - (iattack + irelease)
+	if isustain > 0 goto longenvelope
+isustain 	= 	0
+p3 	= 	iattack + isustain + irelease
+	longenvelope:
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 /  4185
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+kformant1 	= 	ifrequency / 2.1
+kformant2 	= 	kformant1 * 2.1
+kformant3 	= 	kformant2 * 2.1
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+; Amplitude envelope
+k1  	expseg  	.000001, iattack, iamplitude , irelease, .000001
+k25  	linseg 	1, iattack, 1, irelease,4
+k1 	=  	k25 * k1
+; Power to partials.
+k10 	linseg  	2.25, iattack, 3, irelease, 2
+a1 	gbuzz 	k1, ifrequency, k10, 0, 35, 42
+a2 	reson 	a1, kformant1, kformant1 * .05, 1
+a3 	reson 	a1, kformant2, kformant2 * .05, 1
+a4 	reson 	a1, kformant2, kformant2 * .05, 1
+a8 	balance 	a4, a1
+ga1 	= 	a8 * ileftpan
+ga2 	= 	a8 * irightpan
+	outs  	ga1, ga2
+
+endin
+
+instr 48 ; Cook Vibraphone Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5)
+ileftpan = (0.5 - p6) / 2.0 * 1000
+irightpan = (0.5 + p6) / 2.0 * 1000
+; AUDIO
+asignal vibraphone ifrequency, iamplitude, 20, 20, 5, 5
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 49 ; Cook Mini-Moog Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal minimoog ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 50 ; Nelson Shimmer
+; INITIALIZATION
+iduration 	= 	p3
+ifrequency = 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 2480.4
+ileftpan 	= 	(0.5 - p6) / 2.0
+irightpan 	= 	(0.5 + p6) / 2.0
+ipower 	= 	3
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+k1 	linseg 	0, iduration / 2, iamplitude, iduration / 2, 0
+k2 	randi 	2, 25
+k3 	oscili 	.03, 4 + k2, 1
+; AUDIO
+a1 	gbuzz 	.33 + k3, ifrequency, ipower, 1, 50, 4
+k4 	randi 	1.2, 15
+k5 	oscili 	.03, 4 + k2, 1
+a2 	gbuzz 	.33 + k5, ifrequency + (ifrequency *.02), ipower, 1, 50, 4
+k6 	randi 	1.5, 20
+k7 	oscili 	.03, 4 + k2, 1
+a3 	gbuzz 	.33 + k7, ifrequency - (ifrequency * .021), ipower, 1, 50, 4
+a4 	= 	(a1 + a2 + a3) * k1
+	outs 	a4 * ileftpan, a4 * irightpan
+
+endin
+
+instr 51 ; Plucked String
+; INITIALIZATION
+iattack 	= 	.012
+irelease 	= 	.075
+isustain 	= 	p3 - (iattack + irelease)
+	if isustain > 0 goto longenvelope
+isustain 	= 	0
+p3 	= 	iattack + isustain + irelease
+	longenvelope:
+ifrequency = 	cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = 	ampdb(p5) * 15848.926 / 5398.0
+ileftpan 	= 	(0.5 - p6) / 2
+irightpan 	= 	(0.5 + p6) / 2
+; LOGGING
+; p1 	= 	Instrument
+; p2 	= 	Start
+; p3 	= 	Length
+; p4 	= 	Octave
+; p5 	= 	Decibels
+; p6 	= 	Pan
+	print p2, p3, p4, p5, p6
+; KONTROL
+kenvelope 	expseg 	.00001, iattack, iamplitude, isustain, iamplitude, irelease, .00001
+; AUDIO
+asignal1 	pluck 	1, ifrequency, ifrequency * 1.002, 0, 1
+asignal2 	pluck 	1, ifrequency * 1.003, ifrequency, 0, 1
+apluckout 	= 	(asignal1 + asignal2) * kenvelope
+	outs 	ileftpan * apluckout, irightpan * apluckout
+
+endin
+
+instr 52 ; Cook Mandolin Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal mandolin ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+instr 53 ; Cook Bowed String Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5)
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal bowed ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+endin
+
+</CsInstruments>
+<CsArrangement>
+Guitar
+Plucked String
+Plucked String Filtered
+FM Low Index
+</CsArrangement>
+<CsNotes>
+i 1 0 1.5 9.08333 55 0
+i 1 0.729927 1.5 8.5 55 0
+i 1 1.45985 1.5 8.75 55 0
+i 1 2.18978 1.5 9.08333 55 0
+i 1 2.91971 1.75 9.16666 55 0
+i 1 3.64964 1 9.08333 55 0
+i 1 4.0146 1 8.91666 55 0
+i 1 4.37956 2 8.75 55 0
+i 1 5.29197 1 8.66666 55 0
+i 1 5.47445 1 8.75 55 0
+i 1 5.65693 1 8.91666 55 0
+i 1 5.83942 2 9.08333 55 0
+i 1 6.75182 1 9.16666 55 0
+i 1 6.93431 1 9.08333 55 0
+i 1 7.11679 1 9 55 0
+i 1 7.29927 2 9.08333 55 0
+i 1 8.21168 1 9.16666 55 0
+i 1 8.39416 1 9.08333 55 0
+i 1 8.57664 1 9 55 0
+i 1 8.75912 1 9.08333 55 0
+i 1 9.12409 1 9.5 55 0
+i 1 9.48905 1 8.91666 55 0
+i 1 9.85401 1.5 9.16666 55 0
+i 1 10.5839 1 8.66666 55 0
+i 1 10.9489 1 9.08333 55 0
+i 1 11.3139 1.5 8.91666 55 0
+i 1 12.0438 1 8.75 55 0
+i 1 12.4088 2 9.16666 55 0
+i 1 13.5036 1 9.08333 55 0
+i 1 13.8686 2 9.5 55 0
+i 1 14.9635 1 9.33333 55 0
+i 1 15.3285 2 9.16666 55 0
+i 1 16.4234 1 9.08333 55 0
+i 1 16.6058 1 8.91666 55 0
+i 1 16.7883 2 8.75 55 0
+i 1 17.7007 1 9.75 55 0
+i 1 17.8832 1 9.66666 55 0
+i 1 18.0657 1 9.5 55 0
+i 1 18.2482 1 9.66666 55 0
+i 1 18.4307 1 9.75 55 0
+i 1 18.6131 1 9.91666 55 0
+i 1 18.7956 1 9.66666 55 0
+i 1 18.9781 1.75 10.0833 55 0
+i 1 20.073 1 9.08333 55 0
+i 1 20.438 2.75 8.75 55 0
+i 1 21.8978 1 8.66666 55 0
+i 1 22.2628 1 9.66666 55 0
+i 1 22.6277 2 9.33333 55 0
+i 1 23.5401 1 9.33333 55 0
+i 1 23.7226 1 9.25 55 0
+i 1 23.9051 1 9.08333 55 0
+i 1 24.0876 1 9.25 55 0
+i 1 24.2701 1 9.41666 55 0
+i 1 24.4526 1.25 9.5 55 0
+i 1 24.8175 2 9.66666 55 0
+i 1 25.7299 1 9.41666 55 0
+i 1 25.9124 1 9.5 55 0
+i 1 26.0949 1 9.66666 55 0
+i 1 26.2774 2 9.08333 55 0
+i 1 27.3723 1 9.5 55 0
+i 1 27.7372 2 9.16666 55 0
+i 1 28.8321 1 9.33333 55 0
+i 1 29.1971 2 9.08333 55 0
+i 1 30.292 1 9.16666 55 0
+i 1 30.6569 2 8.91666 55 0
+i 1 31.7518 1 9.08333 55 0
+i 1 32.1168 1.75 8.75 55 0
+i 1 37.9562 1.5 9.33333 55 0
+i 1 38.6861 1.5 8.75 55 0
+i 1 39.4161 1.5 9.08333 55 0
+i 1 40.146 1.5 9.33333 55 0
+i 1 40.8759 1.5 9.5 55 0
+i 1 41.6058 1 9.33333 55 0
+i 1 41.9708 1 9.16666 55 0
+i 1 42.3358 1.75 9.08333 55 0
+i 1 43.2482 1 8.91666 55 0
+i 1 43.4307 1 9.08333 55 0
+i 1 43.6131 1 9.25 55 0
+i 1 43.7956 1.75 9.33333 55 0
+i 1 45.6204 1 9.66666 55 0
+i 1 45.9854 2.25 9.33333 55 0
+i 1 47.0803 1 9.25 55 0
+i 1 47.2628 1 9.33333 55 0
+i 1 47.4453 2 9.5 55 0
+i 1 48.3577 1 8.91666 55 0
+i 1 48.5401 1 9.08333 55 0
+i 1 48.7226 1 9.25 55 0
+i 1 48.9051 2 9.33333 55 0
+i 1 50 1 9.5 55 0
+i 1 50.365 1.75 9.16666 55 0
+i 1 51.4599 1 9.5 55 0
+i 1 51.8248 1 9.16666 55 0
+i 1 52.1898 1.5 10.1667 55 0
+i 1 52.9197 1 10.0833 55 0
+i 1 53.1022 1 9.91666 55 0
+i 1 53.2847 1 10.0833 55 0
+i 1 53.4672 1 9.91666 55 0
+i 1 53.6496 1 9.83333 55 0
+i 1 53.8321 1 10.0833 55 0
+i 1 54.0146 1.75 9.5 55 0
+i 1 55.1095 1 9.5 55 0
+i 1 55.4745 1.25 9.16666 55 0
+i 1 56.0219 1 9.16666 55 0
+i 1 56.2044 1.5 9.08333 55 0
+i 1 57.2993 1 10.0833 55 0
+i 1 57.6642 1.5 9.75 55 0
+i 1 58.7591 1 9.91666 55 0
+i 1 59.1241 1 9.41666 55 0
+i 1 59.3066 1 9.5 55 0
+i 1 59.4891 1.25 9.66666 55 0
+i 1 60.0365 1 9.08333 55 0
+i 1 60.219 1 9.25 55 0
+i 1 60.4015 1 9.41666 55 0
+i 1 60.5839 1.75 9.5 55 0
+i 1 61.4964 1 9.25 55 0
+i 1 61.6788 1 9.33333 55 0
+i 1 61.8613 1 9.5 55 0
+i 1 62.0438 1.75 9.66666 55 0
+i 1 62.9562 1 9.91666 55 0
+i 1 63.1387 1 9.75 55 0
+i 1 63.3212 1 9.66666 55 0
+i 1 63.5036 1.75 9.5 55 0
+i 1 64.4161 1 9.75 55 0
+i 1 64.5985 1 9.66666 55 0
+i 1 64.781 1 9.5 55 0
+i 1 64.9635 1.75 9.33333 55 0
+i 1 65.8759 1 9.66666 55 0
+i 1 66.0584 1 9.5 55 0
+i 1 66.2409 1 9.33333 55 0
+i 1 66.4234 1.75 9.25 55 0
+i 1 67.3358 1 9.08333 55 0
+i 1 67.5182 1 9 55 0
+i 1 67.7007 1 9.25 55 0
+i 1 67.8832 1 9.08333 55 0
+i 1 68.0657 1 9.25 55 0
+i 1 68.2482 1.5 9.33333 55 0
+i 1 68.7956 1 9.25 55 0
+i 1 68.9781 1 9.08333 55 0
+i 1 69.1606 1 9.33333 55 0
+i 1 69.3431 1 9.25 55 0
+i 1 69.5255 1 9.33333 55 0
+i 1 69.708 1.5 9.5 55 0
+i 1 70.2555 1 9.33333 55 0
+i 1 70.438 1 9.25 55 0
+i 1 70.6204 1 9.5 55 0
+i 1 70.8029 1 9.33333 55 0
+i 1 70.9854 1 9.5 55 0
+i 1 71.1679 1.5 9.66666 55 0
+i 1 71.7153 1 9.5 55 0
+i 1 71.8978 1 9.41666 55 0
+i 1 72.0803 1 9.66666 55 0
+i 1 72.2628 1 9.5 55 0
+i 1 72.4453 1 9.66666 55 0
+i 1 72.6277 1.5 9.75 55 0
+i 1 73.3577 1.5 9.66666 55 0
+i 1 74.0876 1 9.5 55 0
+i 1 74.4526 1 9.33333 55 0
+i 1 74.8175 1.5 10.0833 55 0
+i 1 75.5474 1 10 55 0
+i 1 75.9124 1 10.0833 55 0
+i 1 76.2774 1 9.66666 55 0
+i 1 76.6423 1.5 9.33333 55 0
+i 1 77.7372 1 9.33333 55 0
+i 1 78.1022 1.75 9.08333 55 0
+i 1 79.1971 1 10.0833 55 0
+i 1 79.562 1.75 9.75 55 0
+i 1 80.6569 1 9.75 55 0
+i 1 81.0219 1.75 9.5 55 0
+i 1 81.9343 1 10.3333 55 0
+i 1 82.1168 1 10.1667 55 0
+i 1 82.2993 1 10.0833 55 0
+i 1 82.4818 1 9.91666 55 0
+i 1 82.6642 1 9.75 55 0
+i 1 82.8467 1 9.66666 55 0
+i 1 83.0292 1 9.5 55 0
+i 1 83.2117 1 9.33333 55 0
+i 1 83.5766 1 9.5 55 0
+i 1 83.9416 2 9.16666 55 0
+i 1 85.0365 1 9.91666 55 0
+i 1 85.4015 1.75 9.66666 55 0
+i 1 86.3139 1 10.0833 55 0
+i 1 86.4964 1 9.91666 55 0
+i 1 86.6788 1 9.75 55 0
+i 1 86.8613 1 9.66666 55 0
+i 1 87.0438 1 9.5 55 0
+i 1 87.2263 1 9.33333 55 0
+i 1 87.4088 1 9.16666 55 0
+i 1 87.5912 1 9.08333 55 0
+i 1 87.7737 1 9.75 55 0
+i 1 87.9562 1 9.66666 55 0
+i 1 88.1387 1 9.58333 55 0
+i 1 88.3212 1.75 9.66666 55 0
+i 1 89.2336 1 9.75 55 0
+i 1 89.4161 1 9.66666 55 0
+i 1 89.5985 1 9.58333 55 0
+i 1 89.781 2 9.66666 55 0
+i 1 90.6934 1 9.91666 55 0
+i 1 90.8759 1 9.83333 55 0
+i 1 91.0584 1 9.66666 55 0
+i 1 91.2409 1 9.83333 55 0
+i 1 91.4234 1 9.91666 55 0
+i 1 91.6058 1 10.0833 55 0
+i 1 91.9708 1.75 9.5 55 0
+i 1 93.0657 1 9.5 55 0
+i 1 93.4307 1.75 9.16666 55 0
+i 1 94.3431 1 9.58333 55 0
+i 1 94.5255 1 9.5 55 0
+i 1 94.708 1 9.41666 55 0
+i 1 94.8905 1.75 9.5 55 0
+i 1 95.8029 1 9.58333 55 0
+i 1 95.9854 1 9.5 55 0
+i 1 96.1679 1 9.41666 55 0
+i 1 96.3504 1.75 9.5 55 0
+i 1 110.949 1.5 9.66666 55 0
+i 1 111.679 1.5 9.08333 55 0
+i 1 112.409 1.5 9.33333 55 0
+i 1 113.139 1.5 9.66666 55 0
+i 1 113.869 1.5 9.91666 55 0
+i 1 114.599 1 9.83333 55 0
+i 1 114.964 1 9.66666 55 0
+i 1 115.328 1.75 9.58333 55 0
+i 1 116.241 1 9.25 55 0
+i 1 116.423 1 9.41666 55 0
+i 1 116.606 1 9.58333 55 0
+i 1 116.788 1.75 9.66666 55 0
+i 1 117.701 1 9.75 55 0
+i 1 117.883 1 9.91666 55 0
+i 1 118.066 1 9.66666 55 0
+i 1 118.248 1 9.75 55 0
+i 1 118.431 1 9.66666 55 0
+i 1 118.613 1.5 9.5 55 0
+i 1 119.161 1 9.66666 55 0
+i 1 119.343 1 9.75 55 0
+i 1 119.526 1 9.5 55 0
+i 1 119.708 1 9.66666 55 0
+i 1 119.891 1 9.5 55 0
+i 1 120.073 1.25 9.33333 55 0
+i 1 120.62 1 9.5 55 0
+i 1 120.803 1 9.58333 55 0
+i 1 120.985 1 9.33333 55 0
+i 1 121.168 1 9.5 55 0
+i 1 121.35 1 9.33333 55 0
+i 1 121.533 1.5 9.25 55 0
+i 1 122.08 1 9.33333 55 0
+i 1 122.263 1 9.5 55 0
+i 1 122.445 1 9.25 55 0
+i 1 122.628 3.5 9.33333 55 0
+i 1 124.818 1.5 9.25 55 0
+i 1 125.547 1.75 9.33333 55 0
+i 1 126.642 1 9.33333 55 0
+i 1 127.007 1.75 9.08333 55 0
+i 1 128.102 1 10.0833 55 0
+i 1 128.467 1.75 9.75 55 0
+i 1 129.562 1 9.5 55 0
+i 1 129.927 1.75 9.25 55 0
+i 1 131.022 1 9.5 55 0
+i 1 131.387 4 9.91666 55 0
+i 1 133.759 1 9.91666 55 0
+i 1 133.942 1 9.75 55 0
+i 1 134.124 1 9.66666 55 0
+i 1 134.307 1.75 9.75 55 0
+i 1 135.219 1 9.91666 55 0
+i 1 135.401 1 10.0833 55 0
+i 1 135.584 1 10.1667 55 0
+i 1 135.766 1 10.3333 55 0
+i 1 135.949 1 9.75 55 0
+i 1 136.131 1 9.58333 55 0
+i 1 136.314 1 9.5 55 0
+i 1 136.496 2 9.58333 55 0
+i 1 137.591 1.25 9.5 55 0
+i 1 138.139 1 9.66666 55 0
+i 1 138.321 1 9.83333 55 0
+i 1 138.504 1 9.91666 55 0
+i 1 138.686 1 10.0833 55 0
+i 1 138.869 1 9.5 55 0
+i 1 139.051 1 9.33333 55 0
+i 1 139.234 1 9.16666 55 0
+i 1 139.416 1.75 9.33333 55 0
+i 1 140.328 1 9.16666 55 0
+i 1 140.511 1 9.33333 55 0
+i 1 140.693 1 9.58333 55 0
+i 1 140.876 2 9.5 55 0
+i 1 141.971 1 9.33333 55 0
+i 1 142.153 1 9.5 55 0
+i 1 142.336 2 9.58333 55 0
+i 1 143.431 1 9.5 55 0
+i 1 143.613 1 9.58333 55 0
+i 1 143.796 2 9.75 55 0
+i 1 144.891 1 9.58333 55 0
+i 1 145.073 1 9.75 55 0
+i 1 145.255 2 9.91666 55 0
+i 1 146.35 1 9.75 55 0
+i 1 146.533 1 9.91666 55 0
+i 1 146.715 1.75 10.0833 55 0
+i 1 147.628 1 9.5 55 0
+i 1 147.81 1.5 9.91666 55 0
+i 1 148.54 1 9.83333 55 0
+i 1 148.905 1.25 9.91666 55 0
+i 1 150 1 9.91666 55 0
+i 1 150.365 1.75 9.66666 55 0
+i 1 151.277 1 9.75 55 0
+i 1 151.46 1 9.66666 55 0
+i 1 151.642 1 9.5 55 0
+i 1 151.825 1.75 9.33333 55 0
+i 1 152.92 1 9.33333 55 0
+i 1 153.285 1.75 9.08333 55 0
+i 1 154.197 1 9.91666 55 0
+i 1 154.38 1 9.75 55 0
+i 1 154.562 1 9.66666 55 0
+i 1 154.745 1 9.5 55 0
+i 1 154.927 1 9.58333 55 0
+i 1 155.109 1 9.5 55 0
+i 1 155.292 1 9.41666 55 0
+i 1 155.474 1.75 9.5 55 0
+i 1 156.387 1 9.58333 55 0
+i 1 156.569 1 9.5 55 0
+i 1 156.752 1 9.41666 55 0
+i 1 156.934 1.75 9.5 55 0
+i 1 157.847 1 9.58333 55 0
+i 1 158.029 1 9.5 55 0
+i 1 158.212 1 9.41666 55 0
+i 1 158.394 1.5 9.5 55 0
+i 1 158.942 1 9.66666 55 0
+i 1 159.124 1.25 9.75 55 0
+i 1 159.489 1.25 10.0833 55 0
+i 1 159.854 1.25 9.75 55 0
+i 1 160.584 1 9.5 55 0
+i 1 160.949 1.5 9.08333 55 0
+i 1 161.679 1.5 9.33333 55 0
+i 1 162.409 1.5 9.66666 55 0
+i 1 163.139 1.5 9.75 55 0
+i 1 163.869 1.5 9.66666 55 0
+i 1 164.599 1.5 9.5 55 0
+i 1 165.328 1.25 9.41666 55 0
+i 1 165.876 1 9.08333 55 0
+i 1 166.058 1 9.25 55 0
+i 1 166.241 1 9.41666 55 0
+i 1 166.423 1.5 9.5 55 0
+i 1 167.518 1 9.5 55 0
+i 1 167.883 1.5 9.16666 55 0
+i 1 169.526 1 9.16666 55 0
+i 1 169.708 1 9.33333 55 0
+i 1 169.891 1 9.5 55 0
+i 1 170.073 1 9.33333 55 0
+i 1 170.255 1 9.16666 55 0
+i 1 170.438 1 9.08333 55 0
+i 1 170.62 1 8.91666 55 0
+i 1 170.803 3 9.08333 55 0
+i 1 172.628 1 8.91666 55 0
+i 1 172.993 2 9.33333 55 0
+i 1 174.088 1 9.08333 55 0
+i 1 174.453 2 9.5 55 0
+i 1 175.547 1 9.25 55 0
+i 1 175.912 2 9.66666 55 0
+i 1 176.825 1 9.75 55 0
+i 1 177.007 1 9.91666 55 0
+i 1 177.19 1 9.5 55 0
+i 1 177.372 1 9.41666 55 0
+i 1 177.555 1 10.1667 55 0
+i 1 177.737 1 10.0833 55 0
+i 1 177.92 1 9.91666 55 0
+i 1 178.102 3.25 9.75 55 0
+i 1 179.927 1 9.66666 55 0
+i 1 180.109 1 9.5 55 0
+i 1 180.292 2 9.66666 55 0
+i 1 181.387 1 9.5 55 0
+i 1 181.569 1 9.41666 55 0
+i 1 181.752 2.25 9.5 55 0
+i 1 182.847 1 9.33333 55 0
+i 1 183.029 1 9.25 55 0
+i 1 183.212 3 9.33333 55 0
+i 1 184.854 1 9.16666 55 0
+i 1 185.036 1 9.33333 55 0
+i 1 185.219 1 9.08333 55 0
+i 1 185.401 1 9.16666 55 0
+i 1 185.584 1 9.5 55 0
+i 1 185.766 1 9.58333 55 0
+i 1 185.949 1 9.33333 55 0
+i 1 186.131 1 9.5 55 0
+i 1 186.314 1 9.91666 55 0
+i 1 186.496 1 9.5 55 0
+i 1 186.679 1.25 9.33333 55 0
+i 1 187.044 1 9.16666 55 0
+i 1 187.226 1 9.33333 55 0
+i 1 187.409 1 9.58333 55 0
+i 1 187.591 1 9.5 55 0
+i 1 187.774 1 9.33333 55 0
+i 1 187.956 1 9.16666 55 0
+i 1 188.139 1 9.08333 55 0
+i 1 188.321 1 8.91666 55 0
+i 1 188.504 1 8.83333 55 0
+i 1 188.686 1.25 8.91666 55 0
+i 1 189.416 1 9.08333 55 0
+i 1 189.781 1.5 9 55 0
+i 1 190.511 1.25 9.08333 55 0
+i 1 192.153 1 10.0833 55 0
+i 1 192.336 1 9.91666 55 0
+i 1 192.518 1 9.66666 55 0
+i 1 192.701 1 9.75 55 0
+i 1 192.883 1 10.0833 55 0
+i 1 193.066 1 9.5 55 0
+i 1 193.248 1 9.41666 55 0
+i 1 193.431 1.75 9.5 55 0
+i 1 194.343 1 9.75 55 0
+i 1 194.526 1 9.66666 55 0
+i 1 194.708 1 9.5 55 0
+i 1 194.891 1 9.41666 55 0
+i 1 195.073 1 9.5 55 0
+i 1 195.255 1 9.25 55 0
+i 1 195.438 1 9.41666 55 0
+i 1 195.62 1.25 9.5 55 0
+i 1 196.168 1 9.41666 55 0
+i 1 196.35 1.25 9.5 55 0
+i 1 196.898 1 9.41666 55 0
+i 1 197.08 1.25 9.5 55 0
+i 1 197.628 1 9.58333 55 0
+i 1 197.81 1.25 9.08333 55 0
+i 1 198.723 1 9.5 55 0
+i 1 198.905 1 9.66666 55 0
+i 1 199.088 1 9.91666 55 0
+i 1 199.27 1.5 9.41666 55 0
+i 1 200 2.75 9.5 55 0
+i 2 5.83942 1.75 8.5 55 0
+i 2 6.56934 1.75 8.08333 55 0
+i 2 7.29927 1.75 8.33333 55 0
+i 2 8.0292 1.75 8.66666 55 0
+i 2 8.75912 1.75 8.75 55 0
+i 2 9.48905 1.25 8.66666 55 0
+i 2 9.85401 1.25 8.5 55 0
+i 2 10.219 2 8.41667 55 0
+i 2 11.1314 1 8.08333 55 0
+i 2 11.3139 1 8.25 55 0
+i 2 11.4964 1 8.41667 55 0
+i 2 11.6788 2 8.5 55 0
+i 2 12.5912 1 8.33333 55 0
+i 2 12.7737 1 8.5 55 0
+i 2 12.9562 1 8.66666 55 0
+i 2 13.1387 2 8.75 55 0
+i 2 14.0511 1 8.66666 55 0
+i 2 14.2336 1 8.75 55 0
+i 2 14.4161 1 8.91666 55 0
+i 2 14.5985 2 9.08333 55 0
+i 2 15.5109 1 8.91666 55 0
+i 2 15.6934 1 8.75 55 0
+i 2 15.8759 1 8.66666 55 0
+i 2 16.0584 2 8.5 55 0
+i 2 16.9708 1 8.66666 55 0
+i 2 17.1533 1 8.5 55 0
+i 2 17.3358 1 8.41667 55 0
+i 2 17.5182 1.25 8.5 55 0
+i 2 17.8832 1.25 8.91666 55 0
+i 2 18.2482 1.25 8.41667 55 0
+i 2 18.6131 1.75 8.66666 55 0
+i 2 19.3431 1.25 8.08333 55 0
+i 2 19.708 2 8.5 55 0
+i 2 20.6204 1 8.58333 55 0
+i 2 20.8029 1 8.5 55 0
+i 2 20.9854 1 8.41667 55 0
+i 2 21.1679 1.25 8.5 55 0
+i 2 21.5328 1.75 9.5 55 0
+i 2 22.2628 1 9.33333 55 0
+i 2 22.4453 1 9.25 55 0
+i 2 22.6277 1 9.08333 55 0
+i 2 22.8102 1 8.91666 55 0
+i 2 22.9927 1 8.75 55 0
+i 2 23.1752 1 8.66666 55 0
+i 2 23.3577 1.25 8.5 55 0
+i 2 23.7226 1.5 8.91666 55 0
+i 2 24.2701 1 9.08333 55 0
+i 2 24.4526 1 8.91666 55 0
+i 2 24.635 1 8.75 55 0
+i 2 24.8175 1 8.91666 55 0
+i 2 25 1 9.08333 55 0
+i 2 25.1825 1 9.16666 55 0
+i 2 25.365 1 8.91666 55 0
+i 2 25.5474 2.25 8.66666 55 0
+i 2 26.6423 1 8.5 55 0
+i 2 26.8248 1 8.66666 55 0
+i 2 27.0073 2.25 8.75 55 0
+i 2 28.1022 1.25 8.91666 55 0
+i 2 28.4672 2.25 8.66666 55 0
+i 2 29.562 1.25 8.75 55 0
+i 2 29.927 2.25 8.5 55 0
+i 2 31.0219 1.25 8.66666 55 0
+i 2 31.3869 1.75 8.41667 55 0
+i 2 32.1168 1.75 8.5 55 0
+i 2 33.0292 1 9.33333 55 0
+i 2 33.2117 1 9.16666 55 0
+i 2 33.3942 1 9.08333 55 0
+i 2 33.5766 2 8.91666 55 0
+i 2 34.4891 1 9.5 55 0
+i 2 34.6715 1 9.33333 55 0
+i 2 34.854 1 9.16666 55 0
+i 2 35.0365 2 9.08333 55 0
+i 2 35.9489 1 9.58333 55 0
+i 2 36.1314 1 9.5 55 0
+i 2 36.3139 1 9.33333 55 0
+i 2 36.4964 1.75 9.16666 55 0
+i 2 37.4088 1 9.16666 55 0
+i 2 37.5912 1 9.08333 55 0
+i 2 37.7737 1 8.91666 55 0
+i 2 37.9562 1.25 8.75 55 0
+i 2 38.3212 1.25 8.58333 55 0
+i 2 38.6861 1.75 8.5 55 0
+i 2 39.4161 1 8.33333 55 0
+i 2 39.5985 1 8.83333 55 0
+i 2 39.781 1 8.75 55 0
+i 2 39.9635 1 8.66666 55 0
+i 2 40.146 2 8.75 55 0
+i 2 41.0584 1 9.33333 55 0
+i 2 41.2409 1 9.16666 55 0
+i 2 41.4234 1 9.08333 55 0
+i 2 41.6058 1 8.91666 55 0
+i 2 41.7883 1 9.08333 55 0
+i 2 41.9708 1 8.91666 55 0
+i 2 42.1533 1 8.75 55 0
+i 2 42.3358 1 8.66666 55 0
+i 2 42.5182 1 8.5 55 0
+i 2 42.7007 1.25 8.66666 55 0
+i 2 43.0657 1.25 8.5 55 0
+i 2 43.7956 1.75 8.91666 55 0
+i 2 44.5255 1.75 8.33333 55 0
+i 2 45.2555 1.75 8.66666 55 0
+i 2 45.9854 1.75 8.91666 55 0
+i 2 46.7153 1.75 9.08333 55 0
+i 2 47.4453 1.25 8.91666 55 0
+i 2 47.8102 1.25 8.75 55 0
+i 2 48.1752 2 8.66666 55 0
+i 2 49.0876 1 8.5 55 0
+i 2 49.2701 1 8.66666 55 0
+i 2 49.4526 1 8.83333 55 0
+i 2 49.635 2 8.91666 55 0
+i 2 50.5474 1 9 55 0
+i 2 50.7299 1 8.91666 55 0
+i 2 50.9124 1 8.83333 55 0
+i 2 51.0949 2 8.91666 55 0
+i 2 52.0073 1 9 55 0
+i 2 52.1898 1 8.91666 55 0
+i 2 52.3723 1 8.83333 55 0
+i 2 52.5547 1.25 8.91666 55 0
+i 2 52.9197 1.25 9.33333 55 0
+i 2 53.2847 1.25 8.83333 55 0
+i 2 53.6496 1.5 9.08333 55 0
+i 2 54.1971 1 9 55 0
+i 2 54.3796 1 8.91666 55 0
+i 2 54.562 1 8.83333 55 0
+i 2 54.7445 2 8.91666 55 0
+i 2 55.6569 1 8.83333 55 0
+i 2 55.8394 1.5 8.91666 55 0
+i 2 56.3869 1 8.91666 55 0
+i 2 56.5693 1 8.75 55 0
+i 2 56.7518 1 8.66666 55 0
+i 2 56.9343 1.25 8.5 55 0
+i 2 58.0292 1.25 9.08333 55 0
+i 2 58.3942 1.25 8.75 55 0
+i 2 58.7591 1.25 9.16666 55 0
+i 2 59.1241 1.5 9.08333 55 0
+i 2 59.6715 1 9.16666 55 0
+i 2 59.854 1 9.08333 55 0
+i 2 60.0365 1 8.91666 55 0
+i 2 60.219 1 8.75 55 0
+i 2 60.4015 1 8.91666 55 0
+i 2 60.5839 2 9.08333 55 0
+i 2 61.4964 1 9 55 0
+i 2 61.6788 1.25 9.08333 55 0
+i 2 62.2263 1 8.66666 55 0
+i 2 62.4088 1 8.75 55 0
+i 2 62.5912 1 8.91666 55 0
+i 2 62.7737 1.75 9.08333 55 0
+i 2 63.6861 1 8.5 55 0
+i 2 63.8686 1 8.66666 55 0
+i 2 64.0511 1 8.75 55 0
+i 2 64.2336 1.75 8.91666 55 0
+i 2 65.146 1 8.33333 55 0
+i 2 65.3285 1 8.5 55 0
+i 2 65.5109 1 8.66666 55 0
+i 2 65.6934 2 8.75 55 0
+i 2 66.6058 1 8.66666 55 0
+i 2 66.7883 1 8.5 55 0
+i 2 66.9708 1 8.75 55 0
+i 2 67.1533 2.5 8.66666 55 0
+i 2 68.4307 1 9.08333 55 0
+i 2 68.6131 1.25 8.75 55 0
+i 2 68.9781 2 9.08333 55 0
+i 2 69.8905 1 9.25 55 0
+i 2 70.073 1.25 9 55 0
+i 2 70.438 2 9.25 55 0
+i 2 71.3504 1 9.33333 55 0
+i 2 71.5328 2.25 9.08333 55 0
+i 2 72.6277 1 9 55 0
+i 2 72.8102 1 9.08333 55 0
+i 2 72.9927 1.25 9.25 55 0
+i 2 73.3577 1.25 9.5 55 0
+i 2 73.7226 1.25 9 55 0
+i 2 74.0876 1.5 9.25 55 0
+i 2 74.635 1 9.08333 55 0
+i 2 74.8175 1.25 9.33333 55 0
+i 2 75.365 1 9.75 55 0
+i 2 75.5474 1 9.66666 55 0
+i 2 75.7299 1.25 9.5 55 0
+i 2 76.0949 1 9.5 55 0
+i 2 76.2774 1 9.33333 55 0
+i 2 76.4599 1 9.25 55 0
+i 2 76.6423 1.75 9.08333 55 0
+i 2 77.5547 1 9.16666 55 0
+i 2 77.7372 1 9.08333 55 0
+i 2 77.9197 1 8.91666 55 0
+i 2 78.1022 1.75 8.75 55 0
+i 2 79.0146 1 9.91666 55 0
+i 2 79.1971 1 9.75 55 0
+i 2 79.3796 1 9.66666 55 0
+i 2 79.562 1.75 9.5 55 0
+i 2 80.4745 1 9.58333 55 0
+i 2 80.6569 1 9.5 55 0
+i 2 80.8394 1 9.33333 55 0
+i 2 81.0219 1.75 9.16666 55 0
+i 2 82.8467 1.25 9.16666 55 0
+i 2 83.2117 2 8.91666 55 0
+i 2 84.1241 1 9.08333 55 0
+i 2 84.3066 1 8.91666 55 0
+i 2 84.4891 1 8.75 55 0
+i 2 84.6715 1 8.66666 55 0
+i 2 84.854 1 9.33333 55 0
+i 2 85.0365 1 9.16666 55 0
+i 2 85.219 1 9.08333 55 0
+i 2 85.4015 1 8.91666 55 0
+i 2 85.5839 1 9.16666 55 0
+i 2 85.7664 1 9.08333 55 0
+i 2 85.9489 1 9.5 55 0
+i 2 86.1314 1.25 9.33333 55 0
+i 2 86.4964 1.25 8.66666 55 0
+i 2 86.8613 2.25 8.33333 55 0
+i 2 87.9562 1.25 9 55 0
+i 2 88.3212 1 8.91666 55 0
+i 2 88.5036 1 9.41666 55 0
+i 2 88.6861 1 9.33333 55 0
+i 2 88.8686 1 9.25 55 0
+i 2 89.0511 2 9.33333 55 0
+i 2 89.9635 1 9.41666 55 0
+i 2 90.146 1 9.33333 55 0
+i 2 90.3285 1 9.25 55 0
+i 2 90.5109 2.5 9.33333 55 0
+i 2 91.7883 1.25 9.33333 55 0
+i 2 92.1533 1 9.16666 55 0
+i 2 92.3358 1 9.08333 55 0
+i 2 92.5182 1 8.91666 55 0
+i 2 92.7007 2 9.08333 55 0
+i 2 93.6131 1 9 55 0
+i 2 93.7956 1 8.91666 55 0
+i 2 93.9781 1 8.83333 55 0
+i 2 94.1606 2 8.91666 55 0
+i 2 95.073 1 9 55 0
+i 2 95.2555 1 8.91666 55 0
+i 2 95.438 1 8.83333 55 0
+i 2 95.6204 1.25 8.91666 55 0
+i 2 95.9854 1.5 9 55 0
+i 2 96.5328 1 9.08333 55 0
+i 2 96.7153 1 9 55 0
+i 2 96.8978 1 9.08333 55 0
+i 2 97.0803 2.25 9.25 55 0
+i 2 98.1752 1.25 9.16666 55 0
+i 2 98.5401 1.25 8.91666 55 0
+i 2 98.9051 1.25 8.66666 55 0
+i 2 99.2701 2.25 9.08333 55 0
+i 2 100.365 1.25 8.5 55 0
+i 2 100.73 2.25 9.16666 55 0
+i 2 101.825 1.25 8.33333 55 0
+i 2 102.19 2.25 9.08333 55 0
+i 2 103.285 1.25 9.16666 55 0
+i 2 103.65 2 8.91666 55 0
+i 2 104.562 1 9.16666 55 0
+i 2 104.745 1 9.08333 55 0
+i 2 104.927 1 8.91666 55 0
+i 2 105.109 1.75 9.08333 55 0
+i 2 105.839 1.75 8.5 55 0
+i 2 106.569 1.75 8.75 55 0
+i 2 107.299 1.75 9.08333 55 0
+i 2 108.029 1.75 9.33333 55 0
+i 2 108.759 1.25 9.25 55 0
+i 2 109.124 1.25 9.08333 55 0
+i 2 109.489 2 9 55 0
+i 2 110.401 1 8.66666 55 0
+i 2 110.584 1 8.83333 55 0
+i 2 110.766 1 9 55 0
+i 2 110.949 1 9.08333 55 0
+i 2 111.131 1 9.16666 55 0
+i 2 111.314 1 9.08333 55 0
+i 2 111.496 1 9 55 0
+i 2 111.679 1 9.08333 55 0
+i 2 111.861 1 9.5 55 0
+i 2 112.044 1 9.33333 55 0
+i 2 112.226 1 9.25 55 0
+i 2 112.409 1 9.08333 55 0
+i 2 112.591 1 9.16666 55 0
+i 2 112.774 1 9.08333 55 0
+i 2 112.956 1 9 55 0
+i 2 113.139 1 9.08333 55 0
+i 2 113.321 1 9.5 55 0
+i 2 113.504 1 9.33333 55 0
+i 2 113.686 1 9.25 55 0
+i 2 113.869 1 9.16666 55 0
+i 2 114.051 1 9.83333 55 0
+i 2 114.234 1 9.66666 55 0
+i 2 114.416 1 9.5 55 0
+i 2 114.599 1 9.41666 55 0
+i 2 114.781 1 9.25 55 0
+i 2 114.964 1 9.16666 55 0
+i 2 115.146 1 9.41666 55 0
+i 2 115.328 1 8.83333 55 0
+i 2 115.511 1 8.91666 55 0
+i 2 115.693 1 8.83333 55 0
+i 2 115.876 1 8.91666 55 0
+i 2 116.058 1.25 9.08333 55 0
+i 2 116.423 1.25 8.83333 55 0
+i 2 116.788 1.25 8.66666 55 0
+i 2 117.153 1.25 9.25 55 0
+i 2 117.518 2 9.08333 55 0
+i 2 118.431 1 9 55 0
+i 2 118.613 1 8.83333 55 0
+i 2 118.796 1 9.08333 55 0
+i 2 118.978 1.25 9 55 0
+i 2 119.343 1.25 9.08333 55 0
+i 2 119.708 1.25 9.25 55 0
+i 2 120.073 1 9.08333 55 0
+i 2 120.255 1 9 55 0
+i 2 120.438 2.25 9.08333 55 0
+i 2 121.533 1 8.91666 55 0
+i 2 121.715 1 8.83333 55 0
+i 2 121.898 1.25 8.91666 55 0
+i 2 122.993 1.5 8.83333 55 0
+i 2 123.54 1 8.91666 55 0
+i 2 123.723 1 9.08333 55 0
+i 2 123.905 1 8.83333 55 0
+i 2 124.088 1.25 8.91666 55 0
+i 2 124.453 1 8.75 55 0
+i 2 124.635 1 9 55 0
+i 2 124.818 1 8.91666 55 0
+i 2 125 1 8.75 55 0
+i 2 125.182 1 8.66666 55 0
+i 2 125.365 1 8.5 55 0
+i 2 125.547 1.25 8.66666 55 0
+i 2 125.912 1.25 8.91666 55 0
+i 2 126.277 1.25 8.66666 55 0
+i 2 126.642 1.5 8.91666 55 0
+i 2 127.19 1 8.91666 55 0
+i 2 127.372 1 8.75 55 0
+i 2 127.555 1 8.66666 55 0
+i 2 127.737 1.25 8.75 55 0
+i 2 128.832 1.25 9.08333 55 0
+i 2 129.197 1.25 8.75 55 0
+i 2 129.562 1.5 9.08333 55 0
+i 2 130.109 1 9.08333 55 0
+i 2 130.292 1 8.91666 55 0
+i 2 130.474 1 8.83333 55 0
+i 2 130.657 1.75 8.91666 55 0
+i 2 131.752 1.25 9.66666 55 0
+i 2 132.117 1.25 9.41666 55 0
+i 2 132.482 1.5 9.5 55 0
+i 2 133.029 1 9.25 55 0
+i 2 133.212 1 9.41666 55 0
+i 2 133.394 1 9.5 55 0
+i 2 133.577 1.75 9.66666 55 0
+i 2 134.489 1 9.66666 55 0
+i 2 134.672 1 9.5 55 0
+i 2 134.854 1 9.41666 55 0
+i 2 135.036 1.75 9.5 55 0
+i 2 136.679 1 9.16666 55 0
+i 2 136.861 1 9.08333 55 0
+i 2 137.044 1 8.91666 55 0
+i 2 137.226 1 8.75 55 0
+i 2 137.409 1 9.33333 55 0
+i 2 137.591 1 9.16666 55 0
+i 2 137.774 1 9.08333 55 0
+i 2 137.956 1.25 9.16666 55 0
+i 2 139.599 1 8.91666 55 0
+i 2 139.781 1 8.83333 55 0
+i 2 139.964 1 8.66666 55 0
+i 2 140.146 1.25 8.5 55 0
+i 2 141.058 1 8.91666 55 0
+i 2 141.241 1 9.08333 55 0
+i 2 141.423 1 9.16666 55 0
+i 2 141.606 1.25 8.58333 55 0
+i 2 142.518 1 9.08333 55 0
+i 2 142.701 1 9.16666 55 0
+i 2 142.883 1 9.33333 55 0
+i 2 143.066 1.25 8.83333 55 0
+i 2 143.978 1 9.16666 55 0
+i 2 144.161 1 9.5 55 0
+i 2 144.343 1 9 55 0
+i 2 144.526 1.25 8.91666 55 0
+i 2 145.438 1 9.08333 55 0
+i 2 145.62 1 9.16666 55 0
+i 2 145.803 1 8.91666 55 0
+i 2 145.985 1.25 9.08333 55 0
+i 2 148.358 1 9.58333 55 0
+i 2 148.54 1 9.5 55 0
+i 2 148.723 1 9.33333 55 0
+i 2 148.905 1.25 9.16666 55 0
+i 2 149.818 1 9.33333 55 0
+i 2 150 1 9.16666 55 0
+i 2 150.182 1 9.08333 55 0
+i 2 150.365 1.25 8.91666 55 0
+i 2 151.46 1.25 8.91666 55 0
+i 2 151.825 1.77083 8.66666 55 0
+i 2 152.737 1 9.16666 55 0
+i 2 152.92 1 9.08333 55 0
+i 2 153.102 1 8.91666 55 0
+i 2 153.285 1.75 8.75 55 0
+i 2 154.38 1.25 9.08333 55 0
+i 2 154.745 2 8.75 55 0
+i 2 155.657 1 8.91666 55 0
+i 2 155.839 1 8.75 55 0
+i 2 156.022 1 8.66666 55 0
+i 2 156.204 1.25 8.5 55 0
+i 2 156.569 1.5 8.75 55 0
+i 2 157.117 1 8.91666 55 0
+i 2 157.299 1 8.75 55 0
+i 2 157.482 1 8.66666 55 0
+i 2 157.664 1.25 8.5 55 0
+i 2 158.029 1.25 8.66666 55 0
+i 2 158.394 1 8.75 55 0
+i 2 158.577 1 9.08333 55 0
+i 2 158.759 1 9.25 55 0
+i 2 158.942 1 9.41666 55 0
+i 2 159.124 1.25 9.5 55 0
+i 2 159.489 1.25 9.75 55 0
+i 2 159.854 1.25 9.5 55 0
+i 2 160.219 1.25 9.08333 55 0
+i 2 160.584 1.75 8.75 55 0
+i 2 161.314 1.75 8.33333 55 0
+i 2 162.044 1.75 8.66666 55 0
+i 2 162.774 1.75 9 55 0
+i 2 163.504 1.75 9.08333 55 0
+i 2 164.234 1.25 8.91666 55 0
+i 2 164.599 1.25 8.75 55 0
+i 2 164.964 2 8.66666 55 0
+i 2 165.876 1 8.41667 55 0
+i 2 166.058 1 8.5 55 0
+i 2 166.241 1 8.66666 55 0
+i 2 166.423 1.25 8.08333 55 0
+i 2 166.788 1.25 9.08333 55 0
+i 2 167.153 1.75 8.83333 55 0
+i 2 168.066 1 8.83333 55 0
+i 2 168.248 1 8.91666 55 0
+i 2 168.431 1 9.08333 55 0
+i 2 168.613 1 8.91666 55 0
+i 2 168.796 1 8.75 55 0
+i 2 168.978 1 8.66666 55 0
+i 2 169.161 1 8.5 55 0
+i 2 169.343 1.25 8.33333 55 0
+i 2 170.985 1 8.66666 55 0
+i 2 171.168 1 8.75 55 0
+i 2 171.35 1 8.91666 55 0
+i 2 171.533 1 8.75 55 0
+i 2 171.715 1 8.58333 55 0
+i 2 171.898 1 8.5 55 0
+i 2 172.08 1 8.41667 55 0
+i 2 172.263 1.25 8.5 55 0
+i 2 173.358 1.25 8.66666 55 0
+i 2 173.723 1.25 8.33333 55 0
+i 2 174.818 1.25 8.83333 55 0
+i 2 175.182 1.25 8.5 55 0
+i 2 176.277 1.25 9 55 0
+i 2 176.642 1.25 8.66666 55 0
+i 2 178.285 1 9.5 55 0
+i 2 178.467 1 9.41666 55 0
+i 2 178.65 1 9.66666 55 0
+i 2 178.832 1 9.5 55 0
+i 2 179.015 1 9.33333 55 0
+i 2 179.197 1 9.16666 55 0
+i 2 179.38 1 9.08333 55 0
+i 2 179.562 1 9.16666 55 0
+i 2 179.745 1 9.08333 55 0
+i 2 179.927 1.5 8.91666 55 0
+i 2 180.474 1 9.08333 55 0
+i 2 180.657 1 9.16666 55 0
+i 2 180.839 1 8.91666 55 0
+i 2 181.022 1 9.08333 55 0
+i 2 181.204 1 8.91666 55 0
+i 2 181.387 1.5 8.75 55 0
+i 2 181.934 1 8.91666 55 0
+i 2 182.117 1 9.08333 55 0
+i 2 182.299 1 8.75 55 0
+i 2 182.482 1 8.91666 55 0
+i 2 182.664 1 8.75 55 0
+i 2 182.847 1.5 8.58333 55 0
+i 2 183.394 1 8.83333 55 0
+i 2 183.577 1 8.91666 55 0
+i 2 183.759 1 8.66666 55 0
+i 2 183.942 1 8.83333 55 0
+i 2 184.124 1 8.91666 55 0
+i 2 184.307 1.25 9.08333 55 0
+i 2 184.672 1.25 8.5 55 0
+i 2 187.226 1.25 8.08333 55 0
+i 2 187.591 1.25 8.16667 55 0
+i 2 187.956 1.25 8.33333 55 0
+i 2 188.321 1.75 8.5 55 0
+i 2 189.416 1.25 8.08333 55 0
+i 2 189.781 1.75 8.25 55 0
+i 2 190.876 1.75 8.75 55 0
+i 2 191.606 1.25 8.66666 55 0
+i 2 192.701 1.75 9.08333 55 0
+i 2 193.431 1.75 8.5 55 0
+i 2 194.161 1.75 8.75 55 0
+i 2 194.891 1.75 9.08333 55 0
+i 2 195.62 1.75 9.16666 55 0
+i 2 196.35 1.25 9.08333 55 0
+i 2 196.715 1.25 8.91666 55 0
+i 2 197.08 2 8.83333 55 0
+i 2 197.993 1 8.5 55 0
+i 2 198.175 1 8.66666 55 0
+i 2 198.358 1 8.83333 55 0
+i 2 198.54 2 8.91666 55 0
+i 2 199.453 1 8.83333 55 0
+i 2 199.635 1 8.91666 55 0
+i 2 199.818 1 8.66666 55 0
+i 2 200 2.75 8.83333 55 0
+i 3 14.5985 1.75 8.08333 55 0
+i 3 15.3285 1.75 7.5 55 0
+i 3 16.0584 1.75 7.75 55 0
+i 3 16.7883 1.75 8.08333 55 0
+i 3 17.5182 1.75 8.16667 55 0
+i 3 18.2482 1.25 8.08333 55 0
+i 3 18.6131 1.25 7.91667 55 0
+i 3 18.9781 2 7.75 55 0
+i 3 19.8905 1 7.66667 55 0
+i 3 20.073 1 7.75 55 0
+i 3 20.2555 1 7.91667 55 0
+i 3 20.438 2 8.08333 55 0
+i 3 21.3504 1 8.16667 55 0
+i 3 21.5328 1 8.08333 55 0
+i 3 21.7153 1 8 55 0
+i 3 21.8978 2 8.08333 55 0
+i 3 22.8102 1 8.16667 55 0
+i 3 22.9927 1 8.08333 55 0
+i 3 23.1752 1 8 55 0
+i 3 23.3577 1.25 8.08333 55 0
+i 3 23.7226 1.25 8.5 55 0
+i 3 24.0876 1.25 7.91667 55 0
+i 3 24.4526 1.75 8.16667 55 0
+i 3 25.1825 1.25 7.66667 55 0
+i 3 25.5474 1.25 8.08333 55 0
+i 3 25.9124 1.25 7.91667 55 0
+i 3 26.2774 1 7.75 55 0
+i 3 26.4599 1 7.66667 55 0
+i 3 26.6423 1 7.75 55 0
+i 3 26.8248 1 7.91667 55 0
+i 3 27.0073 1.25 8.08333 55 0
+i 3 27.9197 1 7.5 55 0
+i 3 28.1022 1 7.66667 55 0
+i 3 28.2847 1 7.75 55 0
+i 3 28.4672 1.25 7.91667 55 0
+i 3 29.3796 1 7.41667 55 0
+i 3 29.562 1 7.5 55 0
+i 3 29.7445 1 7.66667 55 0
+i 3 29.927 1.25 7.75 55 0
+i 3 30.8394 1 7.25 55 0
+i 3 31.0219 1 7.41667 55 0
+i 3 31.2044 1 7.5 55 0
+i 3 31.3869 1.25 7.66667 55 0
+i 3 32.2993 1 8.08333 55 0
+i 3 32.4818 1 8.16667 55 0
+i 3 32.6642 1 8.33333 55 0
+i 3 32.8467 2 8.5 55 0
+i 3 33.7591 1 8.25 55 0
+i 3 33.9416 1 8.33333 55 0
+i 3 34.1241 1 8.5 55 0
+i 3 34.3066 2 8.66666 55 0
+i 3 35.219 1 8.41667 55 0
+i 3 35.4015 1 8.5 55 0
+i 3 35.5839 1 8.66666 55 0
+i 3 35.7664 1.75 8.75 55 0
+i 3 36.6788 1 8.75 55 0
+i 3 36.8613 1 8.66666 55 0
+i 3 37.0438 1 8.5 55 0
+i 3 37.2263 3.25 8.33333 55 0
+i 3 39.0511 1.25 8.16667 55 0
+i 3 39.4161 1.25 8.08333 55 0
+i 3 39.781 1.25 8.33333 55 0
+i 3 40.146 2 8.08333 55 0
+i 3 41.0584 1 8.08333 55 0
+i 3 41.2409 1 7.91667 55 0
+i 3 41.4234 1 7.75 55 0
+i 3 41.6058 1 7.66667 55 0
+i 3 41.7883 1 7.5 55 0
+i 3 41.9708 1.75 7.66667 55 0
+i 3 42.7007 1 8.08333 55 0
+i 3 42.8832 1 7.91667 55 0
+i 3 43.0657 1 7.75 55 0
+i 3 43.2482 1 7.66667 55 0
+i 3 43.4307 1.75 7.75 55 0
+i 3 44.1606 1 7.66667 55 0
+i 3 44.3431 1 7.5 55 0
+i 3 44.5255 1 7.66667 55 0
+i 3 44.708 1 7.75 55 0
+i 3 44.8905 1.5 7.91667 55 0
+i 3 45.438 1 8.08333 55 0
+i 3 45.6204 1.75 8.16667 55 0
+i 3 46.3504 1 8.08333 55 0
+i 3 46.5328 1 7.91667 55 0
+i 3 46.7153 1.75 7.75 55 0
+i 3 49.635 1.75 8.5 55 0
+i 3 50.365 1.75 7.91667 55 0
+i 3 51.0949 1.75 8.16667 55 0
+i 3 51.8248 1.75 8.5 55 0
+i 3 52.5547 1.75 8.58333 55 0
+i 3 53.2847 1.25 8.5 55 0
+i 3 53.6496 1.25 8.33333 55 0
+i 3 54.0146 2 8.16667 55 0
+i 3 54.927 1 8.08333 55 0
+i 3 55.1095 1 8.16667 55 0
+i 3 55.292 1 8.33333 55 0
+i 3 55.4745 1 8.5 55 0
+i 3 55.6569 1 8.58333 55 0
+i 3 55.8394 1 8.5 55 0
+i 3 56.0219 1 8.41667 55 0
+i 3 56.2044 1 8.5 55 0
+i 3 56.3869 1 7.66667 55 0
+i 3 56.5693 1 7.75 55 0
+i 3 56.7518 1 7.91667 55 0
+i 3 56.9343 1 8.08333 55 0
+i 3 57.1168 1 7.5 55 0
+i 3 57.2993 1.5 8.5 55 0
+i 3 57.8467 1 8.58333 55 0
+i 3 58.0292 1 8.5 55 0
+i 3 58.2117 1 8.41667 55 0
+i 3 58.3942 1 8.5 55 0
+i 3 58.5766 1 8.75 55 0
+i 3 58.7591 1 8.66666 55 0
+i 3 58.9416 1 8.5 55 0
+i 3 59.1241 1.25 9.08333 55 0
+i 3 59.4891 1.75 8.41667 55 0
+i 3 60.219 1 8.5 55 0
+i 3 60.4015 1 8.66666 55 0
+i 3 60.5839 2.25 8.75 55 0
+i 3 61.6788 1.25 8.66666 55 0
+i 3 62.0438 2.25 8.33333 55 0
+i 3 63.1387 1.25 8.5 55 0
+i 3 63.5036 2.25 8.25 55 0
+i 3 64.5985 1.25 8.33333 55 0
+i 3 64.9635 2.25 8.08333 55 0
+i 3 66.0584 1.25 8.25 55 0
+i 3 66.4234 2.25 8 55 0
+i 3 67.5182 1.75 7.66667 55 0
+i 3 68.2482 1.75 8.08333 55 0
+i 3 68.9781 1.75 7.75 55 0
+i 3 69.708 1.25 7.5 55 0
+i 3 70.073 1.25 8.25 55 0
+i 3 70.438 1.77083 8 55 0
+i 3 71.1679 1.25 8 55 0
+i 3 71.5328 1.25 8.08333 55 0
+i 3 71.8978 1.25 8.66666 55 0
+i 3 72.2628 1.25 8.08333 55 0
+i 3 72.6277 1.5 8.5 55 0
+i 3 73.1752 1 8.33333 55 0
+i 3 73.3577 1 8.25 55 0
+i 3 73.5401 1 8.5 55 0
+i 3 73.7226 1 8.33333 55 0
+i 3 73.9051 1 8.25 55 0
+i 3 74.0876 1 8.08333 55 0
+i 3 74.2701 1 7.91667 55 0
+i 3 74.4526 1.5 8.08333 55 0
+i 3 75 1 8.25 55 0
+i 3 75.1825 1.75 8.25 55 0
+i 3 75.9124 1.75 8.08333 55 0
+i 3 76.8248 1 8.5 55 0
+i 3 77.0073 1 8.33333 55 0
+i 3 77.1898 1 8.16667 55 0
+i 3 77.3723 1.75 8.08333 55 0
+i 3 78.2847 1 8.16667 55 0
+i 3 78.4672 1 8.08333 55 0
+i 3 78.6496 1 7.91667 55 0
+i 3 78.8321 1.75 7.75 55 0
+i 3 79.7445 1 8.91666 55 0
+i 3 79.927 1 8.75 55 0
+i 3 80.1095 1 8.66666 55 0
+i 3 80.292 1.75 8.5 55 0
+i 3 81.2044 1 8.58333 55 0
+i 3 81.3869 1 8.5 55 0
+i 3 81.5693 1 8.33333 55 0
+i 3 81.7518 1.25 8.16667 55 0
+i 3 82.1168 1.25 8.91666 55 0
+i 3 82.4818 1.75 8.66666 55 0
+i 3 83.3942 1 8.33333 55 0
+i 3 83.5766 1 8.16667 55 0
+i 3 83.7591 1 8.08333 55 0
+i 3 83.9416 2.75 7.91667 55 0
+i 3 85.5839 1 8.5 55 0
+i 3 85.7664 1 8.33333 55 0
+i 3 85.9489 1 8.16667 55 0
+i 3 86.1314 1.75 8.08333 55 0
+i 3 87.0438 1 8.16667 55 0
+i 3 87.2263 1 8.08333 55 0
+i 3 87.4088 1 7.91667 55 0
+i 3 87.5912 1.25 8.08333 55 0
+i 3 87.9562 1.25 8.25 55 0
+i 3 88.3212 1.25 8.33333 55 0
+i 3 88.6861 1.25 8.66666 55 0
+i 3 89.0511 2.25 8.33333 55 0
+i 3 90.146 1.25 8.66666 55 0
+i 3 90.5109 2.25 8.33333 55 0
+i 3 91.6058 1.25 8.58333 55 0
+i 3 91.9708 1.75 8.08333 55 0
+i 3 93.4307 1.75 8.5 55 0
+i 3 94.1606 1.75 7.91667 55 0
+i 3 94.8905 1.75 8.16667 55 0
+i 3 95.6204 1.75 8.5 55 0
+i 3 96.3504 1.75 8.75 55 0
+i 3 97.0803 1.25 8.66666 55 0
+i 3 97.4453 1.25 8.5 55 0
+i 3 97.8102 2 8.41667 55 0
+i 3 98.7226 1 8.08333 55 0
+i 3 98.9051 1 8.25 55 0
+i 3 99.0876 1 8.41667 55 0
+i 3 99.2701 1.25 8.5 55 0
+i 3 99.635 1.25 8.08333 55 0
+i 3 100 2.25 8.75 55 0
+i 3 101.095 1.25 7.91667 55 0
+i 3 101.46 2.25 8.66666 55 0
+i 3 102.555 1.25 8.75 55 0
+i 3 102.92 2 8.5 55 0
+i 3 103.832 1 8.75 55 0
+i 3 104.015 1 8.66666 55 0
+i 3 104.197 1 8.5 55 0
+i 3 104.38 2 8.41667 55 0
+i 3 105.292 1 8.58333 55 0
+i 3 105.474 1 8.5 55 0
+i 3 105.657 1 8.41667 55 0
+i 3 105.839 1 8.5 55 0
+i 3 106.022 1 8.91666 55 0
+i 3 106.204 1 8.75 55 0
+i 3 106.387 1 8.66666 55 0
+i 3 106.569 1 8.5 55 0
+i 3 106.752 1 8.58333 55 0
+i 3 106.934 1 8.5 55 0
+i 3 107.117 1 8.41667 55 0
+i 3 107.299 1 8.5 55 0
+i 3 107.482 1 8.91666 55 0
+i 3 107.664 1 8.75 55 0
+i 3 107.847 1 8.66666 55 0
+i 3 108.029 1 8.58333 55 0
+i 3 108.212 1 8.66666 55 0
+i 3 108.394 1 8.58333 55 0
+i 3 108.577 1 8.66666 55 0
+i 3 108.759 1 8.83333 55 0
+i 3 108.942 1 8.66666 55 0
+i 3 109.124 1 8.83333 55 0
+i 3 109.307 1 8.58333 55 0
+i 3 109.489 1 8.25 55 0
+i 3 109.672 1 8.33333 55 0
+i 3 109.854 1 8.25 55 0
+i 3 110.036 1 8.33333 55 0
+i 3 110.219 1.25 8.5 55 0
+i 3 110.584 1.25 8.25 55 0
+i 3 110.949 1.25 8.08333 55 0
+i 3 111.314 1.25 8.66666 55 0
+i 3 111.679 1.25 8.33333 55 0
+i 3 112.774 1.25 8.66666 55 0
+i 3 113.139 1.25 8.33333 55 0
+i 3 113.504 1.75 8.66666 55 0
+i 3 114.234 1.25 8.16667 55 0
+i 3 114.964 1 7.83333 55 0
+i 3 115.146 1 7.91667 55 0
+i 3 115.328 1.75 8.08333 55 0
+i 3 116.423 1.5 8.25 55 0
+i 3 116.971 1 8.33333 55 0
+i 3 117.153 1 8.5 55 0
+i 3 117.336 1 8.25 55 0
+i 3 117.518 1.25 8.33333 55 0
+i 3 117.883 1.25 8.41667 55 0
+i 3 118.248 2.25 8.5 55 0
+i 3 119.343 1.25 8.33333 55 0
+i 3 119.708 1.25 8.25 55 0
+i 3 120.073 1.25 8.66666 55 0
+i 3 120.438 1 8.33333 55 0
+i 3 120.62 1 8.25 55 0
+i 3 120.803 1.25 8.33333 55 0
+i 3 121.168 1.25 8.08333 55 0
+i 3 121.533 1.25 8.5 55 0
+i 3 121.898 1.25 8.58333 55 0
+i 3 122.263 1.5 8.75 55 0
+i 3 122.81 1 8.25 55 0
+i 3 122.993 1 8.33333 55 0
+i 3 123.175 1 8.5 55 0
+i 3 123.358 2 8.58333 55 0
+i 3 124.27 2 8.5 55 0
+i 3 125.182 1.5 7.91667 55 0
+i 3 125.73 1 7.91667 55 0
+i 3 125.912 1 8.08333 55 0
+i 3 126.095 1 8.25 55 0
+i 3 126.277 1.25 8.33333 55 0
+i 3 127.372 1.25 8.33333 55 0
+i 3 127.737 1.75 8.08333 55 0
+i 3 128.65 1 8.08333 55 0
+i 3 128.832 1 8.25 55 0
+i 3 129.015 1 8.41667 55 0
+i 3 129.197 1.25 8.5 55 0
+i 3 130.292 1.25 8.5 55 0
+i 3 130.657 1.75 8.25 55 0
+i 3 131.569 1 8.25 55 0
+i 3 131.752 1 8.41667 55 0
+i 3 131.934 1 8.5 55 0
+i 3 132.117 1.25 8.66666 55 0
+i 3 132.482 1.25 9.16666 55 0
+i 3 132.847 1 8.66666 55 0
+i 3 133.029 1 8.5 55 0
+i 3 133.212 1.25 8.66666 55 0
+i 3 133.577 1.75 8.41667 55 0
+i 3 134.672 1.25 8.08333 55 0
+i 3 135.036 1.75 7.75 55 0
+i 3 136.131 1.25 8.33333 55 0
+i 3 136.496 1.25 8.08333 55 0
+i 3 136.861 1.25 8.33333 55 0
+i 3 137.591 1.25 7.75 55 0
+i 3 137.956 1.75 7.5 55 0
+i 3 139.051 1.25 8.08333 55 0
+i 3 139.416 1.25 7.83333 55 0
+i 3 139.781 1.75 8.08333 55 0
+i 3 140.511 1 7.91667 55 0
+i 3 140.693 1 7.83333 55 0
+i 3 140.876 2 7.91667 55 0
+i 3 141.788 1 7.83333 55 0
+i 3 141.971 1 7.91667 55 0
+i 3 142.153 1 8.16667 55 0
+i 3 142.336 2 8.08333 55 0
+i 3 143.248 1 7.91667 55 0
+i 3 143.431 1 8.08333 55 0
+i 3 143.613 1 8.33333 55 0
+i 3 143.796 2 8.16667 55 0
+i 3 144.708 1 8.08333 55 0
+i 3 144.891 1 8.16667 55 0
+i 3 145.073 1 8.5 55 0
+i 3 145.255 2 8.33333 55 0
+i 3 146.168 1 8.16667 55 0
+i 3 146.35 1 8.33333 55 0
+i 3 146.533 1 8.58333 55 0
+i 3 146.715 1 8.5 55 0
+i 3 146.898 1 8.33333 55 0
+i 3 147.08 1 8.16667 55 0
+i 3 147.263 1 8.08333 55 0
+i 3 147.445 1.5 8.16667 55 0
+i 3 147.993 1 8.33333 55 0
+i 3 148.175 1.75 8.08333 55 0
+i 3 148.905 1 7.91667 55 0
+i 3 149.088 1 8.58333 55 0
+i 3 149.27 1 8.5 55 0
+i 3 149.453 1 8.33333 55 0
+i 3 149.635 1.75 8.16667 55 0
+i 3 150.547 1 8.33333 55 0
+i 3 150.73 1 8.16667 55 0
+i 3 150.912 1 8.08333 55 0
+i 3 151.095 1.75 7.91667 55 0
+i 3 152.007 1 8.5 55 0
+i 3 152.19 1 8.33333 55 0
+i 3 152.372 1 8.16667 55 0
+i 3 152.555 1.75 8.08333 55 0
+i 3 153.467 1 8.16667 55 0
+i 3 153.65 1 8.08333 55 0
+i 3 153.832 1 7.91667 55 0
+i 3 154.015 1.75 7.75 55 0
+i 3 154.745 1.75 8.08333 55 0
+i 3 155.474 1.75 7.5 55 0
+i 3 156.204 1.75 7.75 55 0
+i 3 156.934 1.75 8.08333 55 0
+i 3 157.664 1.75 8.16667 55 0
+i 3 158.394 1.25 8.08333 55 0
+i 3 158.759 1.25 7.91667 55 0
+i 3 159.124 2 7.75 55 0
+i 3 160.036 1 7.66667 55 0
+i 3 160.219 1 7.75 55 0
+i 3 160.401 1 7.91667 55 0
+i 3 160.584 1 8.08333 55 0
+i 3 160.766 1 8.16667 55 0
+i 3 160.949 1 8.08333 55 0
+i 3 161.131 1 8 55 0
+i 3 161.314 2 8.08333 55 0
+i 3 162.226 1 8.08333 55 0
+i 3 162.409 1 7.91667 55 0
+i 3 162.591 1 7.75 55 0
+i 3 162.774 1.25 7.66667 55 0
+i 3 163.139 1.5 7.5 55 0
+i 3 163.686 1 7.66667 55 0
+i 3 163.869 1 7.5 55 0
+i 3 164.051 1 7.41667 55 0
+i 3 164.234 1 7.5 55 0
+i 3 164.416 1 7.66667 55 0
+i 3 164.599 1 7.75 55 0
+i 3 164.781 1 7.91667 55 0
+i 3 164.964 1 8.08333 55 0
+i 3 166.606 1 8.33333 55 0
+i 3 166.788 1 8.5 55 0
+i 3 166.971 1 8.58333 55 0
+i 3 167.153 1 8.5 55 0
+i 3 167.336 1 8.33333 55 0
+i 3 167.518 1 8.16667 55 0
+i 3 167.701 1 8.08333 55 0
+i 3 167.883 1.25 7.91667 55 0
+i 3 168.248 1.25 8.5 55 0
+i 3 168.613 2 8.16667 55 0
+i 3 169.526 1 7.91667 55 0
+i 3 169.708 1 8.08333 55 0
+i 3 169.891 1 8.16667 55 0
+i 3 170.073 1 8.08333 55 0
+i 3 170.255 1 7.91667 55 0
+i 3 170.438 1 7.75 55 0
+i 3 170.62 1 7.66667 55 0
+i 3 170.803 3 7.75 55 0
+i 3 172.445 1 7.75 55 0
+i 3 172.628 1 7.66667 55 0
+i 3 172.81 1 7.5 55 0
+i 3 172.993 1.25 7.66667 55 0
+i 3 173.358 1.75 7.91667 55 0
+i 3 174.088 1 7.83333 55 0
+i 3 174.27 1 7.66667 55 0
+i 3 174.453 1.25 7.83333 55 0
+i 3 174.818 1.75 8.08333 55 0
+i 3 175.547 1 8 55 0
+i 3 175.73 1 7.83333 55 0
+i 3 175.912 1.25 8 55 0
+i 3 176.277 1.75 8.25 55 0
+i 3 177.007 1.25 8.16667 55 0
+i 3 177.372 2.25 8.08333 55 0
+i 3 178.467 1.25 7.91667 55 0
+i 3 178.832 1.25 8.08333 55 0
+i 3 179.197 1.75 8.5 55 0
+i 3 179.927 1.25 8.16667 55 0
+i 3 180.292 1.25 7.91667 55 0
+i 3 180.657 1.25 7.66667 55 0
+i 3 181.387 1.25 8.08333 55 0
+i 3 181.752 1.25 7.75 55 0
+i 3 182.117 1.25 7.5 55 0
+i 3 182.847 1.25 7.91667 55 0
+i 3 183.212 1.25 7.58333 55 0
+i 3 183.577 1.25 7.33333 55 0
+i 3 183.942 2 7.5 55 0
+i 3 184.854 1 7.5 55 0
+i 3 185.036 1 7.66667 55 0
+i 3 185.219 1 7.83333 55 0
+i 3 185.401 1.25 7.91667 55 0
+i 3 186.861 1.75 8.5 55 0
+i 3 187.591 1.75 7.91667 55 0
+i 3 188.321 1.75 8.16667 55 0
+i 3 189.051 1.75 8.5 55 0
+i 3 189.781 1.75 8.75 55 0
+i 3 190.511 1.25 8.66666 55 0
+i 3 190.876 1.25 8.5 55 0
+i 3 191.241 2 8.41667 55 0
+i 3 192.153 1 8.08333 55 0
+i 3 192.336 1 8.25 55 0
+i 3 192.518 1 8.41667 55 0
+i 3 192.701 1.25 8.5 55 0
+i 3 193.066 1.5 8.08333 55 0
+i 3 193.613 1 8.16667 55 0
+i 3 193.796 1 8.08333 55 0
+i 3 193.978 1 8 55 0
+i 3 194.161 1 8.08333 55 0
+i 3 194.343 1 7.25 55 0
+i 3 194.526 1 7.41667 55 0
+i 3 194.708 1 7.5 55 0
+i 3 194.891 1 7.66667 55 0
+i 3 195.073 1 7.75 55 0
+i 3 195.255 1 7.91667 55 0
+i 3 195.438 1 7.66667 55 0
+i 3 195.62 1 7.83333 55 0
+i 3 195.803 1 8.08333 55 0
+i 3 195.985 1.5 7.91667 55 0
+i 3 196.533 1 7.83333 55 0
+i 3 196.715 1.5 8.16667 55 0
+i 3 197.263 1 8.08333 55 0
+i 3 197.445 1.75 8.33333 55 0
+i 3 198.175 1 8.25 55 0
+i 3 198.358 1 8.08333 55 0
+i 3 198.54 1.25 8.25 55 0
+i 3 198.905 1.75 8.16667 55 0
+i 3 199.635 1 8.08333 55 0
+i 3 199.818 1 7.91667 55 0
+i 3 200 2.75 8.08333 55 0
+i 4 20.438 1.75 7.5 55 0
+i 4 21.1679 1.75 7.08333 55 0
+i 4 21.8978 1.75 7.33333 55 0
+i 4 22.6277 1.75 7.66667 55 0
+i 4 23.3577 1.75 7.75 55 0
+i 4 24.0876 1.25 7.66667 55 0
+i 4 24.4526 1.25 7.5 55 0
+i 4 24.8175 2 7.41667 55 0
+i 4 25.7299 1 7.08333 55 0
+i 4 25.9124 1 7.25 55 0
+i 4 26.0949 1 7.41667 55 0
+i 4 26.2774 2 7.5 55 0
+i 4 27.1898 1 7.33333 55 0
+i 4 27.3723 1 7.16667 55 0
+i 4 27.5547 1 7.08333 55 0
+i 4 27.7372 2 6.91667 55 0
+i 4 28.6496 1 7.16667 55 0
+i 4 28.8321 1 7.08333 55 0
+i 4 29.0146 1 6.91667 55 0
+i 4 29.1971 2 6.75 55 0
+i 4 30.1095 1 7.08333 55 0
+i 4 30.292 1 6.91667 55 0
+i 4 30.4745 1 6.75 55 0
+i 4 30.6569 2 6.66667 55 0
+i 4 31.5693 1 6.91667 55 0
+i 4 31.7518 1 6.75 55 0
+i 4 31.9343 1 6.66667 55 0
+i 4 32.1168 1.25 6.5 55 0
+i 4 32.4818 1.25 7.5 55 0
+i 4 32.8467 1.25 7.16667 55 0
+i 4 33.2117 1.25 6.91667 55 0
+i 4 33.5766 1.25 6.66667 55 0
+i 4 33.9416 1.25 7.66667 55 0
+i 4 34.3066 1.25 7.33333 55 0
+i 4 34.6715 1.25 7.08333 55 0
+i 4 35.0365 1.25 6.75 55 0
+i 4 35.4015 1.25 7.75 55 0
+i 4 35.7664 1.25 7.5 55 0
+i 4 36.1314 1.25 7.16667 55 0
+i 4 36.4964 1.25 6.91667 55 0
+i 4 36.8613 1.25 7.91667 55 0
+i 4 37.2263 1.25 7.66667 55 0
+i 4 37.5912 1.25 7.33333 55 0
+i 4 37.9562 1 7.08333 55 0
+i 4 38.1387 1 6.75 55 0
+i 4 38.3212 1 6.91667 55 0
+i 4 38.5036 1 7.08333 55 0
+i 4 38.6861 1 7.16667 55 0
+i 4 38.8686 1 7.33333 55 0
+i 4 39.0511 1 7.5 55 0
+i 4 39.2336 1 7.66667 55 0
+i 4 39.4161 2 7.75 55 0
+i 4 40.3285 1 7.58333 55 0
+i 4 40.5109 1 7.5 55 0
+i 4 40.6934 1 7.33333 55 0
+i 4 40.8759 1.75 7.16667 55 0
+i 4 41.6058 1.75 7.33333 55 0
+i 4 42.3358 1.75 7.41667 55 0
+i 4 43.0657 1.75 7.5 55 0
+i 4 43.7956 1.75 7.33333 55 0
+i 4 44.8905 1.25 7.66667 55 0
+i 4 45.2555 1.25 7.33333 55 0
+i 4 45.6204 1 7.91667 55 0
+i 4 45.8029 1 7.75 55 0
+i 4 45.9854 1 7.66667 55 0
+i 4 46.1679 1 7.5 55 0
+i 4 46.3504 1.5 7.58333 55 0
+i 4 46.8978 1 7.58333 55 0
+i 4 47.0803 1 7.5 55 0
+i 4 47.2628 1 7.33333 55 0
+i 4 47.4453 1 7.25 55 0
+i 4 47.6277 1 6.91667 55 0
+i 4 47.8102 1 7.08333 55 0
+i 4 47.9927 1 7.25 55 0
+i 4 48.1752 1.25 7.33333 55 0
+i 4 48.5401 1.25 7.16667 55 0
+i 4 48.9051 1.75 7.08333 55 0
+i 4 49.635 1 6.91667 55 0
+i 4 49.8175 1 7.08333 55 0
+i 4 50 1 7.16667 55 0
+i 4 50.1825 1 7.5 55 0
+i 4 50.365 1.25 7.91667 55 0
+i 4 55.4745 1.75 7.91667 55 0
+i 4 56.2044 1.75 7.5 55 0
+i 4 56.9343 1.75 7.75 55 0
+i 4 57.6642 1.75 8.08333 55 0
+i 4 58.3942 1.75 8.16667 55 0
+i 4 59.1241 1.25 8.08333 55 0
+i 4 59.4891 1.25 7.91667 55 0
+i 4 59.854 2 7.75 55 0
+i 4 60.7664 1 7.66667 55 0
+i 4 60.9489 1 7.75 55 0
+i 4 61.1314 1 7.91667 55 0
+i 4 61.3139 1.75 8.08333 55 0
+i 4 62.4088 1.25 8.08333 55 0
+i 4 62.7737 1.75 7.75 55 0
+i 4 63.8686 1.25 7.91667 55 0
+i 4 64.2336 1.75 7.66667 55 0
+i 4 65.3285 1.25 7.75 55 0
+i 4 65.6934 2 7.5 55 0
+i 4 66.6058 1 7.33333 55 0
+i 4 66.7883 1 7.25 55 0
+i 4 66.9708 1 7.5 55 0
+i 4 67.1533 1.5 7.33333 55 0
+i 4 67.7007 1 7.25 55 0
+i 4 67.8832 1.25 7.33333 55 0
+i 4 68.2482 1.25 7.08333 55 0
+i 4 68.6131 1.5 7.5 55 0
+i 4 69.1606 1 7.33333 55 0
+i 4 69.3431 1.25 7.5 55 0
+i 4 69.708 1.25 7.25 55 0
+i 4 70.073 1.5 7.66667 55 0
+i 4 70.6204 1 7.5 55 0
+i 4 70.8029 1.25 7.66667 55 0
+i 4 71.1679 1.25 7.33333 55 0
+i 4 71.5328 1.5 7.75 55 0
+i 4 72.0803 1 7.66667 55 0
+i 4 72.2628 1.25 7.75 55 0
+i 4 72.6277 1.25 7.5 55 0
+i 4 72.9927 1.75 8 55 0
+i 4 74.0876 1.25 7.66667 55 0
+i 4 74.4526 1.25 8.08333 55 0
+i 4 74.8175 1.25 7.75 55 0
+i 4 75.1825 1.25 7.5 55 0
+i 4 75.5474 1.25 7.66667 55 0
+i 4 75.9124 1.75 7.08333 55 0
+i 4 77.0073 1.25 8.08333 55 0
+i 4 77.3723 1.75 7.75 55 0
+i 4 78.4672 1.25 7.75 55 0
+i 4 78.8321 1.75 7.5 55 0
+i 4 79.927 1.25 8.5 55 0
+i 4 80.292 1.75 8.16667 55 0
+i 4 81.3869 1.25 8.16667 55 0
+i 4 81.7518 1.75 7.91667 55 0
+i 4 82.6642 1 8.08333 55 0
+i 4 82.8467 1 7.91667 55 0
+i 4 83.0292 1 7.75 55 0
+i 4 83.2117 1.75 7.66667 55 0
+i 4 84.1241 1 7.75 55 0
+i 4 84.3066 1 7.66667 55 0
+i 4 84.4891 1 7.5 55 0
+i 4 84.6715 1.75 7.33333 55 0
+i 4 87.5912 1.75 7.75 55 0
+i 4 88.3212 1.75 7.33333 55 0
+i 4 89.0511 1.75 7.66667 55 0
+i 4 89.781 1.75 7.91667 55 0
+i 4 90.5109 1.75 8.16667 55 0
+i 4 91.2409 1.25 8.08333 55 0
+i 4 91.6058 1.25 7.91667 55 0
+i 4 91.9708 2 7.83333 55 0
+i 4 92.8832 1 7.5 55 0
+i 4 93.0657 1 7.66667 55 0
+i 4 93.2482 1 7.83333 55 0
+i 4 93.4307 1.25 7.91667 55 0
+i 4 93.7956 1.25 7.5 55 0
+i 4 94.1606 1.75 7.16667 55 0
+i 4 95.2555 1.25 7.5 55 0
+i 4 95.6204 1.75 7.16667 55 0
+i 4 96.5328 1 7.33333 55 0
+i 4 96.7153 1 7.25 55 0
+i 4 96.8978 1 7.08333 55 0
+i 4 97.0803 1 7 55 0
+i 4 97.2628 1 6.66667 55 0
+i 4 97.4453 1 6.83333 55 0
+i 4 97.6277 1 7 55 0
+i 4 97.8102 1 7.08333 55 0
+i 4 97.9927 1 8.08333 55 0
+i 4 98.1752 1 7.91667 55 0
+i 4 98.3577 1 7.75 55 0
+i 4 98.5401 1 7.66667 55 0
+i 4 98.7226 1 7.75 55 0
+i 4 98.9051 1 7.91667 55 0
+i 4 99.0876 1 7.66667 55 0
+i 4 99.2701 1 7.75 55 0
+i 4 99.4526 1 7.91667 55 0
+i 4 99.635 1 7.75 55 0
+i 4 99.8175 1 7.66667 55 0
+i 4 100 1 7.5 55 0
+i 4 100.182 1 7.33333 55 0
+i 4 100.365 1 7.16667 55 0
+i 4 100.547 1 7.08333 55 0
+i 4 100.73 1 6.91667 55 0
+i 4 100.912 1 7.08333 55 0
+i 4 101.095 1 7.16667 55 0
+i 4 101.277 1 6.91667 55 0
+i 4 101.46 1 7.33333 55 0
+i 4 101.642 1 7.5 55 0
+i 4 101.825 1 7.66667 55 0
+i 4 102.007 1 7.33333 55 0
+i 4 102.19 1 7.75 55 0
+i 4 102.372 1 7.91667 55 0
+i 4 102.555 1 8.08333 55 0
+i 4 102.737 1 7.75 55 0
+i 4 102.92 1 8.16667 55 0
+i 4 103.102 1 8.08333 55 0
+i 4 103.285 1 7.91667 55 0
+i 4 103.467 1 7.75 55 0
+i 4 103.65 1 7.66667 55 0
+i 4 103.832 1 7.5 55 0
+i 4 104.015 1 7.41667 55 0
+i 4 104.197 1 7.25 55 0
+i 4 104.38 1 7.08333 55 0
+i 4 104.562 1 6.91667 55 0
+i 4 104.745 1 6.75 55 0
+i 4 104.927 1 6.66667 55 0
+i 4 105.109 1.25 6.5 55 0
+i 4 105.474 1.25 8.08333 55 0
+i 4 105.839 1.25 7.75 55 0
+i 4 106.204 1.25 7.5 55 0
+i 4 106.934 1.25 7.08333 55 0
+i 4 107.299 1.25 6.75 55 0
+i 4 107.664 1.25 6.5 55 0
+i 4 108.212 1 7.91667 55 0
+i 4 108.394 1 7.83333 55 0
+i 4 108.577 1 7.66667 55 0
+i 4 108.759 1 7.58333 55 0
+i 4 108.942 1 7.41667 55 0
+i 4 109.124 1 7.58333 55 0
+i 4 109.307 1 7.25 55 0
+i 4 109.489 1.25 7.66667 55 0
+i 4 109.854 1.25 6.66667 55 0
+i 4 110.219 1.25 7.25 55 0
+i 4 110.584 1.25 7.5 55 0
+i 4 110.949 1.25 7.33333 55 0
+i 4 112.044 1.25 8.08333 55 0
+i 4 112.409 1.75 7.83333 55 0
+i 4 113.504 1.25 8.08333 55 0
+i 4 113.869 1.25 7.83333 55 0
+i 4 114.234 1.25 7.41667 55 0
+i 4 114.599 1.25 7.16667 55 0
+i 4 114.964 1.25 6.83333 55 0
+i 4 115.693 1.25 7.25 55 0
+i 4 116.058 1.25 7.83333 55 0
+i 4 116.423 1.75 8.08333 55 0
+i 4 117.153 1.25 8 55 0
+i 4 117.518 2 8.08333 55 0
+i 4 118.431 1 8.25 55 0
+i 4 118.613 1 8.33333 55 0
+i 4 118.796 1 8.08333 55 0
+i 4 118.978 1.25 8.25 55 0
+i 4 119.343 1.25 8.08333 55 0
+i 4 119.708 1.25 8 55 0
+i 4 120.073 1.25 7.66667 55 0
+i 4 120.438 1.25 7.75 55 0
+i 4 120.803 1.75 7.83333 55 0
+i 4 121.533 1.75 7.91667 55 0
+i 4 122.263 1.75 8 55 0
+i 4 122.993 1.5 8.08333 55 0
+i 4 123.54 1 7.91667 55 0
+i 4 123.723 1 7.83333 55 0
+i 4 123.905 1 8.08333 55 0
+i 4 124.088 1.75 7.91667 55 0
+i 4 124.818 1.75 6.91667 55 0
+i 4 125.547 1.75 7.33333 55 0
+i 4 126.46 1 7.33333 55 0
+i 4 126.642 1 7.5 55 0
+i 4 126.825 1 7.66667 55 0
+i 4 127.007 1.75 7.75 55 0
+i 4 127.92 1 7.91667 55 0
+i 4 128.102 1 7.75 55 0
+i 4 128.285 1 7.66667 55 0
+i 4 128.467 1.75 7.5 55 0
+i 4 129.38 1 7.5 55 0
+i 4 129.562 1 7.66667 55 0
+i 4 129.745 1 7.75 55 0
+i 4 129.927 1.75 7.91667 55 0
+i 4 130.839 1 8.08333 55 0
+i 4 131.022 1 7.91667 55 0
+i 4 131.204 1 7.75 55 0
+i 4 131.387 1.75 7.66667 55 0
+i 4 132.299 1 7.66667 55 0
+i 4 132.482 1 7.75 55 0
+i 4 132.664 1 7.91667 55 0
+i 4 132.847 1.75 8.08333 55 0
+i 4 133.942 1.25 8.08333 55 0
+i 4 134.307 1.75 7.5 55 0
+i 4 135.219 1 7.5 55 0
+i 4 135.401 1 7.33333 55 0
+i 4 135.584 1 7.16667 55 0
+i 4 135.766 1.25 7.08333 55 0
+i 4 136.861 1.25 7.75 55 0
+i 4 137.226 1.75 7.16667 55 0
+i 4 138.139 1 7.16667 55 0
+i 4 138.321 1 7.08333 55 0
+i 4 138.504 1 6.91667 55 0
+i 4 138.686 1.25 6.83333 55 0
+i 4 139.781 1.25 7.5 55 0
+i 4 140.146 1.25 6.91667 55 0
+i 4 140.511 1.25 7.08333 55 0
+i 4 140.876 1.25 7.16667 55 0
+i 4 141.241 1.25 6.91667 55 0
+i 4 141.606 1.25 7.33333 55 0
+i 4 141.971 1.25 7.58333 55 0
+i 4 142.336 1.25 7.33333 55 0
+i 4 142.701 1.25 7.08333 55 0
+i 4 143.066 1.25 7.5 55 0
+i 4 143.431 1.25 7.83333 55 0
+i 4 143.796 1.25 7.5 55 0
+i 4 144.161 1.25 7.16667 55 0
+i 4 144.526 1.25 7.58333 55 0
+i 4 144.891 1.25 7.91667 55 0
+i 4 145.255 1.25 7.66667 55 0
+i 4 145.62 1.25 7.33333 55 0
+i 4 145.985 1.25 7.75 55 0
+i 4 146.35 1.25 8.08333 55 0
+i 4 146.715 1.25 7.83333 55 0
+i 4 147.08 1.25 7.5 55 0
+i 4 147.445 1.25 7.91667 55 0
+i 4 147.81 1.25 7.58333 55 0
+i 4 148.175 1.25 7.33333 55 0
+i 4 148.54 1.25 7.5 55 0
+i 4 148.905 1.25 7.91667 55 0
+i 4 149.27 1.25 8.16667 55 0
+i 4 149.635 1.75 7.91667 55 0
+i 4 150.73 1.25 7.91667 55 0
+i 4 151.095 1.75 7.66667 55 0
+i 4 152.19 1.25 8.08333 55 0
+i 4 152.555 1.75 7.75 55 0
+i 4 153.65 1.25 7.75 55 0
+i 4 154.015 2.25 7.5 55 0
+i 4 155.109 1.75 7.75 55 0
+i 4 155.839 1.75 7.16667 55 0
+i 4 156.569 1.75 7.5 55 0
+i 4 157.299 1.75 7.75 55 0
+i 4 158.029 1.5 7.91667 55 0
+i 4 158.577 1.25 7.75 55 0
+i 4 158.942 1 7.66667 55 0
+i 4 159.124 2 7.5 55 0
+i 4 160.036 1 7.41667 55 0
+i 4 160.219 1 7.5 55 0
+i 4 160.401 1 7.66667 55 0
+i 4 160.584 2 7.75 55 0
+i 4 161.496 1 7.75 55 0
+i 4 161.679 1 7.66667 55 0
+i 4 161.861 1 7.5 55 0
+i 4 162.044 2 7.33333 55 0
+i 4 162.956 1.25 7.25 55 0
+i 4 163.321 1 7.16667 55 0
+i 4 163.504 3 7.08333 55 0
+i 4 165.146 1 7.91667 55 0
+i 4 165.328 1 8.08333 55 0
+i 4 165.511 1 8.16667 55 0
+i 4 165.693 1 8.08333 55 0
+i 4 165.876 1 7.91667 55 0
+i 4 166.058 1 7.75 55 0
+i 4 166.241 1 7.66667 55 0
+i 4 166.423 1.75 7.83333 55 0
+i 4 167.518 1.25 7.5 55 0
+i 4 167.883 1.25 6.91667 55 0
+i 4 168.978 1.25 7.91667 55 0
+i 4 169.343 1.75 7.66667 55 0
+i 4 170.438 1.25 7.33333 55 0
+i 4 170.803 1.25 7.75 55 0
+i 4 171.168 1.25 7.33333 55 0
+i 4 171.533 1.25 7.08333 55 0
+i 4 171.898 1.25 6.75 55 0
+i 4 172.263 2 7.16667 55 0
+i 4 173.175 1 7.08333 55 0
+i 4 173.358 1 6.91667 55 0
+i 4 173.54 1 7.16667 55 0
+i 4 173.723 1 7.08333 55 0
+i 4 173.905 1 7.25 55 0
+i 4 174.088 1.5 7.33333 55 0
+i 4 174.635 1 7.25 55 0
+i 4 174.818 1 7.08333 55 0
+i 4 175 1 7.33333 55 0
+i 4 175.182 1 7.25 55 0
+i 4 175.365 1 7.41667 55 0
+i 4 175.547 1.5 7.5 55 0
+i 4 176.095 1 7.41667 55 0
+i 4 176.277 1 7.25 55 0
+i 4 176.46 1 7.5 55 0
+i 4 176.642 1 7.41667 55 0
+i 4 176.825 1 7.5 55 0
+i 4 177.007 1.5 7.66667 55 0
+i 4 177.555 1 7.5 55 0
+i 4 177.737 1 7.41667 55 0
+i 4 177.92 1 7.66667 55 0
+i 4 178.102 1.25 7.5 55 0
+i 4 178.467 1.25 7.66667 55 0
+i 4 178.832 1.25 7.75 55 0
+i 4 179.197 1.25 7.5 55 0
+i 4 179.562 1.75 7.91667 55 0
+i 4 180.657 1.25 7.33333 55 0
+i 4 181.022 1.75 7.75 55 0
+i 4 182.117 1.25 6.75 55 0
+i 4 182.482 2 7.16667 55 0
+i 4 183.394 1 7.08333 55 0
+i 4 183.577 1 7.16667 55 0
+i 4 183.759 1 6.91667 55 0
+i 4 183.942 1 7.16667 55 0
+i 4 184.124 1 7.08333 55 0
+i 4 184.307 1 6.91667 55 0
+i 4 184.489 1 6.83333 55 0
+i 4 184.672 2 6.91667 55 0
+i 4 185.584 1 6.83333 55 0
+i 4 185.766 1 6.91667 55 0
+i 4 185.949 1 7.08333 55 0
+i 4 186.131 1 7.16667 55 0
+i 4 186.314 1 6.91667 55 0
+i 4 186.496 1 7.16667 55 0
+i 4 186.679 1 7.5 55 0
+i 4 186.861 3 7.91667 55 0
+i 4 188.504 1 7.5 55 0
+i 4 188.686 1 7.33333 55 0
+i 4 188.869 1 7.08333 55 0
+i 4 189.051 1 7.16667 55 0
+i 4 189.234 1 7.5 55 0
+i 4 189.416 1 6.91667 55 0
+i 4 189.599 1 6.75 55 0
+i 4 189.781 1 6.66667 55 0
+i 4 189.964 1 7.66667 55 0
+i 4 190.146 1 7.5 55 0
+i 4 190.328 1 7.25 55 0
+i 4 190.511 1 7.33333 55 0
+i 4 190.693 1 7.66667 55 0
+i 4 190.876 1 7.08333 55 0
+i 4 191.058 1 7 55 0
+i 4 191.241 1 7.08333 55 0
+i 4 191.423 1 8.08333 55 0
+i 4 191.606 1 7.91667 55 0
+i 4 191.788 1 7.66667 55 0
+i 4 191.971 2.75 7.75 55 0
+i 4 193.431 1.75 7.16667 55 0
+</CsNotes>
+<CsScaleTargetMinima>
+i 1 0 1 6.5 55 0
+</CsScaleTargetMinima>
+<CsScaleTargetRanges>
+i 3 200 3 3.83333 0 0
+</CsScaleTargetRanges>
+<CsScaleActualMinima>
+i 1 0 1 6.5 55 0
+</CsScaleActualMinima>
+<CsScaleActualRanges>
+i 3 200 3 3.83333 0 0
+</CsScaleActualRanges>
+<CsSoundfileOptions>
+Sample=s
+N = N
+Format=A
+sr = 44100
+V = 
+R=R
+H = H
+Sample = s
+SoundPlayer=MPLAYER
+nchnls=2
+OtherOptions = -z
+Format = W
+R = R
+ksmps = 1
+kr=441
+nchnls = 2
+sr=44100
+ksmps=10
+g = g
+g=g
+</CsSoundfileOptions>
+<CsScoreOptions>
+UseEqualTemperament = true
+UseEqualTemperament=true
+DivisionsPerOctave=12
+DivisionsPerOctave = 12
+</CsScoreOptions>
+<CsTestScore>
+i  1    0 5   5.5 80 0
+i  1    5 5   6.0 80 0
+i  1  10 5   6.5 80 0
+i  1  15 5   7.0 80 0
+i  1  20 5   7.5 80 0
+i  1  25 5   8.0 80 0
+i  1  30 5   8.5 80 0
+i  1  35 5   9.0 80 0
+i  1  40 5   9.5 80 0
+i  1  45 5 10.0 80 0
+i  1  50 5 10.5 80 0
+i  1  55 5 11.0 80 0
+i  1  60 5 11.5 80 0
+i  1  65 5 12.0 80 0
+
+</CsTestScore>
+</CsScoreManager>

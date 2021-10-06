@@ -1,0 +1,101 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>srconv</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="dnoise.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../cscore/top.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/utility.htm#srconv">
+Utilities: File Conversion</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>srconv</h2>
+
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+
+<p>Convert the sample rate of an audio file.  Optionally the ratio of the orginal sample rate to the new sample rate may be linearly time-varying according to time and ratio pairs in an auxiliary file.</p>
+
+<pre><strong>csound</strong>  -U <strong>srconv</strong> [flags] inputfilename</pre>
+<p>or</p>
+<pre><strong>srconv</strong> [flags] inputfilename</pre>
+
+
+<p><em>-o filename</em> &#8211; output filename</p>
+<p><em>-r num</em> &#8211; output sample rate. <em>-r</em> should not be used if <em>-P</em> is specified.</p>
+<p><em>-P num</em> &#8211; pitch transposition ratio (srate / <em>r</em>). <em>-P</em> should not be used if <em>-r</em> is specified.</p>
+<p><em>-Q num</em> &#8211; quality factor in the range of 1 to 4. The default value is 2.</p>
+<p><em>-i filename</em> &#8211; break file</p>
+
+<p><em>-A</em>	&#8211; AIFF format output</p>
+<p><em>-W</em>	&#8211; WAV format output</p>
+<p><em>-J</em>	&#8211; IRCAM format output</p>
+<p><em>-h</em> &#8211; skip soundfile header. Not valid for AIFF or WAV output.</p>
+<p><em>-8</em> &#8211; 8-bit unsigned character sound samples</p>
+<p><em>-c</em> &#8211; 8-bit signed character sound samples</p>
+<p><em>-a</em> &#8211; alaw sound samples</p>
+<p><em>-u</em> &#8211; ulaw sound samples</p>
+<p><em>-s</em>	&#8211; short integer sound samples</p>
+<p><em>-l</em> &#8211; long integer sound samples</p>
+<p><em>-f</em> &#8211; float sound samples. (New in Csound 3.47) Floats also supported for WAV files.</p>
+
+<p><em>-K</em>	&#8211; do not generate PEAK chunks</p>
+<p><em>-R</em> &#8211; continually rewrite header while writing soundfile (WAV/AIFF)</p>
+<p><em>-H1</em> &#8211; generates a rotating line progress report. Can also be written <em>-H</em>.</p>
+<p><em>-H2</em> &#8211; generates a &quot;.&quot; every time a buffer is written</p>
+<p><em>-H3</em> &#8211; reports the size in seconds of the output</p>
+<p><em>-N</em> &#8211; sounds a bell for every buffer of the output written</p>
+<p><em>-- filename</em> &#8211; output to log file <em>filename</em></p>
+
+<p>This program performs arbitrary sample-rate conversion with high fidelity. The method is to step through the input at the desired sampling increment, and to compute the output points as appropriately weighted averages of the surrounding input points. With sample rates in a small integer ratios, the  weights are obtained from a table. With sample rates in large integer ratios, the weights are linearly interpolated from the table.</p>
+
+<p>If decimating, then the window is the impulse response of a low-pass filter with the cutoff frequency at half of the output sample rate. If interpolating, then the window is the impulse response of a lowpass filter with the cutoff frequency at half of the input sample rate.</p>
+
+<p><strong>Note</strong>: Either <em>-r</em> or <em>-P</em> must be specified, but not both.</p>
+
+<h3>Author</h3>
+<p>Mark Dolson<br>
+August, 1989</p>
+
+<p>John ffitch (Adaptation for Csound)<br>
+December, 2000<br>
+New in Csound 4.10</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="dnoise.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../cscore/top.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/utility.htm#srconv">
+Utilities: File Conversion</a>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>Zak Patch System</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigmod/fold.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="zakinit.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/zak.htm" class="toqr">
+Zak Patch System</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h1>Zak Patch System</h1>
+<hr size="2" color="#A9A9A9" noshade>
+
+<p>The zak opcodes are used to create a system for i-rate, k-rate or a-rate patching.  The zak system can be thought of as a global array of variables. These opcodes are useful for performing flexible patching or routing from one instrument to another. The system is similar to a patching matrix on a mixing console or to a modulation matrix on a synthesizer.  It is also useful whenever an array of variables is required.
+</p>
+<p>The zak system is initialized by the <a href="zakinit.htm"><strong>zakinit</strong></a> opcode, which is usually placed just after the other global initializations: <a href="../syntax/header.htm"><strong>sr</strong></a>, <a href="../syntax/header.htm"><strong>kr</strong></a>, <a href="../syntax/header.htm"><strong>ksmps</strong></a>, <a href="../syntax/header.htm"><strong>nchnls</strong></a>. The <strong>zakinit</strong> opcode defines two areas of memory, one area for i- and k-rate patching, and the other area for a-rate patching. The <strong>zakinit </strong>opcode may only be called once. Once the zak space is initialized, other zak opcodes can be used to read from, and write to the zak memory space, as well as perform various other tasks.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigmod/fold.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="zakinit.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/zak.htm" class="toqr">
+Zak Patch System</font></a>
+</body>
+
+</html>

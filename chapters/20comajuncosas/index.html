@@ -1,0 +1,92 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Analog Dreams: Modeling Commercial Synthesizers</TITLE>
+  <META NAME="Author" CONTENT="Josep M Comajuncosas">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1>19. Analog Dreams: Modeling Commercial Synthesizers<BR>
+</H1>
+
+<H2>Josep M. Comajuncosas<BR>
+</H2>
+
+<P>Csound works fine for analog synthesis! Here&acute;s a set
+of instruments useful to emulate your beloved old analog synths.
+At the end I&acute;ve included my own Roland bassline TB-303 emulator
+to see some of them in practice.</P>
+
+<H3>The Oscillators</H3>
+
+</h3>
+
+<P><I>Aliasing free band-limited analog waveforms</I> (to be used
+as audio signals)</P>
+
+<P><A HREF="instruments/square.zip">Square wave</A><BR>
+<A HREF="instruments/saw.zip">Sawtooth wave</A><BR>
+<A HREF="instruments/pwm.zip">PWM (pulse width modulation)</A><BR>
+<A HREF="instruments/triangle.zip">Triangle wave</A><BR>
+<A HREF="instruments/rampsaw.zip">Ramp/saw modulation</A></P>
+
+<P><I>Geometrically generated analog waveforms</I> (to be used
+as control signals, e.g. LFO&acute;s etc.)</P>
+
+<P><A HREF="instruments/lfo1.zip">Square wave / Sawtooth wave
+/ Triangle wave</A> : the static waveform is stored in a table.<BR>
+<A HREF="instruments/lfo2.zip">PWM (pulse width modulation) /
+Ramp/saw modulation</A> : for those instruments the duty cicle
+is updated every cycle.</P>
+
+<P>Note: use te subaudio generators with care. Those with discontinuities
+(square, saw, PWM) cause clicks in the example. At lower frequencies,
+modulating other timbral parameters and even applying a k-rate
+filter to them can greatly reduce this effect.</P>
+
+<H3>The Filters</H3>
+
+</h3>
+
+<P><A HREF="instruments/combs1.zip"><I>Comb filters</I></A></P>
+
+<P>IIR &amp; FIR comb filters implemented at low level, to add
+some character to the sound. Very interesting if used with a broadband
+signal, like white noise. Yous can tune them to a fairly high
+frequency for resonance like effects, or to the fundamental frequency
+of the expected timbre in white noise.</P>
+
+<P><A HREF="instruments/combs2.zip"><I>Special&nbsp; filters</I></A></P>
+
+<P>A 24 dB filter plus a reson at fco, a comb filter with a reson
+in the feedback loop (a sort of resonant filter), and a low pass-comb
+filter.</P>
+
+<P><A HREF="instruments/rezon.zip"><I>That Resonant Lowpass filter...</I></A></P>
+
+<P>The classical 24 dB low pass filter with resonance.There are
+some other notable designs around there, particularly those from
+Hans Mikelson. This one sounds quite well and can even self-oscillate
+to give funny <I>acid</I> efects. For the perfeccionist use a
+fairly high sample rate (say 96000 Hz) and then downsample with
+a good anti-alias filter, like that included in Sound Forge 4.
+Here&acute;s a sample of what you can do with it, filtering a
+bandlimited pulse wave (generated with <I>buzz</I>) and applying
+the same envelope to the resonance and the filter cutoff frequency
+(it sounds much better without that mp3 compression): <A HREF="audio/rezon.mp3">rezon.mp3</A></P>
+
+<H3><A HREF="instruments/tb303.zip">Roland TB 303 Emulator</A></H3>
+
+<P>The same controls as the real thing, given the initial and
+final settings as p-fields in the score. The patterns are stored
+in tables also chosen in the score, so you only have to trigger
+the instrument and the sequencer works alone. The code is full
+of comments so you should be able to understand it.<BR>
+<A HREF="audio/303emu.mp3">303emu.mp3</A></P>
+
+<P ALIGN=RIGHT>Josep M Comajuncosas<BR>
+gelida@intercom.es
+
+</BODY>
+</HTML>

@@ -1,0 +1,72 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>xyin</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigmod/peak.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="tempo.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</font></a>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>xyin, tempo</h2>
+
+<pre>
+  kx, ky  <strong>xyin</strong>      iprd, ixmin, ixmax, iymin, iymax[, ixinit, iyinit]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Sense the cursor position in an output window. Apply tempo control to an uninterpreted score. When <strong>xyin</strong> is called the position of the mouse within the output window is used to reply to the request.  This simple mechanism does mean that only one <strong>xyin</strong> can be used accurately at once.  The position of the mouse is reported in the output window.
+</p>
+<h3>Initialization</h3>
+<p><em>iprd</em> &#8211; period of cursor sensing (in seconds). Typically .1 seconds.
+</p>
+<p><em>xmin, xmax, ymin, ymax</em> &#8211; edge values for the x-y coordinates of a cursor in the input window.
+</p>
+<p><em>ixinit, iyinit</em> (optional) &#8211; initial x-y coordinates reported; the default values are 0,0. If these values are not within the given min-max range, they will be coerced into that range.
+</p>
+<h3>Performance</h3>
+<p><strong>xyin</strong> samples the cursor x-y position in an input window every <em>iprd</em> seconds. Output values are repeated (not interpolated) at the k-rate, and remain fixed until a new change is registered in the window. There may be any number of input windows. This unit is useful for real-time control, but continuous motion should be avoided if <em>iprd</em> is unusually small.
+</p>
+<h3>Example</h3>
+<pre>
+  kx,ky   <strong>xyin</strong>      .05, 30, 0, 120, 0, 75   ; sample the cursor
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigmod/peak.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="tempo.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</font></a>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>pvsynth, pvsadsyn</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvsread.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvsftw.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#vocoding" class="toqr">
+Signal Generators: STFT Resynthesis (Vocoding)</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>pvsynth, pvsadsyn</h2>
+
+<pre>
+  ar      <strong>pvsynth</strong>    fsig
+  ar      <strong>pvsadsyn</strong>   fsig, inoscs, kfmod[,ibinoffset, ibinincr, init]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Resynthesize an <em>fsig</em> using either FFT overlap-additive synthesis (<strong>pvsynth</strong>) or fast oscillator-bank additive sythesis(<strong>pvsadsyn</strong>).</p>
+
+<h3>Initialization</h3>
+
+<p><em>inoscs</em> &#8211; number of analysis bins to synthesize. Cannot be larger than the size of <em>fsrc</em> as created by <strong>pvsanal</strong>.  See <a href="pvsinfo.htm"><strong>pvsinfo</strong></a>.</p>
+
+<p><em>ibinoffset</em> &#8211; the first (lowest) bin to resynthesize, counting from 0. Default is 0.</p>
+
+<p><em>ibinincr</em> &#8211; value to increment bins for resynthesis. Bins are resythesized <em>ibinincr</em> apart, starting with <em>ibinoffset</em>.</p>
+
+<p><em>init</em> &#8211; skip reinitialzation. Not currently implemented for any of the streaming <strong>pvoc</strong> opcodes. </p>
+
+<h3>Performance</h3>
+
+<p><em>kfmod</em> &#8211; factor by which to scale all frequencies.</p>
+<ul>
+	<li>1.0 = no change
+	<li>2.0 =  up one octave
+</ul>
+
+<p><strong>pvsadsyn</strong> is experimental, and implements the oscillator bank using a fast direct calculation method, rather than a lookup table. This takes advantage of the fact that, for analysis by <a href="pvsanal.htm"><strong>pvsanal</strong></a> at commonly used analysis rates, it is only necessary to interpolate amplitudes and not frequencies between frames. Resynthesis is often more accurate when <strong>pvsanal</strong> <em>iwinsize</em> = <em>ifftsize</em>*2. Processing time is directly proportional to <em>inoscs</em>.</p>
+
+<h3>Example</h3>
+
+<pre>
+  ; resynth the first 100 odd-numbered bins, with pitch scaling envelope.
+  kpch    <strong>linseg</strong>     1, p3/3, 1, p3/3, 1.5, p3/3, 1
+  aout    <strong>pvsadsyn</strong>   fsrc, 100, kpch, 1, 2
+</pre>
+
+<h3>Author</h3>
+<p>Richard Dobson<br>
+Somerset, England<br>
+August, 2001<br>
+New in Csound 4.14</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvsread.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvsftw.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#vocoding" class="toqr">
+Signal Generators: STFT Resynthesis (Vocoding)</font></a>
+</body>
+
+</html>

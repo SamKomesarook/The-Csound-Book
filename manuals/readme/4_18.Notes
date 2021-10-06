@@ -1,0 +1,431 @@
+Release Notes for 4.18
+======================
+
+Lots of small fixes and a couple of new things.  Some code has been
+revised for speed.
+
+New files: oscils.c, oscils.h
+
+
+Bug Fixes
+---------
+
+Decode of opcodes like outc which take a list of arguments was broken
+(actually for a long time, but only exposed by other fix in 4.17)
+
+Initialisation of randi in clock-seed and old case was plain wrong.
+
+Some Macintosh fixes all over the place
+
+Better checking in space administration
+
+C-style comments in orchestras failed if the */ started at the start
+of a line
+
+Language Changes
+----------------
+
+The operators & | # and ¬ are available for bitwise AND, OR, NEQV and
+NOT in orchestras and scores (I think)  The action is to convert the
+input to 32bit integers (or 64bit) before the operation, and to float
+them afterwards. (Pete Moss/John ff) 
+
+Maximum number of pargs increased to 1000
+
+Opcode Fixes
+------------
+
+Minor fixes in scanned synthesis to improve error checking
+
+soundfont fixed for all "motorola-ended" machines (eg SGI,
+Macintosh...).  Also a totally arcane bug in threaded use.
+
+spat3d and oscbnk revised somewhat
+
+dconv had an unitialised variable
+
+
+New Opcodes 
+-----------
+oscils -- Fast sine waves (Istvan Varga)
+lphasor --  (Istvan Varga)
+tablexkt -- read function tables with linear, cubic, or sinc
+        interpolation. (Istvan Varga) 
+vcomb, valpass -- variabel forms of comb and alpass (Pete Moss)
+ftmorf -- morph between adjacent tables in the list (Pete Moss)
+and, or, xor -- Bitwise opcodes (also available as expressions) (Pete Moss)
+
+New Gens
+--------
+
+GEN22 -- (Pete Moss) writes composite waveforms made up of
+pre-existing waveforms. Each contributing waveform requires 4 pfields
+and can overlap with other waveforms.
+
+
+Other Changes:
+-------------
+
+Messages about increasing number of ftables removed
+
+**INTERNAL CHANGE** there is provision for a destructor method in
+entry.  So far not used, but....
+**INTERNAL CHANGE** Code from Michael Gogins to allow VST-style use
+**INTERNAL CHANGE** Reset code now available by default
+
+
+Known Bugs
+==========
+
+The following bugs are known but not yet fixed
+
+6: PVOC can glitch (mail of Mon, 19 Jun 2000 00:45:23 +0200)
+8. Spaces in arguments to opcodes can be ignored, giving oddities
+9. Mismatched closing bracket can give crash (mail of Fri, 19 Oct 2001
+   19:00:56 +0100) 
+
+
+Windows GUI Changes
+-------------------
+
+Started to include a MIDI button but this is not yet finished
+
+
+-----------------------------------------------------------------------
+==John ff
+
+========================================================================
+   
+GEN22
+
+f #    time    size  22  fna  ampa  starta  finisha  fna  ampa  starta  finisha  ...  
+
+Description
+
+This subroutine writes composite waveforms made up of pre-existing
+waveforms. Each contributing waveform requires 4 pfields and can
+overlap with other waveforms.
+
+
+Initialization
+
+size - number of points in the table. Must be a power-of-2 plus 1 (see
+f statement).
+
+fna, fnb, etc. - pre-existing table number to be written into the table.
+
+ampa, ampb, etc. - strength of wavefoms. These are relative strengths,
+since the composite waveform may be rescaled later. Negative values
+are permitted and imply a 180 degree phase shift.
+
+starta, startb, etc. - where to start writing the fn into the table.
+
+finisha, finishb, etc. - where to stop writing the fn into the table.
+
+Example
+
+f 1  0  4096  10  1
+f 2  0  1025  22  1  1  0  512  1  1  513  1025 
+
+f2 consists of two copies of f1 written in to locations 0-512 and 513-1025.
+
+Author
+
+William "Pete" Moss
+University of Texas at Austin
+Austin, Texas USA
+jan, 2002
+
+------------------------------------------------------------------------
+ftmorf
+
+        ftmorf  kftndx, iftfn, iresfn
+
+Description
+
+ftmorf uses an index into a table of ftable numbers to morph between
+adjacent tables in the list.  this morphed function is written into
+iresfn.
+
+
+Initialization
+
+iftfn - the ftable function.  the list of values are expected to be
+pre-existing ftable numbers.
+
+iresfn - table number of the morphed function
+
+the length of all the tables in iftfn must equal the length of iresfn
+
+Performance
+
+kftndx - the index into the iftfn table
+
+if iftfn contains (6, 4, 6, 8, 7, 4):
+kftndx=4 will write the contents of f7 into iresfn.
+kftndx=4.5 will write the average of the contents of f7 and f4 into iresfn.
+
+Example
+
+/* ftmorftest.orc */
+sr = 44100
+kr = 4410
+ksmps = 10
+nchnls = 1
+  
+instr 1
+kndx    line    0, p3, 7
+        ftmorf  kndx, 1, 2
+asig    oscili  30000, 440, 2
+        out     asig
+endin
+/* ftmorftest.orc */
+  
+/* ftmorftest.sco */
+f1 0 8 -2 3 4 5 6 7 8 9 10
+f2 0 1024 10 1 /*contents of f2 dont matter */
+f3 0 1024 10 1
+f4 0 1024 10 0 1
+f5 0 1024 10 0 0 1
+f6 0 1024 10 0 0 0 1
+f7 0 1024 10 0 0 0 0 1
+f8 0 1024 10 0 0 0 0 0 1
+f9 0 1024 10 0 0 0 0 0 0 1
+f10 0 1024 10 1 1 1 1 1 1 1
+
+i1 0 10
+e
+/* ftmorftest.sco */
+
+
+Author
+
+William "Pete" Moss
+University of Texas at Austin
+Austin, Texas USA
+jan, 2002
+
+
+**************************************************************************
+
+
+add the following to the manual page for comb, alpass, reverb
+
+ar      vcomb   asig, krvt, klpt, imaxlpt[, iskip][, insmps]
+ar      valpass asig, krvt, klpt, imaxlpt[, iskip][, insmps]
+
+Initialization
+
+klpt - variable loop time in seconds, same as ilpt in comb.  loop time can be as large as imaxlpt.
+
+imaxlpt - maximum loop time for klpt
+
+Author
+
+vcomb and valpass by:
+William "Pete" Moss
+University of Texas at Austin
+Austin, Texas USA
+jan, 2002
+
+
+**************************************************************************
+and, or, xor
+
+xr      and     xin1, xin2
+xr      or      xin1, xin2
+xr      xor     xin1, xin2
+
+Description
+
+and, or, and xor are bitwise signal modifiers.
+
+
+Performance
+
+xin1, xin2 - the inputs that are operated upon by the bitwise
+modifiers.  xr, xin1, and xin2 must be of the same type.
+
+
+Example
+
+/* bittest.orc */
+sr = 44100
+kr = 4410
+ksmps = 10
+nchnls = 2
+  
+instr 1
+a1      line    0, p3, 30000
+a2      oscili  30000, 440, 1
+asig    xor     a1, a2
+asig	dcblock	asig
+        outs    asig, a2
+endin
+/* bittest.orc */
+  
+/* bittest.sco */
+f1 0 1024 10 1
+
+i1 0 10
+e
+/* bittest.sco */
+
+
+Author
+
+William "Pete" Moss
+University of Texas at Austin
+Austin, Texas USA
+jan, 2002
+
+************************************************************************
+
+ar      oscils iamp, icps, iphs[, iflg]
+
+DESCRIPTION
+===========
+
+Simple, fast sine oscillator, that uses only one multiply, and two add
+operations to generate one sample of output, and does not require a
+function table.
+
+INITIALIZATION
+==============
+
+iamp - output amplitude.
+
+icps - frequency in Hz (may be zero or negative, however the absolute
+  value must be less than sr/2).
+
+iphs - start phase between 0 and 1.
+
+iflg - sum of the following values:
+ 2: use double precision even if Csound was compiled to use floats.
+    This improves quality (especially in the case of long performance
+    time), but may be up to twice as slow.
+ 1: skip initialization.
+
+PERFORMANCE
+===========
+
+ar - audio output
+
+AUTHOR
+======
+
+Istvan Varga
+Jan 2002
+
+************************************************************************
+
+ar      lphasor xtrns[, ilps, ilpe[, imode[, istrt[, istor]]]]
+
+DESCRIPTION
+===========
+
+This opcode can be used to generate table index for sample playback
+(e.g. tablexkt).
+
+INITIALIZATION
+==============
+
+ilps - loop start.
+
+ilpe - loop end (must be greater than ilps to enable looping).
+  The default value of ilps and ilpe is zero.
+
+imode - loop mode. Allowed values are:
+  0: no loop (this is the default)
+  1: forward loop
+  2: bacward loop
+  3: forward-backward loop
+
+istor: skip initialization if set to any non-zero value. The default
+  is 0.
+
+PERFORMANCE
+===========
+
+ar - phase output. Can be used as index with table opcodes.
+
+xtrns - transpose. ar is incremented by this value, and wraps around
+  loop points.
+
+AUTHOR
+======
+
+Istvan Varga
+Jan 2002
+
+************************************************************************
+
+ar      tablexkt xndx, kfn, kwarp, iwsize[, ixmode[, ixoff[, iwrap]]]
+
+DESCRIPTION
+===========
+
+tablexkt reads function tables with linear, cubic, or sinc interpolation.
+
+INITIALIZATION
+==============
+
+iwsize - this parameter controls the type of interpolation to be used:
+  2: use linear interpolation. This is the lowest quality, but also the
+     fastest mode.
+  4: cubic interpolation. Slightly better quality than iwsize = 2, at
+     the expense of being somewhat slower.
+  8 and above (up to 1024): sinc interpolation with window size set
+     to iwsize (should be an integer multiply of 4). Better quality
+     than linear or cubic interpolation, but very slow. When transposing
+     up, a kwarp value above 1 can be used for anti-aliasing (this is
+     even slower).
+  Notes: if tablexkt is used to play back samples with looping (e.g.
+     table index is generated by lphasor), there must be at least
+     iwsize / 2 extra samples after the loop end point for interpolation,
+     otherwise audible clicking may occur (also, at least iwsize / 2
+     samples should be before the loop start point).
+  Some comparison of the speed of various interpolation types can be
+  found in the file "oscils_benchmarks.txt".
+
+ixmode (optional) - index data mode. The default value is 0.
+  0: raw index
+  any non-zero value: normalized (0 to 1)
+
+ixoff (optional) - amount by which index is to be offset. For a table
+  with origin at center, use tablesize / 2 (raw) or 0.5 (normalized).
+  The default value is 0
+
+iwrap (optional) - wraparound index flag. The default value is 0.
+  0: nowrap (index < 0 treated as index = 0; index >= tablesize (or 1.0
+     in normalized mode) sticks at the guard point).
+  any non-zero value: index is wrapped to the allowed range (not
+     including the guard point in this case).
+  Note: iwrap also applies to extra samples for interpolation.
+
+PERFORMANCE
+===========
+
+ar - audio output
+
+xndx - table index
+
+kfn - function table number
+
+kwarp - if greater than 1, use sin (x / kwarp) / x function for sinc
+  interpolation, instead of the default sin (x) / x. This is useful to
+  avoid aliasing when transposing up (kwarp should be set to the
+  transpose factor in this case, e.g. 2.0 for one octave), however it
+  makes rendering up to twice as slow. Also, iwsize should be at
+  least kwarp * 8. This feature is experimental, and may be optimized
+  both in terms of speed and quality in new versions.
+  Note: kwarp has no effect if it is less than, or equal to 1, or linear
+  or cubic interpolation is used.
+
+AUTHOR
+======
+
+Istvan Varga
+Jan 2002
+
+************************************************************************

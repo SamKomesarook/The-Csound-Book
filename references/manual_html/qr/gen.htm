@@ -1,0 +1,994 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>QuickRef: GEN Routines</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body text="black" link="black" vlink="black" alink="black" bgcolor="white">
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent">
+      <img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" width="10">
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="score.htm">
+      <img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="command.htm">
+      <img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+<hr size="1" color="#A9A9A9" noshade>
+<a class="qr" href="../gen/top.htm"><h1>GEN Routines</h1></a>
+
+<a class="qr" name="sine"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>GEN Routines: Sine/Cosine Generators</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen09.htm">
+      <strong> 9</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      pna
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      stra
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      phsa
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      pnb
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      strb
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      phsb
+    </td>
+    <td class="qr" nowrap width="15%" valign="TOP" colspan="2">
+      ...
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen09.htm">
+      <strong>10</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      str1
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      str2
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      str3
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      str4
+    </td>
+    <td class="qr" nowrap width="30%" valign="TOP" colspan="4">
+      ...
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen09.htm">
+      <strong>19</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      pna
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      stra
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      phsa
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      dcoa
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      pnb
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      strb
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      phsb
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      dcob
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen11.htm">
+      <strong>11</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      nh
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      [lh
+    </td>
+    <td class="qr" nowrap width="48%" valign="TOP" colspan="6">
+      [r]]
+    </td>
+  </tr>
+<!-- GEN31 -->
+  <tr>
+    <td class="qr" nowrap valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap valign="TOP">
+      <a class="qr" href="../gen/gen31.htm">
+      <strong>31</strong></a>
+    </td>
+    <td class="qr" nowrap valign="TOP">
+      src
+    </td>
+    <td class="qr" nowrap valign="TOP">
+      pna
+    </td>
+    <td class="qr" nowrap valign="TOP">
+      stra
+    </td>
+    <td class="qr" nowrap valign="TOP">
+      phsa
+    </td>
+    <td class="qr" nowrap valign="TOP">
+      pnb
+    </td>
+    <td class="qr" nowrap valign="TOP">
+      strb
+    </td>
+    <td class="qr" nowrap valign="TOP">
+      phsb
+    </td>
+    <td class="qr" nowrap valign="TOP" colspan="2">
+      ...
+    </td>
+  </tr>
+
+</table>
+
+<a class="qr" name="line"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>GEN Routines: Line/Exponential Segment Generators</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen05.htm">
+      <strong> 5</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      a
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      n1
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      b
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      n2
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP" colspan="2">
+      c
+    </td>
+    <td class="qr" nowrap width="22%" valign="TOP" colspan="4">
+      ...
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen06.htm">
+      <strong> 6</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      a
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      n1
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      b
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      n2
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP" colspan="2">
+      c
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      n3
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      d
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP" colspan="2">
+      ...
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen05.htm">
+      <strong> 7</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      a
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      n1
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      b
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      n2
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP" colspan="2">
+      c
+    </td>
+    <td class="qr" nowrap width="22%" valign="TOP" colspan="4">
+      ...
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen08.htm">
+      <strong> 8</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      a
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      n1
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      b
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      n2
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP" colspan="2">
+      c
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      n3
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP" colspan="2">
+      d
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      ...
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen16.htm">
+      <strong>16</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      beg
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      dur
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      type
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      end
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      &nbsp;
+    </td>
+    <td class="qr" nowrap width="23%" valign="TOP" colspan="5">
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen25.htm">
+      <strong>25</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      x1
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      y1
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      x2
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      y2
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      x3
+    </td>
+    <td class="qr" nowrap width="23%" valign="TOP" colspan="5">
+      ...
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen25.htm">
+      <strong>27</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      x1
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      y1
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      x2
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      y2
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      x3
+    </td>
+    <td class="qr" nowrap width="23%" valign="TOP" colspan="5">
+      ...
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="file"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>GEN Routines: File Access</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen01.htm">
+      <strong> 1</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      filcod
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      skiptime
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      format
+    </td>
+    <td class="qr" nowrap width="38%" valign="TOP">
+      channel
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen23.htm">
+      <strong>23</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP" colspan="4">
+      &quot;filename.txt&quot;
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      0
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen28.htm">
+      <strong>28</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP" colspan="4">
+      filcod
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="numeric"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>GEN Routines: Numeric Value Access</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen02.htm">
+      <strong> 2</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      v1
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      v2
+    </td>
+    <td class="qr" nowrap width="9%" valign="TOP">
+      v3
+    </td>
+    <td class="qr" nowrap width="40%" valign="TOP" colspan="5">
+      ...
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen17.htm">
+      <strong>17</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      x1
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      a
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP" colspan="2">
+      x2
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      b
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      x3
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      c
+    </td>
+    <td class="qr" nowrap width="15%" valign="TOP">
+      ...
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="windows"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>GEN Routines: Window Functions</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen20.htm">
+      <strong>20</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      window
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      max
+    </td>
+    <td class="qr" nowrap width="48%" valign="TOP">
+      [opt]
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="random"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>GEN Routines: Random Functions</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen21.htm">
+      <strong>21</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      type
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      level
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      [arg1
+    </td>
+    <td class="qr" nowrap width="38%" valign="TOP">
+      [arg2]]
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="waveshaping"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>GEN Routines: Waveshaping</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen03.htm">
+      <strong> 3</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      xval1
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      xval2
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      c0
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      c1
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      c2
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP" colspan="2">
+      ...
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP" colspan="3">
+      cn
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen13.htm">
+      <strong>13</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      xint
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      xamp
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      h0
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      h1
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP" colspan="2">
+      h2
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      ...
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP" colspan="3">
+      hn
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen13.htm">
+      <strong>14</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      xint
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      xamp
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      h0
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      h1
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP" colspan="2">
+      h2
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP" colspan="2">
+      ...
+    </td>
+    <td class="qr" nowrap width="15%" valign="TOP" colspan="2">
+      hn
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen15.htm">
+      <strong>15</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      xint
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      xamp
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      h0
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      phs0
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP" colspan="2">
+      h1
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP" colspan="2">
+      phs1
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      h2
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      phs2
+    </td>
+  </tr>
+<!-- GEN30 -->
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen30.htm">
+      <strong>30</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      src
+    </td>
+    <td class="qr" nowrap width="13%" valign="TOP">
+      xamp
+    </td>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      minh
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      maxh
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP" colspan="2">
+      [ref_sr]
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP" colspan="2">
+      &nbsp;
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      &nbsp;
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      &nbsp;
+    </td>
+  </tr>
+
+</table>
+
+<a class="qr" name="amp"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>GEN Routines: Amplitude Scaling</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen04.htm">
+      <strong> 4</strong></a>
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      source#
+    </td>
+    <td class="qr" nowrap width="61%" valign="TOP">
+      sourcemode
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      <strong>f</strong>
+    </td>
+    <td class="qr" nowrap width="4%" valign="TOP">
+      #
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      time
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      size
+    </td>
+    <td class="qr" nowrap width="5%" valign="TOP">
+      <a class="qr" href="../gen/gen12.htm">
+      <strong>12</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP" colspan="2">
+      xint
+    </td>
+  </tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent">
+      <img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" width="10">
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="score.htm">
+      <img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="command.htm">
+      <img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+</body>
+</html>

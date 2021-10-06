@@ -1,0 +1,94 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>limit, mirror, wrap</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="clip.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="delayr.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#limiters" class="toqr">
+Signal Modifiers: Signal Limiters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>limit, mirror, wrap</h2>
+
+
+<pre>
+  ir      <strong>wrap</strong>       isig, ilow, ihigh
+  kr      <strong>wrap</strong>       ksig, klow, khigh
+  ar      <strong>wrap</strong>       asig, klow, khigh
+  ir      <strong>mirror</strong>     isig, ilow, ihigh
+  kr      <strong>mirror</strong>     ksig, klow, khigh
+  ar      <strong>mirror</strong>     asig, klow, khigh
+  ir      <strong>limit</strong>      isig, ilow, ihigh
+  kr      <strong>limit</strong>      ksig, klow, khigh
+  ar      <strong>limit</strong>      asig, klow, khigh
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Wraps the signal in various ways.
+</p>
+
+<h3>Initialization</h3>
+<p><em>isig - </em>input signal
+</p>
+<p><em>ilow</em> &#8211; low threshold
+</p>
+<p><em>ihigh</em> &#8211; high threshold
+</p>
+<h3>Performance</h3>
+<p><em>xsig</em> &#8211; input signal
+</p>
+<p><em>xlow</em> &#8211; low threshold
+</p>
+<p><em>xhigh</em> &#8211; high threshold
+</p>
+<p><strong>limit</strong> sets lower and upper limits on the <em>xsig</em> value they process. If <em>xhigh</em> is lower than <em>xlow</em>, then the output will be the average of  the two - it will not be affected by <em>xsig</em>. <strong>mirror</strong> &nbsp;reflects&nbsp; the signal that exceeds the low and high thresholds. <strong>wrap</strong> wraps-around the signal that exceeds the low and high thresholds.
+</p>
+<p>These opcodes are useful in several situations, such as table indexing or for clipping and modeling irate, krate or arate signals. <strong>wrap</strong> is also useful for wrap-around of table data when the maximum index is not a power of two (see <a href="../siggen/table.htm"><strong>table</strong></a> and <a href="../siggen/table.htm"><strong>tablei</strong></a>). Another use of <strong>wrap</strong> is in cyclical event repeating, with arbirary cycle length.
+</p>
+<h3>Authors</h3>
+<p>Gabriel Maldonado (<strong>wrap</strong>, <strong>mirror</strong>)<br>
+Italy<br>
+New in Csound version 3.49
+</p>
+<p>Robin Whittle (<strong>limit</strong>)<br>
+Australia<br>
+New in Csound version 3.46
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="clip.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="delayr.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#limiters" class="toqr">
+Signal Modifiers: Signal Limiters</font></a>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>lpread, lpreson, lpfreson</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../siggen/pvsinfo.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="lpslot.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#lpc" class="toqr">
+Signal Generators: LPC Resynthesis</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>lpread, lpreson, lpfreson</h2>
+
+<pre>
+  krmsr,  <strong>lpread</strong>     ktimpnt, ifilcod[, inpoles[, ifrmrate]]
+  krmso,
+  kerr,
+  kcps
+
+  ar      <strong>lpreson</strong>    asig
+  ar      <strong>lpfreson</strong>   asig, kfrqratio
+
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>These units, used as a read/reson pair, use a control file of time-varying filter coefficients to dynamically modify the spectrum of an audio signal.
+</p>
+<h3>Initialization</h3>
+<p><em>ifilcod</em> &#8211; integer or character-string denoting a control-file (reflection coefficients and four parameter values) derived from n-pole linear predictive spectral analysis of a source audio signal. An integer denotes the suffix of a file <em>lp.m</em>; a character-string (in double quotes) gives a filename, optionally a full pathname. If not fullpath, the file is sought first in the current directory, then in that of the environment variable SADIR (if defined). Memory usage depends on the size of the file, which is held entirely in memory during computation but shared by multiple calls (see also <a href="../siggen/adsyn.htm"><strong>adsyn</strong>,<strong> pvoc</strong></a>).
+</p>
+<p><em>inpoles, ifrmrate</em> (optional) &#8211; number of poles, and frame rate per second in the lpc analysis. These arguments are required only when the control file does not have a header; they are ignored when a header is detected. The default value for both is zero.
+</p>
+<h3>Performance</h3>
+<p><strong>lpread</strong> accesses a control file of time-ordered information frames, each containing n-pole filter coefficients derived from linear predictive analysis of a source signal at fixed time intervals (e.g. 1/100 of a second), plus four parameter values:
+</p>
+<p><em>krmsr</em> &#8211; root-mean-square (rms) of the residual of analysis
+</p>
+<p><em>krmso</em> &#8211; rms of the original signal
+</p>
+<p><em>kerr</em>  - the normalized error signal
+</p>
+<p><em>kcps</em>  - pitch in Hz
+</p>
+<p><strong>lpread</strong> gets its values from the control file according to the input value <em>ktimpnt</em> (in seconds). If <em>ktimpnt</em> proceeds at the analysis rate, time-normal synthesis will result; proceeding at a faster, slower, or variable rate will result in time-warped synthesis. At each k-period, <strong>lpread</strong> interpolates between adjacent frames to more accurately determine the parameter values (presented as output) and the filter coefficient settings (passed internally to a subsequent <strong>lpreson</strong>).
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../siggen/pvsinfo.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="lpslot.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#lpc" class="toqr">
+Signal Generators: LPC Resynthesis</font></a>
+</body>
+
+</html>

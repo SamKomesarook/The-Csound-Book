@@ -1,0 +1,91 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>line, expon, linseg, linsegr, expseg, expsegr</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../midi/xtratim.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="adsr.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#linear" class="toqr">
+Signal Generators: Linear and Exponential Generators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>line, expon, linseg, linsegr, expseg, expsegr</h2>
+
+<pre>
+  kr      <strong>line</strong>       ia, idur1, ib
+  ar      <strong>line</strong>       ia, idur1, ib
+  kr      <strong>expon</strong>      ia, idur1, ib
+  ar      <strong>expon</strong>      ia, idur1, ib
+  kr      <strong>linseg</strong>     ia, idur1, ib[, idur2, ic[...]]
+  ar      <strong>linseg</strong>     ia, idur1, ib[, idur2, ic[...]]
+  kr      <strong>linsegr</strong>    ia, idur1, ib[, idur2, ic[...]], irel, iz
+  ar      <strong>linsegr</strong>    ia, idur1, ib[, idur2, ic[...]], irel, iz
+  kr      <strong>expseg</strong>     ia, idur1, ib[, idur2, ic[...]]
+  ar      <strong>expseg</strong>     ia, idur1, ib[, idur2, ic[...]]
+  kr      <strong>expsegr</strong>    ia, idur1, ib[, idur2, ic[...]], irel, iz
+  ar      <strong>expsegr</strong>    ia, idur1, ib[, idur2, ic[...]], irel, iz
+
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Output values <em>kr</em> or <em>ar</em> trace a straight line (or exponential curve) or a series of line segments (or exponential segments) between specified points.
+</p>
+<h3>Initialization</h3>
+<p><em>ia</em> &#8211; starting value. Zero is illegal for exponentials.
+</p>
+<p><em>ib, ic</em>, etc. &#8211; value after <em>dur1</em> seconds, etc. For exponentials, must be non-zero and must agree in sign with <em>ia</em>.
+</p>
+<p><em>idur1</em> &#8211; duration in seconds of first segment. A zero or negative value will cause all initialization to be skipped.
+</p>
+<p><em>idur2, idur3</em>, etc. &#8211; duration in seconds of subsequent segments. A zero or negative value will terminate the initialization process with the preceding point, permitting the last-defined line or curve to be continued indefinitely in performance. The default is zero.
+</p>
+<p><em>irel, iz </em> &#8211; duration in seconds and final value of a note releasing segment.
+</p>
+<h3>Performance</h3>
+<p>These units generate control or audio signals whose values can pass through 2 or more specified points. The sum of <em>dur</em> values may or may not equal the instrument's performance time: a shorter performance will truncate the specified pattern, while a longer one will cause the last-defined segment to continue on in the same direction.
+</p>
+<p><strong>linsegr,</strong> <strong>expsegr</strong> are amongst the Csound &quot;r&quot; units that contain a note-off sensor and release time extender. When each senses an event termination or MIDI noteoff, it immediately extends the performance time of the current instrument by <em>irel </em>seconds, and sets out to reach the value <em>iz</em> by the end of that period (no matter which segment the unit is in). &quot;r&quot; units can also be modified by MIDI noteoff velocities. For two or more extenders in an instrument, extension is by the greatest period.
+</p>
+<h3>Example</h3>
+
+
+<pre>  k2      <strong>expseg</strong>     440, p3/2, 880, p3/2, 440</pre>
+<p>This statement creates a control signal which moves exponentially from 440 to 880 and back, over the duration p3.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../midi/xtratim.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="adsr.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#linear" class="toqr">
+Signal Generators: Linear and Exponential Generators</font></a>
+</body>
+
+</html>

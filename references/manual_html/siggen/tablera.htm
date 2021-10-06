@@ -1,0 +1,156 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>tablera, tablewa</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="tablegpw.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../sigmod/port.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/table.htm#readwrite" class="toqr">
+Function Table Control: Read/Write Operations</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>tablera, tablewa</h2>
+
+
+<pre>
+  ar      <strong>tablera</strong>    kfn, kstart, koff
+  kstart  <strong>tablewa</strong>    kfn, asig, koff
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>These opcodes read and write tables in sequential locations to and from an a-rate variable. Some thought is required before using them. They have at least two major, and quite different, applications which are discussed below.
+</p>
+<h3>Initialization</h3>
+<p><em>ar</em> &#8211; a-rate destination for reading <strong>ksmps</strong> values from a table.
+</p>
+<p><em>kfn</em> &#8211; i- or k-rate number of the table to read or write.
+</p>
+<p><em>kstart</em> &#8211; Where in table to read or write.
+</p>
+<p><em>asig</em> &#8211; a-rate signal to read from when writing to the table.
+</p>
+<p><em>koff</em> &#8211; i- or k-rate offset into table. Range unlimited - see explanation at end of this section.
+</p>
+<h3>Performance</h3>
+<p>In one application, these are intended to be used in pairs, or with several <strong>tablera</strong> opcodes before a <strong>tablewa</strong> &#8211; all sharing the same <em>kstart</em> variable.
+</p>
+<p>These read from and write to sequential locations in a table at audio rates, with <strong>ksmps</strong> floats being written and read each cycle.
+</p>
+<p><strong>tablera</strong> starts reading from location <em>kstart</em>. <strong>tablewa</strong> starts writing to location <em>kstart</em>, and then writes to <em>kstart</em> with the number of the location one more than the one it last wrote. (Note that for <strong>tablewa</strong>, <em>kstart</em> is both an input and output variable.) If the writing index reaches the end of the table, then no further writing occurs and zero is written to <em>kstart</em>.
+</p>
+<p>For instance, if the table's length was 16 (locations 0 to 15), and <strong>ksmps</strong> was 5. Then the following steps would occur with repetitive runs of the <strong>tablewa</strong> opcode, assuming that <em>kstart</em> started at 0.
+</p>
+<pre>Run no. Initial  Final    locations written 
+        kstart   kstart
+1       0        5        0 1 2 3 4
+2       5        10       5 6 7 8 9
+3       10       15       10 11 12 13 14
+4       15       0        15</pre>
+<p>This is to facilitate processing table data using standard a-rate orchestra code between the <strong>tablera</strong> and <strong>tablewa</strong> opcodes. They allow all Csound k-rate operators to be used (with caution) on a-rate variables - something that would only be possible otherwise by <strong>ksmps</strong> = 1, downsamp and upsamp.
+</p>
+<p>Several cautions:
+</p>
+<ul>
+	<li>The k-rate code in the processing loop is really running at a-rate, so time dependent functions like <strong>port</strong> and <strong>oscil</strong> work faster than normal - their code is expecting to be running at k-rate.</li>
+	<li>This system will produce undesirable results unless the <strong>ksmps</strong> fits within the table length. For instance a table of length 16 will accommodate 1 to 16 samples, so this example will work with <strong>ksmps</strong> = 1 to 16.</li>
+</ul>
+<p>Both these opcodes generate an error and deactivate the instrument if a table with length &lt; <strong>ksmps</strong> is selected. Likewise an error occurs if <em>kstart</em> is below 0 or greater than the highest entry in the table - if <em>kstart</em> = table length.
+</p>
+<ul>
+	<li><em>kstart</em> is intended to contain integer values between 0 and (table length - 1). Fractional values above this should not affect operation but do not achieve anything useful.</li>
+	<li>These opcodes are not interpolating, and the <em>kstart</em> and <em>koff</em> parameters always have a range of 0 to (table length - 1) - not 0 to 1 as is available in other table read/write opcodes. <em>koff</em> can be outside this range but it is wrapped around by the final AND operation.</li>
+	<li>These opcodes are permanently in wrap mode. When <em>koff</em> is 0, no wrapping needs to occur, since the <em>kstart</em>++ index will always be within the table's normal range. <em>koff</em> != 0 can lead to wrapping.</li>
+	<li>The offset does not affect the number of read/write cycles performed, or the value written to <em>kstart</em> by <strong>tablewa</strong>.</li>
+	<li>These opcodes cannot read or write the guardpoint. Use <strong>tablegpw</strong> to write the guardpoint after manipulations have been done with <strong>tablewa</strong>.</li>
+</ul>
+<h3>Examples</h3>
+
+
+
+
+
+
+
+
+
+<pre>                                  
+ kstart   =       0         
+                           
+ lab1:
+   atemp  <strong>tablera</strong> ktabsource, kstart, 0  ; Read 5 values from table into an
+          ; a-rate variable.  
+                           
+   atemp  =       log(atemp)  ; Process the values using a-rate
+          ; code.    
+
+   kstart <strong>tablewa</strong> ktabdest, atemp, 0   ; Write it back to the table
+         
+ if ktemp  0 goto lab1      ; Loop until all table locations
+          ; have been processed.</pre>
+<p>The above example shows a processing loop, which runs every k-cycle, reading each location in the table <em>ktabsource</em>, and writing the log of those values into the same locations of table <em>ktabdest</em>.
+</p>
+<p>This enables whole tables, parts of tables (with offsets and different control loops) and data from several tables at once to be manipulated with a-rate code and written back to another (or to the same) table. This is a bit of a fudge, but it is faster than doing it with k-rate table read and write code.
+</p>
+<p>Another application is:
+</p>
+<pre>   kzero = 0                    
+   kloop = 0                    
+                                 
+   kzero <strong>tablewa</strong> 23, asignal, 0  ; ksmps a-rate samples written
+          ; into locations 0 to (ksmps -1) of table 23.
+                                
+   lab1: ktemp <strong>table</strong> kloop, 23  ; Start a loop which runs ksmps times, 
+          ; in which each cycle processes one of 
+    [ Some code to manipulate ]  ; table 23's values with k-rate orchestra
+    [ the value of ktemp. ]  ; code.
+                                 
+    <strong>tablew</strong> ktemp, kloop, 23  ; Write the processed value to the table.
+                                
+   kloop = kloop + 1      ; Increment the kloop, which is both the
+          ; pointer into the table and the loop 
+   if kloop &lt; ksmps goto lab1  ; counter. Keep looping until all values
+          ; in the table have been processed.
+                                
+   asignal   <strong>tablera</strong> 23, 0, 0  ; Copy the table contents back
+          ; to an a-rate variable.</pre>
+<p><em>koff</em> &#8211; This is an offset which is added to the sum of <em>kstart</em> and the internal index variable which steps through the table. The result is then ANDed with the lengthmask (000 0111 for a table of length 8 - or 9 with guardpoint) and that final index is used to read or write to the table. <em>koff</em> can be any value. It is converted into a long using the ANSI floor() function so that -4.3 becomes -5. This is what we would want when using offsets which range above and below zero.
+</p>
+<p>Ideally this would be an optional variable, defaulting to 0, however with the existing Csound orchestra read code, such default parameters must be init time only. We want k-rate here, so we cannot have a default.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="tablegpw.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../sigmod/port.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/table.htm#readwrite" class="toqr">
+Function Table Control: Read/Write Operations</font></a>
+</body>
+
+</html>

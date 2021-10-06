@@ -1,0 +1,34 @@
+nov 23, 1998
+here is the mac csound source.
+we are currently using Metrowerks CodeWarrior Pro 4.
+
+the "front end" project is a GUI interface that launches
+the csound engine, "Perf" through apple events.
+
+the "Perf" project contains two source folders:
+"csound_src" is the folder that contains all the canonical
+	csound source maintained by john ffitch, available from 
+	the csound ftp site.  
+the "Source (Mac Specific)" folder
+	obviously contains source specific to the mac platform.
+you will get alot of compiler warnings due to the cononical
+sources: 
+	we turn OFF warnings:
+	====================
+	possible errors, unused variables, unused arguments, implicit
+	arithmetic conversions, non-inlined functions, and inconsistent
+	use of 'class' and 'struct' keywords
+	
+**Currently, Optimiziation Level 4 breaks hetro/pvoc functions so
+are compiling at Level 3 optimization.
+
+if you make any changes/improvements/additions/to this source, we
+ask you to send all files back to us so we can incorporate the
+additions into the distributed source.  a bunch of different mac
+versions is no fun.
+
+feel free to email csound-dev@mills.edu for any questions, etc.
+
+matt ingalls (for dave and mike)
+matt.j.ingalls@dartmouth.edu
+csound-dev@mills.edu

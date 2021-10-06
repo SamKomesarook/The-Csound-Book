@@ -1,0 +1,2406 @@
+%PDF-1.2 
+%âãÏÓ
+ 
+12 0 obj
+<<
+/Length 13 0 R
+>>
+stream
+BT
+103.44 708.24  TD
+0 0 0 rg 
+/F0 12  Tf
+0  Tc 0  Tw (MUSIC GRAPHS FOR ALGORITHMIC COMPOSITION AND SYNTHESIS) Tj
+51.6 -14.16  TD (WITH AN EXTENSIBLE IMPLEMENTATION IN JAVA) Tj
+118.8 -18.24  TD /F1 10.08  Tf
+0.0059  Tc 0.0032  Tw (Michael Gogins) Tj
+-57.6 -12  TD 0.0035  Tc 0.0056  Tw ( 150 West 95th Street, New York NY 10025) Tj
+-3.12 -10.56  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (http://www.pipeline.com/~gogins) Tj
+-140.88 -18.72  TD /F0 10.08  Tf
+-0.0203  Tc 0.0395  Tw (ABSTRACT: ) Tj
+60.72 0  TD /F1 10.08  Tf
+0.0051  Tc 0.004  Tw (This paper describes Music Modeling Language, a new representation of music, and Silence, a Java) Tj
+-60.72 -12  TD 0.0059  Tc 0.0032  Tw (program that uses MML for composition and synthesis. MML consists of nodes such as notes, MIDI files, ) Tj
+430.8 0  TD 0.0038  Tc 0  Tw (random) Tj
+-430.8 -12  TD 0.0053  Tc 0.0038  Tw (sequences, generative algorithms, time/frequency analyses, affine transformations, and even groups of nodes nested) Tj
+0 -12  TD 0.0049  Tc 0.0043  Tw (hierarchically in directed acyclic graphs, as in Virtual Reality Modeling Language. Music graphs are rendered by) Tj
+T* 0.005  Tc 0.0041  Tw (depth-first traversal to produce scores in 11-dimensional music space, containing notes and/or time/frequency data.) Tj
+T* 0.0051  Tc 0.004  Tw (Scores are then rendered by Csound to produce soundfiles. Because Silence loads all node classes at run-time,) Tj
+T* 0.0059  Tc 0.0033  Tw (MML is extensible with plugin nodes.) Tj
+0 -19.92  TD /F0 12  Tf
+0  Tc 0  Tw (1.) Tj
+9.12 0  TD /F3 12  Tf
+( ) Tj
+7.2 0  TD /F0 12  Tf
+(Introduction) Tj
+-16.32 -18.24  TD /F1 10.08  Tf
+0.005  Tc 0.0041  Tw (Music Modeling Language was born out of love for, and frustration with, algorithmic composition. My first) Tj
+0 -12  TD 0.0046  Tc 0.0045  Tw (explorations of composition using iterated function systems \(Gogins 1991, 1992a\) and recursive fractal) Tj
+T* 0.0048  Tc 0.0043  Tw (constructions \(Gogins 1992b\) produced interesting music from modest programming efforts. As time went on,) Tj
+T* 0.0051  Tc 0.004  Tw (however, the ratio of composition time to programming time dwindled exponentially, as I lost myself, again and) Tj
+T* 0.0049  Tc 0.0042  Tw (again, in the swamps of software development, despite having learned enough programming to make my living at) Tj
+T* 0.0057  Tc 0.0034  Tw (it. Over many cycles of development, some causes of this dilemma became clear... along with some solutions.) Tj
+0 -18.48  TD /F4 10.08  Tf
+-5.2781  Tc 0  Tw (\267) Tj
+4.56 0  TD /F5 10.08  Tf
+0  Tc 0.0072  Tw ( ) Tj
+13.44 0  TD /F6 10.08  Tf
+0.0046  Tc 0.0046  Tw (Inconsistent representations) Tj
+114.48 0  TD /F1 10.08  Tf
+0.0053  Tc 0.0039  Tw (: Each compositional algorithm is based on some formal representation of music.) Tj
+-114.48 -12  TD 0.0051  Tc 0.004  Tw (Every algorithm I implemented seemed to demand a slightly different representation. ) Tj
+347.76 0  TD /F6 10.08  Tf
+0.0027  Tc 0  Tw (Solution) Tj
+33.84 0  TD /F1 10.08  Tf
+0.0062  Tc 0.0029  Tw (: Use one) Tj
+-381.6 -12  TD 0.0053  Tc 0.0039  Tw (representation of music for all compositional algorithms, an 11-dimensional linear space I call ) Tj
+385.44 0  TD /F6 10.08  Tf
+0.0041  Tc 0.005  Tw (music space) Tj
+49.2 0  TD /F1 10.08  Tf
+0.0091  Tc 0  Tw (.) Tj
+-452.64 -18.48  TD /F4 10.08  Tf
+-5.2781  Tc (\267) Tj
+4.56 0  TD /F5 10.08  Tf
+0  Tc 0.0072  Tw ( ) Tj
+13.44 0  TD /F6 10.08  Tf
+0.0041  Tc 0.005  Tw (Incommensurate materials) Tj
+108 0  TD /F1 10.08  Tf
+0.0046  Tc 0.0045  Tw (: It became frustrating that material produced by different algorithms could not be) Tj
+-108 -12  TD 0.0055  Tc 0.0036  Tw (assembled into a piece without manual splicing. ) Tj
+197.04 0  TD /F6 10.08  Tf
+0.0027  Tc 0  Tw (Solution) Tj
+33.84 0  TD /F1 10.08  Tf
+0.0047  Tc 0.0045  Tw (: Adapt the concept of ) Tj
+-1.4357  Tc 0  Tw (\223) Tj
+0.0054  Tc 0.0037  Tw (hierarchical scene graphs) Tj
+-1.1957  Tc 0  Tw (\224) Tj
+-230.88 -12  TD 0.0039  Tc 0.0053  Tw (from computer graphics \(van Dam and Sklar 1991\) to create ) Tj
+247.68 0  TD /F6 10.08  Tf
+0.0039  Tc 0.0052  Tw (music graphs) Tj
+54 0  TD /F1 10.08  Tf
+0.0051  Tc 0.004  Tw (, replacing 3-dimensional visual) Tj
+-301.68 -12  TD 0.0052  Tc 0.0039  Tw (space with 11-dimensional music space, replacing visual primitives such as polygons and textures with) Tj
+0 -12  TD 0.0056  Tc 0.0035  Tw (acoustical primitives such as notes and time/frequency analyses, and using affine transformations to assemble) Tj
+T* 0.0051  Tc 0.004  Tw (scores by placing the notes and sounds produced by different nodes at their intended locations in music space.) Tj
+-18 -18.48  TD /F4 10.08  Tf
+-5.2781  Tc 0  Tw (\267) Tj
+4.56 0  TD /F5 10.08  Tf
+0  Tc 0.0072  Tw ( ) Tj
+13.44 0  TD /F6 10.08  Tf
+0.003  Tc 0.0062  Tw (Duplication of code) Tj
+80.88 0  TD /F1 10.08  Tf
+0.0055  Tc 0.0036  Tw (: Compositional algorithms are useless without rapid edit/generate/listen cycles. I) Tj
+-2.3957  Tc 0  Tw (\222) Tj
+0.0033  Tc 0.0058  Tw (ve found) Tj
+-80.88 -12  TD 0.0051  Tc 0.0041  Tw (this easier to provide with visual editors than with computer languages. However, each new algorithm I) Tj
+0 -12  TD 0.0049  Tc 0.0042  Tw (implemented turned into its own complete application, involving a great deal of repetitive work. ) Tj
+391.92 0  TD /F6 10.08  Tf
+0.0027  Tc 0  Tw (Solution) Tj
+33.84 0  TD /F1 10.08  Tf
+0.0072  Tc (:) Tj
+-425.76 -12  TD 0.0052  Tc 0.0039  Tw (Create a single application ) Tj
+110.88 0  TD /F6 10.08  Tf
+0.0042  Tc 0.005  Tw (framework ) Tj
+45.84 0  TD /F1 10.08  Tf
+0.0051  Tc 0.004  Tw (with a shared visual editor and utility functions that can be used by) Tj
+-156.72 -12  TD 0.0051  Tc 0.004  Tw (many different algorithms, each one being a type of node in music graphs, which are the unifying protocol.) Tj
+-18 -18.48  TD /F4 10.08  Tf
+-5.2781  Tc 0  Tw (\267) Tj
+4.56 0  TD /F5 10.08  Tf
+0  Tc 0.0072  Tw ( ) Tj
+13.44 0  TD /F6 10.08  Tf
+0.0041  Tc 0.005  Tw (Constant relinking) Tj
+75.84 0  TD /F1 10.08  Tf
+0.0049  Tc 0.0042  Tw (: In computer music, new algorithms appear frequently. For each one I implemented, I had) Tj
+-75.84 -12  TD 0.0052  Tc 0.0039  Tw (to relink my whole system, often modifying the framework) Tj
+-2.3957  Tc 0  Tw (\222) Tj
+0.0048  Tc 0.0043  Tw (s source code. This became more and more difficult) Tj
+0 -12  TD 0.0066  Tc 0.0025  Tw (as time went on. ) Tj
+69.12 0  TD /F6 10.08  Tf
+0.0027  Tc 0  Tw (Solution) Tj
+33.84 0  TD /F1 10.08  Tf
+0.0053  Tc 0.0039  Tw (: Create an abstract interface for nodes in music graphs, ) Tj
+229.2 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (INode) Tj
+30 0  TD /F1 10.08  Tf
+0.0052  Tc 0.0039  Tw (, and give the) Tj
+-362.16 -12.48  TD 0.0049  Tc 0.0042  Tw (framework the ability to dynamically identify and load new ) Tj
+242.4 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (INode) Tj
+30 0  TD /F1 10.08  Tf
+0.0064  Tc 0.0027  Tw ( classes, or ) Tj
+46.56 0  TD /F6 10.08  Tf
+0.0025  Tc 0.0066  Tw (plugin nodes) Tj
+52.08 0  TD /F1 10.08  Tf
+0.0058  Tc 0.0033  Tw (, at run-time.) Tj
+-389.04 -18.96  TD /F4 10.08  Tf
+-5.2781  Tc 0  Tw (\267) Tj
+4.56 0  TD /F5 10.08  Tf
+0  Tc 0.0072  Tw ( ) Tj
+13.44 0  TD /F6 10.08  Tf
+0.0038  Tc 0.0053  Tw (Incompatible platforms) Tj
+94.8 0  TD /F1 10.08  Tf
+0.0053  Tc 0.0038  Tw (: I) Tj
+-2.3957  Tc 0  Tw (\222) Tj
+0.0049  Tc 0.0042  Tw (ve always used Unix-based, academically-produced composition and synthesis) Tj
+-94.8 -12  TD 0.0043  Tc 0.0048  Tw (software such as Cmix \(Garton 1993\) and Csound \(Vercoe 1997, Pich\351 1998\) together with Windows-based) Tj
+0 -12  TD 0.0045  Tc 0.0046  Tw (MIDI sequencers and soundfile editors such as Cubase \(Steinberg 1998\) and Cool Edit \(Syntrillium 1996\).) Tj
+T* 0.0041  Tc 0.005  Tw (However, I don) Tj
+-2.3957  Tc 0  Tw (\222) Tj
+0.0048  Tc 0.0043  Tw (t like the idea of segregated worlds of music software that don) Tj
+-2.3957  Tc 0  Tw (\222) Tj
+0.0054  Tc 0.0037  Tw (t talk to each other. ) Tj
+401.04 0  TD /F6 10.08  Tf
+0.0028  Tc 0  Tw (Solution:) Tj
+-401.04 -12  TD /F1 10.08  Tf
+0.005  Tc 0.0041  Tw (Enable Silence to read and write standard file formats like MIDI files and WAV soundfiles, and program it in) Tj
+0 -12  TD 0.0048  Tc 0  Tw (Java) Tj
+17.76 0  TD /F6 10.08  Tf
+0  Tc 0.0091  Tw ( ) Tj
+2.64 0  TD /F1 10.08  Tf
+0.0053  Tc 0.0038  Tw (\(Sun 1998\) so it runs on Unix, the Macintosh, and Windows.) Tj
+-38.4 -19.92  TD /F0 12  Tf
+0  Tc 0  Tw (2.) Tj
+9.12 0  TD /F3 12  Tf
+( ) Tj
+7.2 0  TD /F0 12  Tf
+(Music Space) Tj
+-16.32 -18.24  TD /F1 10.08  Tf
+0.0048  Tc 0.0043  Tw (It may be helpful, for a better understanding of the motivation for music space and music graphs, to briefly review) Tj
+0 -12  TD 0.0057  Tc 0.0034  Tw (some aspects of algorithmic composition and synthesis. Historically, software ) Tj
+315.84 0  TD /F6 10.08  Tf
+0.0057  Tc 0  Tw (synthesis) Tj
+36.48 0  TD /F1 10.08  Tf
+0.0054  Tc 0.0037  Tw ( systems refrained from) Tj
+-352.32 -12  TD 0.0049  Tc 0.0043  Tw (defining low-level representations of music because they must provide arbitrary arguments, usually variable-length) Tj
+ET
+endstream
+endobj
+13 0 obj
+9037
+endobj
+4 0 obj
+<<
+/Type /Page
+/Parent 5 0 R
+/Resources <<
+/Font 22 0 R
+/ProcSet 2 0 R
+>>
+/Contents 12 0 R
+>>
+endobj
+22 0 obj
+<<
+/F0 6 0 R
+/F1 8 0 R
+/F2 10 0 R
+/F3 14 0 R
+/F4 16 0 R
+/F5 18 0 R
+/F6 20 0 R
+>>
+endobj
+24 0 obj
+<<
+/Length 25 0 R
+>>
+stream
+BT
+72.24 710.16  TD
+0 0 0 rg 
+/F1 10.08  Tf
+0.0049  Tc 0.0043  Tw (lists of floating-point numbers, to user-defined software instruments \(Pope 1993\). Software for ) Tj
+385.2 0  TD /F6 10.08  Tf
+0.0027  Tc 0  Tw (notation) Tj
+33.84 0  TD /F1 10.08  Tf
+0.0017  Tc 0.0074  Tw ( or ) Tj
+13.68 0  TD /F6 10.08  Tf
+0.0047  Tc 0  Tw (analysis) Tj
+-432.72 -12  TD /F1 10.08  Tf
+0.0046  Tc 0.0045  Tw (uses representations derived from traditional music theory, all grammar-based \(Selfridge-Field 1997\). Software) Tj
+0 -12  TD /F6 10.08  Tf
+0.0034  Tc 0.0057  Tw (composition ) Tj
+52.08 0  TD /F1 10.08  Tf
+0.0054  Tc 0.0037  Tw (systems have a complex history \() Tj
+133.44 0  TD 0.0041  Tc 0.0051  Tw (see pages 783-909 in Roads 1996\), with many algorithms borrowed) Tj
+-185.52 -12.48  TD 0.0059  Tc 0.0032  Tw (from mathematics and science. The most impressive systems adapt the ) Tj
+288.48 0  TD /F4 10.08  Tf
+-2.3928  Tc 0  Tw (l) Tj
+5.52 0  TD /F1 10.08  Tf
+0.0047  Tc 0.0044  Tw (-calculus to make music by composing) Tj
+-294 -12  TD 0.005  Tc 0.0042  Tw (functions that implement a whole gamut of algorithms \(Taube 1991, Scaletti and Hebel 1991, Tonality Systems) Tj
+0 -12  TD 0.0043  Tc 0.0048  Tw (1993\), use random variables to generate material \(Xenakis 1992\), or produce music by matching patterns) Tj
+T* 0.0039  Tc 0.0053  Tw (abstracted from a style \(Cope 1991, 1996\).) Tj
+0 -18  TD 0.0054  Tc 0.0037  Tw (To the best of my knowledge, every one of these systems refrains from fixing the dimensionality of its low-level) Tj
+0 -12  TD 0.0052  Tc 0.0039  Tw (representation of music. This has the advantage of allowing the composer every liberty, but there is a) Tj
+T* 0.005  Tc 0.0041  Tw (corresponding disadvantage. Each different algorithm, piece of material, or finished work tends to live in its own) Tj
+T* 0.0052  Tc 0.0039  Tw (peculiar space. They cannot effortlessly be imagined together in the mind, or manipulated together in software.) Tj
+0 -18  TD 0.0052  Tc 0.0039  Tw (As I developed compositional algorithms, including random sequences, chaotic dynamical systems, and iterated) Tj
+0 -12  TD 0.005  Tc 0.0041  Tw (function systems \(Gogins 1991\), the value for representing music of linear ) Tj
+303.84 0  TD /F6 10.08  Tf
+0.0045  Tc 0  Tw (spaces) Tj
+26.88 0  TD /F1 10.08  Tf
+0.0038  Tc 0.0054  Tw ( \(as opposed to ) Tj
+62.88 0  TD /F6 10.08  Tf
+0.0023  Tc 0  Tw (languages) Tj
+41.52 0  TD /F1 10.08  Tf
+0.0034  Tc (\)) Tj
+-435.12 -12  TD 0.0051  Tc 0.004  Tw (became clear. Even implementing a small language, musical Lindenmayer systems \(Gogins 1992b) Tj
+398.64 0  TD 0.0058  Tc 0.0034  Tw (\), was simpler) Tj
+-398.64 -12  TD 0.0054  Tc 0.0037  Tw (with spaces. It is just easier to manipulate music with algebra than with procedural code. And if time, pitch, and) Tj
+0 -12  TD 0.0053  Tc 0.0038  Tw (loudness have infinite gradations, a single space can be used to represent not only ) Tj
+-1.4357  Tc 0  Tw (\223) Tj
+0.007  Tc (notes,) Tj
+-1.1957  Tc 1.2048  Tw (\224 ) Tj
+0.0045  Tc 0.0046  Tw (but also ) Tj
+-1.4357  Tc 0  Tw (\223) Tj
+0.0055  Tc (sounds.) Tj
+-0.2346  Tc 0.2437  Tw (\224 Then) Tj
+T* 0.0052  Tc 0.0039  Tw (a time/frequency representation of sound, such as a heterodyne filter analysis, can be translated into a large number) Tj
+T* 0.0059  Tc 0.0032  Tw (of elementary notes. This notion was implicit in Xenakis) Tj
+-2.3957  Tc 2.4048  Tw (\222 ) Tj
+0.0049  Tc 0.0042  Tw (first intuition of granular synthesis \(1992, p. 43\).) Tj
+0 -18  TD 0.0055  Tc 0.0036  Tw (After I had implemented many algorithms, the dimensions and units of music space stabilized as shown in Table 1,) Tj
+0 -12  TD 0.0052  Tc 0.0039  Tw (indicating that some sort of fit had been achieved between reality and representation \(at least, for geometrically-) Tj
+T* 0.0051  Tc 0.004  Tw (based algorithmic composition!\). All units are more or less psychologically linear; that is, a doubling of octave) Tj
+T* 0.0041  Tc 0.005  Tw (produces an apparent doubling of pitch, and a doubling of decibels produces an apparent doubling of loudness.) Tj
+0 -17.28  TD /F6 9.12  Tf
+-0.0243  Tc 0.044  Tw (Table 1. ) Tj
+32.4 0  TD 0.0046  Tc 0.0151  Tw (Dimensions and Units of Music Space.) Tj
+-26.88 -16.56  TD /F1 9.12  Tf
+-0.2143  Tc 0  Tw (ID) Tj
+54.24 0  TD -0.0226  Tc 0.0423  Tw (Analogous to the high-order nybble of the MIDI status byte \(MIDI Manufacturers Association 1996\)) Tj
+365.76 0  TD -0.1992  Tc 0  Tw (;) Tj
+-365.76 -11.04  TD -0.0169  Tc 0.0366  Tw (represents not only notes, but also control information. All notes have ID 144.) Tj
+ET
+71.52 415.68 1.44 1.44 re f
+71.52 415.68 1.44 1.44 re f
+72.96 415.68 53.04 1.44 re f
+126 415.68 1.44 1.44 re f
+127.44 415.68 412.08 1.44 re f
+539.52 415.68 1.44 1.44 re f
+539.52 415.68 1.44 1.44 re f
+71.52 391.68 1.44 24 re f
+126 391.68 0.72 24 re f
+539.52 391.68 1.44 24 re f
+BT
+77.76 381.12  TD
+-0.0759  Tc 0  Tw (Instrument) Tj
+54.24 0  TD -0.0264  Tc 0.0461  Tw (Analogous to the low-order nybble of MIDI status byte, or MIDI channel; assigns the note to an instrument.) Tj
+ET
+71.52 390.96 1.44 0.72 re f
+72.96 390.96 53.04 0.72 re f
+126 390.96 0.72 0.72 re f
+126.72 390.96 412.8 0.72 re f
+539.52 390.96 1.44 0.72 re f
+71.52 378 1.44 12.96 re f
+126 378 0.72 12.96 re f
+539.52 378 1.44 12.96 re f
+BT
+77.76 367.44  TD
+-0.0268  Tc 0  Tw (Time) Tj
+54.24 0  TD -0.0075  Tc 0.0272  Tw (Time in seconds.) Tj
+ET
+71.52 377.28 1.44 0.72 re f
+72.96 377.28 53.04 0.72 re f
+126 377.28 0.72 0.72 re f
+126.72 377.28 412.8 0.72 re f
+539.52 377.28 1.44 0.72 re f
+71.52 364.32 1.44 12.96 re f
+126 364.32 0.72 12.96 re f
+539.52 364.32 1.44 12.96 re f
+BT
+77.76 353.76  TD
+-0.0449  Tc 0  Tw (Duration) Tj
+54.24 0  TD -0.0198  Tc 0.0395  Tw (Duration in seconds.) Tj
+ET
+71.52 363.6 1.44 0.72 re f
+72.96 363.6 53.04 0.72 re f
+126 363.6 0.72 0.72 re f
+126.72 363.6 412.8 0.72 re f
+539.52 363.6 1.44 0.72 re f
+71.52 350.64 1.44 12.96 re f
+126 350.64 0.72 12.96 re f
+539.52 350.64 1.44 12.96 re f
+BT
+77.76 340.08  TD
+0.0098  Tc 0  Tw (Octave) Tj
+54.24 0  TD -0.0043  Tc 0.024  Tw (Pitch in linear octaves, where middle C = 8.0.) Tj
+ET
+71.52 349.92 1.44 0.72 re f
+72.96 349.92 53.04 0.72 re f
+126 349.92 0.72 0.72 re f
+126.72 349.92 412.8 0.72 re f
+539.52 349.92 1.44 0.72 re f
+71.52 336.96 1.44 12.96 re f
+126 336.96 0.72 12.96 re f
+539.52 336.96 1.44 12.96 re f
+BT
+77.76 326.4  TD
+0.0866  Tc 0  Tw (Decibels) Tj
+54.24 0  TD -0.0079  Tc 0.0276  Tw (Loudness in decibels, where 0 = no energy and the maximum for 16-bit samples = 96.) Tj
+ET
+71.52 336.24 1.44 0.72 re f
+72.96 336.24 53.04 0.72 re f
+126 336.24 0.72 0.72 re f
+126.72 336.24 412.8 0.72 re f
+539.52 336.24 1.44 0.72 re f
+71.52 323.28 1.44 12.96 re f
+126 323.28 0.72 12.96 re f
+539.52 323.28 1.44 12.96 re f
+BT
+77.76 312.72  TD
+0.0221  Tc 0  Tw (Phase) Tj
+54.24 -0.24  TD -0.0008  Tc 0.0205  Tw (Phase in units of ) Tj
+63.36 0  TD /F4 9.12  Tf
+-0.3864  Tc 0  Tw (p) Tj
+5.04 0  TD /F1 9.12  Tf
+-0.0046  Tc 0.0243  Tw (; intended for future phase vocoder, wavelet, or granular representations.) Tj
+ET
+71.52 322.56 1.44 0.72 re f
+72.96 322.56 53.04 0.72 re f
+126 322.56 0.72 0.72 re f
+126.72 322.56 412.8 0.72 re f
+539.52 322.56 1.44 0.72 re f
+71.52 309.36 1.44 13.2 re f
+126 309.36 0.72 13.2 re f
+539.52 309.36 1.44 13.2 re f
+BT
+77.76 298.8  TD
+-0.0317  Tc 0  Tw (X) Tj
+54.24 0  TD -0.0133  Tc 0.033  Tw (The horizontal dimension of spatial location in meters, where the listener is at the origin.) Tj
+ET
+71.52 308.64 1.44 0.72 re f
+72.96 308.64 53.04 0.72 re f
+126 308.64 0.72 0.72 re f
+126.72 308.64 412.8 0.72 re f
+539.52 308.64 1.44 0.72 re f
+71.52 295.68 1.44 12.96 re f
+126 295.68 0.72 12.96 re f
+539.52 295.68 1.44 12.96 re f
+BT
+77.76 285.12  TD
+-0.0317  Tc 0  Tw (Y) Tj
+54.24 0  TD -0.0027  Tc 0.0224  Tw (The vertical dimension of spatial location in meters, where the listener is at the origin.) Tj
+ET
+71.52 294.96 1.44 0.72 re f
+72.96 294.96 53.04 0.72 re f
+126 294.96 0.72 0.72 re f
+126.72 294.96 412.8 0.72 re f
+539.52 294.96 1.44 0.72 re f
+71.52 282 1.44 12.96 re f
+126 282 0.72 12.96 re f
+539.52 282 1.44 12.96 re f
+BT
+77.76 271.44  TD
+0.0936  Tc 0  Tw (Z) Tj
+54.24 0  TD -0.0032  Tc 0.0229  Tw (The depth dimension of spatial location in meters, where the listener is at the origin.) Tj
+ET
+71.52 281.28 1.44 0.72 re f
+72.96 281.28 53.04 0.72 re f
+126 281.28 0.72 0.72 re f
+126.72 281.28 412.8 0.72 re f
+539.52 281.28 1.44 0.72 re f
+71.52 268.32 1.44 12.96 re f
+126 268.32 0.72 12.96 re f
+539.52 268.32 1.44 12.96 re f
+BT
+77.76 257.76  TD
+0  Tc 0  Tw (1) Tj
+54.24 0  TD -0.0117  Tc 0.0314  Tw (Unity, which makes music space homogeneous.) Tj
+ET
+71.52 267.6 1.44 0.72 re f
+72.96 267.6 53.04 0.72 re f
+126 267.6 0.72 0.72 re f
+126.72 267.6 412.8 0.72 re f
+539.52 267.6 1.44 0.72 re f
+71.52 254.64 1.44 12.96 re f
+71.52 253.2 1.44 1.44 re f
+71.52 253.2 1.44 1.44 re f
+72.96 253.2 53.04 1.44 re f
+126 254.64 0.72 12.96 re f
+126 253.2 1.44 1.44 re f
+127.44 253.2 412.08 1.44 re f
+539.52 254.64 1.44 12.96 re f
+539.52 253.2 1.44 1.44 re f
+539.52 253.2 1.44 1.44 re f
+BT
+72.24 237.6  TD
+/F1 10.08  Tf
+0.0051  Tc 0.004  Tw (Each note or grain of sound is a column vector in a homogeneous linear music space, so a set of notes, even a) Tj
+0 -12  TD 0.0057  Tc 0.0034  Tw (whole score, is a tensor. Here) Tj
+-2.3957  Tc 0  Tw (\222) Tj
+0.0054  Tc 0.0037  Tw (s a four-note theme, ) Tj
+205.68 0  TD /F7 10.08  Tf
+0.0067  Tc 0  Tw (A) Tj
+6.72 0  TD /F1 10.08  Tf
+0.0072  Tc (:) Tj
+-202.56 -18.48  TD /F1 7.92  Tf
+0.12  Tc (144) Tj
+31.44 0  TD (144) Tj
+30.24 0  TD (144) Tj
+32.64 0  TD (144) Tj
+ET
+72 204.24 0.48 12.96 re f
+200.4 204.24 0.48 12.96 re f
+BT
+86.16 194.16  TD
+(1) Tj
+31.44 0  TD (1) Tj
+30.24 0  TD (1) Tj
+32.64 0  TD (1) Tj
+ET
+72 191.28 0.48 12.96 re f
+200.4 191.28 0.48 12.96 re f
+BT
+86.16 181.2  TD
+(0) Tj
+31.44 0  TD (1) Tj
+30.24 0  TD (4) Tj
+32.64 0  TD (6) Tj
+ET
+72 178.32 0.48 12.96 re f
+200.4 178.32 0.48 12.96 re f
+BT
+86.16 168.24  TD
+(1) Tj
+31.44 0  TD (2) Tj
+30.24 0  TD (2) Tj
+32.64 0  TD (1) Tj
+ET
+72 165.36 0.48 12.96 re f
+200.4 165.36 0.48 12.96 re f
+BT
+80.88 155.28  TD
+0.0657  Tc (47/6) Tj
+31.44 0  TD (31/4) Tj
+35.52 0  TD 0.12  Tc (8) Tj
+25.44 0  TD 0.0766  Tc (95/12) Tj
+ET
+72 152.4 0.48 12.96 re f
+200.4 152.4 0.48 12.96 re f
+BT
+84 142.32  TD
+0.12  Tc (60) Tj
+31.44 0  TD (70) Tj
+30.48 0  TD (70) Tj
+32.64 0  TD (60) Tj
+ET
+72 139.44 0.48 12.96 re f
+200.4 139.44 0.48 12.96 re f
+BT
+86.16 129.36  TD
+(0) Tj
+31.44 0  TD (0) Tj
+30.24 0  TD (0) Tj
+32.64 0  TD (0) Tj
+ET
+72 126.48 0.48 12.96 re f
+200.4 126.48 0.48 12.96 re f
+BT
+86.16 116.4  TD
+(0) Tj
+31.44 0  TD (0) Tj
+30.24 0  TD (0) Tj
+32.64 0  TD (0) Tj
+ET
+72 113.52 0.48 12.96 re f
+200.4 113.52 0.48 12.96 re f
+BT
+86.16 103.44  TD
+(0) Tj
+31.44 0  TD (0) Tj
+30.24 0  TD (0) Tj
+32.64 0  TD (0) Tj
+ET
+72 100.56 0.48 12.96 re f
+200.4 100.56 0.48 12.96 re f
+BT
+86.16 90.48  TD
+(0) Tj
+31.44 0  TD (0) Tj
+30.24 0  TD (0) Tj
+32.64 0  TD (0) Tj
+ET
+72 87.6 0.48 12.96 re f
+200.4 87.6 0.48 12.96 re f
+BT
+86.16 77.52  TD
+(1) Tj
+31.44 0  TD (1) Tj
+30.24 0  TD (1) Tj
+32.64 0  TD (1) Tj
+ET
+72 74.64 0.48 12.96 re f
+200.4 74.64 0.48 12.96 re f
+endstream
+endobj
+25 0 obj
+11027
+endobj
+23 0 obj
+<<
+/Type /Page
+/Parent 5 0 R
+/Resources <<
+/Font <<
+/F1 8 0 R 
+/F4 16 0 R 
+/F6 20 0 R 
+/F7 26 0 R 
+>>
+/ProcSet 2 0 R
+>>
+/Contents 24 0 R
+>>
+endobj
+29 0 obj
+<<
+/Length 30 0 R
+>>
+stream
+BT
+72.24 710.16  TD
+0 0 0 rg 
+/F1 10.08  Tf
+0.0053  Tc 0.0038  Tw (Given a tensor ) Tj
+61.68 0  TD /F7 10.08  Tf
+0.0067  Tc 0  Tw (A) Tj
+6.72 0  TD /F1 10.08  Tf
+0.0056  Tc 0.0035  Tw ( of points in music space, any affine transformation ) Tj
+210.96 0  TD /F7 10.08  Tf
+0  Tc 0  Tw (T) Tj
+6.24 0  TD /F1 10.08  Tf
+0.0036  Tc 0.0055  Tw ( of ) Tj
+13.2 0  TD /F7 10.08  Tf
+0.0067  Tc 0  Tw (A) Tj
+6.72 0  TD /F1 10.08  Tf
+0.0054  Tc 0.0038  Tw ( can be accomplished by a single inner) Tj
+-305.52 -12.48  TD 0.0042  Tc 0.0049  Tw (product with the homogeneous matrix operator ) Tj
+192.96 0  TD /F7 10.08  Tf
+0.0067  Tc 0  Tw (B) Tj
+6.72 0  TD /F1 10.08  Tf
+0.0072  Tc 0.0019  Tw (: ) Tj
+5.52 0  TD /F7 10.08  Tf
+0  Tc 0  Tw (T) Tj
+6.24 0  TD /F1 10.08  Tf
+0.0034  Tc (\() Tj
+3.36 0  TD /F7 10.08  Tf
+0.0067  Tc (A) Tj
+6.72 0  TD /F1 10.08  Tf
+0.0034  Tc 0.0058  Tw (\) ) Tj
+6 0  TD /F4 10.08  Tf
+-0.4776  Tc 0  Tw (\272) Tj
+5.52 0  TD /F1 10.08  Tf
+0  Tc 0.0091  Tw ( ) Tj
+2.64 0  TD /F7 10.08  Tf
+0.0067  Tc 0  Tw (BA) Tj
+13.44 0  TD /F1 10.08  Tf
+0.0054  Tc 0.0037  Tw (. Only those dimensions of the operator whose values) Tj
+-249.12 -12  TD 0.006  Tc 0.0031  Tw (are not all identity will affect the notes. ) Tj
+161.76 0  TD 0.0053  Tc 0.0038  Tw (For example, to transpose the theme ) Tj
+149.52 0  TD /F7 10.08  Tf
+0.0067  Tc 0  Tw (A) Tj
+6.72 0  TD /F1 10.08  Tf
+0.0041  Tc 0.005  Tw ( up a perfect fourth, delay it 1) Tj
+-318 -12  TD 0.0048  Tc 0.0043  Tw (second, double the tempo, reduce the loudness by 10 decibels, compress the dynamic range by 3/4, and move it to) Tj
+0 -12  TD 0.0053  Tc 0.0038  Tw (instrument 2, but without affecting phase or spatial location in any way, the following matrix ) Tj
+379.92 0  TD /F7 10.08  Tf
+0.0067  Tc 0  Tw (B) Tj
+6.72 0  TD /F1 10.08  Tf
+0.0048  Tc 0.0043  Tw ( can be used:) Tj
+-373.2 -25.44  TD /F1 7.92  Tf
+0.12  Tc 0  Tw (1) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+ET
+72 633.36 0.48 12.96 re f
+409.44 633.36 0.48 12.96 re f
+BT
+85.68 623.28  TD
+(0) Tj
+30.48 0  TD (1) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (1) Tj
+ET
+72 620.4 0.48 12.96 re f
+409.44 620.4 0.48 12.96 re f
+BT
+85.68 610.32  TD
+(0) Tj
+30.48 0  TD (0) Tj
+27.6 0  TD 0.0476  Tc (1/2) Tj
+33.84 0  TD 0.12  Tc (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (1) Tj
+ET
+72 607.44 0.48 12.96 re f
+409.44 607.44 0.48 12.96 re f
+BT
+85.68 597.36  TD
+(0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+27.6 0  TD 0.0476  Tc (1/2) Tj
+33.84 0  TD 0.12  Tc (0) Tj
+30.72 0  TD (0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+ET
+72 594.48 0.48 12.96 re f
+409.44 594.48 0.48 12.96 re f
+BT
+85.68 584.4  TD
+(0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (1) Tj
+30.72 0  TD (0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+25.44 0  TD 0.0657  Tc (5/12) Tj
+ET
+72 581.52 0.48 12.96 re f
+409.44 581.52 0.48 12.96 re f
+BT
+85.68 571.44  TD
+0.12  Tc (0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+27.6 0  TD 0.0476  Tc (3/4) Tj
+33.6 0  TD 0.12  Tc (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+27.36 0  TD 0.0009  Tc (-10) Tj
+ET
+72 568.56 0.48 12.96 re f
+409.44 568.56 0.48 12.96 re f
+BT
+85.68 558.48  TD
+0.12  Tc (0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.48 0  TD (1) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+ET
+72 555.6 0.48 12.96 re f
+409.44 555.6 0.48 12.96 re f
+BT
+85.68 545.52  TD
+(0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (1) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+ET
+72 542.64 0.48 12.96 re f
+409.44 542.64 0.48 12.96 re f
+BT
+85.68 532.56  TD
+(0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (1) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+ET
+72 529.68 0.48 12.96 re f
+409.44 529.68 0.48 12.96 re f
+BT
+85.68 519.6  TD
+(0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (1) Tj
+30.72 0  TD (0) Tj
+ET
+72 516.72 0.48 12.96 re f
+409.44 516.72 0.48 12.96 re f
+BT
+85.68 506.64  TD
+(0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.48 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (0) Tj
+30.72 0  TD (1) Tj
+ET
+72 503.76 0.48 12.96 re f
+409.44 503.76 0.48 12.96 re f
+BT
+72.24 488.16  TD
+/F1 10.08  Tf
+0.0056  Tc 0.0035  Tw (Then ) Tj
+23.76 0  TD /F7 10.08  Tf
+0.0067  Tc 0.0024  Tw (BA ) Tj
+16.08 0  TD /F1 10.08  Tf
+0.0043  Tc 0  Tw (=) Tj
+-26.88 -18.48  TD /F1 7.92  Tf
+0.12  Tc (144) Tj
+38.16 0  TD (144) Tj
+38.16 0  TD (144) Tj
+38.4 0  TD (144) Tj
+ET
+72 466.8 0.48 12.96 re f
+225.12 466.8 0.48 12.96 re f
+BT
+89.28 456.72  TD
+(2) Tj
+38.16 0  TD (2) Tj
+38.16 0  TD (2) Tj
+38.4 0  TD (2) Tj
+ET
+72 453.84 0.48 12.96 re f
+225.12 453.84 0.48 12.96 re f
+BT
+89.28 443.76  TD
+(1) Tj
+35.04 0  TD 0.0476  Tc (3/2) Tj
+41.28 0  TD 0.12  Tc (3) Tj
+38.4 0  TD (4) Tj
+ET
+72 440.88 0.48 12.96 re f
+225.12 440.88 0.48 12.96 re f
+BT
+88.32 430.8  TD
+-0.0271  Tc (\275) Tj
+39.12 0  TD 0.12  Tc (1) Tj
+38.16 0  TD (1) Tj
+37.44 0  TD -0.0271  Tc (\275) Tj
+ET
+72 427.92 0.48 12.96 re f
+225.12 427.92 0.48 12.96 re f
+BT
+84.24 417.84  TD
+0.0657  Tc (33/4) Tj
+38.16 0  TD (49/6) Tj
+34.08 0  TD 0.0838  Tc (101/12) Tj
+42.48 0  TD 0.0657  Tc (25/3) Tj
+ET
+72 414.96 0.48 12.96 re f
+225.12 414.96 0.48 12.96 re f
+BT
+87.36 404.88  TD
+0.12  Tc (35) Tj
+35.04 0  TD 0.0657  Tc (85/2) Tj
+38.16 0  TD (85/2) Tj
+41.52 0  TD 0.12  Tc (35) Tj
+ET
+72 402 0.48 12.96 re f
+225.12 402 0.48 12.96 re f
+BT
+89.28 391.92  TD
+(0) Tj
+38.16 0  TD (0) Tj
+38.16 0  TD (0) Tj
+38.4 0  TD (0) Tj
+ET
+72 389.04 0.48 12.96 re f
+225.12 389.04 0.48 12.96 re f
+BT
+89.28 378.96  TD
+(0) Tj
+38.16 0  TD (0) Tj
+38.16 0  TD (0) Tj
+38.4 0  TD (0) Tj
+ET
+72 376.08 0.48 12.96 re f
+225.12 376.08 0.48 12.96 re f
+BT
+89.28 366  TD
+(0) Tj
+38.16 0  TD (0) Tj
+38.16 0  TD (0) Tj
+38.4 0  TD (0) Tj
+ET
+72 363.12 0.48 12.96 re f
+225.12 363.12 0.48 12.96 re f
+BT
+89.28 353.04  TD
+(0) Tj
+38.16 0  TD (0) Tj
+38.16 0  TD (0) Tj
+38.4 0  TD (0) Tj
+ET
+72 350.16 0.48 12.96 re f
+225.12 350.16 0.48 12.96 re f
+BT
+89.28 340.08  TD
+(1) Tj
+38.16 0  TD (1) Tj
+38.16 0  TD (1) Tj
+38.4 0  TD (1) Tj
+ET
+72 337.2 0.48 12.96 re f
+225.12 337.2 0.48 12.96 re f
+BT
+72.24 321.6  TD
+/F1 10.08  Tf
+0.0057  Tc 0.0034  Tw (Because all discrete operations \(such as on pitch-class sets\) ) Tj
+241.92 0  TD /F6 10.08  Tf
+0.0013  Tc 0  Tw (can) Tj
+14.64 0  TD /F1 10.08  Tf
+0.0049  Tc 0.0043  Tw ( be represented in a ) Tj
+81.6 0  TD /F6 10.08  Tf
+0.0028  Tc 0  Tw (continuous) Tj
+44.4 0  TD /F1 10.08  Tf
+0.0061  Tc 0.003  Tw ( space, while) Tj
+-382.56 -12  TD 0.0048  Tc 0.0043  Tw (continuous operations \(for example on spatial position\) ) Tj
+226.08 0  TD /F6 10.08  Tf
+0.0018  Tc 0  Tw (cannot) Tj
+27.6 0  TD /F1 10.08  Tf
+0.0049  Tc 0.0042  Tw ( be represented in ) Tj
+74.4 0  TD /F6 10.08  Tf
+0.0056  Tc 0  Tw (discrete) Tj
+32.16 0  TD /F1 10.08  Tf
+0.006  Tc 0.0031  Tw ( spaces, it makes sense for) Tj
+-360.24 -12  TD 0.0051  Tc 0.004  Tw (the general space to be continuous.) Tj
+0 -18  TD 0.005  Tc 0.0041  Tw (In sum, by accommodating both notes and time/frequency representations of sounds in 11 psychologically linear) Tj
+0 -12  TD 0.0059  Tc 0.0032  Tw (dimensions, music space solves the problem of inconsistent representations.) Tj
+0 -19.92  TD /F0 12  Tf
+0  Tc 0  Tw (3.) Tj
+9.12 0  TD /F3 12  Tf
+( ) Tj
+7.2 0  TD /F0 12  Tf
+(Music Graphs) Tj
+-16.32 -18.24  TD /F1 10.08  Tf
+0.0052  Tc 0.0039  Tw (Once the concept of music space had become clear, its analogy with the visual space of 3-dimensional computer) Tj
+0 -12  TD 0.0049  Tc 0.0042  Tw (graphics was inescapable, and acquaintance with VRML \(International Organization for Standardization 1997,) Tj
+T* 0.0042  Tc 0.0049  Tw (Ames 1997\) suggested a solution for the problem of ) Tj
+212.16 0  TD 0.0053  Tc 0.0038  Tw (incommensurate materials. Music could be represented not) Tj
+-212.16 -12  TD 0.0054  Tc 0.0037  Tw (directly as tensors in music space, but, by analogy with ) Tj
+225.12 0  TD /F6 10.08  Tf
+0.004  Tc 0.0051  Tw (hierarchical scene graphs) Tj
+105.84 0  TD /F1 10.08  Tf
+0.0049  Tc 0.0042  Tw ( in geometrical modeling \(van) Tj
+-330.96 -12  TD 0.0044  Tc 0.0048  Tw (Dam and Sklar 1991\), as directed acyclic graphs whose ) Tj
+227.28 0  TD /F6 10.08  Tf
+0.0027  Tc 0  Tw (nodes) Tj
+23.52 0  TD /F1 10.08  Tf
+0.0063  Tc 0.0028  Tw ( are elements of music... ) Tj
+101.28 0  TD /F6 10.08  Tf
+0.0039  Tc 0.0052  Tw (music graphs) Tj
+54 0  TD /F1 10.08  Tf
+0.0091  Tc 0  Tw (.) Tj
+-406.08 -18  TD 0.005  Tc 0.0041  Tw (The elements might of course be individual notes, but they also could be pre-existing pieces or fragments of pieces) Tj
+0 -12  TD 0.0054  Tc 0.0038  Tw (of music, random sequences, generative algorithms, compositional transformations, or even other nodes, nested to) Tj
+T* 0.0052  Tc 0.004  Tw (any depth \(but no node may contain itself\). Then any work of music can be modeled using simpler elements) Tj
+T* 0.0052  Tc 0.0039  Tw (\(nodes\) that are assembled hierarchically by geometric transformations \(other nodes\). Because a node might be) Tj
+T* 0.005  Tc 0.0041  Tw (used by reference in several different locations and under various transformations, music graphs can often be) Tj
+T* 0.0053  Tc 0.0038  Tw (considerably more concise than the music they represent. For example, Figure 1 shows the tune ) Tj
+389.04 0  TD /F7 10.08  Tf
+0.0028  Tc 0.0063  Tw (Pange Lingua) Tj
+59.28 0  TD /F1 10.08  Tf
+0.0072  Tc 0  Tw (:) Tj
+ET
+endstream
+endobj
+30 0 obj
+10158
+endobj
+28 0 obj
+<<
+/Type /Page
+/Parent 5 0 R
+/Resources <<
+/Font 31 0 R
+/ProcSet 2 0 R
+>>
+/Contents 29 0 R
+>>
+endobj
+31 0 obj
+<<
+/F0 6 0 R
+/F1 8 0 R
+/F3 14 0 R
+/F4 16 0 R
+/F6 20 0 R
+/F7 26 0 R
+>>
+endobj
+36 0 obj
+<<
+/Length 37 0 R
+>>
+stream
+q 
+464.64 0 0 -125.04 72.24 719.76 cm 
+/im1 Do
+endstream
+endobj
+37 0 obj
+47
+endobj
+34 0 obj
+<<
+/Type /XObject
+/Subtype /Image
+/Name /im1
+/Filter /FlateDecode 
+/Width 691
+/Height 185
+/BitsPerComponent 8
+/ColorSpace [ /Indexed /DeviceRGB 255 33 0 R ]
+/Length 35 0 R
+>>
+stream
+H‰í—i‚¬ „¹ÿe¹Â{Óí$a‘%¡­ïÇôËPÆè=         êpÚ h–›Ë^¸Ú*@‰ñ[´ë¾doªıUß¡]kÕ!zKíïb’eï;#qcËÚÏ÷PfY¶´®®±¹‹oÛìP#F2§—-¦P×îÔ €iËF‡zAnOIÇ ªtôj•råÂ!Ü¬àg>ÎyÉ²½»İ…ê}Ï*ƒ,«š‹jÅdQËF#İÚÆ cYÕö5xn:×q];9JG/U:†X–Y„©²Ñ¸îÂĞÄN–%yIÅ"ÑY[$ë ƒ¢	E…\úØi%Ë®E²ì€6°WWªJÅ"ñà–«_„¢:(_¼U:¤Ò²ÊŞ –ı°M`Ùó0ñòjRj b“ pÆåép2×ü,‚ÑÁ¨Oåoµœ.~]FÇZä^ösFK–› Æìãa²VaBº`…•Æ€ÏG8(š¿Uf³‰p:“³¬ëıíà®dÉ>øÄQ…Ÿ 8 ìyV¿ÕSátĞG8™’L‡°«$~_–"[Vµ/ğÁs“)¤ïFîu*éX§ƒ¨e©<˜‘Ô²Ú=cÆ²ÚU–Ó0Ò²å2+ëX«£üòÏf†Ş²vªì) Ë–õE­²Å&’á³:²­¸<øÙù(4šÕßóïËªæâÖÁªÈ}Î²¬f>2–Õî±½!ËªÕY–èœVeu«,ûC–-ûaË’.w½®ïËjçâÔáy§,·¬r>ˆe¿A lXö<L¼¼ù¤Ğ(çâÒáë^;¹sªlªC7r/û9£%ë¾´Ë*çâÖá™|(XV79Ëº¼ú©|z¦£EIÎ¡…cºvÃ×gb.N|>t,«˜Ù²ºïB¹Í×°¬z_ûìQ°¬vÏ˜±¬r•ı*0bYU–Í‡–eíTÙS –	-ì´ßÖVÙ
+]ew–­YÁo·ì+ù]Ëö
+fe İÁGÁ!yË:vÌzşp}ÛjË®Û—œ7°GÎÛbÉ²d˜ÙŠº"+©1eY3:,(‰`Ş?ë5xX6ÄE?zØ´¬§À²	V¬räC[F‚§8#–=uhï3bY+:Rôr<Æ„|Ë‰~Q1•:R´²ş°ŠºS•|Ğ                                àU8m;dY »Ğ ’eìBH–$éØ…š’…Ì–í¡Õ²Hî `Ù`Y`ÙÆZÖı§KÎ;€e{hIÖŸ³ã{g ;Z¶ßõÅÀ ö©
+JƒcóâM®›îoqEÃ9´ÅömºÛkZ10ˆCÜC™+iPú¨—ùÔ²&s*hKÈ^^e
+f7¡Ai‡eÙ©®Ôï¦ÃïiÖ´±–m|P‹YSS¢,§7¦Ë²™¬$–Í«ÅrNK–
+²ĞørylÙ'/±önMƒ¥4{ò¬»‚µ¬ÕœÚØ¯3 ¬;ùúÏ¹ük‡
+VTY~xa¸?^>¹i¸"œR)	t®|Ké½K—g‰…›U*,¼v¿£^ösòøO´gäR@Üş:™á±Ìc°_0J¥»âí%Z6_mÙÌŠŒR+	åöÛût÷ó8€ur)Ûæ:âğëàC#?fà•Ö=ğéÄdp‡ese TzÆµ“Êh»Ãçÿñ)º_ÙqåyÒüL_Bdš¶,éÄW·»nŸeÅ2(=şj'•Ñ„Ïsù„´X–ñ¬¤¬î2á-ìÑ¥¢e«ÿÜ²¥7›SañupÚüıü`âdÖä•ñdÅú7«ìÈJë_)5—é7(] -ysE§¤•È¼gKóñlc ŸÏ,W‡]î¢¤Î`¥eY	ú)ö{˜eÓ¹~š«¬yÇ^F RÙ/­ê^¶rL£e/µÍæ"ì÷$ËÖÌ+Äw·¬c?«•/µl—Òi”-KNI+Ñ¥×Y–vãeG ìwı' ŠÄNıIæúĞ´Å…Æ€kÍq–-ªÔb•¥=a­€¹û9²iÙï=<”°öMû=S½DÇ˜fËúÔ•æ"ì÷-ùh‚SÒJO´ÅeË:éÌsÖ¥^¶a¼õ^–Ùïà)#=ƒ´ÒSmqÉ²ô§e™Î –­GØïØ²‘PÃ–ÕOg»CTéeÆŸW‡Òiû=ë€¡Ô™¼1>x=ı§|C«ì´‹Ï0Xv°¬£-;ø2¶Q½+Xvî¼_JÙ
+,;ŒÚ×«Z¶A¥2£»ª!°—rj=ÓÎÛ×¸‹Ê›ÈÜ*§ûÂ7Jï&2·Ê)Å¾ğÒ»“Î]´F¸-ºÄ=T~ÙGè>9ØCõ*6»m•İCõVéİDèV9Øã»…È?Üùüc¡                               ¼÷m
+ Ôóñ+<û+¼`'û‚;}/ØH÷õìîô¼`#'XvDsü3™Ïßˆk9|²Ä/2Ş²Î
+ğìÏd–Ïğ^ÖğìÏd–…t§Ä|unÏşLæ›L	ËÖ“sld¾r`L™ı™ÌÃ²£p•T`¡e÷æ­M¬.®}T¤¡k©…”Ó`¥ÊZÎ© íİFLE^/ÎxjÎ²¹'ËŒRÛ–5™SAÛypNÊîõï÷(º«ràœÚ#›Õj.»	ŒRÛ–5™SAÛådÿõex¯Q‘
+ş†Ó‹0Båò³
+ËÒCášæ9Í¶ˆëÈZö<]{F˜×ZŸeI&*R“ZVl™MÁ(5lÙ4§îÖ­0a¿Ó3‰ê Ì vòùX…öjy­¨²ä“<BÒz‡V  £td•M“ôx¯4xóª"ì7±ìuŞÅŸbÁßpz1ö²ÉÃ„õÎTzõd–`”´,IÒã9|N¡Æ€ÙïĞ²ÿÏã÷øıÓ‹Ÿ\ÎeÔÃÌ-8æ*¶`”·,)£æ9•ü½a¿#ËÆRët[¶ ½¹Ï	FéxËV*Í±SAÛiYGï*ú?ú	¦sê,k0¿ŒÒÑ½l•esï/Q©m®’ê Ì uò“´eU6„r…OŞø†LÀ6qŞóg³‡õK”^!§F´EÅ—¾¡ïÃào8ªaÙëƒğç
+vbQ!8CL>Å³ÙÃª%øI¹ÆÀXÙ,ŞáCrZ}ƒıÃŠ!–=E^±àt1Ağip‡âÃtBvpıè ²ÍÙœš!oYæõ±7‚¿áôbàÍ–zÆ…á„	–å„qJÙù™,Ks
+V«²á³Ô®-Ÿ>]âÑ£Î€?µlšS+Ü@®£z  3 N>İ›xù>Š~|Ï˜‡§<‡_åhVìUB¹veOV^dÄË9š–ôíxâY–õ±.›0½,bÇ²Fs´Wl˜Z6š4RI1P°¬*g–íïÀ‡ZÖbN?	$_YI!u±±CTRd-kò–peo¦Ô–µ™S¡½’,›~àTR-k0¿Wíš)t°eíåô²l¬»úƒ­v  3È˜zÁÃSì«2¤ÊîÍ·[pbà×2;XöøÄÕVñÁ†ãÀ²Ó¿p°¡Â8°¬Ú\İ{®.÷áæX t˜e7I)Gh›·aSÃ¢Ï‚1l#”bß²Ve±ì¡u£7G İê]XÕÅ°‡T·‹Ğ"foÃ¬°„mJ—Û&¥Yß†Ya„M”Şë&lÖˆ}>jöQju¯Û±yû|)ì£Ôê^       PáØ¸L
+endstream
+endobj
+35 0 obj
+2915
+endobj
+33 0 obj
+<<
+/Length 38 0 R
+/Filter /ASCII85Decode 
+>>
+stream
+z!&+BQJ,fS=!!*$.!!!r<!%7gI.ffT0!!#Rj!*oR)?iY^c!<7QL!.Y'"UB(>.!!(mV
+s8N'!rrB"t!<30)"98Z,#RC\A#qHDm$igb;%Lt$%&J5Te4%U"r=VMPM(B5-c()IcU
+C)FJ\)#m)EC)e35*#qlW*<73&_Lir8ruV5>+FAV]?m-\0<ZrJ-+sN<s[u_gLV'Ot!
+,lh[.'.G@Z:+ZF@//>WGI4d/3BJ)lS0)bi(!$*`,0JG0\1&i+HB1aq5bVFcm1Mj9O
+(GRoM3B9*R3GJOT!(B'Pd6BBY6(6k#E'clX(.2_;6`mR[*6(@W!(?lb7KeQ<EAU5]
+s%!-)8eN=AAPGlns%WNQ:-W2`X8l)t+AoQP;NI&?Du`i:d8S=j<E3s<$Zf@V_H9\_
+=Vg""Il:KtXBP^c?:#oE?sd8JG@)G"@"//b!2*eI#\9*NAA:'7$Vt>^-t[X:Bk]JC
+H[9QS.W>.0D`gj8E9_Cn!-/%BEJl_q&s7:\7!4RmGD16bG=6[#TQpP;I/c6Us+PkW
+s*XlsIp`8,!!%P"!._k8J,k+MJ:N1Ms+#W#JY/`jdn#-MfnDTiL6[LJL6[]`d>k!.
+O7$&28n4!d$C$C5QBqQ<s+?`EKUK3VR=P@,s508.s-dLCS"e`/Z^mYXGb2aESl@&/
+!,%p+TV/(\T`@'HaeY`.ZD@MAW<&ut!$nR<Z)h./X8mFHE3cdTs0M_O[u<P]br34$
+]tKMX^NdQ0^qdbchnXiL_.JMEZN/,J7`sJ!aoT]/bJDEU!71[3cV98B$aJ%qs3Ucg
+e!8P:f<EnY9\a9ugc+'Fh+Z\`T]"c.iW/$!j8\<BaQ[I)lK[X#V8i#o;=SAjnaZ;G
+c1q)/!<3$!s8Q@(!,;K5UAt86rrCFGs5<q8s8N*!s+(.L_#OH7zzzzzzzzzzzz~>
+endstream
+endobj
+38 0 obj
+936
+endobj
+39 0 obj
+<<
+/Length 40 0 R
+>>
+stream
+Q 
+BT
+72.24 579.84  TD
+0 0 0 rg 
+/F6 9.12  Tf
+-0.0292  Tc 0.0489  Tw (Figure 1. ) Tj
+36.24 0  TD -0.0264  Tc 0.0461  Tw (Pange Lingua.) Tj
+-36.24 -17.76  TD /F1 10.08  Tf
+0.0055  Tc 0.0037  Tw (Figure 2 shows the MML editor of Silence, containing a music graph that elaborates this tune.) Tj
+0 -246.48  TD 0.0048  Tc 0.0043  Tw (The ) Tj
+18.48 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (Definition) Tj
+60 0  TD /F1 10.08  Tf
+0.0051  Tc 0.004  Tw ( node contains a sub-graph that does not itself produce notes, while ) Tj
+274.8 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (Use) Tj
+18 0  TD /F1 10.08  Tf
+0.0041  Tc 0.005  Tw ( nodes produce the) Tj
+-371.28 -12.48  TD 0.0059  Tc 0.0032  Tw (contents of the named ) Tj
+91.68 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (Definition) Tj
+60 0  TD /F1 10.08  Tf
+0.0058  Tc 0.0033  Tw (, only at their own locations in music space. These nodes are the same as ) Tj
+297.6 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (DEF) Tj
+-449.28 -12.48  TD /F1 10.08  Tf
+0.004  Tc 0.0051  Tw (and ) Tj
+17.52 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (USE) Tj
+18 0  TD /F1 10.08  Tf
+0.0044  Tc 0.0048  Tw ( in VRML \(Ames et al. 1996, pp. 16-17\).) Tj
+-35.52 -18.48  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (Rescale) Tj
+42 0  TD /F1 10.08  Tf
+0.005  Tc 0.0041  Tw ( nodes perform absolute transformations. ) Tj
+168.48 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (Progression) Tj
+66 0  TD /F1 10.08  Tf
+0.0056  Tc 0.0035  Tw ( nodes adjust the pitch-classes of child nodes to) Tj
+-276.48 -12.48  TD 0.0056  Tc 0.0036  Tw (fit into a specified pitch-class set, or progression of them. ) Tj
+234.72 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (Repeat) Tj
+36 0  TD /F1 10.08  Tf
+0.0047  Tc 0.0044  Tw ( does just that, repeating all notes produced by) Tj
+-270.72 -12.48  TD 0.0058  Tc 0.0033  Tw (its child nodes at specified intervals. ) Tj
+150 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (Transform) Tj
+54 0  TD /F1 10.08  Tf
+0.0052  Tc 0.0039  Tw ( nodes perform transformations of the coordinate systems of) Tj
+-204 -12.48  TD 0.0056  Tc 0.0035  Tw (their child nodes, in this case copies of the theme, relative to the coordinate system of the parent. The graph in) Tj
+0 -12  TD 0.0047  Tc 0.0045  Tw (Figure 2 produces a three-part canon in double time over the theme in the bass \(Figure 3\).) Tj
+0 -18  TD 0.0059  Tc 0.0033  Tw (At the time of writing, Silence has nodes for notes, heterodyne filter analyses, all affine transformations,) Tj
+0 -12  TD 0.0054  Tc 0.0037  Tw (conforming nodes to given pitch-class sets, rescaling nodes, quantizing nodes on any dimension, repeating nodes,) Tj
+T* 0.0051  Tc 0.0041  Tw (and a number of generative nodes. These include random sequences, recurrent iterated function systems \(Gogins) Tj
+T* 0.005  Tc 0.0041  Tw (1991\), Lindenmayer systems \(Gogins 1992b\), and chaotic dynamical systems with automatic searching for strange) Tj
+T* 0.0041  Tc 0.005  Tw (attractors using the Lyupanov exponent \(Sprott 1994\).) Tj
+ET
+q 
+467.52 0 0 -205.44 72.24 553.68 cm 
+/im2 Do
+endstream
+endobj
+40 0 obj
+2982
+endobj
+42 0 obj
+<<
+/Type /XObject
+/Subtype /Image
+/Name /im2
+/Filter /FlateDecode 
+/Width 872
+/Height 383
+/BitsPerComponent 8
+/ColorSpace [ /Indexed /DeviceRGB 255 41 0 R ]
+/Length 43 0 R
+>>
+stream
+H‰ì—]š³*€³É®ålc„—½Í’xN		­ßT¬eòÎT+ˆå5	€ã8£ù¹93ø¹ÿ83”‡gøékpœÙIñ,,™0ˆÅ8ZırGİ|(£îÖq}Bë™Üå@^Íìxvì-:NÓ³´~,¸’ï~zS»éçtšGyväİúÇ?œâYxëC^ôüüR²Ô–GÉÔïé=Ç9¤x6¼@3Ï€ªs{äÙÓãŒ»açoƒuÕæ4í¼àŸÎëQuî–9gP4Ú<CæYêKßNX»3‡–gÛ½¾ÔìÓÙ¼æûTÚ¼1f;¸jæ³a-¿*ØÊyï±©W>Ç9òìÄ¼Âıyw½ v5¬ûü«düøjwÌÊ6Áj<+¡ãƒó®zÆÚšõfœõÙŒ\ä`ó]ç`H&æËïcşC>v÷³Ù‚a®%±¼ÓŠÖ;?âÔéô®™óP{6ö„/2Ç;¼wv¥Y~á ÿûÿÑÿòlmÏ³ï~ÇaÿİOZ8õ=ˆ€VÁ‚à8ÇƒìMNÕÉ‡·Ÿ9Á6œ•wDÇ9Pñ«g+·=óî+æ¦x½üÈ´‘¥È_q/Î—ìM%-­gëÌÜVÉ¨´ŞZjë¶Kš¤°µ‰c9@Ì‡:ÿVn•Õ3]ŸmOÂ=sGÇ³;g!ÜŠ=™\À¾ò-òÌØY¶«ëe’gV}Ğ=s(˜Y…g1UˆÚ©Ú})Ïî^Ÿ9gñ<eÏÒÕ ĞåFêÓ;_Ê3”ñ¬†4÷Ì9ìUŞz¶v‰ú¬úaÆ3™Lª/áP<[”fèy£3†õÙ²Ü_Ì²KäˆVİ¦ë³ó§óæÙã…AõÙ¢M[Ââ9ÇCõÙú6'Ï‚á¬Q-iT¢äÄ0æ˜—wËÙ£Ø9BùJƒÏ¾ÕõÎ¶ëêxæy£3 ÉJ<Ã‡g÷š92Ïv©Áã™ÑùA¼>s>†7–)’g¬>ÛqÄ¼¸¸g*y}æŒJ,k<Â³)h=»[‰ãâñÌ@­ÏP{¶¶Îäáõ™s.vŞÈŠ—‰<cly}æœ”X&<c³oÏîœ4Â™×gÎ jŞ(ê³:ùfõLUgé~½>sFPóFVŸñwü¼©-İğ4÷ë\]Ÿ!‹gÙ³4õÖ%ÀöVy	¢÷¢´Íë3gP«3ÏÖ>òê§®ò?ğæ«¢ã™Q¢y}æŒ ×g(ë36÷”ge slû²¥™Ç3g<oDò,hÏJ¾5AÌ32µAí½(î™ó1t}öğ¬V.¹>#¿"\uF~gŞˆR´Ö/|Î×¥8C7–	²gi×n}ö¥éâÌë3gP«3éY°<Ë	c]Õ
+Ö{QtŞhyæñÌ€™7ÏV¥gOtÆÕ¾…ôu8ÃÅ=sÆ =ÃÕ³ZºˆúìÙÎ¹Ş7hãÙÒâñÌÕg«[,Ñä»M3ï^Ôg‹×gÎ0€$kòÆ2÷şŒg^Ÿ9ã ’Ìò,LìY“8ÒÛfšûu.„®ÏVÏJy6³gÁğÌã™3†ZŸ!ó¬Î=´<ûÎ©øÔ3Šê^Ÿ9°ã›€{fhßysÎµVu=KSo]lË¸­òÖº17]é.-î™3ŒÏ<CîYªÏ’Mõ©­lQÃµiã™Öİ3gµ>cñŒÏ=åYä‚é­ëò´>KÑlñúÌ«ÏPçÌ³’(dÓHøÊx&#=†Ëß‡ó…0ÏX}j*u+Bñ¼Q¬büÒx¤fè9£€:Á˜gìUOy#¬­Ï¾Ô3#stÏœ”úe<«SPxKXƒ’FÒ*¿0û<óúÌ@'o,s°Ög/ÖåçgëÚ™ãåïÃùB˜g¨=Ù³RŸ==Ò)×ûOë³…ÃåïÃùB f9áêY~×gÏæ`—g‹çÎ J}&óF–JÍìYš¡Ç3g½úŒ&àÔ‰ˆ¶¸gÎ(Šgø÷<Ãei5C÷ÌP¾ôX3ÏB™{óz-Úã)Ls¿Î…0óFd3obÏ‚¡™Ç3gP³F–76¥©·.bŞN[W‘5®ÿºR­©;šÃâØ)nÔgî™s€F<uæ!yV$î‹^1‘”C¢[û¬gùuãy£3 –7¢gZÏº‚u<£\Í3T™ã&›{æYŸ-†g” îóŒòJ¸¬g­cî™3 `ÆóFV İ ûRæßNÏš/ñlñ¼ÑÁÓúl}½ß,Qª,M#<÷ÏäĞ¨úÌã™sPby†O<‹)¬ALÑí±lékÊ¥œ4¢è>t Ê³V´ôÜ3çxX}†*o\¥gzüsè=?1™•gMê˜Ÿ‚{æ°ò¬zÆf ªÏšñ;[ÏR<æúÿÏ,Ï<9°ë³ =›Ã³ 5C÷ÌË…g”9Îí™Ñ¦¹_çBghy¦ö—Ekæõ™3  âŒ{†Y´¹=–gÏœğúÉ³:ópVÏ°µ¬hÓÜ¯s! f9¡ğlâxÖz–oxšûu.F‰g<‘Z=KSo]Ä¼¶ ¯"k\ÿ!uÕt`#c»»`Ÿg^Ÿ9¨!«Ï,ÏŠCÀt2Vù«RÎ%z»…ªÏŒ`öhtÏœãáõYÏ6ùZÏ^jÒx-Ïdç‡<35œ7æ ®¹İ“ZÊÂÌøÎeZéx¶Î½›0 §ƒñ¥g”WšñÌL?ÏNğLå×â­Óymj`?kçÒ˜õ™Ê³0iÄ>Ïx´>©vÏòûfd}lÉêg=Ú³¨Ÿµsu¸gH…ú~§¼QˆCÂ4L#i Ü´E<kZÏtæ¸gÕ¦üâ¡×W¿§ñL$ü%æ\šRŸ¡ˆg4Cá%z%íSô5ÍVD¾)«yÔQ¼Êó-u
+ĞüÅæ}yï÷èx¦s÷ìò +Ï’g¨¶½êƒÏŒñ{Î±wÇ±(ÏìíŒx¦é÷”Ç'h[œkc×g)XüSõY3~Gc3úS³Bz†pvX}f§Íj€ïôÔQ5…hr‡èiã7ĞóŒ*´Û4¿bÏÍğ¬úlÏeÒçR}†éÓx¶5Në™Í­Ï:Mÿää\bš_ábÇ3Ì™ãÔñ,ŒõÌq*¦g|ŞMìÙö*i²Æ¡õ™ógéÔgÁ³{ºÁ6¤Ms¿Î…Xë3,yVßï8¯ga¬gÓ<7ç t<ÃäY™w«giÊ¬K€˜·ÓäUdë?¤®Ô£Öj@iÖpø­Z¡È—=9#è×gùõN‡€éd¬òW>¤ı˜Ø8v„#±<kƒÙäñìŠ×ô7°ë36ñZÏº‚u<£ˆmí™:ØÑ(ÏPˆv´gWdæ{»6k}JE…2ï<£ÄoŸg”Wò´¬á²ãLÏÚp†ësj(¨ºh3nı-òÛg‡£l;/Xz-3qqÈvŸú#Ö½eæN¯ò{ëø4VŞ‡c $g÷@ï÷[ùÍé§ÙçYÛÓõ³—7Î‹¼1İñò«xÍZvĞËäùı¶2ğc@ó¯½”Yƒí®< .o]e»·½r€$ã1ù(oäO³ıEèkıY¬‡ú(êå¿÷±4õ´aÉ	ûÒ3±¶~„æ!Yı|Ÿ™Gà_{f= 'a×géÍ”g”PÑ6Ò×À ùMe>B"íçFÔ)ØÛXñÌ(ĞÆx&3îú`xÆçnû#g2ñ³=ãÙ{'¡7^“ß«fóø}ƒZŸéx¶Å4é™¿ë$;wû+İïXÿ0d²@¿­Ïò<ã¹#ÖÛ²Şş¿ñ¬l«ã5‡„Ş>ÒZ}Õl¿³rJ<ÃõóWÏª}ª>kÆïjì¶Ç
+ú±€“â™(Ï–-ˆ/âí3¸´×~q8±3
+áK¡DÛ‡ùË£S{9O®26ÍrwyGĞÉéõ¾y6?·Jö,4šÊ!Š\9Ö<¹¶G‘xóÃQ¶-ÆÅX+ò:Ñ/N­¯Rdştnq•|¾Q»Dã4ÓåX€Ç.™7¦™7‘g;ËgáÏ^ëõı¯®nÏÕËC¿<	ô»şá¤œN<£òlfÏ°Í_Ÿ¬Ö§ãÓj}u%/úõ¡Ûà
+ JuFõ™ğlîx&Ë³- -¿Šgó@æTñCÍ&gõ—–7òÆ•i“3 ;odÓnVÏîm4{×3ÇéS<Cî/Wn”¯¯ËGbŸ·ÓäUdë.LJ!P×z.~4/<{§>[q?>»âYÒ!} ˜NÆ*åCD×“á²ûp^Ögé®OóÆrÖm8{ V‹!÷,t<ëÖñŒVzO±2»EyfYvb}ÿÄ=»v<Ú3J ÷yFùa“v‚ì´ÒİG#=C#[Ÿ¹gˆ^ŞXª•äODvzÖö”ñ²9Ú‘íŒxv7£Ù‰õÙêÙcµY‘×iÅ¾6=©¥,¢![Ü³k%kÄâ®ñ¬f”7rC¬zD‡!ÔË´Sıp^æáôxÖ8B’=ë5İì«{v)Ìxv_Ekë3– –ŒO5Ò×”RJ(‡÷óFvô£yåY~ÙœÏbõ†a.™=Ú3m¤Ç³ËÁ=ÃZŸU¤gzü®“ìİq(Ê3Ğ6×NŒgÕ¦ó2rÃ¬Æ³ÔU‹{ö?ûåšî(ƒál²k™ÍéÏşeI<s,$äÚV­¾3S•K@ä%É±ƒFŸ
+J“Ÿ©ş‹k½ç­*ÉY°%—¶•?õÇ9Sné_£¦Ç§”7&ÄÒÖ{\æƒÍæg)Cû…?3YX½9‹¢:ê’ÎÙ±Tá¬ìÁËrö´œ
+ßp6ïÏt‰1H´q#^˜?“=4jy™Ïv
+Aƒqç]–3ëÏ†¯8{[ |—T½†ÅM]æ³]CÌŸËÙp?Î6ÌÏtÁ'œå¾³“	‚Ãg˜mÀÙï¾¿ä¬d ³°¯?ÛR³CÉÍÏøÎ»*g&=ÃEØÑŸuÎn#Àä,ğüŒm¿‰³ôÍ¦_€˜ŸÓäKd…Ó?HUT©ãT_eºÂ¶4Ö:š‰¿åìmÁ¶Úë5º–¨éÏg‚‚“sÉ·¢Åú·L”[r¦Z>jvÌÏºn$‚ål`»Os6‰æ¬\"4ûêîÒïeü™Ç}ıY×ÄüY°œ
+…³;ÂBFq%G¥ª¶b¬u$9²o9;„?Ûf¶Õ/ÆÜj­'0AóürÆş…œiŠ`ÎŸÎ"¿[AÚŸYÊÆ1œÜŸı‚³/½g,l4œMRÜ(ÀÑŞÊ Q…~^~VyÚ%ntœÙJşPn£ôÃO˜šª»ÈAøyf…2(Ïú»¡q Î †âƒ§ŠÔ^Ì•…:â@\¢¶-‚öRÌ(½ˆ.Ãé›~e°¼irÊ­ŸšØ†¢¸1 gá3¶Îr -)¤[°Ÿ)Õ¨e·O Ì®¥9ãu•òT±\o~ì	nû8Å&»1Œk›‰!Äd\ÎÜ–ŞQÙ6ù@¬¯ÛOÆ'§yÿ÷âŒû3¾ı$g¶ÿ’1ŞÓ7ë2œ
+³0ı†OÔŸ_—•g“G¶=jœ¥¿ÒBlgÿ²kmçÖ}ò‹ùL¼%Úœ™v¢ÀL¿ŞO÷±ËÄ*xåœÅÙÀ4“Ÿ©şİk6åZG’³0˜mZ‚q'¦ƒ6`ûä
+Îxphö¯!Â£oÅ¤J‡(†`0VÕ¯K¦p&£ÓÈªD8>g|r^]Ö“Ïr3ñü, gtÖ‰³kh&nÄÀñÓ÷•‡yúzü¯4bÛRì8‹bgÍqæ€çİ–‹XÛˆÍD,˜sœÉgP²Ìïg«-“áL¸‰Ü¸ñõĞ9û\æ€Üg€üö¢¼ÔG³/ø/í#¯²Ã8C9“ÒØJo§ç ^[·´¶/Ò}ÕĞ0DxıìäcÕİ;×"Î‚ÃÙT|Îò„OßW³º¬`¸’n3zÀ*üştj‹¥z›ñıÂö–Ø+ÃˆI±Ù ¹Ü‡¢7úÆâ×°]´m²å,ì+¦áLÉé'VÓ[&°óßP@	ÎFãU9+oÈI‡q÷ms6ÛÍ­#Î–O¡Òz¡¯´jßt	P}hOcA¿ªµŸmfŸg|ó]•³mó3”lá”)sÛíÉ‰3Ü15o YÖ®}Û~catÅ‚~äÌägaògeï]–³ç†ùYW—r\6$ÎÊYšÂjŸ«€=RÈÏ“
+(-(ŒÖ=´íõµc~æ=wİY@ÉÙß
+ågg”5J8ô%ßŠ.Ñ´p8“¶7Ğ\Üørhc÷g]ÈÆÌŸMìiÎª€U8‹.gÿT9.f+ågŞs×¢ÆÂ?êbïçp0ÎrFq¥ïÏÎ¤í
+4çÏz~Öµ™\Æwà2/¸ÿrÆk@"TáLšY_†³AcÖó³®T8?cù™ ÇÉ¨@TheãB3%­/ÃÙÓ„Ów>ºÖÇŸÑY?(Îbrk	ºn“rOÙ‰EåÙ Ri{}éüÌ)tÜÕŸa˜ ¸ e½¼šbX/š.é:–lÜ&–7¡áÌö_2ÆÒ†ÛÊÆn†¶çD#,f®×Îü˜ı÷kİ¥9d”ùYŞƒS•ÉÏTÿ…õŞm3+k–³>ïèÏÄù%âåzå,Îº'Œ§K(œ•¨êq™§93‘ã°·?3ñ8HõÅ¨8|É¡Öµ¿lÜ˜üm¾ëræDaÃüÔ_d4)·Ôªéqã)UãlÀ½wÎ2k¿ğg†‘z
+r¢tI×±,=³œ
+÷ãl³üÌ±«£C«5¥DÙI-»#ÌÏ^°g˜º\˜3“åülüI~¶¼†Å]ç‘7²Œåªœ=ŸNÌ8lšŸUº¼Å$uÎN&ÎYĞœMz¨(†ç £ ‚˜£´"Õóx¨Ò…ßDsqã—œuuÕõŠ÷g´gH6ô%ßŠ.Q7º ñM4ÃY^‡=ó³®Û¨7N›OsV¥¥ÂY,÷ºìÊ™vhÉ¥uºÖ—ËßwÆFŠ8£¸r¹?cÆ7‘ä,ÈräØıY×úÊœ…×?ãÏ3Ì°^=–qÆkoí.;û3³îÏº6ÇŸ
+eãŠ8:¡Â[p9+7i+îÊÙÓçìÜùÙÊƒ´Í}7ØZë|Íägã(8‹É­ALŞíïWÒmò`@!'²„=MÑzÍù³äÖÏíÏvåì»ÑîÇY0œ
+5Îlÿ%c,m¸ØâGšáaï(·;£ìÃîÊéó[¡p>‡æeLè£q Î †âƒc3l(&I]DO6%ºDm—kûÊĞe4'ˆx–{CGŠ•Ê9v¶ªrK‚¹?¯
+ø÷;<Kähò3ÕA!-Hkm‹kHr6.«rÆê*+Ê>¶ùª,`»T[ÍmªIÔ†ñoÙEØ³ÔNÄ™²Ğí ÌB©Uö†¶ÓÔ6½ÿ›r†Î,0Æ÷ŞcËÑw•ögnÔ¸N~¶ˆ3µçf9K¥…ØÎ¶œ™aœ[óäÔò)x MÍqfÚ‰3uoD3Œ™¦™¨%u&µ¦ÚùÙ¥9ÓùYvik¼ï<g:h¶IŞàŒâŒeœéaô­˜”áŒÕbê¼4s*8\À™P#Ëíä«jÎø4ÅJÎød·3süÙTsYÎ´Cû–3÷éÓñ¿ÒÈ ^ÁÎ¢ØVsœ™aüÛgÖˆnyµÚóUÎä3¨Yæpæ®™¦he8Óã®¯¶?ûÓe9ÓùÙ8=‡]üû´ v //õÑlş‹†E{É™ÆÊ›”2 &)˜–.H56vl7újCàw·ÓtlHÙü¶åg“O»gA»3\‡OßWÑº¬`¬’n3zÀ*üøtj‹¥z•Î™Øî*ÃˆIAÙvSè&b^õ¢ÀM9vÉœ³p²/_q/úzİÅ‚z+%bv¾è[	JÔèqv£üì[Î¸ÚœÍvsëˆ³¥s¨¶]hü¿÷›«V±=kUó	^£¶ÑßìçvÜ8$Î¸Ã¥-dÎ–£«ÍÙtŞL¿a†’-œ2ecnË½3¹a÷›ÍröŞv¶ë}ÿ%úÕ»”³@œ…?Î‡33ÊlÏÚŒ?Km\ÅŸuuI•üÌñgWå,ÎVÌÏ¼ç®;‹Ç9{²-ˆœ!X•öÒşìé'hçz©®s0fşl(‡ı‹3Ì+ DÃWËÏÆ¼«ägŞs×eó³ÌÙ7ÅÙ™ñ¸ñ\2œ9ã8Œ'|³®ÃËÏÏ³¡ÍÙ¹¶dÏÏº~&Ÿ1ÎBíÂœ™¸±çg]Û‰q¸?£”ÅËÏ^·gÏÏGÈÏpKÒ‹=İšbÛ•²¤ëXzÅû³âFÜ~Ë|µ9örhã®şL1BµjgªZµì:Œ€œ™ÊÏ®ÎYp1Û7?öËbòfå,Îº'??%r¼*gGÈÏM%‡™ÅY*SÒu,ùœ±­wÎ¶ÎÏ@ıEF“rK­š7R0P‚îÍ¾ñ/ü™a¤^ƒœ¨]Òu,¹şŒñWå,xœm™Ÿ9vutˆAbµ¦ô‚({ i¢e×aäÇl>èãağºÈÃ(Q8ğGÖşìi@û]~¶¼†Å]ç„V~†œ©ÿ%JÁ'™5S³qãk
+6ÌÏ*]Şâ’»Ê]®²?%?œ³”Ÿ¡ÓRÙ‚ÏÙae8Ó 
+{û³®Û¨7ÄYädåğQpFå‡İ§:?s²³°o~Öuz3Á¦.5Î¢õgºşxšógSA÷g]›ÈÏÏòœô8Ã‹	OÅÙÓ‹wÍÏºn#7Îõµ¸ñu÷"í•ºåˆñÀaãœ?Ãe8îtW€Œ)&8kû©³lÌv~6-ÂøMÜx¶ò gù´ÇógŒ³P"ÇGŠ	~Nò=Œ?óÜÙøqÜxuÎ*??c›ïq™µnrVa
+(·Q>¹¼@\Ü•ÿüyêüËq{,cB¹*ã@A
+ÅÇf|ĞÒ›@—8uø D™³Ğ9ûZ ®²¢ìcÆÉpÆ«­M5‰Ú0ş-»ğy—y€.0/Ó¥ÄãÆ€şŒí¾pUÎ‚à,6a-æ”•g“ÓSƒ³ôWZˆ-míyşLãÜš'õRÒTÅ|—qtÜ˜Ë¯ÊÙsxÊ-¿qØÇŸé 
+ä®_ÊÅ¦Ë8ÓÃè[1)Ÿ³<q7‚0ß¥åæg<ªpæ%W3n,o¼?K[–ÿ•F ğú³783Ãø·g’ãIµù.-›Ÿe6ÃÙ«ïó\A†³aUÎ¸füÛË v6//õÑpÆÑ°h/93Ã8Cy“¢yK÷¥¯óÙ•Åó3Î%,ıåòŠCI¨„]dqˆ¥oåg9E¿ˆõñ¯ËJ†|é¶,ZùAªò¦t¥e¥R½ıKğgjt±T'¿pÓêEä×æ“÷]B,n…3– iÎÜ3Ñ=ÔÌÉ÷cÍÅ¯wğg³İÜ:âléªmêCÛÚ!>öÑ÷g,p¬sæ@T×ãsöÜ2?CÉN™²1·ß™Ü‡°ûÍ×ÿÙ/“4çYk“ÙÆşÛød3eI<·5'Nã†S•ØÆôÑ‹¤MüØ[“Ãg×éÎòo ãÆsfüÙó³¡!)ìÌ„?›J‚v! )ºœÕÛ¨\Ú†9NÔx_ğ;ü™÷<tfY–8›Œ?“?y‰™Ši#6÷0?»Ã6ob®Cr³Éã,q“ÃC["ãÆr×MI¾'Í™‹Ù{ò3ïyèÌbÎ‚ğgÁçlß2şÌ6ò³¡‰ ©ÊÙİæRæ†ùÙ3ı~fºkô³tà|ĞŸmpS†¾#*ÎLägÅìîœC’³0™Èqú´?;ÌV=«šŸ…ÊXİa9»zî,¼È±Tqù–©ªLq9ÇÍ­9ñ…h5´GÙ¸1dv:ÎVäg¤®øÄPˆŸJh*êÈêÃ!îV4iÎ²?Ë§{8g/ågK8‹‚ó„WË™ßÿĞnD%hÄüï¨œİVü¶ü¬Ã‡|)Çˆµ[Îjõ¦6´	QìïR8›îF7;nôÃÆ9K0à_ä´-v"ÀEœ©zC;”ÍÏş¬ñe—ò×3•h§«âLƒv;XÂò3DEçg’¬N­êC»”›ŸÕ’0ÎHüä;üÕûùÙ”øÛó3<Ÿ"±Ÿ+—äkõüL…4Y}hŸ*œÍYH†w)PÎv&ÃÙ¤9»/ø#œ=lKqaõ¡]ê7rì(8ËÆ×âŒvw¼JÎ‚IÎB‚í%ÎX^ñ£¶¥nyŞÙÆ=–Ã³@«œéTáqãô*gCC}gıÛ^HœUÀÄÙäaöR~vÓÎvcè«²ş,Çl€‚³İÔ¯]ÉpvÎ†?ú€(°3ëqv·½j€û4E•Ÿ‰°1ï@XÁÙ>7eè;"fLpjä˜ó³x4ÎdÜ˜7`şlè#òãF0¿ËaìÎr6)Ì>ŸÑşâëE:ä¢>(ä,Î>âÏ³ƒ #®é“JùYğıÙíÍq9&;›—ÆÄRÅxÍoÿ¾I—À…ä],•óSşğÛ<ziíc">p-1lFÜ‚»‡%©å­©:qgN*7şy5Ì\Ë,2´Eq#©«SØ.‘Y »!UÉ·ÚËr13GÕÛ¨2SÒZÌuè¦ÂYğò³ópö\ÜøgÊô âRÎ¢c»®=×!ÈVÕwŸ!¯™Â#İ/T]ÆzVŠJĞˆœM5r<0gÓ—9£»Åry3"Yàt]“®wb	ù
+™y*aQ*ÊÅBYÓÛ¢³ÊÆÖXlpJœáİuu¸m>—œ6†ìÔ—q–Lÿ"µ!ª’Øu
+ĞM×ŸE¯CY¯ÁY0ÕÇ\×åÌLÓ])ÔÓ:µ(”¨Qø³šÃ™6 Y¼e-‹Ã2Îä¥¹ò“áIî#TnğßÙpeŸÅ)Á‘	#šyà¼½Ù6×d¨?¹ĞŸÍÙ­,q–ì>g—âìê§g«ãÆ¼_5š³%p!¸Ã@27bFùmÌ]bÃVÜÈ­¢:Ky0Rı”‘ØaËù¹Oæ¢ºrãÆäß’.åŒ68öò³÷r¶RĞ
+‰2oËz3Nä\IVyrˆG£İ99‚?+ØáLgßÑNÜ8Õô,,âŒå?7)¯ºÌÏõäÌ8=~‚3’'÷ªä¨C9?RÜÈèp±yÜ-gaj8´¯bh—jÄÙ§ÌY:í8)ğâÆœ\ÆŸ]=Ìs¶õåmI‰³ 8ãôLsÆà[ŞmY6?›Öp64´\7†Â¦-®d¨˜£ûs6Õ•>•Ÿİ´EmC~ÜXªùr{ò8›†?ú†˜³pBÎ‚69?ûõ”u¾q"QIÎ\ÎR~vIÎ8Uœ…#û³_/íÜœ©¸1ÔüìfGåìN›S³inø3b©âò_•Kş&|[sY(£È
+ñ¶¹7¢ÒwéDÖ(Ö[®ØDÖ!»NöŞ'én(—®•x¿Ìş,X—’\™Õ¨1X¶’³m-ÙÄƒGs9SW|DÊ…*)éªª°[­ÓFOU˜©!®?ÙÅ#’K,*å"=ä¢u©~ÔòÈTØ˜(hv­şìß*¶©%÷8ƒÀñUÎj™6@Ò/	ŸÚœ¹O/q&|q¿OQ¼€'93ã-æÌRTµ6et,7Šül/”&áåEèáìL‡’!’»__W'?Îõg¼Dµ‘÷ˆ"X¹ÜÁ¨·
+oE$YôÚè©³†„İÃÀËFìr–÷«KZÄ™€ÊY®Û8‹\ƒÑAöïWß÷g÷­™ŸE>iê_,ç^£6@Ï”Y°¹¸V½”3p©¡'òúˆªğ	Î:
+u©¦
+ÎL‹­ˆ9>g)?ëq»Vâß¯¤8»NÚ›Í/åg-•[«š·ğdßëîb§j›3é*)ú[4¢<iÌÀgŞ®kŒ"*lL÷ü,$+…³©`—3Üğ'¿•~«¦?C—ş|~Æëx©„wiOêÛê#álÍÕJìÄmT
+ß`“X+ä{1çh'†X7ÁX˜ÏÑ¬ğÑ(zÿå(õù½•5dãÆ?Ú&>ëqæ]Dmùö·2œMg/ù³¨ùğ¸íÂNÄËÖTÛ*zbÄòío‡á¬ßÑÂ:j¶òíÈÍÏà Š3>”‹6êÁoıCÿ@’³€Qcqê-ÎX^qÔ÷sÖßÊÖÉŞçÌ„ËGäÀQ9¸úR¼íiA²ßî‰‡6&—³š¹Ì³ög%Ø¨ÛGÑxzOòÛŸ,°ª7Ö-48Z'ÊÇxğü™âLµüöT×ª7–Àqnåg7ín½CÕˆ)8şLçgØò³]%ÃÙÕ&hóğgCŸP?nœgÇÊÏğ0I	Znø³¡÷ë´œaÜ(|ÚaÖ;´!åü,¸œİ^™³ÉÁlägCú³ª?ÎÀ ÏÆÙğgCgşã©g9{™~ÂØ5gAF!ŞèÏş#ı©<D,æÎÓ‹TĞ½ßº;õó³ù…ül³ æ¦gïôg¤Q³œÈ"ÀFıËàl¢ĞãlJœÕC4Ÿ¾$ÏárØrÉê‘Û“jË×úÒœHv´N=Î x~«?K83#HşÌÓàlÊş,Üÿ™³ëÔàL€¼ual¨M°Äö¤Nı—eó3³÷ú³ÇœQ=BgÇU7n¼h8Ów*°Úªß¶Vq‡Z%Éfg·•rzör~FêŠÔÚĞã	Â¥XÎ®ÈÛ0ò³êA~6Ï’³d#â®ÇY­Á°°­ê¦tÏõÅê¥6ãÆIèsşØ‰Îxê†ğS©48Û›l~şı›5g$y0¨ãÏœ¼Ù6B-më¥8Ãà^÷g¶<SÍ=å²`o$gØ)ô-kíDÄáÒíjıÙÃüLr¦¥¢íeÛâ¸ª‘ìhëÔòg’³·ú3^?Ã·¼+µCÈ)œíM7Œ3ÉY:}ëWö;ÙBá"í©L[ S¼ˆ¿7ÖÜle~Ö(2'
+DÇ^uÜŠˆÂáÏv§~~f8‹êN÷ö Ô³-ÛæCV$9»1å$hs3nz]6?ÎnGü;8Ã\WiºÇ£=)íÏf³÷ú³¡¡,*Ac Îª
+Î—ÃØO+n\ÈÙĞĞërãÆy>gWôÚğşlèı²œÈÏæ”ŸC
+†ÉÙßÃÈÏ†> œŸ™ŸÁQTÎ‚ÅlägoĞØWàÏBåì:-ålGÛêû³Åœ
+-ÒØ>Wn~6Uæl²ÉY'nÄrbyUè^áv¡òDù¡ğöŸ;áêÕ¶ÃæØ;½a\;T­¨‡®-œ¡°	¾>½¨˜ä¬¤hØè(îÓ/µ±mV†³«:.Y©+>²‰ì!ûé5—¯ß0ncŒÒ™lVZØ¡"6‘s<¹(€‰59ó!ŠÍÜüüL`æg8kzÃŞËÅ3^¸¸¶½n\Ù°1gšÍ¹¸K8·¨äg¡F²û¾ÏtãF›¡-YM‡3>Õú•ô©ÕkxËÅ¾^=.¼P±Å:Òlqfæxr•ülFGı8«ÙÙÒü,›şÅlÀà{×o¸}ß›(Û^7nôªú=ÈÍéq¦ËO.Â£¼Ç™<aÄ™rg«ó3áŠ}ªB°ZTŸÓûúq£©ªš›¡cc¨hš6O*›Ÿ…ÿ ³pÁr‚’ıl¤â,ØìlîqFÎ}‹³ãqÄgËm:¿JH(›ã“Œkï´z\S:ö‡­¡l“RÿÜ‚ülÆŸıIÅÂ(hWiü™ëÎŞâÏÚ-vûÊn®·Y•Uxq¨óÉgÅÙ¢Ã¶\Î&™-ÍÏXªŠSæ´n¶Z?èhõ¸n©‰Tg¯‹J¼äågsÊÏÀæe9c¶„[ÛÿB‡¶§[~VŒÌp61gGäóÒ	İÚæ=
+µUãÆp.Î®ÓÕ¤fÃŸ
+}HT süÙíÅq9ãuÏ¶,?ó‡†Ú"´±Pa~6Ïúï ò8şlè+¢ 9».ã,~’õú_‡³»[›ûœ
+6ôº9»B‚vÎ¬?“#ó6øz¿ãÏ&æì¯æı’îo×øß½(b*¯53‡1Ö©NŒXœı€³ h=ÌÏˆåó]¼»¸ôÏw”ø%¿­_æ5”H„ÖÖä,ÊOär&áËy«‹ÁÇó’üŒÔ%Cd 0rª×ªæĞ1äæg€Y¸qV<”ö`™,‡³ôW)ü:d÷ü¬è¶Ìš ø<ÏYqR+8‹†³¡c	ò³)VÚ<Îrì×â,bÜØâ,B8ù5ıûûe–Ü¼Daª¼ŠaÙF^µ
+/H~ô}dIªk1ôD#ÉÛÊùk€1º6+ëBíò¸Îr ù˜Î¨¬IBê¬…Î¦IÈ¢¯3Î’Î”Kû-¾¯’7¯½z>+k_şMÆŸ!n}jÜIgQê,ŸÏX<B+“º­œÏZışùÌÓÙØèìá¸‘u|«³6;@g%PøäœÏæ47Nôé[–œ‰«m½4qc)ô´ş,ÖNÒá,>¨³)‡~Éã%ç7È™œÌ—PôÆÙ2ˆå¸±èŒ½TCW&2cú]Euˆ?£NşÄŸ…Ö¬÷Ş-NÓfN:ã“ÎÈK5LêF©mÔÔğ»Â3ş,Wfşù¬â$›~¦Ğ¯:ûK¸şìÊ´KÖÙ°qc£³Øõg üŒÀLÄSHgÍùŒ}öXÏjK:ƒşÀãøç3Z9Ÿ}>ß­ÎØi¯Ï øõ|]³Î^İÄgÑ‰ÌÜóÙÌaÆ¼ áÏbÖYœu³Ğ¥³x½òWgğg`zç3:»GgA"âÆzB+¿ÇüÙaF	ìB÷|V7ûYgiefótõ¿>…üR3ßsÕ¿˜[7¯cëÎ.û³·ì1xêùlYgÉrRÒj_øı=WİÜ³Â—ğg:jÌç3r{¶’äsº‡Iì@2/]©‡àmñıYäÈ‘tFkè0:=²ı¶¡ıÕ›&›÷½oM¨Ç³Û%’Î.RiÕÍûóuÓÙeEgj¿iµóYOg“««ÏÑYÚ(tÜh]t{>ë/.èÌˆ¬‰ ŞŒäÏ’ÌŒÎœóYñÜòo*=:÷’ıY:‹ÂŸİP:+«,­À´§²&9³&¿9nö|fOh«şlâ½Ä=Ÿµy¿Ğ9ğŞpÜ[¦t&V‹]8Ÿ±ÌùLº³(~ÛâÆÀÛÊ¤6™ÇÛøãøç3qrùÊ+E¯ù>eÏÖ:»^GÏ›-êìÁ³çŒ
+Ø÷|&#ª¯Ã¬£³ÒI+³X"àĞl.Óô o:Ì‚‡©ş,J]©³x½–ÿ‡é/x#BÕ˜ögyÎyÒ™ éllgĞØq>‹JgÕ¥}…Cr¾©êÊçĞJ„ÎÀtÎgBgåÚŒ5nàùÈ%–tgÅ‘/·K{Ša'Ø¾FÏ°[dCv·D¿]àqD]^;`½¤•Éşkäáş¬x³_úğBjÔ)Ñš˜Óxeæ½mt)}CêŸƒV'-e7z:‹ÎÏdËGkÆÏÊíuk\ØE—{„ßÏ~Kô½Û’ÜşòO«h~it&Ænaü7NÏOiªxB`3+Ã—2‚t–eHÜ3hOàè>‚ß!ÒåS×¥Œéì¢Y/Ù¦=>Ä÷–Üñ€çÃ
+dßA"Š'=­Dò¶IväÒÑ©:•™°fV[¯ÅòSÃKÃ®ŸffM… §#Ö×(êÀOQu¶Í•	b?+„rI_ÚÿÂ˜ÿÕKµI»a4	·¹ã·T,.~ü˜<àuhºFñ”­b™?w:1GŒ¤³¨ü™±X*í“Æz¾„ f§#¤¹Š¤¥ZŠ"rÁ®¤ç™	zîŠ†òÌÔI–ïy_İ‰7Bø¬ÖŸkëx<r–y“«ÓÃÂ‰JE<5‘»¨¸q¥Ş×°{>’ol,<aD	<1`7l 1‰óÙ¥WBN›Åò³‚ŠjO4ûd		Ešv|AF—®¶^†å—|t¢ú&–Éå„h§³ø<üÊˆÎùlãmãdO/6nŒbŸtn¡i9x6iøÇ:-‘Ææ®Iá/«[äÏ´C[YÒ+Ù,«|DcMÑØjLTEmv$ä Qz¨È1?ÍS%oÏcä÷:ƒÀa)nôYÖXò˜ìªb8öq:0äˆK”›Ì&+ó¥Õö€;(óâF1ğ›¸2sÈA éì:Z™-Çœ—ÅìVs±J¯ƒù¦Àr¬o;ƒß!;©GÏX8›y¿LëÏÆ'àèLmväÂVjyF[Àf(vhÒ7z‹CÒYç³”Ë,ç $³^ª?{¢;‹ë·»Šn3àiãÆK^¸Ë!çJ@ºv»«è6cüğ{×ßØêl <›H:!3 ö‚u6+íÕ­à˜Î®·—ë˜Og‘BËKç¾-{évWÑmÆ=+Üqõ½ê °'7ÅW·€£Àş@g ìÏt^İ  Ö€Î Ø¥³P®·{Áš†CHm~)è±¼•d*{æ»­ş¬­¹RmywÚÀ;ÑÑY ·s“[•f)e=º×jåÖî•é4„H’ ¼+:³ºº\Øš²A8wÅ#Jkvœğ¦ôtÚx-Ğõ>Q¸I:;;µŸÏÂ1Õœû
+©CgàĞ:ãÏÙ	×ÊºîÄ¡\«ZêSy®WÎnª¯µU¾ÓÄàƒ¸é,ÒK(×Ö²5-	¡ú;7;ˆâ¡81º’ÿé×.¬—MÅGÚÃ ï…7ö¼CPO­M“ê›t+ù=ÓmE x)MÜèÆ„"7=ù6Öõ´&~Å\ıB¶­%È Ş¥3 À.@g ìtÀş@g ìtÀşÜt_İ Nög `7ªÎ¾‡)qšIO¯n ÇıYYt@‡°Bk¡u–E–•ö:»ËñŞÑ¥G{o¹Œòz×ûÛ>ûKà\¿!š÷Ö¢ÑÙéTÇÓÇòæåp,m+î[@g?áû&ÁW°ï­EÑY¬ç³êÑNÉŸÕ
+1?9¡yxÛÌwJœ„É’İ0ÈoQõ^…êÛ“_ŒO2²ÚB]{yÓÒbÀ~Ã–SmPc×4‰ojÈõ`x#@]W¹Åd[>¹Õéï¶CÓi×Üãr“Ë9Çƒ¤3Š³ª¢¯3>Ÿ±ÌÄJ7#è¼dÌse_ÏNÙ›:M…Æ¾[L7]¼nl¡ZKrÙõå¶œ×¿%-,ÜM#Ö±à»ı¬PÎñÈQú³:KŞÊê¬Hªè,[œËµÕÙüwJñãƒ:«Û¾\KÎ¬]§Neèë¬Ó”úÆIåuK…éÀV„ØÇé¼yÓÿ¡Îœ®¯|ÓÑ§Ag±Qatu–$–ÄÖœÏ(l¤ó™Y0Î<ğbsõ£–ÏĞ·k>¡
+£æ3íoÓ™×BÕë-:“‹İmĞYç+¦sM—½®/~OµÖè¬[»;õ«Ÿ:4ÎùLë¬œÏØãÍR›IOC³iÏ›ä€N“zO?C3ş‹ş¬£³A}{è“sì-§M-T+O•”µÊª¦^99Vü>YÓX{vZ—mm7|ß¤‡D«W—mç¹iŠgªçî°|¯ê¬*1ËÌÑÙéß4ıK‚›ufw®g†¦ŠR‡úÔó;jF'YÙ0¨iô\ÒeÒfn±F.âë›[ØÑ™©Œª2R¶:³ú™è`hu6é[µ£uŞ~3bò›õA~Ûù¬ÊÔßU;‹M×TÏİaY×Ù‚?ûGétªşìt2;Ó¦ÑS»ûİvâİäıèÍÕêl¥àğ,­~gµw›œÄc´ñ³^Õ[šrx
+qõ|ıóYÌşlæ_ú³›ëfñÕÉX±suÖ©p´¯7U­´P*ww-?]­q
+l›¹ÚÅº6
+•øì¦ÕCóLÅ(?«pÜ˜}YM‘qc‘Ù”…öêŞ ğlÓ™´°:û'Ú«{À{âèÌ¨ª¯³ïêÏ&ø3 –øïz×+]ƒ}o-š¸qvfÿ²Ğ^İ ù3 ÀnT ö:`fÅ+şñÿ=ÿo: ìMø2c
+endstream
+endobj
+43 0 obj
+13770
+endobj
+41 0 obj
+<<
+/Length 44 0 R
+/Filter /ASCII85Decode 
+>>
+stream
+z!,;K6IfKJ!!!'e7!8RVTru_;>1B<hH!(qS<;L\ZHIfOtJ!<7QL!.Y'"PQ97%!+r#,
+S?r7r`;iNL!9Vf3HeeZ%joE*p!!*$!+TDFkrrE'k#QPAG&$un]@Mf)t(qm!fhB*g]
+0Hbm#+SM<J!3@;8]c`6X+Jf#[XG\Mnjsaam0/&5<K/5;q=ucRd3GR\:Ms`V*p,UYf
+5<hCu5QF(MC-`uD6#(a=8sDsJ]h5uO9)nTW;GU(a!)e.m;?0luP^?:>Mc*H2;L>3;
+!45Wr8m3Zr>-+f/HbES_`EH`q>2J+>&DgT*s'#G0?XFp`^g^b-`F=a$AUQ@HAnGZ!
+R:_leAi'I!bQ)Ap;JMGCC+5rn;UoNhmV6M:C8>cdD`Ml2K6,SEF0ro-;VlJZH[Aql
+HSMUKF1lpb]mKGQIfKIuIfOuuIt%HJIt)rts8RQKs*oOuJ,]M!!!%P"J:IWMJ:KY4
+XH\@f]n=S[K)jb\[,-Gt.>peIMfYDH>+CMX[#4ptMgOTE;ZD["O,o>%Pa!;T!'-:_
+F-J-9Pb\;Is"g'TK:0!4RK(L!AojKmH^n9(S,fpd`P%cAk*uGOS8+[gT:hjQ!2KTL
+UoZSPK9W0H]qgS2Uu)-ISH#DA;QNc\X=9sHs4+2CeZ=D[XK;H's0&W0s0&U+["A@c
+blG-E@^Mr$[!T0e!6qnNm^)ro])[2k8sI$>[(VCc]r_7ICB)!0^V@P!^q]rhZpD\)
+SAes^`A,WVKE'!mVTSDEbh:4as8U<2!6pEoblF!QUnl8lm`bb3c-=S\cN)M?>1NYC
+eGuDqHe$Yns4..bgqWpH!'/n_`SLU6hQ6b6KE'fAhr!;kk-P-Nm\JulXQKQFjtQl(
+!!)GOSF-C6m\KmN@didSnF5r:nGiOXnGi"XF8!iYrr<'!IfTNK1]Nkmrr@QKIt.Lu
+RK*<#s38ggMq.h-nGi"Is8W-!!<<(Ks8U=Cs7$'grr<$!~>
+endstream
+endobj
+44 0 obj
+986
+endobj
+45 0 obj
+<<
+/Length 46 0 R
+>>
+stream
+Q 
+BT
+72.24 333.36  TD
+/F6 9.12  Tf
+-0.0506  Tc 0.0703  Tw (Figure 2. Silence) Tj
+-2.9539  Tc 0  Tw (\222) Tj
+0.0313  Tc -0.0116  Tw (s Music Graph Editor.) Tj
+ET
+endstream
+endobj
+46 0 obj
+163
+endobj
+32 0 obj
+<<
+/Type /Page
+/Parent 5 0 R
+/Resources <<
+/Font <<
+/F1 8 0 R 
+/F2 10 0 R 
+/F6 20 0 R 
+>>
+/XObject <<
+/im1 34 0 R 
+/im2 42 0 R 
+>>
+/ProcSet 2 0 R
+>>
+/Contents [ 36 0 R 39 0 R 45 0 R  ]
+>>
+endobj
+51 0 obj
+<<
+/Length 52 0 R
+>>
+stream
+q 
+460.8 0 0 -333.6 72.24 719.76 cm 
+/im3 Do
+endstream
+endobj
+52 0 obj
+45
+endobj
+49 0 obj
+<<
+/Type /XObject
+/Subtype /Image
+/Name /im3
+/Filter /FlateDecode 
+/Width 695
+/Height 588
+/BitsPerComponent 8
+/ColorSpace [ /Indexed /DeviceRGB 255 48 0 R ]
+/Length 50 0 R
+>>
+stream
+H‰ì—¶ìªEí›^Ò¤ŒwÏN¥*@ÁO”¬5î¸û”?@§÷‚–Òÿv ‚ô¶Ğ‚¶Ğ‚¶Ğ‚¶Ğ‚Úv ‚ôB¶…Ô8lÃfl6½:ø†m/>ºWßC¶‚–P‚mssÊ8
+–¶ZÊ­\9İ²€.øJcß»íá“ú/¦ÿâÚ’¦ì,3¹š“3r©u³«¸eìøãÜ[C¶­I¸…“mÉ©péºÙVÇÊƒ¯6öÃ¶úã2Ÿš`«Ş¶=*ŠËtÜ×şœ=ÆØ‰íÁ­=ÍL)[q›’œaÈ¥Îõª(¾g:ğkÿ<ÆXTÛ¾[ZAd‘ø®Â8~~óÁg(…k^³í¨´Y5Íœm«¬Îª#ÛnIÓùî@£ÚÖpò°Õ}K¯µ-°]Oâ“Œ=ÑøI¦?øØŞJny¨aÒm‘‘Ó€íU"¶7 Ãï/Ù^lõéÁtXJÛÇ$c›rûÁ5ÍP3Ô¶ºÁÀvm‘µ-­ 6Û&éö,şX¿Q_–§#Û¶×‡¥îv[b‘CÎâàZÛZ|¶ıg½Ûp6}ıŠdgmÿYïÆöH±'·;­[`ÛÖd¶áú÷‹í½HØÓ¸ÄêÓƒíÚ:°İâ&ZAD¶ıkÿüã×ÅÜZÔ¶İ§!Û^Å	¶—zÆVkõéÁÀvm‰Ø~ş~3nø²œ,Ò×ÅƒŸÄv±`»%MÑŸpù±SØvŞ`k2öl‰lûùcÊÕ¶]lMÆŞ‡-­ 2ÛROkGfÛ¹%ãúŠjôôGlOÛ¨·¯?ƒäúL¹ñÀvKšÜë1ºQm}è1ºØz•ë­W¹µ­W¹ÙÖ«\‡l½ÊuˆÀÖ«\‡l½ÊuˆÀÖ«\‡x`»%Mîõ‚]‡ˆlëU®C¶^å:D`ëU®CDmëU®CD¶õ*×![¯r"°õ*×![¯r"°õ*×!ØnIS“…gŞ·™}k¤%B´RÒ+Û†05·»ÖJ+„h¦¤/¶ÓîÜ¼5Ó!š)éŒí¬[w:6±‹µZ!0ùdºÖ¶ó2ñqlj+µD\,%™“é“mÃEÕ‹õĞŸ[Ó{Y¥ùcâ÷?{2½Š„s­vK5U”mç?`‹&Š*·Ål¶e§½ÛÉK™*ÍUv¹ÚÖŠmõ‘N³u‰~aı‹pV/«4¶Ò‹›ÆŒˆíQªİÌ:T'ÕÓ“ıÒØ©ĞĞÄ^cÊä¨PˆæXêÛ-iŠü¨Ùé§ÄlİÌ?T£_;[TX29*> ú`KgÛ-CøÙ— YÌÊt3ïÆq/ÛGĞoO8{æ‰G¥­nÙóĞÛßZ{óŒË„#Ç_$õ²ÔÎ·OpOçy']_ê©†Ğ³ÑÍŸmc³}¸-k¶c+|ÚÄ4ç–ém¬“ÉŠĞGb»%M?GÄEóêíïyO­„-²µ[ş-›IFÂÙq+vP„­Ú¦!ô\t£²mvÑ¼BõâÊ¤‚×†"l¹>á{XP<‚-ç«¸3gXN­Á¶j—}b[‘n3ÖêZÛ’Ù[ZA\¶=zÙ»WçlK¤Qağµ¡.ÛÖtÎ¶¬Ñóğù„Åî‘Š„#¤*n­®¯¡ò!.í–4]ÿ†ÛM¡p]°©€mF%!şƒval©l{¤Úó?£lÚ›°5mYiˆ¾°ıûzœäšQ{'j¹<î[Û–½[ZA[Bò™l•/s¹ëv’öjÑ·Šë¡{mÙö£¢©µ]êä©Ü²ß´2£~²íc›îÛ­Ú•±½5(AÄ–Z¨[Êµ)°µûflÿ=4ïèİ–“°½·h <KãØ¦ë>­vË¾³ÊŒÎ€-/v†Œ-5™ÀVX^á~áŸ²Ë„íNîœ´`E—å…e©ŞŠí…ÛÔH
+¶º#°%›éÁeËR»6¶îkÛ6ØBĞÚ’÷ïG˜ş¢n(»a·™9iÊvxa¶½tÿ¤wMî²<É”3>ÓÊŒNmõâŠ„o™@Û-k0ËßÌiA³²Ø¬Åö´>¶º-»Î+3êÛ[{Ú×áDöì©Æò+sÍ´îÃÊ]:Y•-_êƒe½ØZâµ'¶ûÍVøıM°-Æ@uâÊc°Íù7âˆŒÜ¾ Û-iºxpí8bI>j`·åÎi	óˆ­fË®“¢_ü8ÑìÔØ&Ù‚VY$ìé5?‹M-Kß”Ç5ƒ=SÛN,¡¶İ“2!œÅA¨‹u†}Z
+[Ë`ûûñWmVÅ:Å6­…­ÉÙ[^m|«¶ûµ8‹ƒ*lçØ¥¥Ëæë°İ’¦ï?l›	3hÍÃRéØ&Ù‚V_Û^:È²§ÖÌ1*¹1÷$Û¨†cºÖS®Ïôë3µm¶ÁË^x‰CësÙ6DE°]G®CÌbPÛ®)×!ÊØîQY lW’ë­W¹1ƒmÌ0°]H®C<°İ’&~xgwFÉõ™rb.Û:Õbt"°õ*×![¯r¢²¶õ¢Äè:Dd[¯r"°õ*×![¯r"°õ*×![¯râí–4¹×bt"²­W¹Øz•ë­W¹µ­W¹ÙÖ«\‡l½ÊuˆÀÖ«\‡l½ÊuˆÀÖ«\‡x`»%Mîõ‚]‡ˆlëUÃCü£a&­W1„ÜÊØ¼@Cå4¬«ÁvQ±¶ıû×*¬Ú3`ÛÁËm{œ¥lû±¶Æ	ëî:°ía9‚i8‡mXÛpQÙøŞ=®±!ò =šBs.°¿Qäè¾ŞL š…Ìí1›m›n¹luO`+Oew2»É\m;Û}¥Úv?Ü¶§ª±%çg	dioÊÑí–48ÒTª¨¸mi»²Æ=“èô÷5“RI@³•jùÑÔHÌ¶Í­±N»@7Ë×|P
+nº0‰>æ'3×ÌíƒØBĞâ²íÑÛğ–pw‡4D73ƒÏŞ²Áù/hîë:dc2~d¦}gÓ+\`
+3}|×Èl»%Mç?Â÷ÿ}ÅÂ%ĞÌ¬Tºò¥WòIåoYM]o&CX†Ûé±%³íy´µï—B?È§&İÌşë*§"Î#Á…Æ²^‘ßŞ×p?O »9l×ÓØ©öüÏ°0{Ã¹VE-Ì´&_P!Õ±Å–öE¼X×!M†Äi‚³ğhŠÄbû
+6DÕnùºì6s„’¨Ìµ&_P‰[Úo«¹%ã:hVl{HbA+èmCødÙ°ß²-›»ö‹š™Á´9nğÑVXQÄÓ%ó-³-cÙ\vãèıˆ†ğzše[ë†ÙvKšblÓµopå*K3ã¢b‰ÒŠâl3ü”LæÒ Ù%M¼Œ3ô´ÄÖ´%\mûÁöß‰ß¾§/ºlùğr'‰O·2‹Sƒuy<ÁV¸öÍ±µVsŒá8A*ôhˆ´°º§amkÛ¶ä†(J®ÜñƒK›cËª=¶¶ã}”±•§?‹­ñQ&`˜&¿Å’«C°Õ•`+¤Û|öŠmÃÚ‚VĞ=Û_-25Ü«,1Û™Q\Ø\›šÖÊõÙ«Ô{ÛG6cLÙQ6ıé'oDW$|ËÚ~ˆÆ¶J ¶…ÓŞ‰m&fÁ¾ˆ-ı±=¨¶Åâ<gv»ÀØTØòâFóf+¶÷gBøıM°E¶UÈ¶¢Ol­ÜØŞ–üàš¦…£x¹÷Û¦ÆÆv¯Áv+4A‰Î¶éU8‹¡–½İŠLÄºaÙ6Ó÷P¶U«um»'eB8‹ƒPîvØIÄ
+Ø¦èÛLß2Øš&©°=~i°¥¥ÛëZ`kÔ:Ø¼ÑÉ¶YÛ^×¼r»›°¥šéÁÒ*é–ÛLßØZ¿Xr¶M°Õ	t€Jl?+EÛl3}k`k‰-­ ÿñPï÷l«»d³¢5]ğÓoYÙe¶-òtâ¬„í7®ÀšYµ„ëâ°-îËq‰mˆ°eiáÄÁEK³pË•Å/‘Â©B×m]u>p˜$l¯EÂ<Ø²­vº>‚Y´1íq\†ÚV\Øjºô>^;\bËeÛ=Ø6‘Í˜ŞÇë»ØB•yG|Ÿ‹môô¶M4ÛµSixlùŞ†1…mT$¸T1¶Ğ:¶Ğ‚¶ĞŠò^Ú[hE[hAmO; Az!ÛBØBØBØBØBØBØBØBØBj{ÚÒÙZPÀZPÀZPÀZPÀZPÀZPÀZPÃ°
+£A/Ğ6Ê°]UÓƒ>!ÛBœX^ŸgØB”JÀ|]`İ¤añt-´ €-É–9Gç[`]eûâ¯"l‹ô¸¶Û,ææ+5K¶­Lÿö¬‘'İtzhñõäbÄ,³BH²m~†ÀY»no‡Um¾Ú ¶ÕÛYbaa«÷õßœQ³lªÄV³+ºTû­l˜™²æ0›5ı¬[KƒR“‘s[1ÎèN©vEå¡neÕáT}Aë¾¡6[ÚYñÍœ[kv¾aA+h‹±ıâË__ç¹FÙ
+QÜ&åÊšÁ-¾ †´b²fõ11o¶µo?SÛò›u«m»`«û¾Y°­{\¿÷FÚõÆ¢_ÚéæIlm'À>ÉØõBì\(~?¬|bp£ùM`˜b²fšµ¶Ö''ímÅğû›ZR|ÊµîuÜàLOó‹­Ù]Ûÿ¢ÿàJİ~Mªt¯Ã``ÛÅ¦mV«Ú‚VW$¤éö,Âıı§É¶Ê‡Y‡ÁÈ¶]lZfiq¸Lä±V
+gq`®m-U°5ÍZ[=¿™2¶álú2gÇÖp»€­iÖ"ØÚ¹±=RìÉí^­Ş½ƒm›¦YVnCØâŸçj¿¿_lk‹‹{Û.6m³ÌØ&Ù‚VQ$üµşq½HÜ½@¶í;Íq¶MËÒâY9l/õ°}fšklmv¨Ú6J¶á‚2cØöö¶ƒdİG*ÛÆ/³ï“Ø>4Í/¶V×hl÷¯×UQÛ>6Í/¶Vİ°… Df[pdÛz=’mØj,TØ¶Q[üSÜÕ•Qr¦/±<ÛºÑbt"°õ(÷![r¢ª¶õ¡Äè>Dd[r"°õ(÷![r"°õ(÷![rb[üó!?ê1ºÙÖ£Ü‡l=Ê}ˆÀÖ£Ü‡ˆÚÖ£Ü‡ˆlëQîC¶å>D`ëQîC¶å>D`ëQîCa‹>äÇ@½ F÷!"Ûz”û­G¹Øz”ûQÛzÔ!†0Ò(²­G1„¡Ü[bø?ûe‚-¹‚aö¿¦^C–”óŞ­¥q(%ü§OßJTıBH A[{ê•"åPh[›ê”"Gæ,Øí±ÊhZ¡ºbKÙş‡í_F¿”Qô#¾…åJ+<ÎUÖt¿®¶gtª0ú½.šX®30ô]¨UM€UÀØ‚*Œ~_•,×ŸéôèêƒcÔ
+õQ%¶hœı ,y“LÕ½(¹0†‚~¹Ò8­ê°!Æ˜zS¨ŞV†-‘`¿ç{Øå6„nJB­’†X«Ó“ÎiclkúM¡ªí’Ş–Ìº}U^–!¾W¿[¦Fe…?¡q­_•ÓÌéi°%ßNºM!±%Ã@ü'¥G&x˜Ï¿×¢Õù7¨îEÉ­*±V1¶Å
+Íg¼Õ„~Sxl³çÀ¶ì±•¼Au/ÊiÊmødrÄp&š
+õ(·	¶.×¢ªí1*c¿ànnûRÃVçß „Áê¡{»‰ü¨ŞÏ­sWnµ¶øòş÷ÿy#­¢J†-u.ù7(a°~hl³ÙÏ-Zm¯Š”|£øÛ4Šï­¿Ñ·b›Ë~ElR{ıË‘ŞmtjEØ¦Ó$gš†­jËÄ)šÂösÖ¹£Rl[Õš3ÈœyØê¶ìØnñ¥Ëµ‚ÒjpVYØ“¢†·÷²‡dxQ,¤e¬i•†‘_”Tm·ì»Lè´yµ*âşMBˆí3´Û•c[r,¶˜!›ØjÈı-¶hÄÃ°ıûÎLB¨Á6µ–‰(Ù™¥±-İ²{•Ği/lÓ¨Ça‹¹¯Â¶0BòÀˆ³´ˆ­î£ìgØÆ_G-ìQ^PlnŸAÕ`[ ‡­Ğ!vw-l×êmOï¸­±İ.×ÄJ«íõÆ_Ä–ºğF`9}DŸ+ºÚL_ºÚoÙµLè´Kµ½bˆ@èß$Ümîo"qUrs©éE·WÆ¶lËÂuB§±İcrGa‹{Â±Å…NÇ…Öõ;|hrlé,Òn×ìm°Õ%H[ÑÁØİâËĞbZŠ-áLœ3_…Ä ¹{XÒi[¹±AØ*¹ÛÀ&Æ(VmÓí‚»È`›ñVPnwš[ÚzÄÚØ–lY¸Hèt ¶{öÙk­Ëµ‚ğjû|Ì¯æ€é8eO‰~­È|¤ãCÛÚØA?êmç-¶U©Ø¦'ºËc«YãØ~/>İfUª£v)­¹Ñ 9õ©AárRÅ O±MÃ°Å—ßŸ{Ø\ÍA¶#7É¶º^€-YmØ6iÆÊ ¶:½[—kÑ½mx¹T•åµl‰‘Ë|ŠLo{¶²ç8¶ëÈ|Š\µ…[°²Vò`d>EÛ°Ipl×‘ùYlÁ{Û5e>EÛ=jÛ•d>EÇÖ¢Ì§°Å—Ä…c»’Ì§ÈTÛdjïXÉü™¾ Ål­è9šOÑ±µ(ó)r½­Q½ Gó)zµµ(ó):¶e>EÇÖ¢Ì§èØZ”ù[‹2Ÿ"À_ş(zAæSôjkQæStl-Ê|Š­E™OÑ{[‹2Ÿ¢W[‹2Ÿ¢ckQæStl-Ê|Š­E™OÑ±µ(ó)lñåâ¨äh>E¯¶e>EÇÖ¢¤À%áØZÔú)°ÜÒ½-ûÂ2šV¨õS[²Ú~~-Ÿ=¦õÏ4«ª§¨WÀsKa{.ù}üí5Á¡ôVMŠ™×ó(é±ÇvQéS„@-#j…ckQ‚"C[cŒzã;¶•O‘­dM±­²÷O£[|xÃW,/ÇvÏ°ù7Ğ[¥9[¼Ú†Ëújxu¹›âË£ò)f[ÖØêìí jÇâszûõgGO	R†mU¹cër­ -ÆöA°ê)Ñv¿iô6ë8ç}È®Hœ±1Ş3øp«mÅ¶Œi r‹Şm`»Ï9Îyô4çñcáœfØÖlËl¯ÇUğMZ/@>\³.2‹šøŞÂç¼7L®ÜfqÄh°ÕmK¶èbØ¥öúWî¬ü\	l…f<qñî˜£Ã-*‹®E#5Û2 Ûû‹Üršs¥N¥ÆaÅ™NVnK¹í„mÍ¶è±Å½¶.×Úbl÷«ØÊz¦vEìc÷¹ÇJp7A8<n‘Ãù 2CÄ&yÉZj9:&ìƒèV@›{qµÍl•7Ö$„Ø>W%	1¡w©øD·)ÄÙ}îQØRÃù 2Cø|.yÙâ¦ØÒÙç÷e0¶ø}Û¿Ğ“eésH=ËWs…@]	¶Ä1“ylÙmk­’[¤|ğcRl^]{Ù¡Âzõ
+†¸Oc‹>ÇJ\@N$‹0ú*Gnó[º ¶ÌûZU5rSæÁ–M<j¼·"|´¨qfË-ñNbo+6­  ¶îmqoù:ÜÛl<³cû¨¶.×J›„ë­…>Ši»Áw-i±{>7‡’Ç	½ÍzN”¢ü˜¾KMïq©fi«mnhTµåw’®Ñ¶T¿¹'½íß<şÃ–~•¿Ûª·òÚØrø°öhlÓÆò´e±ß¸˜ãt6á‹Á¶\ªYgk`‹CÂâÃÇ6ıL€ïß¶µÕ–»ûl+œÍ-ı2aña°Å—¡¯8ØÓ²pôÀ/ÈÛŸ,½íØfÆ¦Á6ø†B§3ø°Jª­Ëµ‚Ğ&á$8zŒê)oFˆ'É«mSg’jä™uª¶	dôxl!¸¸°Ÿà¸cÛÔ™[œØvGöã‡èmSl«lñ˜—Á–İñ±ER`ËoË d?dµ"¼šƒBl±ÛødÂF‡Él³»¾¶1MBË„İÜ¶ô'öô#Å¶¼I ¾ñÉ„“3ØÊŠÅZØîTZrl…Û2 ÙÃÏ[—kı#ŸÚ‚*ÀnÜ-œ(;ù9œn¿N§AÕ–ıÈ/[mÇl‹BqÿjeÏ(Ç¶ävkl¿{œÇ_×E¿ÆvËb;-²¢«-<kQ™a.ùdéúk¤Á±G£Ä–“&Áê‰‰ıˆÃ6lZb›î… [ÑVaËÏl¡9°
+LŠ|ê\ôƒ-Tõ¶¬İçÎ3ØªŠŞ{4Ó`{YÍùT[ï-ÛømÜ[zj=&cFÇ_l÷}ç±­±Ü]£±½Lk±mA3Ån;ñ÷>‘ØîŞ³Ã¾aÛÖsSkr·m#ÑØ>Ôo_ylºë.Ç¶•ÄØš‘b@ïÃÖ¹5 í×Œ—¿’××«­k}9¶®åØº”cëZP­kA9¶®åØº”cëZP­kAm¿Àå*—W[×‚rl]Ê±u-(ÇÖµ [×‚rl]Ê±u-(#ØÂÿúu®q²-€sû*m¿ ‰À¹}—šU[96f‚sû.µÂVM™^n_¦6ØB ™gºŒ¨mµ•`Ócæµ@<Óµ¶šö¶2ÄzÌ<ç‹gºÖV3l?	Áé1ó3[<Óµ¶bû§ˆõÁVÙ{ÿ<…ŞŠ­òÎ¿ûæĞ^€^5k]®Bı‹±ÍbNÎ ~Xn¨óÌ3Ç+±íkµjÙØŞÂüë@…í=)<@ˆşH\ÿhæqZÚK}iåØ¦+B8Â£X¬ÚîGôŠÖ,S>#J½ Û-¾Ì¯ °]®Ú–Ú.v;UéÂ%Ç²{¹bõÂª-›ë·Ô<Ob½j[f»ØÑÃ«[m‰†û,Œ‚›`«VÍZ—«PhoôC÷ Àâ½m™íbGõË®3*vÁUÿ>¹¨O2z³‚ŞöÃmp?ø#qı£™a«ı’‹ªÏ›°¥¹°
+·Ä«meñ‹…ËMb»Å—ÁOü|ÃmH{Ç¶Ã²l+¼Î,²Ú&Ü¸FO?xo;b™cûT‚­Z5k]®B‘ÕöQn¯æ ¢Ö`&ì¿®¶"k^m;è¤i€§ÃÛ_>B‰~ŸØÆMBĞó$®;ÌYsl;h4¶tµ=Êíyë*ú2…ô›lz9¶=4¶G‰½¸İylW¡Ö±5 [ÿŞØ>šx<`«lc»¾lÕªYër©¶ŸûçïPòÔÄ9a	yµ]_ [|yü`ôÏô¿£ûB{ãØ®/²ÚïŠ7ËáìåU6gØç.æ{Ìªwb™İŸd	¶Kö­áØî'¯a¾ioû-Ë×„%äØ®¯¤·U«f­ËU(´Úb€çÚUé_V[¼Ú>ÕÛeöÆ±]_rlw¯¶ËÈ|ŠEØò–ªc$ógú‚Ûa»·æÏô)lñ¥ŞRm(£dşL_¢W[‹2Ÿ¢÷¶e>E¯¶e>Eïm-Ê|Š^m-Ê|ŠŞÛZ”ù½ÚZ”ù½ÚZ”ù½ÚZ”ù¶øRo©6”Q2¦/HÑ«­E™OÑ{[‹2Ÿ¢W[‹2Ÿ¢÷¶e>E¯¶e>Å[øàÇÏı¼<Æ2–ºÄ×AæÏô)’ØŞÿK±]†[ógú‚éj»ŸÌ®\m4¦/H‘kö"l'ä ãÖü™¾ E€-¾L›„kÖ«¶€rkşL_"Vm“>ïğ“jK¼å…7åÖü™¾ EÛè:ÊXjSV-¥7ñrkşL_¢ÛñÕµº¹¿àL_bÒÛê-Õ†‚ÙÄÊ¥ü&™ù3}AŠIµ­0UfËKo¢™?Ó¤HcKA@ZjÑÓ, ƒò›Ÿç¼V±M+ó)’Ø~~ÍÀ-eY}óÊ‘{.KŸÙÉ´tğQØçV~Çê‚-İTğc+håØEâ°…2›ojus¿Ş#Ä ·p­·X [|yÿ(ÅvÍjK|ÄeÆÈH'ÑTöØ°™«-o¹IoKí(=¶D)À.Æ|’ïm÷#G*ljl‰æa¦øºl‰íy]bªA8–`K®`Æ–hzgO¹aüª·=/KüÌ-ÔLØ.Qn§Oµa™5IµÕ«j±ËU$ªI8FùÔRMUm9GÌ†•mf¥Â¯NÅbr‘nè/[tÑIzÃ±=Vä²,¿£·e†¸.-u:=©œ2‹tCç„ÂE*l¯¼s]Òj«°MsïŒ-w¬£¸°Uu•¥m}ÖUé†l•a{”Úë£ĞédÕ6èƒs:cË«â•]¼bb[ö~fé†Î	šE¶[|yš;V ÷Qúp:Mµ…D9]{ÛÆåV·«aoËaF,îQnÛÕècá£ÚêUµØå*RÚ$ œUö¤ÚB<fëmas²fòcº¡âMB,Ë9¥·‡YT3ÔÖ^ÛgfQ·Ñ'Û½-Çë='k&?6[
+¹‚WÇv‹/÷Û¿ï¸$³¶Á·^Ïj‹Šš™·]q3[•o’ŠZYŠÑé¥£ŒuÍĞ°j‹Òa×âÕVŒ­ÌZtÅÍl=¤Ù#Mâapû˜lçª¶2kÑ7ó¿öËmnÃÜÿL=C”§m–‰ à’¨|í?3ÑŠoÖîR©Qm›ì[½Š›L"ÅÙöN¢è	”<ÜŞöèGç#)Û*ã¹^¶½¾ (lÃ"ü+Ã¶"¶Ú€.€íæ_^_@3š¨šm9qFÈÎÊÙVÑÏaËÇRcË¶qâ„ç›À¶å™¬ªjaKİPõH¦ãöSØ¦c)ï"°Âuáê&á`oG¡¶*¶Ø]U±İùiƒ2¶Æ6/–ò®[½Š›L"m>¶Áöp~ƒ“‘½Ú–~f¾¥ZåwÊ«£qS:¦¶%"SÏU$eÜÅWÛÜæxÿ”j1tkc«šV¦…ØÊUºÊÇö¼°}*İa¨­Šíe0{ŸeªnF™&lq…È*]1Øî~	€`»CPG¡êØFÛ`«›ë°•Ì¶!¶H‘àÕ¿£PÛÛËrulµÉtÚ[élË±Õ«h°É$ÒæcëıŒ³-óÌÈ±÷Ô.Û~F²í·ÅÉögYà¾(SugÖL†mV×§Åa¶Øîa"°¶ŒŞša¡xlİ"!¹ÆQB0ì^åkl7ÿÒùé.ËjÛ‘´ ¶T¶İ½U¥±†Ûa÷*_†í}aÙv M¿D[ŸaË¶iú%rØ†·&,Õ˜NM¿§,Q€mÒTé\:iú=]`‰ ›©·T:•^š~OX¢eÛ5ıëa;L¤¦ßÓ–hÙvFM¿D«mgÔôK´l;£¦_¢Õ¶3jú%Z¶QÓ/Ñ²íŒš~‰–mgÔôKØüK½¥Ò©ôÒô{ºÀ£lpşÜ¯Ë³'ŒQB5ı.°DÛßçT$†‰Ôô{ºÀél»_Ìş"0·ÓïéKŒj[§HØ}l\©é÷t%f	³q;ı.°DÛóìuıÜ!³L&RÓïéKD°õ®½_–mÑôKÌÆ6êŠ,Õ›T[M¿§,1Â¶ÀTé\²¥ Ôğj3ùª¦_"Àæ_ê-•N%Û”q;ı.°D:ÛŠÙè*(äö•=-{AÈ½utö†Hl!},Iœ"qÍn„BnßÂ¶°¶‘yëäè-QØ^1nÂ-ºƒù¥¼‰m'vÀvó/?øJRh¶GdEzÛöè.€-meØJ³mZ–Ñ"w±{íÈALnÃy¶ù–$N‘]ã¸-ô:Ò,Ü¾» »,¶;´<“Ö±š5æ½Sê.p£Y ×g{r—Ãv ‘XÂv€iÄaD1zg¶£¨3×XøaÓ°%Å†ÇV–lOè¾\U±åE­˜¹ÆÊ_loÃc›ˆÀæ]:c„Ò2™T¢²íÙ+x>°·“t£÷ÜÈîkÙòÅ½ğxk´°Ú!£íqŒìt‘à~ònÁı0’ÛxO@Ù(ñîôa–[hlk‡Œ³§ÂöŞÚT \ÃÇØxòO#êÆ\G¶½¸Ûz¶ShŒìHm{Ø9SíıŸwüu¿‚Û´×C”Ñ(±ù³ÒÛ™°WW;4Ûş° .¡Sp>s¼gW¬9GnmkØíÊC¦¯v¶5™t£L&•âl»ßÕíy*#ñ?Q
+‘Ï~h²³m8¬QP9ø#ñç9¶ŸÓÅH™muÎ¼ŠØrÒ'dj¾]I{|WÛˆ×¸G¶fµ-J(Îr-l™@§ö€r×tÎüò]h9íëLºê†-Ü´À‹­Jƒlù ¹gZ‹­´‹S	¶Š‡Ä+öd–Ó>Å£È„BÛKtlşm¶h¦óL¹İM²mv#1[@*ÿ
+Êm*³?R”¸MMŒ¢2³ğ±Å†ÓËà|Ò!K†¥K¶b"Ásãõ·É¶¹Äl‘İƒŠ_lØ¾’Ãğ¨a™Ã9ãn.d/cëLA&İ(“I¥8Û"P‡è"ŸıĞ¼W90iÉ.ü~ÚYÚ±Æ$ wÊ|cƒÒ!ë—m7ÿ¶cZçÜplÃ"ÒÑ—*‡ğ
+Š™á\$»ˆµ±å™Üe>?„-’m/ÓØ"g²îDÁÍkDÖñø ÉºHv‘Cµíït09ÿ [obP"dïbç'§Ø–dÛ§dé’‚“#Ò}lIS‰œ¯˜cö{aÖ	Û(–®îÃ‚¦É¶I4\ÕøIlY{†mÔb{6*¤e2©„gÛ°Ğ¼‹pê ¯ügÛHÄ£µD¶UÎcÙl»ù·yØÆ‡¯¶=¸
+<¨°¥ç-µ™Ñø5lÓU‚aµ³ÙÖÅö¼°u•\»NòÊM~l÷=‰Ù±eD!±õ¢y×¶H À6_Óc›aÉÅ)ü„)Í¶ù2l…}`»ÅÆ9;´Õ(“I¥?Æğ«mİ§:'R
+s:‡Í¶Ù·|"ÛªÄaûsŞá«·[]_ú–Y°uü xØBi…ªşš îŒYÛº>Ãï¢•§H¶n‘0¶Q·a«è[`jÛû¦Âö¹Ë°UtŠ­ÿÂÛTÄ˜@¿÷z	T8GÕhË~±Ü¸)<ob+“,b…HtQáU£¿2ÛîA}8¶—Ûœáuum Á°½dØ.­+[ÓœRa»ã‘3-+¶–mM¯J‰­Éô¦[Ó€2lMÊ°5
+¨íí	˜LrY¶5
+(ÃÖ4 [Ó€2lM*Àşıûÿ¹ÇåÑ5™ŞíïîößO“éuQÙv¿˜·Ïdú†è"a7lM_Õæ_ÆEÂSÜö˜ÉD+Î¶çáëÿçñ÷$YãÖôEØâWv$3}I™Øî`E‚é;ú“¾Ådúš[Ó€2lMÊ°5
+¨íßß_Ğ†m
+endstream
+endobj
+50 0 obj
+10242
+endobj
+48 0 obj
+<<
+/Length 53 0 R
+/Filter /ASCII85Decode 
+>>
+stream
+z!,;K6IfKJ!!!'e7!8RVTru_;>1B<hH!(qS<;L\ZHIfOtJ!<7QL!.Y'"PQ97%!+r#,
+S?r7r`;iNL!9Vf3HeeZ%joE*p!!*$!+TDFkrrE'k#QPAG&$un]@Mf)t(qm!fhB*g]
+0Hbm#+SM<J!3@;8]c`6X+Jf#[XG\Mnjsaam0/&5<K/5;q=ucRd3GR\:Ms`V*p,UYf
+5<hCu5QF(MC-`uD6#(a=8sDsJ]h5uO9)nTW;GU(a!)e.m;?0luP^?:>Mc*H2;L>3;
+!45Wr8m3Zr>-+f/HbES_`EH`q>2J+>&DgT*s'#G0?XFp`^g^b-`F=a$AUQ@HAnGZ!
+R:_leAi'I!bQ)Ap;JMGCC+5rn;UoNhmV6M:C8>cdD`Ml2K6,SEF0ro-;VlJZH[Aql
+HSMUKF1lpb]mKGQIfKIuIfOuuIt%HJIt)rts8RQKs*oOuJ,]M!!!%P"J:IWMJ:KY4
+XH\@f]n=S[K)jb\[,-Gt.>peIMfYDH>+CMX[#4ptMgOTE;ZD["O,o>%Pa!;T!'-:_
+F-J-9Pb\;Is"g'TK:0!4RK(L!AojKmH^n9(S,fpd`P%cAk*uGOS8+[gT:hjQ!2KTL
+UoZSPK9W0H]qgS2Uu)-ISH#DA;QNc\X=9sHs4+2CeZ=D[XK;H's0&W0s0&U+["A@c
+blG-E@^Mr$[!T0e!6qnNm^)ro])[2k8sI$>[(VCc]r_7ICB)!0^V@P!^q]rhZpD\)
+SAes^`A,WVKE'!mVTSDEbh:4as8U<2!6pEoblF!QUnl8lm`bb3c-=S\cN)M?>1NYC
+eGuDqHe$Yns4..bgqWpH!'/n_`SLU6hQ6b6KE'fAhr!;kk-P-Nm\JulXQKQFjtQl(
+!!)GOSF-C6m\KmN@didSnF5r:nGiOXnGi"XF8!iYrr<'!IfTNK1]Nkmrr@QKIt.Lu
+RK*<#s38ggMq.h-nGi"Is8W-!!<<(Ks8U=Cs7$'grr<$!~>
+endstream
+endobj
+53 0 obj
+986
+endobj
+54 0 obj
+<<
+/Length 55 0 R
+>>
+stream
+Q 
+BT
+72.24 371.28  TD
+0 0 0 rg 
+/F6 9.12  Tf
+-0.0292  Tc 0.0489  Tw (Figure 3. ) Tj
+36.24 0  TD 0.0169  Tc 0.0027  Tw (Production of a Music Graph.) Tj
+-36.24 -17.76  TD /F1 10.08  Tf
+0.0047  Tc 0.0044  Tw (In syntax and textual representation, MML is a dialect of Extensible Markup Language \(XML\) \(World Wide Web) Tj
+0 -12  TD 0.0048  Tc 0.0043  Tw (Consortium 1998\). Each element of MML is prefixed by a start tag and postfixed by an end tag. However, MML is) Tj
+T* 0.006  Tc 0.0031  Tw (simpler than XML. ) Tj
+81.12 0  TD 0.0052  Tc 0.0039  Tw (Tags never have attributes; all start and end tags are followed by newlines; all other lines of) Tj
+-81.12 -12  TD 0.0048  Tc 0.0043  Tw (text contain either a property name and value, or a vector of numbers; a matrix is several rows of vectors; and files) Tj
+0 -12  TD 0.0053  Tc 0.0038  Tw (never have Document Type Definitions, because MML is designed to be dynamically extensible.) Tj
+0 -18  TD 0.0054  Tc 0.0038  Tw (The following MML produces, from a dense heterodyne filter analysis of a stainless steel mixing bowl struck with) Tj
+0 -12  TD 0.0056  Tc 0.0035  Tw (a wooden spoon, three tones. The first is simply a resynthesis of the original sound. The second tone is stretched) Tj
+T* 0.0052  Tc 0.0039  Tw (out in time and lowered in pitch, but a shear transformation \(the 0.5 at row 5, column 3\) causes it to rise steadily in) Tj
+T* 0.0058  Tc 0.0033  Tw (pitch. The third is shorter in time and higher in pitch.) Tj
+18 -17.52  TD /F2 7.92  Tf
+0.048  Tc 0  Tw (<Group>) Tj
+0 -8.64  TD (name = root) Tj
+T* (<HeterodyneFilterAnalysis>) Tj
+T* (name = Bowl) Tj
+T* (soundFilename = C:\\Gogins\\Music\\Album\\FromPangeLingua\\Bowl.wav) Tj
+T* (channel = 1) Tj
+T* (startSeconds = 0.0) Tj
+T* (durationSeconds = 0.0) Tj
+T* (fundamentalHz = 50.0) Tj
+T* (partialCount = 200) Tj
+T* (maximumTotalAmplitude = 32767) Tj
+T* (amplitudeThreshold = 64) Tj
+T* (initialBreakpointCount = 300) Tj
+T* (lowpassHz = 0.0) Tj
+T* (instrumentIndex = 1) Tj
+T* (useExistingAnalysis = true) Tj
+T* (</HeterodyneFilterAnalysis>) Tj
+T* (<Transform>) Tj
+ET
+endstream
+endobj
+55 0 obj
+2085
+endobj
+47 0 obj
+<<
+/Type /Page
+/Parent 5 0 R
+/Resources <<
+/Font <<
+/F1 8 0 R 
+/F2 10 0 R 
+/F6 20 0 R 
+>>
+/XObject <<
+/im3 49 0 R 
+>>
+/ProcSet 2 0 R
+>>
+/Contents [ 51 0 R 54 0 R  ]
+>>
+endobj
+57 0 obj
+<<
+/Length 58 0 R
+>>
+stream
+BT
+90.24 713.28  TD
+0 0 0 rg 
+/F2 7.92  Tf
+0.048  Tc 0  Tw (name = Move up 3 instruments, delay 0.875 seconds, 4 times longer, 2 octaves lower, glissando) Tj
+18 -8.64  TD (up 0.5 octave) Tj
+-18 -8.64  TD ([1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0]) Tj
+0 -8.64  TD ([0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 3.017392]) Tj
+T* ([0.0 0.0 4.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.875]) Tj
+T* ([0.0 0.0 0.0 4.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0]) Tj
+T* ([0.0 0.0 0.5 0.0 1.0 0.0 0.0 0.0 0.0 0.0 -2.0]) Tj
+T* ([0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0]) Tj
+T* ([0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0]) Tj
+T* ([0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0]) Tj
+T* ([0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0]) Tj
+T* ([0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0]) Tj
+T* ([0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0]) Tj
+T* (<Use symbol = Bowl>) Tj
+T* (</Transform>) Tj
+T* (<Transform>) Tj
+T* (name = Move up 1 instrument, delay 6 seconds, twice as fast, 1.25 octaves higher) Tj
+T* ([1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0]) Tj
+T* ([0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0]) Tj
+T* ([0.0 0.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0 6.0]) Tj
+T* ([0.0 0.0 0.0 0.5 0.0 0.0 0.0 0.0 0.0 0.0 0.0]) Tj
+T* ([0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 1.25]) Tj
+T* ([0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0]) Tj
+T* ([0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0]) Tj
+T* ([0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0]) Tj
+T* ([0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0]) Tj
+T* ([0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0]) Tj
+T* ([0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0]) Tj
+T* (<Use symbol = Bowl>) Tj
+T* (</Transform>) Tj
+T* (</Group>) Tj
+-18 -17.76  TD /F1 10.08  Tf
+0.0055  Tc 0.0036  Tw (Music graphs are rendered in two passes. In the first pass, the ) Tj
+252.72 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (INode.traverseMusicGraph) Tj
+144 0  TD /F1 10.08  Tf
+0.0059  Tc 0.0032  Tw ( function calls) Tj
+-396.72 -12.48  TD 0.0051  Tc 0.004  Tw (itself recursively down to each leaf node of the graph, storing in ) Tj
+261.36 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (score) Tj
+30 0  TD /F1 10.08  Tf
+0.0046  Tc 0.0045  Tw ( all notes that are produced:) Tj
+-273.36 -18  TD /F2 7.92  Tf
+0.048  Tc 0  Tw (public double[][] traverseMusicGraph\(double[][] parentTransformation, INode score\)) Tj
+0 -8.64  TD ({) Tj
+18 -8.64  TD (//) Tj
+18 0  TD (Record the number of notes in the score before traversing any child nodes of this.) Tj
+-36 -8.64  TD 0  Tc 0.048  Tw ( ) Tj
+18 0  TD 0.048  Tc 0  Tw (int preTraversalCount = score.getChildNodeCount\(\);) Tj
+-18 -8.64  TD 0  Tc 0.048  Tw ( ) Tj
+18 0  TD 0.048  Tc 0  Tw (//) Tj
+18 0  TD (The local transformation of coordinate systems is identity fo) Tj
+292.8 0  TD (r non-transformation) Tj
+-310.8 -8.64  TD (//) Tj
+18 0  TD (nodes, or some other affine transformation for transformation nodes.) Tj
+-36 -8.64  TD 0  Tc 0.048  Tw ( ) Tj
+18 0  TD 0.048  Tc 0  Tw (double[][] compositeTransformation = Matrix.dot\(parentTransformation, ) Tj
+18 -8.64  TD (getLocalTransformation\(\)\);) Tj
+-36 -8.64  TD 0  Tc 0.048  Tw ( ) Tj
+18 0  TD 0.048  Tc 0  Tw (//) Tj
+18 0  TD (Iterate over the immediate child nodes of this...) Tj
+-36 -8.64  TD 0  Tc 0.048  Tw ( ) Tj
+18 0  TD 0.048  Tc 0  Tw (for\(int i = 0, n = getChildNodeCount\(\); i < n; i++\)) Tj
+-18 -8.64  TD 0  Tc 0.048  Tw ( ) Tj
+18 0  TD 0.048  Tc 0  Tw ({) Tj
+-18 -8.64  TD 0  Tc 0.048  Tw ( ) Tj
+36 0  TD 0.048  Tc 0  Tw (// ) Tj
+18 0  TD (...) Tj
+14.4 0  TD (calling traverseMusicGraph on each one. This has the effect) Tj
+-32.4 -8.64  TD (//) Tj
+18 0  TD (of performing a recursive, depth-first traversal of the music graph.) Tj
+-54 -8.64  TD 0  Tc 0.048  Tw ( ) Tj
+36 0  TD 0.048  Tc 0  Tw (\(\(INode\) ) Tj
+43.2 0  TD (getChildNode\(i\)\).traverseMusicGraph\(compositeTransformation, score\);) Tj
+-79.2 -8.64  TD 0  Tc 0.048  Tw ( ) Tj
+18 0  TD 0.048  Tc 0  Tw (}) Tj
+0 -8.64  TD (//) Tj
+18 0  TD (Record the number of notes in the score after traversing the child nodes.) Tj
+-36 -8.64  TD 0  Tc 0.048  Tw ( ) Tj
+18 0  TD 0.048  Tc 0  Tw (//) Tj
+18 0  TD (This number will have increased by the number of notes produced by all child nodes.) Tj
+-36 -8.64  TD 0  Tc 0.048  Tw ( ) Tj
+18 0  TD 0.048  Tc 0  Tw (int postTraversalCount = score.getChildNodeCount\(\);) Tj
+-18 -8.64  TD 0  Tc 0.048  Tw ( ) Tj
+18 0  TD 0.048  Tc 0  Tw (//) Tj
+18 0  TD (Fina) Tj
+19.2 0  TD (lly, either produce new notes, or transform all notes) Tj
+-55.2 -8.64  TD 0  Tc 0.048  Tw ( ) Tj
+18 0  TD 0.048  Tc 0  Tw (//) Tj
+18 0  TD (that were produced by the child nodes of this; each node overrides this function.) Tj
+-36 -8.64  TD 0  Tc 0.048  Tw ( ) Tj
+18 0  TD 0.048  Tc 0  Tw (return produceOrTransformNotes\(compositeTransformation, score, preTraversalCount,) Tj
+18 -8.64  TD (postTraversalCount\);) Tj
+-36 -8.64  TD (}) Tj
+-18 -17.76  TD /F1 10.08  Tf
+0.006  Tc 0.0031  Tw (In the second pass, ) Tj
+79.2 0  TD 0.0069  Tc 0.0022  Tw (the notes in the ) Tj
+64.8 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (score) Tj
+30 0  TD /F1 10.08  Tf
+0.005  Tc 0.0041  Tw ( are rendered by a software synthesizer, Csound.) Tj
+-174 -17.76  TD 0.0046  Tc 0.0045  Tw (Again, how do music graphs compare with functional programming systems like Common Music \(Taube 1991\) or) Tj
+0 -11.04  TD 0.0044  Tc 0.0047  Tw (Kyma \(Scaletti and Hebel 1991\)? ) Tj
+137.04 0  TD /F6 10.08  Tf
+0.0019  Tc 0.0072  Tw (Both ) Tj
+21.84 0  TD /F1 10.08  Tf
+0.0039  Tc 0.0052  Tw (approaches depend on ) Tj
+92.4 0  TD /F6 10.08  Tf
+0.0034  Tc 0.0058  Tw (functional composition) Tj
+93.36 0  TD /F1 10.08  Tf
+0.0052  Tc 0.0039  Tw (: of predicates in functional) Tj
+-344.64 -11.04  TD 0.0053  Tc 0.0038  Tw (programming, of geometric transformations in MML. However, fixing the dimensionality of the basic) Tj
+0 -11.04  TD 0.0055  Tc 0.0036  Tw (representation makes music graphs indefinitely extensible. New nodes can be created at any time that will not) Tj
+T* 0.0044  Tc 0.0047  Tw (break old nodes, because music produced by new nodes will always fit together with music produced by older) Tj
+T* 0.005  Tc 0.0041  Tw (nodes. Unrolling procedural loops and conditions into nested declarative blocks also makes the musical operations) Tj
+T* 0.0051  Tc 0.004  Tw (more explicit to the imagination. Finally, it is easier to generate completely declarative code \(as opposed to) Tj
+T* 0.004  Tc 0.0051  Tw (procedural code\) using other software) Tj
+152.64 0  TD 0.0053  Tc 0.0038  Tw (, which does not need to maintain any context for the generated code.) Tj
+-152.64 -11.04  TD 0.0046  Tc 0.0045  Tw (Although the greater flexibility of procedural languages is lost, the advantages of declarative languages and fixed) Tj
+0 -11.04  TD 0.0051  Tc 0.004  Tw (dimensionality are apparent in virtual reality, whose worlds are created with visual editors that automatically) Tj
+ET
+endstream
+endobj
+58 0 obj
+6796
+endobj
+56 0 obj
+<<
+/Type /Page
+/Parent 5 0 R
+/Resources <<
+/Font <<
+/F1 8 0 R 
+/F2 10 0 R 
+/F6 20 0 R 
+>>
+/ProcSet 2 0 R
+>>
+/Contents 57 0 R
+>>
+endobj
+61 0 obj
+<<
+/Length 62 0 R
+>>
+stream
+BT
+72.24 710.88  TD
+0 0 0 rg 
+/F1 10.08  Tf
+0.0045  Tc 0.0046  Tw (generate declarative code. Of course, if procedural code is needed for some operation that can) Tj
+-2.3957  Tc 0  Tw (\222) Tj
+0.0044  Tc 0.0047  Tw (t be performed with) Tj
+0 -11.04  TD 0.0054  Tc 0.0038  Tw (existing nodes, the thing to do is write it in Java \(more widely known than Lisp or Smalltalk\) as a new ) Tj
+418.08 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (INode) Tj
+30 0  TD /F1 10.08  Tf
+0.0091  Tc (.) Tj
+-448.08 -17.76  TD 0.0057  Tc 0.0034  Tw (The main difference, then, is that Silence encapsulates abstract models of compositional process within nodes, and) Tj
+0 -12  TD 0.005  Tc 0.0042  Tw (is designed for composing quite rapidly via interactive editing of an indefinitely extensible library of nodes.) Tj
+0 -18  TD 0.0055  Tc 0.0036  Tw (In sum, because music space can represent all materials of interest, and any manipulation of them can be) Tj
+0 -12  TD 0.0047  Tc 0.0044  Tw (performed as a hierarchy of linear operations, music graphs solve the problem of ) Tj
+329.28 0  TD 0.0059  Tc 0.0032  Tw (incommensurate materials.) Tj
+-329.28 -19.92  TD /F0 12  Tf
+0  Tc 0  Tw (4.) Tj
+9.12 0  TD /F3 12  Tf
+( ) Tj
+7.2 0  TD /F0 12  Tf
+(The Silence Framework) Tj
+-16.32 -18.24  TD /F1 10.08  Tf
+0.0056  Tc 0.0035  Tw (The MML editor of Silence is shown in Figure 1. The left pane lists all the nodes that have been dynamically) Tj
+0 -12  TD 0.0049  Tc 0.0042  Tw (loaded. The right pane displays the music graph in the form of ) Tj
+256.32 0  TD 0.0044  Tc 0.0047  Tw (a expanding or collapsing tree widget. Nodes can be) Tj
+-256.32 -12  TD 0.005  Tc 0.0041  Tw (inserted, cut, copied, pasted, and deleted, as well as imported and exported to and from text files. Clicking the right) Tj
+0 -12  TD 0.0052  Tc 0.0039  Tw (mouse button on a node instance opens a window for editing its attributes.) Tj
+0 -18  TD 0.0046  Tc 0.0046  Tw (Each ) Tj
+23.04 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (INode) Tj
+30 0  TD /F1 10.08  Tf
+0.0055  Tc 0.0036  Tw ( class must implement certain methods, and provide its own window for editing itself. But the) Tj
+-53.04 -12.48  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (Silence.Framework) Tj
+102 0  TD /F1 10.08  Tf
+0.0054  Tc 0.0037  Tw ( package has a base class for nodes, classes for parsing MML, loading classes, matrix) Tj
+-102 -12.48  TD 0.0052  Tc 0.004  Tw (algebra, dimensional conversions, MIDI files, soundfiles, and managing Csound and other external programs. ) Tj
+448.8 0  TD 0.0064  Tc 0  Tw (This) Tj
+-448.8 -12  TD 0.0048  Tc 0.0043  Tw (framework is shared by all nodes, and goes a long way towards solving the problem of constantly rewriting code.) Tj
+0 -19.92  TD /F0 12  Tf
+0  Tc 0  Tw (5.) Tj
+9.12 0  TD /F3 12  Tf
+( ) Tj
+7.2 0  TD /F0 12  Tf
+(Extending MML) Tj
+-16.32 -18.24  TD /F1 10.08  Tf
+0.0052  Tc 0.0039  Tw (The architects of VRML provided a facility for defining whole new types of nodes in terms of existing nodes \(the) Tj
+0 -12  TD 0.0047  Tc 0.0044  Tw (PROTO and EXTERNPROTO nodes \(Ames et al. 1991, pp. 603-622\). This facility, together with the capabilities) Tj
+T* 0.0052  Tc 0.0039  Tw (of the Java class loader, suggested how to implement ) Tj
+216.72 0  TD /F6 10.08  Tf
+0.0025  Tc 0.0066  Tw (plugin nodes ) Tj
+54.72 0  TD /F1 10.08  Tf
+0.0047  Tc 0.0044  Tw (for music graphs.) Tj
+-271.44 -18  TD 0.0055  Tc 0.0037  Tw (The mechanism is simple. Every node in a music graph is represented as an element of XML, with a start tag and) Tj
+0 -12  TD 0.0048  Tc 0.0043  Tw (an end tag, and ) Tj
+65.04 0  TD 0.0058  Tc 0.0033  Tw (each type of node/element is implemented by a Java class with exactly the same name. This) Tj
+-65.04 -12  TD 0.0055  Tc 0.0036  Tw (convention enables the Silence parser, when it encounters the start tag for an unknown node, to dynamically search) Tj
+0 -12  TD 0.0053  Tc 0.0038  Tw (for, identify, and load the corresponding class. Once the class is loaded, because it is required to implement the) Tj
+T* 0.0051  Tc 0.004  Tw (abstract ) Tj
+34.08 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (INode) Tj
+30 0  TD /F1 10.08  Tf
+0.0064  Tc 0.0027  Tw ( interface, its ) Tj
+55.44 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (INode.read\(\)) Tj
+72 0  TD /F1 10.08  Tf
+0.0054  Tc 0.0037  Tw ( function can be called to parse the remaining text, and its) Tj
+-191.52 -12.48  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (INode.traverseChildNodes\(\)) Tj
+156 0  TD /F1 10.08  Tf
+0.004  Tc 0.0051  Tw ( and ) Tj
+20.16 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (INode.produceOrTransformNotes\(\)) Tj
+186 0  TD /F1 10.08  Tf
+0.0053  Tc 0.0038  Tw ( functions can be called to) Tj
+-362.16 -12.48  TD 0.0056  Tc 0.0036  Tw (render the node, even if the class was written and compiled long after the parser. In fact, in Silence, ) Tj
+406.8 0  TD /F6 10.08  Tf
+0.0048  Tc 0.0043  Tw (all ) Tj
+13.44 0  TD /F1 10.08  Tf
+0.0046  Tc 0.0046  Tw (nodes are) Tj
+-420.24 -12  TD 0.005  Tc 0.0041  Tw (external, plugin nodes.) Tj
+0 -18  TD 0.0045  Tc 0.0046  Tw (The run-time loading of ) Tj
+100.08 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (INode) Tj
+30 0  TD /F1 10.08  Tf
+0.0055  Tc 0.0037  Tw ( plugins solves the problem of constant relinking, and enables musicians to) Tj
+-130.08 -12.48  TD 0.0048  Tc 0.0043  Tw (exchange independently developed plugins on the basis of a standard yet extensible protocol based on the ) Tj
+428.4 0  TD /F2 10.08  Tf
+-0.048  Tc 0  Tw (INode) Tj
+-428.4 -12.48  TD /F1 10.08  Tf
+0.0058  Tc 0.0033  Tw (interface and MML syntax. It is a ) Tj
+138.72 0  TD /F6 10.08  Tf
+0.0043  Tc 0.0049  Tw (cumulatively extensible) Tj
+95.52 0  TD /F1 10.08  Tf
+0.0041  Tc 0.0051  Tw ( protocol.) Tj
+-234.24 -18  TD 0.0049  Tc 0.0042  Tw (Silence could be extended in several directions. The most obvious is to add more generative nodes using new) Tj
+0 -12  TD 0.0052  Tc 0.0039  Tw (compositional algorithms. To the existing representation of sound, heterodyne filter analyses, might be added a) Tj
+T* 0.005  Tc 0.0041  Tw (phase vocoder representation, a wavelet representation, or other granular representations. Silence already has) Tj
+T* 0.0048  Tc 0.0043  Tw (MIDI file output, so when Java gains the required capabilities it should be possible to add real-time MIDI output) Tj
+T* 0.0055  Tc 0.0036  Tw (with synchronized input, turning the system into a MIDI sequencer whose sequences are nodes in music graphs.) Tj
+T* 0.0053  Tc 0.0038  Tw (Finally, and perhaps most interestingly, Silence could be extended as a visual composing environment, taking cues) Tj
+T* 0.0041  Tc 0.0051  Tw (from UPIC \(Xenakis 1992, pp. 329-334\) and the newer Metasynth \(Aikin 1998, Wenger 1998\). The irreducible) Tj
+T* 0.0046  Tc 0.0045  Tw (quantum of information in sound is the Gabor \(1946\) logon, the elementary grain. Every logon in an extended) Tj
+T* 0.0046  Tc 0.0045  Tw (work of music could be distinctly pictured in a virtual space the apparent size of a barn interior. It would be) Tj
+T* 0.0052  Tc 0.004  Tw (fascinating to use generative and transformative nodes to make visual tools, similar to those in Adobe PhotoShop) Tj
+T* 0.0053  Tc 0.0038  Tw (or VRML editors, for creating, sculpting, and filtering those grains in the interactive composition of sound.) Tj
+0 -19.92  TD /F0 12  Tf
+0  Tc 0  Tw (6.) Tj
+9.12 0  TD /F3 12  Tf
+( ) Tj
+7.2 0  TD /F0 12  Tf
+(References) Tj
+-16.32 -13.2  TD /F1 10.08  Tf
+0.0068  Tc 0.0024  Tw (Aikin, Jim. ) Tj
+48.48 0  TD 0.0028  Tc 0.0063  Tw (April 1998. ) Tj
+-1.4357  Tc 0  Tw (\223) Tj
+0.0052  Tc 0.0039  Tw (U&I Metasynth \(Mac\): A Radical New Audio Paintbox for the Mac) Tj
+327.12 0  TD /F7 10.08  Tf
+-0.0683  Tc 0.0774  Tw (,\224 Keyboard) Tj
+-364.8 -12  TD 0.0046  Tc 0  Tw (Magazine) Tj
+40.8 0  TD /F1 10.08  Tf
+0.0091  Tc (.) Tj
+-51.6 -12.96  TD 0.0044  Tc 0.0047  Tw (Ames, Andrea L., David R. Nadeau, and John L. Moreland. 1997 [1996]. ) Tj
+300.24 0  TD /F7 10.08  Tf
+0.0041  Tc 0.005  Tw (VRML 2.0 Sourcebook, 2nd Edition) Tj
+149.76 0  TD /F1 10.08  Tf
+0.0091  Tc 0  Tw (,) Tj
+-439.2 -12  TD 0.0057  Tc 0.0034  Tw (John Wiley & Sons, New York.) Tj
+-10.8 -12.96  TD 0.0036  Tc 0.0055  Tw (Cope, David. 1991. ) Tj
+81.36 0  TD /F7 10.08  Tf
+0.0061  Tc 0.003  Tw (Experiments in Musical Style.) Tj
+125.52 0  TD /F1 10.08  Tf
+0  Tc 0.0091  Tw ( ) Tj
+2.64 0  TD 0.0063  Tc 0.0029  Tw (A-R Editions, Madison, Wisconsin.) Tj
+ET
+endstream
+endobj
+62 0 obj
+8309
+endobj
+59 0 obj
+<<
+/Type /Page
+/Parent 60 0 R
+/Resources <<
+/Font 63 0 R
+/ProcSet 2 0 R
+>>
+/Contents 61 0 R
+>>
+endobj
+63 0 obj
+<<
+/F0 6 0 R
+/F1 8 0 R
+/F2 10 0 R
+/F3 14 0 R
+/F6 20 0 R
+/F7 26 0 R
+>>
+endobj
+65 0 obj
+<<
+/Length 66 0 R
+>>
+stream
+BT
+72.24 710.16  TD
+0 0 0 rg 
+/F1 10.08  Tf
+0.0036  Tc 0.0055  Tw (Cope, David. 1996. ) Tj
+81.36 0  TD /F7 10.08  Tf
+0.0059  Tc 0.0032  Tw (Experiments in Musical Intelligence.) Tj
+154.8 0  TD /F1 10.08  Tf
+0  Tc 0.0091  Tw ( ) Tj
+2.64 0  TD 0.0063  Tc 0.0029  Tw (A-R Editions, Madison, Wisconsin.) Tj
+-238.8 -12.96  TD 0.0043  Tc 0.0048  Tw (Gabor, Denis. 1946. ) Tj
+-1.4357  Tc 0  Tw (\223) Tj
+0.005  Tc 0.0041  Tw (Theory of Communication,) Tj
+-0.0158  Tc 0.0249  Tw (\224 The Journal of the Institution of Electrical Engineers, Part III,) Tj
+10.8 -12  TD 0.0018  Tc 0.0073  Tw (93: 429-457.) Tj
+-10.8 -12.96  TD 0.0039  Tc 0.0052  Tw (Garton, Brad. 1993. ) Tj
+-1.4357  Tc 0  Tw (\223) Tj
+0.006  Tc 0.0031  Tw (Using C-Mix,) Tj
+-1.1957  Tc 1.2048  Tw (\224 ) Tj
+151.68 0  TD /F7 10.08  Tf
+0.0043  Tc 0.0049  Tw (Array 13) Tj
+36.72 0  TD /F1 10.08  Tf
+0.0022  Tc 0  Tw (\(2\)) Tj
+11.76 0  TD 0.0027  Tc 0.0064  Tw (:23-24, \(3\):14-15, \(4\):23-27.) Tj
+-200.16 -12.96  TD 0.0052  Tc 0.0039  Tw (Gogins, Michael. 1991. ) Tj
+-1.4357  Tc 0  Tw (\223) Tj
+0.006  Tc 0.0031  Tw (Iterated Functions Systems Music,) Tj
+-1.1957  Tc 1.2048  Tw (\224 ) Tj
+248.88 0  TD /F7 10.08  Tf
+0.0048  Tc 0.0043  Tw (Computer Music Journal 15) Tj
+118.08 0  TD /F1 10.08  Tf
+0.0022  Tc 0  Tw (\(1\)) Tj
+11.76 0  TD 0.0028  Tc (:40-48.) Tj
+-378.72 -12.96  TD 0.0052  Tc 0.004  Tw (Gogins, Michael. 1992a. ) Tj
+-1.4357  Tc 0  Tw (\223) Tj
+0.0052  Tc 0.0039  Tw (How I Became Obsessed with Finding a Mandelbrot Set for Sounds,) Tj
+-1.1957  Tc 1.2048  Tw (\224 ) Tj
+389.76 0  TD /F7 10.08  Tf
+0.0057  Tc 0.0034  Tw (News of Music) Tj
+-378.96 -12  TD 0  Tc 0  Tw (13) Tj
+10.08 0  TD /F1 10.08  Tf
+0.0022  Tc (:129-139.) Tj
+-20.88 -12.96  TD 0.0051  Tc 0.004  Tw (Gogins, Michael. 1992b. ) Tj
+-1.4357  Tc 0  Tw (\223) Tj
+0.0056  Tc 0.0036  Tw (Fractal Music with String Rewriting Grammars,) Tj
+-1.1957  Tc 1.2048  Tw (\224 ) Tj
+310.32 0  TD /F7 10.08  Tf
+0.0048  Tc 0.0043  Tw (News of Music 13) Tj
+74.4 0  TD /F1 10.08  Tf
+0.0022  Tc 0  Tw (:146-170.) Tj
+-384.72 -12.96  TD 0.0052  Tc 0.0039  Tw (Gogins, Michael. 1995. ) Tj
+-0.0234  Tc 0.0325  Tw (\223Gabor Synthesis of Recurrent Iterated Function Systems,) Tj
+-1.1957  Tc 1.2048  Tw (\224 ) Tj
+0.0077  Tc 0.0014  Tw (in ) Tj
+349.92 0  TD /F7 10.08  Tf
+0.0033  Tc 0.0059  Tw (Proceedings of the 1995) Tj
+-339.12 -12  TD 0.0054  Tc 0.0037  Tw (International Computer Music Conference) Tj
+178.8 0  TD /F1 10.08  Tf
+0.0045  Tc 0.0046  Tw (, ICMA, San Francisco, pp. 349-348) Tj
+-189.6 -12.96  TD 0.0042  Tc 0.0049  Tw (International Organization for Standardization. 1998 [1997]. ) Tj
+250.08 0  TD /F7 10.08  Tf
+0.0045  Tc 0.0046  Tw (ISO/IEC 14772-1:1997, the Virtual Reality) Tj
+-239.28 -12  TD 0.004  Tc 0.0051  Tw (Modeling Language \(VRML\). ) Tj
+127.44 0  TD /F1 10.08  Tf
+0.0055  Tc 0  Tw (http://www.vrml.org/Specifications/) Tj
+-138.24 -12.96  TD 0.005  Tc 0.0041  Tw (MIDI Manufacturers Association. 1996. Complete MIDI 1.0 Detailed Specification.) Tj
+0 -12.96  TD 0.0045  Tc 0.0046  Tw (Pich\351, Jean \(ed.\), Barry Vercoe, and contributors. 1998 [1986]. The Csound Manual) Tj
+10.8 -12  TD 0.0048  Tc 0.0043  Tw (\(version 3.48\): A Manual for the Audio Processing System) Tj
+0 -12  TD 0.0043  Tc 0.0049  Tw (and Supporting Programs with Tutorials by Barry Vercoe, Media Lab, ) Tj
+287.04 0  TD 0.0056  Tc 0  Tw (MIT.) Tj
+-287.04 -12  TD 0.0082  Tc (h) Tj
+5.28 0  TD 0.0059  Tc (ttp://www.leeds.ac.uk/music/Man/c_front.html.) Tj
+-16.08 -12.96  TD 0.0045  Tc 0.0047  Tw (Pope, Stephen Travis. 1993. ) Tj
+-0.0203  Tc 0.0294  Tw (\223Machine Tongues XV: Three Packages for Software Sound Synthesis,) Tj
+-1.1957  Tc 1.2048  Tw (\224 ) Tj
+411.84 0  TD /F7 10.08  Tf
+0.0051  Tc 0  Tw (Computer) Tj
+-401.04 -12  TD 0.0047  Tc 0.0044  Tw (Music Journal 17) Tj
+73.92 0  TD /F1 10.08  Tf
+0.0022  Tc 0  Tw (\(2\)) Tj
+11.76 0  TD 0.0028  Tc (:23-54.) Tj
+-96.48 -12.96  TD 0.0052  Tc 0.004  Tw (Roads, Curtis with John Strawn, Curtis Abbott, John Gordon, and Philip Greenspun. 1996. ) Tj
+371.52 0  TD /F7 10.08  Tf
+0.0055  Tc 0.0036  Tw (The Computer Music) Tj
+-360.72 -12  TD 0.0047  Tc 0  Tw (Tutorial) Tj
+34.32 0  TD /F1 10.08  Tf
+0.0057  Tc 0.0034  Tw (. Cambridge, Massachusetts: The MIT) Tj
+156 0  TD 0.007  Tc 0.0022  Tw ( Press.) Tj
+-201.12 -12.96  TD 0.0048  Tc 0.0043  Tw (Scaletti, Carla, and Kurt Hebel. 1991. ) Tj
+-0.0227  Tc 0.0318  Tw (\223An Object-based Representation for Digital Audio Signals,) Tj
+-1.1957  Tc 1.2048  Tw (\224 ) Tj
+0.0057  Tc 0.0035  Tw (in Giovanni) Tj
+10.8 -12  TD 0.0052  Tc 0.0039  Tw (De Poli, Aldo Piccialli, and Curtis Roads \(editors\), ) Tj
+208.32 0  TD /F7 10.08  Tf
+0.0053  Tc 0.0038  Tw (Representations of Musical Signals) Tj
+147.36 0  TD /F1 10.08  Tf
+0.0091  Tc 0  Tw (,) Tj
+2.64 0  TD /F7 10.08  Tf
+0  Tc 0.0091  Tw ( ) Tj
+2.64 0  TD /F1 10.08  Tf
+0.0058  Tc 0.0033  Tw (The MIT Press,) Tj
+-360.96 -12  TD 0.0047  Tc 0.0044  Tw (Cambridge, Massachusetts, pp. 371-389.) Tj
+-10.8 -12.96  TD 0.0043  Tc 0.0048  Tw (Selfridge-Field, Eleanor \(ed.\). 1997. ) Tj
+149.76 0  TD /F7 10.08  Tf
+0.0041  Tc 0.005  Tw (Beyond MIDI: The Handbook of Musical Codes) Tj
+201.6 0  TD /F1 10.08  Tf
+0.006  Tc 0.0031  Tw (. Cambridge, Massachusetts:) Tj
+-340.56 -12  TD 0.0058  Tc 0.0033  Tw (The MIT Press.) Tj
+-10.8 -12.96  TD 0.0048  Tc 0.0043  Tw (Sprott, Julien C. 1994. ) Tj
+94.32 0  TD /F7 10.08  Tf
+0.0053  Tc 0.0038  Tw (Strange Attractors: Creating Patterns in Chaos) Tj
+196.32 0  TD /F1 10.08  Tf
+0.0048  Tc 0.0043  Tw (. New York: M&T Books.) Tj
+-290.64 -12.96  TD 0.0038  Tc 0.0053  Tw (Steinberg 1998. ) Tj
+66.72 0  TD /F7 10.08  Tf
+0.0047  Tc 0.0044  Tw (Cubase VST/XT) Tj
+67.44 0  TD /F1 10.08  Tf
+0.0054  Tc 0.0037  Tw (. http://www.steinberg.net/products/cubasevst24pc.html) Tj
+-134.16 -12.96  TD 0.0055  Tc 0.0036  Tw (Sun Microsystems, Inc. 1998. ) Tj
+123.12 0  TD /F7 10.08  Tf
+0.0026  Tc 0.0065  Tw (Java Technology Home Page) Tj
+122.88 0  TD /F1 10.08  Tf
+0.0062  Tc 0.0029  Tw (. http://java.sun.com/) Tj
+-246 -12.96  TD 0.0047  Tc 0.0044  Tw (Syntrillium Software. 1996. ) Tj
+115.44 0  TD /F7 10.08  Tf
+0.0037  Tc 0.0054  Tw (Cool Edit 96) Tj
+52.32 0  TD /F1 10.08  Tf
+0.0059  Tc 0.0033  Tw (. http://www.syntrillium.com/cool96.htm) Tj
+-167.76 -12.96  TD 0.0044  Tc 0.0047  Tw (Taube, Heinrich. 1991. ) Tj
+-1.4357  Tc 0  Tw (\223) Tj
+0.0052  Tc 0.0039  Tw (Common Music: A Music Composition Language in Common Lisp and CLOS,) Tj
+-1.1957  Tc 0  Tw (\224) Tj
+10.8 -12  TD /F7 10.08  Tf
+0.0048  Tc 0.0043  Tw (Computer Music Journal 15) Tj
+118.08 0  TD /F1 10.08  Tf
+0.0022  Tc 0  Tw (\(2\)) Tj
+11.76 0  TD 0.0028  Tc (:21-32.) Tj
+-140.64 -12.96  TD 0.0051  Tc 0.004  Tw (Tonality Systems. 1998. ) Tj
+100.32 0  TD /F7 10.08  Tf
+0.0045  Tc 0.0046  Tw (Symbolic Composer) Tj
+83.04 0  TD /F1 10.08  Tf
+0.006  Tc 0.0031  Tw (. http://www.xs4all.nl/~psto/) Tj
+-183.36 -12.96  TD 0.0043  Tc 0.0048  Tw (van Dam, Andries, and David Sklar. 1991. ) Tj
+-0.032  Tc 0.0411  Tw (\223Object Hierarchy and Simple PHIGS \(SPHIGS\),) Tj
+-1.1957  Tc 1.2048  Tw (\224 ) Tj
+0.0067  Tc 0.0025  Tw (in Foley, James D.,) Tj
+10.8 -12  TD 0.0056  Tc 0.0035  Tw (Andries van Dam, Steven K. Feiner, and John F. Hughes) Tj
+231.12 0  TD 0.0091  Tc 0  Tw (., ) Tj
+7.92 0  TD /F7 10.08  Tf
+0.0048  Tc 0.0044  Tw (Computer Graphics: Principles and Practice) Tj
+185.76 0  TD /F1 10.08  Tf
+0.0091  Tc 0  Tw (,) Tj
+-424.8 -12  TD 0.0046  Tc 0.0045  Tw (Second Edition, Addison-Wesley Publishing Company, Reading, Massachusetts, 1991 [1990], pages 285-346.) Tj
+-10.8 -12.96  TD 0.0043  Tc 0.0048  Tw (Vercoe, Barry. 1997 [1986]. CSound: A Manual for the Audio Processing System and for the Additional Opcodes) Tj
+10.8 -12  TD 0.0051  Tc 0.004  Tw (of Extended Csound. Cambridge, Massachusetts: Media Lab, MIT.) Tj
+-10.8 -12.96  TD 0.0041  Tc 0.0051  Tw (Wenger, Eric. 1998. ) Tj
+84.96 0  TD /F7 10.08  Tf
+0.006  Tc 0  Tw (Metasynth) Tj
+43.68 0  TD /F1 10.08  Tf
+0.0057  Tc 0.0034  Tw (. http://www.ircam.fr/produits-real/logiciels/metasynth-e.html) Tj
+-128.64 -12.96  TD 0.0042  Tc 0.0049  Tw (World Wide Web Consortium. 1998. ) Tj
+152.16 0  TD /F7 10.08  Tf
+0.0041  Tc 0.005  Tw (Extensible Markup Language \(XML\)) Tj
+155.52 0  TD /F1 10.08  Tf
+0.0054  Tc 0.0038  Tw (. http://www.w3.org/XML/) Tj
+-307.68 -12.96  TD 0.0053  Tc 0.0039  Tw (Xenakis, Iannis. 1992. ) Tj
+94.32 0  TD /F7 10.08  Tf
+0.0055  Tc 0.0036  Tw (Formalized Music: Thoughts and Mathematics in Music) Tj
+235.68 0  TD /F1 10.08  Tf
+0.0052  Tc 0.0039  Tw (, Revised Edition. Additional) Tj
+-319.2 -12  TD 0.0048  Tc 0.0043  Tw (material compiled and edited by Sharon Kanach. ) Tj
+200.88 0  TD 0.0046  Tc 0.0045  Tw (Harmonologia Series No. 6. Stuyvesant, New York: Pendragon) Tj
+-200.88 -12  TD 0.007  Tc 0  Tw (Press.) Tj
+ET
+endstream
+endobj
+66 0 obj
+8733
+endobj
+64 0 obj
+<<
+/Type /Page
+/Parent 60 0 R
+/Resources <<
+/Font <<
+/F1 8 0 R 
+/F7 26 0 R 
+>>
+/ProcSet 2 0 R
+>>
+/Contents 65 0 R
+>>
+endobj
+6 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/Name /F0
+/BaseFont /TimesNewRoman,Bold
+/FirstChar 32
+/LastChar 255
+/Widths [ 260 340 560 500 500 980 840 280 340 340 500 560 260 340 260 280 
+500 500 500 500 500 500 500 500 500 500 340 340 560 560 560 500 
+940 720 680 720 720 660 600 780 780 380 500 800 660 960 720 780 
+600 780 720 560 660 720 720 1000 720 720 640 340 280 340 580 500 
+340 500 560 440 560 440 320 500 560 280 340 540 260 820 560 500 
+560 560 420 380 340 560 500 720 480 500 420 400 220 400 520 780 
+780 780 560 560 560 560 560 560 560 560 560 560 560 780 780 780 
+780 560 560 560 560 560 560 560 560 560 560 560 560 780 780 560 
+260 320 500 500 500 500 220 500 360 740 300 500 560 340 740 500 
+400 540 300 300 340 580 540 240 340 300 340 500 760 760 760 500 
+720 720 720 720 720 720 1000 720 660 660 660 660 380 380 380 380 
+720 720 780 780 780 780 780 560 780 720 720 720 720 720 620 560 
+500 500 500 500 500 500 720 440 440 440 440 440 280 280 280 280 
+500 560 500 500 500 500 500 540 500 560 560 560 560 500 560 500 
+]
+/Encoding /WinAnsiEncoding
+/FontDescriptor 7 0 R
+>>
+endobj
+7 0 obj
+<<
+/Type /FontDescriptor
+/FontName /TimesNewRoman,Bold
+/Flags 16418
+/FontBBox [ -250 -216 1200 1040 ]
+/MissingWidth 340
+/StemV 136
+/StemH 136
+/ItalicAngle 0
+/CapHeight 891
+/XHeight 446
+/Ascent 891
+/Descent -216
+/Leading 149
+/MaxWidth 1000
+/AvgWidth 427
+>>
+endobj
+8 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/Name /F1
+/BaseFont /TimesNewRoman
+/FirstChar 32
+/LastChar 255
+/Widths [ 261 333 404 500 500 833 761 190 333 333 500 571 261 333 261 285 
+500 500 500 500 500 500 500 500 500 500 285 285 571 571 571 428 
+928 714 642 666 714 619 547 714 690 333 380 714 595 880 714 714 
+547 714 642 547 619 690 714 928 714 714 595 333 261 333 476 500 
+333 452 476 428 500 428 309 500 523 285 261 500 285 785 523 476 
+500 500 357 380 285 500 476 690 500 452 452 476 190 476 547 785 
+785 785 571 571 571 571 571 571 571 571 571 571 571 785 785 785 
+785 571 571 571 571 571 571 571 571 571 571 571 571 785 785 571 
+261 333 500 500 500 500 190 500 309 761 261 500 571 333 761 500 
+404 547 309 309 309 547 452 261 309 309 309 500 761 761 761 428 
+714 714 714 714 714 714 904 666 619 619 619 619 333 333 333 333 
+738 714 714 714 714 714 714 571 714 690 690 690 690 714 571 500 
+452 452 452 452 452 452 666 428 428 428 428 428 285 285 285 285 
+500 523 476 476 476 476 476 547 476 500 500 500 500 452 523 452 
+]
+/Encoding /WinAnsiEncoding
+/FontDescriptor 9 0 R
+>>
+endobj
+9 0 obj
+<<
+/Type /FontDescriptor
+/FontName /TimesNewRoman
+/Flags 34
+/FontBBox [ -250 -216 1115 1040 ]
+/MissingWidth 333
+/StemV 73
+/StemH 73
+/ItalicAngle 0
+/CapHeight 891
+/XHeight 446
+/Ascent 891
+/Descent -216
+/Leading 149
+/MaxWidth 929
+/AvgWidth 401
+>>
+endobj
+10 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/Name /F2
+/BaseFont /CourierNew
+/FirstChar 32
+/LastChar 255
+/Widths [ 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 
+595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 
+595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 
+595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 
+595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 
+595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 
+595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 
+595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 
+595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 
+595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 
+595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 
+595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 
+595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 
+595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 595 
+]
+/Encoding /WinAnsiEncoding
+/FontDescriptor 11 0 R
+>>
+endobj
+11 0 obj
+<<
+/Type /FontDescriptor
+/FontName /CourierNew
+/Flags 34
+/FontBBox [ -250 -300 714 1000 ]
+/MissingWidth 595
+/StemV 109
+/StemH 109
+/ItalicAngle 0
+/CapHeight 833
+/XHeight 417
+/Ascent 833
+/Descent -300
+/Leading 133
+/MaxWidth 595
+/AvgWidth 600
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/Name /F3
+/BaseFont /Arial,Bold
+/FirstChar 32
+/LastChar 255
+/Widths [ 280 300 480 560 560 840 720 240 340 340 380 580 280 340 280 280 
+560 560 560 560 560 560 560 560 560 560 340 340 580 580 580 620 
+980 700 720 720 720 660 620 780 720 260 560 720 620 820 720 780 
+660 780 720 660 640 720 660 940 660 660 620 340 280 340 580 560 
+340 560 620 560 620 560 340 620 600 280 280 560 280 880 600 620 
+620 620 380 560 340 600 540 780 560 540 500 380 280 380 580 760 
+760 760 580 580 580 580 580 580 580 580 580 580 580 760 760 760 
+760 580 580 580 580 580 580 580 580 580 580 580 580 760 760 580 
+280 340 560 560 560 560 280 560 340 740 380 560 580 340 740 560 
+400 540 340 340 340 580 560 280 320 340 360 560 840 840 840 620 
+700 700 700 700 700 700 1000 720 660 660 660 660 260 260 260 260 
+720 720 780 780 780 780 780 580 780 720 720 720 720 660 660 620 
+560 560 560 560 560 560 880 560 560 560 560 560 280 280 280 280 
+620 600 620 620 620 620 620 540 620 600 600 600 600 540 620 540 
+]
+/Encoding /WinAnsiEncoding
+/FontDescriptor 15 0 R
+>>
+endobj
+15 0 obj
+<<
+/Type /FontDescriptor
+/FontName /Arial,Bold
+/Flags 16416
+/FontBBox [ -250 -212 1200 1055 ]
+/MissingWidth 340
+/StemV 153
+/StemH 153
+/ItalicAngle 0
+/CapHeight 905
+/XHeight 453
+/Ascent 905
+/Descent -212
+/Leading 150
+/MaxWidth 1000
+/AvgWidth 479
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/Name /F4
+/BaseFont /Symbol
+/FirstChar 30
+/LastChar 255
+/Widths [ 595 261 333 690 476 547 833 785 452 333 333 500 547 238 547 261 
+285 500 500 500 500 500 500 500 500 500 500 285 238 547 547 547 
+452 571 714 666 738 619 619 809 595 738 333 595 738 690 904 714 
+714 785 738 571 619 595 666 428 785 690 809 619 333 857 261 666 
+500 476 619 595 595 595 976 500 761 1047 595 690 571 761 785 595 
+595 595 595 595 595 714 500 547 547 595 547 380 261 595 785 1000 
+404 595 595 547 547 547 547 547 547 547 547 547 547 547 547 738 
+166 595 595 547 547 547 547 547 547 547 547 547 547 547 547 761 
+690 547 690 238 976 761 809 595 571 523 595 476 714 428 761 714 
+690 714 714 738 380 476 714 690 761 976 404 500 595 904 785 785 
+595 380 380 595 595 333 547 571 547 523 595 547 523 523 523 595 
+571 428 714 642 380 452 476 690 500 500 190 452 619 595 547 595 
+595 380 500 571 547 547 547 547 547 547 547 547 547 547 547 547 
+547 547 547 547 547 547 547 547 547 547 547 547 547 547 547 547 
+547 547 ]
+/FontDescriptor 17 0 R
+>>
+endobj
+17 0 obj
+<<
+/Type /FontDescriptor
+/FontName /Symbol
+/Flags 6
+/FontBBox [ -250 -220 1258 1230 ]
+/MissingWidth 857
+/StemV 106
+/StemH 106
+/ItalicAngle 0
+/CapHeight 1005
+/XHeight 503
+/Ascent 1005
+/Descent -220
+/Leading 225
+/MaxWidth 1048
+/AvgWidth 582
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/Name /F5
+/BaseFont /Arial
+/FirstChar 32
+/LastChar 255
+/Widths [ 285 333 357 547 547 880 666 190 333 333 380 595 285 333 285 285 
+547 547 547 547 547 547 547 547 547 547 285 285 595 595 595 547 
+1023 666 666 714 714 666 619 785 714 285 500 666 547 833 714 785 
+666 785 714 666 619 714 666 1000 642 666 619 285 285 285 452 547 
+333 547 547 500 547 547 309 547 547 238 238 500 238 857 547 547 
+547 547 333 476 285 547 547 690 523 500 500 333 261 333 595 761 
+761 761 595 595 595 595 595 595 595 595 595 595 595 761 761 761 
+761 595 595 595 595 595 595 595 595 595 595 595 595 761 761 595 
+285 333 547 547 547 547 261 547 333 738 380 547 595 333 738 547 
+404 547 333 333 333 571 547 285 333 333 357 547 833 833 833 619 
+666 666 666 666 666 666 1000 714 666 666 666 666 285 285 285 285 
+714 714 785 785 785 785 785 595 785 714 714 714 714 666 666 619 
+547 547 547 547 547 547 880 500 547 547 547 547 285 285 285 285 
+547 547 547 547 547 547 547 547 619 547 547 547 547 500 547 500 
+]
+/Encoding /WinAnsiEncoding
+/FontDescriptor 19 0 R
+>>
+endobj
+19 0 obj
+<<
+/Type /FontDescriptor
+/FontName /Arial
+/Flags 32
+/FontBBox [ -250 -212 1229 1055 ]
+/MissingWidth 286
+/StemV 80
+/StemH 80
+/ItalicAngle 0
+/CapHeight 905
+/XHeight 453
+/Ascent 905
+/Descent -212
+/Leading 150
+/MaxWidth 1024
+/AvgWidth 441
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/Name /F6
+/BaseFont /TimesNewRoman,Italic
+/FirstChar 32
+/LastChar 255
+/Widths [ 261 333 404 500 500 761 738 214 309 309 500 666 261 333 261 285 
+500 500 500 500 500 500 500 500 500 500 333 333 666 666 666 500 
+928 619 619 666 714 619 595 714 714 333 452 666 547 833 666 714 
+595 714 619 500 547 714 595 809 619 547 547 404 285 428 428 500 
+285 500 500 452 500 452 285 500 500 285 285 452 285 714 500 500 
+500 500 380 380 285 500 452 619 452 452 380 404 285 404 547 785 
+785 785 666 666 666 666 666 666 666 666 666 666 666 785 785 785 
+785 666 666 666 666 666 666 666 666 666 666 666 666 785 785 666 
+261 380 500 500 500 500 285 500 261 714 285 500 666 333 785 500 
+404 547 285 285 309 571 523 261 333 309 309 500 761 761 761 523 
+619 619 619 619 619 619 880 666 619 619 619 619 333 333 333 333 
+714 666 714 714 714 714 714 666 714 714 714 714 714 547 619 500 
+500 500 500 500 500 500 666 452 452 452 452 452 285 285 285 285 
+500 500 500 500 500 500 500 547 500 500 500 500 500 452 500 452 
+]
+/Encoding /WinAnsiEncoding
+/FontDescriptor 21 0 R
+>>
+endobj
+21 0 obj
+<<
+/Type /FontDescriptor
+/FontName /TimesNewRoman,Italic
+/Flags 98
+/FontBBox [ -250 -216 1115 1040 ]
+/MissingWidth 429
+/StemV 73
+/StemH 73
+/ItalicAngle -11
+/CapHeight 891
+/XHeight 446
+/Ascent 891
+/Descent -216
+/Leading 149
+/MaxWidth 929
+/AvgWidth 402
+>>
+endobj
+26 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/Name /F7
+/BaseFont /TimesNewRoman,BoldItalic
+/FirstChar 32
+/LastChar 255
+/Widths [ 261 380 547 500 500 904 785 285 333 333 500 571 261 333 261 285 
+500 500 500 500 500 500 500 500 500 500 333 333 571 571 571 500 
+833 666 666 666 714 642 642 714 785 380 500 666 619 880 714 714 
+619 714 666 547 619 714 642 880 666 619 619 333 285 333 571 500 
+333 500 500 452 500 452 333 500 547 285 285 500 285 785 547 500 
+500 500 380 380 285 547 452 666 500 452 380 357 214 357 571 785 
+785 785 571 571 571 571 571 571 571 571 571 571 571 785 785 785 
+785 571 571 571 571 571 571 571 571 571 571 571 571 785 785 571 
+261 380 500 500 500 500 214 500 333 761 261 500 595 333 738 500 
+404 547 285 309 333 571 500 261 333 309 309 500 761 761 785 500 
+666 666 666 666 666 666 952 666 642 642 642 642 380 380 380 380 
+714 714 714 714 714 714 714 571 714 714 714 714 714 619 619 500 
+500 500 500 500 500 500 714 452 452 452 452 452 285 285 285 285 
+500 547 500 500 500 500 500 547 500 547 547 547 547 452 476 452 
+]
+/Encoding /WinAnsiEncoding
+/FontDescriptor 27 0 R
+>>
+endobj
+27 0 obj
+<<
+/Type /FontDescriptor
+/FontName /TimesNewRoman,BoldItalic
+/Flags 16482
+/FontBBox [ -250 -216 1142 1040 ]
+/MissingWidth 333
+/StemV 131
+/StemH 131
+/ItalicAngle -11
+/CapHeight 891
+/XHeight 446
+/Ascent 891
+/Descent -216
+/Leading 149
+/MaxWidth 952
+/AvgWidth 412
+>>
+endobj
+2 0 obj
+[ /PDF /Text /ImageC /ImageI  ]
+endobj
+5 0 obj
+<<
+/Kids [4 0 R 23 0 R 28 0 R 32 0 R 47 0 R 56 0 R ]
+/Count 6
+/Type /Pages
+/Parent 67 0 R
+>>
+endobj
+60 0 obj
+<<
+/Kids [59 0 R 64 0 R ]
+/Count 2
+/Type /Pages
+/Parent 67 0 R
+>>
+endobj
+67 0 obj
+<<
+/Kids [5 0 R 60 0 R ]
+/Count 8
+/Type /Pages
+/MediaBox [ 0 0 612 792 ]
+>>
+endobj
+1 0 obj
+<<
+/Creator ()
+/CreationDate (D:19980629184105)
+/Title (Gogins.PDF)
+/Author (mkg)
+/Producer (Acrobat PDFWriter 3.02 for Windows NT)
+/Keywords ()
+/Subject ()
+>>
+endobj
+3 0 obj
+<<
+/Pages 67 0 R
+/Type /Catalog
+>>
+endobj
+xref
+0 68
+0000000000 65535 f 
+0000103619 00000 n 
+0000103290 00000 n 
+0000103794 00000 n 
+0000009132 00000 n 
+0000103337 00000 n 
+0000092484 00000 n 
+0000093577 00000 n 
+0000093848 00000 n 
+0000094934 00000 n 
+0000095194 00000 n 
+0000096279 00000 n 
+0000000019 00000 n 
+0000009111 00000 n 
+0000096538 00000 n 
+0000097624 00000 n 
+0000097888 00000 n 
+0000098952 00000 n 
+0000099210 00000 n 
+0000100293 00000 n 
+0000100547 00000 n 
+0000101642 00000 n 
+0000009241 00000 n 
+0000020442 00000 n 
+0000009338 00000 n 
+0000020420 00000 n 
+0000101912 00000 n 
+0000103011 00000 n 
+0000030833 00000 n 
+0000020598 00000 n 
+0000030811 00000 n 
+0000030943 00000 n 
+0000053716 00000 n 
+0000034296 00000 n 
+0000031150 00000 n 
+0000034275 00000 n 
+0000031029 00000 n 
+0000031131 00000 n 
+0000035312 00000 n 
+0000035332 00000 n 
+0000038369 00000 n 
+0000052392 00000 n 
+0000038390 00000 n 
+0000052370 00000 n 
+0000053458 00000 n 
+0000053478 00000 n 
+0000053696 00000 n 
+0000067760 00000 n 
+0000064513 00000 n 
+0000054039 00000 n 
+0000064491 00000 n 
+0000053920 00000 n 
+0000054020 00000 n 
+0000065579 00000 n 
+0000065599 00000 n 
+0000067739 00000 n 
+0000074816 00000 n 
+0000067944 00000 n 
+0000074795 00000 n 
+0000083345 00000 n 
+0000103445 00000 n 
+0000074960 00000 n 
+0000083324 00000 n 
+0000083456 00000 n 
+0000092351 00000 n 
+0000083542 00000 n 
+0000092330 00000 n 
+0000103527 00000 n 
+trailer
+<<
+/Size 68
+/Root 3 0 R
+/Info 1 0 R
+/ID [<c05dbb19af48f99596846ac21ecc76a0><c05dbb19af48f99596846ac21ecc76a0>]
+>>
+startxref
+103844
+%%EOF

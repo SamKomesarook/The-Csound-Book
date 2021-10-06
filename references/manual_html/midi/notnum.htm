@@ -1,0 +1,111 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>notnum, veloc, cpsmidi, cpsmidib, octmidi, octmidib, pchmidi, pchmidib, ampmidi, aftouch, pchbend, midictrl, midictrlsc, polyaft</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../pchcnv/cpstun.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="cpstmid.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#converters" class="toqr">
+MIDI Support: Converters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>notnum, veloc, cpsmidi, cpsmidib, octmidi, octmidib, pchmidi, pchmidib, ampmidi, aftouch, pchbend, midictrl, polyaft<!--, midictrlsc What is this?--></h2>
+
+
+<pre>  
+  ival      <strong>notnum</strong>
+  ival      <strong>veloc</strong>      [ilow, ihigh]
+  icps      <strong>cpsmidi</strong>
+  icps      <strong>cpsmidib</strong>   [irange]
+  kcps      <strong>cpsmidib</strong>   [irange]
+  ioct      <strong>octmidi</strong>
+  ioct      <strong>octmidib</strong>   [irange]
+  koct      <strong>octmidib</strong>   [irange]
+  ipch      <strong>pchmidi</strong>
+  ipch      <strong>pchmidib</strong>   [irange]
+  kpch      <strong>pchmidib</strong>   [irange]
+  iamp      <strong>ampmidi</strong>    iscal[, ifn]
+  kaft      <strong>aftouch</strong>    [imin[, imax]]
+  ibend     <strong>pchbend</strong>    [imin[, imax]]
+  kbend     <strong>pchbend</strong>    [imin[, imax]]
+
+  ival      <strong>midictrl</strong>   inum[, imin[, imax]]
+  kval      <strong>midictrl</strong>   inum[, imin[, imax]]
+	
+  ival      <strong>polyaft</strong>  inum[,imin[, imax]]
+  kval      <strong>polyaft</strong>  inum[,imin[, imax]]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Get a value from the MIDI event that activated this instrument, or from a continuous MIDI controller, and convert it to a locally useful format.
+</p>
+<h3>Initialization</h3>
+<p><em>iscal</em> &#8211; i-time scaling factor
+</p>
+<p><em>ifn</em> (optional) &#8211; function table number of a normalized translation table, by which the incoming value is first interpreted. The default value is 0, denoting no translation.
+</p>
+<p><em>inum</em> &#8211; MIDI controller number
+</p>
+<p><em>ilow, ihigh</em> &#8211; low and hi ranges for mapping
+</p>
+<p><em>irange</em> &#8211; the pitch bend range in semitones
+</p>
+
+<p><em>imin, imax </em> &#8211; set minimum and maximum limits on values obtained
+</p>
+<h3>Performance</h3>
+<p><strong>notnum</strong>, <strong>veloc</strong> &#8211; get the MIDI byte value (0 - 127) denoting the note number or velocity of the current event.
+</p>
+<p><strong>cpsmidi</strong>, <strong>octmidi</strong>, <strong>pchmidi</strong> &#8211; get the note number of the current MIDI event, expressed in <a href="../pchcnv/octpch.htm">cps, oct, or pch</a> units for local processing.
+</p>
+<p><strong>cpsmidib</strong>, <strong>octmidib</strong>, <strong>pchmidib</strong> &#8211; get the note number of the current MIDI event, modify it by the current pitch-bend value, and express the result in <a href="../pchcnv/octpch.htm">cps, oct, or pch</a> units. Available as an i-time value or as a continuous k-rate value.
+</p>
+<p><strong>ampmidi</strong> &#8211; get the velocity of the current MIDI event, optionally pass it through a normalized translation table, and return an amplitude value in the range 0 - <em>iscal</em>.
+</p>
+<p><strong>aftouch</strong>, <strong>pchbend</strong>, <strong>polyaft</strong> &#8211; get the current after-touch, or pitch-bend value for this channel, rescaled to the range 0 - <em>iscal</em>. Note that this access to pitch-bend data is independent of the MIDI pitch, enabling the value here to be used for any arbitrary purpose.
+</p>
+<p><strong>midictrl</strong> &#8211; get the current value (0 - 127) of a specified MIDI controller.
+</p>
+<p><strong>ctrlinit</strong> &#8211; Sets initial values for a set of MIDI controllers.<br>
+</p>
+<h3>Author</h3>
+<p>Barry Vercoe - Mike Berry<br>
+MIT - Mills<br>
+May 1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../pchcnv/cpstun.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="cpstmid.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#converters" class="toqr">
+MIDI Support: Converters</font></a>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>Writing a Main Program</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="events.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="advancd.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Cscore</font>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>Writing a Main Program</h2>
+<hr size="2" color="#A9A9A9" noshade>
+<p>The general format for a control program is:
+</p>
+<pre>
+  #include  &quot;cscore.h&quot; 
+  cscore() 
+  { 
+   /*  VARIABLE DECLARATIONS  */ 
+   /*  PROGRAM BODY  */ 
+  }
+</pre>
+<p>The include statement will define the event and list structures for the program. The following C program will read from a<em> standard numeric score,</em> up to (but not including) the first <strong>s</strong> or <strong>e statement</strong>, then write that data (unaltered) as output.
+</p>
+<pre>
+  #include  &quot;cscore.h&quot; 
+  cscore() 
+  { 
+       EVLIST *a;       /* a is allowed to point to an event list */ 
+       a = lget();      /* read events in, return the list pointer */ 
+       lput(a);         /* write these events out (unchanged) */ 
+       putstr(&quot;e&quot;);     /* write the string e to output */ 
+  }
+</pre>
+<p>After execution of <strong>lget()</strong>, the variable a points to a list of event addresses, each of which points to a stored event. We have used that same pointer to enable another list function (<strong>lput</strong>) to access and write out all of the events that were read. If we now define another symbol <em>e</em> to be an event pointer, then the statement
+</p>
+<pre>  e = a-e[4];</pre>
+<p>will set it to the contents of the 4th slot in the <strong>evlist</strong> structure. The contents is a pointer to an event, which is itself comprised of an <em>array </em>of parameter field values. Thus the term <em>e-p[5]</em> will mean the value of parameter field 5 of the 4th event in the<strong> evlist</strong> denoted by <em>a</em>. The program below will multiply the value of that <em>pfield </em>by 2 before writing it out.
+</p>
+<pre>
+  #include  &quot;cscore.h&quot; 
+  cscore() 
+  { 
+       EVENT  *e;       /* a pointer to an event   */ 
+       EVLIST *a; 
+       a = lget();      /* read a score as a list of events */ 
+       e = a-e[4];     /* point to event 4 in event list a  */ 
+       e-p[5] *= 2;    /* find pfield 5, multiply its value by 2 */ 
+       lput(a);         /* write out the list of events  */ 
+       putstr(&quot;e&quot;);     /* add a &quot;score end&quot; statement */ 
+  }
+</pre>
+<p>Now consider the following score, in which <em>p[5]</em> contains frequency in Hz.<br>
+</p>
+<pre>
+  f 1 0 257 10 1 
+  f 2 0 257 7 0 300 1 212 .8 
+  i 1 1 3 0 440 10000 
+  i 1 4 3 0 256 10000 
+  i 1 7 3 0 880 10000 
+  e
+</pre>
+<p>If this score were given to the preceding main program, the resulting output would look like this:
+</p>
+<pre>
+  f 1 0 257 10 1 
+  f 2 0 257 7 0 300 1 212 .8 
+  i 1 1 3 0 440 10000 
+  i 1 4 3 0 512 10000        ; p[5] has become 512 instead of 256. 
+  i 1 7 3 0 880 10000 
+  e
+</pre>
+<p>Note that the 4th event is in fact the second note of the score. So far we have not distinguished between notes and function table setup in a numeric score. Both can be classed as events. Also note that our 4th event has been stored in <em>e[4]</em> of the structure. For compatibility with Csound <em>pfield</em> notation, we will ignore <em>p[0]</em> and <em>e[0]</em> of the event and list structures, storing <em>p1</em> in <em>p[1]</em>, event 1 in <em>e[1]</em>, etc. The<strong> Cscore </strong>functions all adopt this convention.
+</p>
+<p>As an extension to the above, we could decide to use <em>a</em> and <em>e</em> to examine each of the events in the list. Note that e has not preserved the numeral 4, but the contents of that slot. To inspect <em>p5</em> of the previous listed event we need only redefine e with the assignment<br>
+</p>
+<pre>      e = a-e[3];</pre>
+<p>More generally, if we declare a new variable <em>f </em>to be a pointer to a pointer to an event, the statement<br>
+</p>
+<pre>      f = &amp;a-e[4];</pre>
+<p>will set <em>f</em> to the address of the fourth event in the event list <em>a,</em> and <em>*f</em> will signify the contents of the slot, namely the event pointer itself. The expression<br>
+</p>
+<pre>      (*f)-p[5],</pre>
+<p>like <em>e-p[5]</em>, signifies the fifth pfield of the selected event. However, we can advance to the next slot in the <strong>evlist</strong> by advancing the pointer <em>f</em>. In C this is denoted by <em>f++</em>.
+</p>
+<p>In the following program we will use the same input score. This time we will separate the <em>ftable</em> statements from the <em>note </em>statements. We will next write the three note-events stored in the list<em> a,</em> then create a second score section consisting of the original pitch set and a transposed version of itself. This will bring about an octave doubling.
+</p>
+<p>By pointing the variable<em> f</em> to the first note-event and incrementing <em>f</em> inside a while block which iterates<em> n </em>times (the number of events in the list), one statement can be made to act upon the same <em>pfield</em> of each successive event.
+</p>
+<pre>
+  #include  &quot;cscore.h&quot;
+   cscore()
+   {
+        EVENT *e,**f;            /* declarations. see pp.8-9 in the */ 
+        EVLIST *a,*b;            /* C language programming manual */ 
+        int n; 
+        a = lget();              /* read score into event list &quot;a&quot; */ 
+        b = lsepf(a);            /* separate f statements */ 
+        lput(b);                 /* write f statements out to score */ 
+        lrelev(b);               /* and release the spaces used */ 
+        e = defev(&quot;t 0 120&quot;);    /* define event for tempo statement */ 
+        putev(e);                /* write tempo statement to score */ 
+        lput(a);                 /* write the notes */ 
+        putstr(&quot;s&quot;);             /* section end */ 
+        putev(e);                /* write tempo statement again */ 
+        b = lcopyev(a);          /* make a copy of the notes in &quot;a&quot; */ 
+        n = b-nevents;          /* and get the number present */ 
+        f = &amp;a-e[1]; 
+        while (n--)              /* iterate the following line n times: */ 
+            (*f++)-p[5] *= .5;  /*   transpose pitch down one octave */ 
+        a = lcat(b,a);           /* now add these notes to original pitches */ 
+        lput(a); 
+        putstr(&quot;e&quot;);
+       }
+</pre>
+<p>The output of this program is:
+</p>
+<pre>
+  f 1 0 257 10 1 
+  f 2 0 257 7 0 300 1 212 .8 
+  t 0 120 
+  i 1 1 3 0 440 10000 
+  i 1 4 3 0 256 10000 
+  i 1 7 3 0 880 10000 
+  s 
+  t 0 120 
+  i 1 1 3 0 440 10000 
+  i 1 4 3 0 256 10000 
+  i 1 7 3 0 880 10000 
+  i 1 1 3 0 220 10000 
+  i 1 4 3 0 128 10000 
+  i 1 7 3 0 440 10000 
+  e
+</pre>
+<p>Next we extend the above program by using the while statement to look at <em>p[5]</em> and <em>p[6]</em>. In the original score <em>p[6]</em> denotes amplitude. To create a diminuendo in the added lower octave, which is independent from the original set of notes, a variable called <em>dim</em> will be used.
+</p>
+<pre>
+  #include &quot;cscore.h&quot; 
+  cscore() 
+  { 
+   EVENT *e,**f; 
+   EVLIST *a,*b; 
+   int n, dim;                /* declare two integer variables   */ 
+   a = lget(); 
+   b = lsepf(a); 
+   lput(b); 
+   lrelev(b); 
+   e = defev(&quot;t 0 120&quot;); 
+   putev(e); 
+   lput(a); 
+   putstr(&quot;s&quot;); 
+   putev(e);                  /* write out another tempo statement */ 
+   b = lcopyev(a); 
+   n = b-nevents; 
+   dim = 0;                   /* initialize dim to 0 */ 
+   f = &amp;a-e[1]; 
+   while (n--){ 
+        (*f)-p[6] -= dim;    /* subtract current value of dim */ 
+        (*f++)-p[5] *= .5;   /* transpose, move f to next event */ 
+        dim += 2000;          /* increase dim for each note */ 
+   } 
+   a = lcat(b,a); 
+   lput(a); 
+   putstr(&quot;e&quot;);
+  } 
+</pre>
+<p>The increment of <em>f</em> in the above programs has depended on certain precedence rules of C.  Although this keeps the code tight, the practice can be dangerous for beginners.  Incrementing may alternately be written as a separate statement to make it more clear.
+</p>
+<pre>
+  while (n--){ 
+       (*f)-p[6] -= dim; 
+       (*f)-p[5] *= .5; 
+       dim += 2000; 
+       f++; 
+  }
+</pre>
+<p>Using the same input score again, the output from this program is:
+</p>
+<pre>
+  f 1 0 257 10 1 
+  f 2 0 257 7 0 300 1 212 .8 
+  t 0 120 
+  i 1 1 3 0 440 10000 
+  i 1 4 3 0 256 10000 
+  i 1 7 3 0 880 10000 
+  s 
+  t 0 120 
+  i 1 1 3 0 440 10000     ; Three original notes at 
+  i 1 4 3 0 256 10000     ; beats 1,4 and 7 with no dim. 
+  i 1 7 3 0 880 10000 
+  i 1 1 3 0 220 10000     ; three notes transposed down one octave 
+  i 1 4 3 0 128 8000      ; also at beats 1,4 and 7 with dim. 
+  i 1 7 3 0 440 6000 
+  e
+</pre>
+<p>In the following program the same three-note sequence will be repeated at various time intervals. The starting time of each group is determined by the values of the <em>array</em> cue. This time the <em>dim</em> will occur for each group of notes rather than each note. Note the position of the statement which increments the variable <em>dim</em> outside the inner while block.
+</p>
+<pre>
+  #include  &quot;cscore.h&quot; 
+  int cue[3]={0,10,17};              /* declare an array of 3 integers */ 
+  cscore() 
+  {
+       EVENT *e, **f;
+       EVLIST *a, *b;
+       int n, dim, cuecount, holdn;  /* declare new variables */ 
+       a = lget(); 
+       b = lsepf(a); 
+       lput(b); 
+       lrelev(b); 
+       e = defev(&quot;t 0 120&quot;); 
+       putev(e); 
+       n = a-nevents; 
+       holdn = n;                    /* hold the value of &quot;n&quot; to reset below */ 
+       cuecount = 0;                 /* initialize cuecount to &quot;0&quot; */ 
+       dim = 0; 
+       while (cuecount &lt;= 2) {       /* count 3 iterations of inner &quot;while&quot; */ 
+            f = &amp;a-e[1];            /* reset pointer to first event of list &quot;a&quot; */ 
+            n = holdn;               /* reset value of &quot;n&quot; to original note count */ 
+            while (n--) { 
+                (*f)-p[6] -= dim; 
+                (*f)-p[2] += cue[cuecount];   /* add values of cue */ 
+                f++; 
+            } 
+            printf(&quot;; diagnostic:  cue = %d\n&quot;, cue[cuecount]); 
+            cuecount++; 
+            dim += 2000; 
+             lput(a); 
+       } 
+       putstr(&quot;e&quot;); 
+  }
+</pre>
+<p>Here the inner while block looks at the events of list a (the notes) and the outer while block looks at each repetition of the<em> events</em> of list a (the pitch group repetitions). This program also demonstrates a useful trouble-shooting device with the <strong>printf</strong> function. The <em>semi-colon</em> is first in the character string to produce a comment statement in the resulting score file. In this case the value of cue is being printed in the output to insure that the program is taking the proper <em>array</em> member at the proper time. When output data is wrong or error messages are encountered, the <strong>printf</strong> function can help to pinpoint the problem.
+</p>
+<p>Using the identical input file, the C program above will generate:
+</p>
+<pre>
+  f 1 0 257 10 1 
+  f 2 0 257 7 0 300 1 212 .8 
+  t 0 120 
+  ; diagnostic:  cue = 0 
+  i 1 1 3 0 440 10000 
+  i 1 4 3 0 256 10000 
+  i 1 7 3 0 880 10000 
+  ; diagnostic:  cue = 10 
+  i 1 11 3 0 440 8000 
+  i 1 14 3 0 256 8000 
+  i 1 17 3 0 880 8000 
+  ; diagnostic:  cue = 17 
+  i 1 28 3 0 440 4000 
+  i 1 31 3 0 256 4000 
+  i 1 34 3 0 880 4000 
+  e;
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="events.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="advancd.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Cscore</font>
+</body>
+
+</html>

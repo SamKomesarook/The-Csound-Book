@@ -1,0 +1,129 @@
+=======================================
+jan12.99
+	Csound for Power Macintosh
+=======================================
+This Version: 
+	fFitch code base	3.494
+	Perf "engine"		3.494
+	Csound "front end"  1.1.3
+	
+Available From:
+	www.concentric.net/~mingalls/software/csound
+=======================================
+changes from 3.493
+=======================================
+Perf:
+- Upgraded source to 3.494
+- Updated Documentation
+	
+Front End:
+- nil
+=======================================
+Please email bugs to csound-dev@mills.edu
+so we can fix them. (however, you may
+first want to read the "known bugs" below)
+
+=======================================
+WHAT'S HERE
+=======================================
+CsoundPPC3.494.sit.hqx
+	- newest binaries of Csound and Perf
+Docs_csRef_&_Examples
+	- Macintosh_Manual.html
+	- csRef 3.47
+	- Csound Manual 3.47 (docMaker)
+	- Example orc/scos
+MrTweaky.sit.hqx 
+	- app to convert anal files to ASCII
+csRef68k.sea.hqx
+Older_Versions/
+	- older Perf and Csound versions
+source/ 
+	Mr Tweaky source
+	3.493PPCsources.sit.hqx
+=======================================
+KNOWN BUGS/INCOMPLETE FEATURES
+=======================================
+Documentation and Examples:
+- has not yet been brought up todate.
+
+Perf:
+- Transport is sometimes sluggish and "hangs" for 
+	a moment after playback or when user hits 
+	the transport then might give a slight "sputter"
+- Transport sometimes acts like "floating" window even
+	when in background/greyed
+- RT Audio not as clean as previous versions.
+- Progress/Profile feature currently disabled
+- many MIDI problems
+- Rescale to 24-bit AIFF might not write the proper header
+
+Front End:
+- Reset All Options/Prefs does not update open windows
+- Default Dirs by button flashes when appears, and if 
+	dialog is already open stays in background.
+- If Direct Rendering and you start CSound,
+	project window doesnt open by default.
+- "Synthesizing" output file name automatically might 
+	sometimes replace a filename user already typed in.
+	(could make this an option..)
+
+=======================================
+NOTE TO DEVELOPERS AND USERS OF
+OTHER FRONT END "LAUNCHERS"
+=======================================
+We have completely consolidated our sources and canonical 3.485 source. 
+To do this, we had to change some of our Mac-Specific command 
+line flags.  If you are a developer of a front end "launcher" 
+that uses "Perf" you may have to change your application to 
+accommodate.  The Mac-Specific flags are now:
+
+-X fnam		Sound File Directory
+-q fnam		Sound Sample-In Directory
+-Q fnam		Analysis Directory
+-V N		Number of chars in screen buffer for output window
+-E N		Number of tables in graphics window
+-p			Play after rendering
+-e			Rescaled floats as shorts to max amplitude
+-e24		Rescaled floats as 24-bit ints to max amplitude
+-w			Record and Save MIDI input to a file
+-y N		Enables Progress Display at rate N seconds
+				or for negative N, at -N kperiods
+-Y N		Enables Profile Display at rate N in seconds
+				or for negative N, at -N kperiods
+-- fnam		log output to file ("listing" file)
+"gSound"	in command line turns off text output window
+
+=======================================
+TO DO (short term)
+=======================================
+- overhaul playback and RT sound out/in
+- save window locations
+- save user options in pref file rather
+	than the application
+- enable progress/profile (get code from dave)
+- progress/profile on utils
+- add user able to set creator of generated files
+- cancel on score generation
+- get perf to stop w/ cmd-period
+- get perf playback play/stop with space bar?
+- make score optional
+- get rescale code cross-platform
+- compile 68k version (almost there)
+- add a "sndinfo" button next to outputfile
+- have option to not show output window at all
+	(only to listing)???
+- have project/orc files differences transparant
+	
+=======================================
+TO DO (long term)
+=======================================
+- separate windows for dispfft and display
+- try to patch "dribble" output to a file to
+	output in the front end instead
+
+
+
+
+matt ingalls
+mingalls@concentric.net

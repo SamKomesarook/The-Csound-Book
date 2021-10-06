@@ -1,0 +1,3280 @@
+<CsMinMuse>
+<CsAxiom>
+ length .75 push tempo .5 cell6 pop transpose 5 cell6 cell6
+</CsAxiom>
+<CsRules>
+cell6 = push push push instrument 1 pan -.5 cell5 pop transpose -12 intrument 3 pan 0 cell4 pop instrument 2 pan .5 cell4 pop transpose -12 instrument 3 cell5 transpose 12
+cell5 = cell3 transpose 6 rest cell5 transpose -6 cell3
+cell4 = cell3 transpose 6 advance 1.25 cell4  transpose -6 cell3
+cell3 = cell1 advance .375 transpose 3 cell1 transpose -3 cell3
+cell2 = cell1 transpose  -5 cell1 transpose 5 note cell2
+cell1 = cell0 transpose 2 rest cell0  dynamics  0.9090909090909 transpose -2 cell0 transpose -5 dynamics 1.1 note transpose 5 note rest
+cell0 = note transpose 12 transpose -4 note rest dynamics 2 transpose 2 note transpose -5 note note  dyanmics .5 transpose -5 note rest
+</CsRules>
+<CsIterations 7>
+<CsScoreManager>
+<CsFunctions>
+f   1  0 4096 10 1 ; Sine wave.
+f   2  0 4096 10 1 .2 .08 .07 ; Flute-like.
+f   3  0 4096 10 1 .4 .2 .1 .1 .05
+f   4  0 512 7 0 1 0 49 .2 90 .6 40 .99 25 .9 45 .5 50 .25 50 .12 50 .06 50 .02 62 0
+f   5  0 512 7 0 1 0 49 .2 100 .6 50 .99 150 .2 162 0
+f   6  0 512 7 0 1 0 49 .2 200 .5 100 .2 162 0
+f   7  0 512 7 0 1 0 79 .5 60 .5 20 .99 120 .4 140 .6 92 0
+f   8  0.0  5 .001  1 ; Eexponential rise
+f  12  0 512 9 1 .26 0
+f  13  0 512 9 1 .3 0
+f  23  0 512 9 1 1 0
+f  24  0 512 -7 3000 71 3000 168 2300 100 2100 71 2000 102 2000
+f  25  0 512 -7 .025 71 .02 102 .025 71 .05 268 .06
+f  26  0 512 -7 .25 71 .25 102 .08 .05 339 .05
+f  27  0 512 -7 5 71 2.3 102 1.5 237 2.5 102 2.3
+f  28  0 512 -7 5 512 6.5
+f  30  0 8192 10 1
+f  31  0 2048 19 .5 1 270 1
+f  32  0 512 -7 -1 150 .1 110 0 252 0
+f  33  0 1024 10 .3 0 0 0 .1 .1 .1 .1 .1 .1
+f  34  0  8192  9  1 1 90       ; Cosine for Fitch instruments.
+f  41  0 8193 10 1  ; Sine wave.
+f  42  0 8193 11 1  ; Cosine wave.
+f  43  0 8192 -12 20.0  ; Unscaled ln(I(x)) from 0 to 20.0.
+f  44  0 4097 10 1 .25 .1 ; Kelley flute.
+f  45  0 2049 7 -1 1800 1 249 -1 ; Kelley string.
+f  46  0 2049 7 -1 1024 1 1024 -1 ; Kelley harpsichord.
+f  47  0 2049 10 1 0 1 0 1 ; Kelley oboe.
+f  48  0  10 3 1 0 .25 .3 .76 ; Nelson Chebyshev.
+f  49  0  13 1 1 .9 .8 .7 .6 .5 .4 .3 .2 .1 ; Nelson table lookup.
+f  50  0 8193 20 2 1 ; Hanning window.
+f  51  0 8193 -10  809 14581 2030 990 522 1545 2030 262 61 45 45 64 465  139 19 75 29 42 39 96 86 75 39 45 ; Horner Erhu
+f  52  0 8193 -10 1567 910 870  3119 595 151 45  111 123 31 41 127  148 196 124 142 49 22 22 59 74 37 ; Horner Erhu
+f  53  0 8193 -10 2411 1158 352 922 854 70 66 152 83 15 69 69 92 91 60 30  42 78 38 41 59 22 ; Horner Erhu
+f  54  0 8193 -10 18607 805 771 832 115 166 115 21 66 22 135 165 18 41 85  27 93 23 8 15 23 7 ; Horner Erhu
+f  55  0 8193 7  0 819 1.1 819 1.2 820 1.4 819 1.2 819 1.15 820 0 8200 0 ; Horner Erhu
+f  61  0 8193 -10  30 37 282 99 29 327 96 77 102 11 45 7 4 3 1 1; Horner Pipa
+f  62  0 8193 -10  324 300 144 160 383 847 1311 1121 885 586 125 174 269  100 428 190 563 294 178 236 169 173 75 57 52 57 131 43 134 77 54 51  60 107 51 274 54 30 23 66 20 12 ; Horner Pipa
+f  63  0 8193 -10  79 51 133 10 21 20 7 3 11 4 3 2 1 2 1 2 ; Horner Pipa
+f  64  0 8193 -10  475 207 545 323 104 1890 1304 1031 350 269 245 180  200 43 45 14 13 8 13 34 16 28 16 3 3 ; Horner Pipa
+f  65  0 8193 -10  8 24 10 14 35 30 19 31 16 16 11 6 2 7 8 9 13 11 3 2 3  1 4 2 2 2 1 2 2 1 3 3 1 4 2 3 1; Horner Pipa
+f  66  0  13 1 1 .9 .8 .7 .6 .5 .4 .3 .2 .1 ;gen 13 table lookup (was 31)
+f  67  0  13 1 1 .9 .8 .7 .6 .7 .8 .9 1 ;gen 13 table lookup (was 32)
+f  77  0 4096 10 .28 1 .74 .66 .78 .48 .05 .33 .12 .08 .01 .54 .19 .08 .05 .16 .01 .11 .3 .02 .2 ; Bergeman f1
+f 100  0 2048 -17 0 101 575 102 625 103 675 104 725 105 775 106 825 107 875 108 925 109 975 110 1025 111  1075 112 1125  113 1175  114 ; Steinway octave : tablenumber
+f 101  0 2048 -17 0 5.5  575      6 625  6.5 675      7 725  7.5 775      8 825  8.5  875     9 925  9.5  975   10 1025 10.5 1075   11 1125 11.5 1175     12 ; Steinway octave : baseoctave
+;f 102  0  0 1 "Steinway102.aif" 0 4 0 ;  5.50
+;f 103  0  0 1 "Steinway103.aif" 0 4 0 ;  6.00
+;f 104  0  0 1 "Steinway104.aif" 0 4 0 ;  6.50
+;f 105  0  0 1 "Steinway105.aif" 0 4 0 ;  7.00
+;f 106  0  0 1 "Steinway106.aif" 0 4 0 ;  7.50
+;f 107  0  0 1 "Steinway107.aif" 0 4 0 ;  8.00
+;f 108  0  0 1 "Steinway108.aif" 0 4 0 ;  8.50
+;f 109  0  0 1 "Steinway109.aif" 0 4 0 ;  9.00
+;f 110  0  0 1 "Steinway110.aif" 0 4 0 ;  9.50
+;f 111  0  0 1 "Steinway111.aif" 0 4 0 ; 10.00
+;f 112  0  0 1 "Steinway112.aif" 0 4 0 ; 10.50
+;f 113  0  0 1 "Steinway113.aif" 0 4 0 ; 11.00
+;f 114  0  0 1 "Steinway114.aif" 0 4 0 ; 11.50
+;f 115  0  0 1 "Steinway115.aif" 0 4 0 ; 12.00
+f    1  0 4096 10 1 ; Sine wave.
+f    2  0 4096 10 1 .2 .08 .07 ; Flute-like.
+f    3  0 4096 10 1 .4 .2 .1 .1 .05
+f    4  0 512 7 0 1 0 49 .2 90 .6 40 .99 25 .9 45 .5 50 .25 50 .12 50 .06 50 .02 62 0
+f    5  0 512 7 0 1 0 49 .2 100 .6 50 .99 150 .2 162 0
+f    6  0 512 7 0 1 0 49 .2 200 .5 100 .2 162 0
+f    7  0 512 7 0 1 0 79 .5 60 .5 20 .99 120 .4 140 .6 92 0
+f    8  0.0 513 5 .001 513 1 ; Eexponential rise
+f  12  0 512 9 1 .26 0
+f  13  0 512 9 1 .3 0
+f  23  0 512 9 1 1 0
+f  24  0 512 -7 3000 71 3000 168 2300 100 2100 71 2000 102 2000
+f  25  0 512 -7 .025 71 .02 102 .025 71 .05 268 .06
+f  26  0 512 -7 .25 71 .25 102 .08 .05 339 .05
+f  27  0 512 -7 5 71 2.3 102 1.5 237 2.5 102 2.3
+f  28  0 512 -7 5 512 6.5
+f  30  0 8192 10 1
+f  31  0 2048 19 .5 1 270 1
+f  32  0 512 -7 -1 150 .1 110 0 252 0
+f  33  0 1024 10 .3 0 0 0 .1 .1 .1 .1 .1 .1
+f  34  0  8192  9  1 1 90	; Cosine for Fitch instruments.
+f  41  0 8193 10 1  ; Sine wave.
+f  42  0 8193 11 1  ; Cosine wave.
+f  43  0 8192 -12 20.0  ; Unscaled ln(I(x)) from 0 to 20.0.
+f  44  0 4097 10 1 .25 .1 ; Kelley flute.
+f  45  0 2049 7 -1 1800 1 249 -1 ; Kelley string.
+f  46  0 2049 7 -1 1024 1 1024 -1 ; Kelley harpsichord.
+f  47  0 2049 10 1 0 1 0 1 ; Kelley oboe.
+f  48 0 513 10 3 1 0 .25 .3 .76 ; Nelson Chebyshev.
+f  49 0 513 13 1 1 .9 .8 .7 .6 .5 .4 .3 .2 .1 ; Nelson table lookup.
+f  50 0 8193 20 2 1 ; Hanning window.
+f  51 0 8193 -10  809 14581 2030 990 522 1545 2030 262 61 45 45 64 465  139 19 75 29 42 39 96 86 75 39 45 ; Horner Erhu
+f  52 0 8193 -10 1567 910 870 713 3119 595 151 45 113 111 123 31 41 127  148 196 124 142 49 22 22 59 74 37 ; Horner Erhu
+f  53 0 8193 -10 2411 1158 352 922 854 70 66 152 83 15 69 69 92 91 60 30  42 78 38 41 59 22 ; Horner Erhu
+f  54 0 8193 -10 18607 805 771 832 115 166 115 21 66 22 135 165 18 41 85  27 93 23 8 15 23 7 ; Horner Erhu
+f  55 0 8193 7  0 819 1.1 819 1.2 820 1.4 819 1.2 819 1.15 820 0 8200 0 ; Horner Erhu
+f  61 0 8193 -10  30 37 282 99 29 327 96 77 102 11 45 7 4 3 1 1; Horner Pipa
+f  62 0 8193 -10  324 300 144 160 383 847 1311 1121 885 586 125 174 269  100 428 190 563 294 178 236 169 173 75 57 52 57 131 43 134 77 54 51  60 107 51 274 54 30 23 66 20 12 ; Horner Pipa
+f  63 0 8193 -10  79 51 133 10 21 20 7 3 11 4 3 2 1 2 1 2 ; Horner Pipa
+f  64 0 8193 -10  475 207 545 323 104 1890 1304 1031 350 269 245 180  200 43 45 14 13 8 13 34 16 28 16 3 3 ; Horner Pipa
+f  65 0 8193 -10  8 24 10 14 35 30 19 31 16 16 11 6 2 7 8 9 13 11 3 2 3  1 4 2 2 2 1 2 2 1 3 3 1 4 2 3 1; Horner Pipa
+f  66 0 513 13 1 1 .9 .8 .7 .6 .5 .4 .3 .2 .1 ;gen 13 table lookup (was 31)
+f  67 0 513 13 1 1 .9 .8 .7 .6 .7 .8 .9 1 ;gen 13 table lookup (was 32)
+
+</CsFunctions>
+<CsInstruments>
+instr 1 ; Nelson Marimba
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+; Pitch.
+ifrequency = cpsoct(p4)
+; Envelope initialization.
+iattack = .02
+irelease = p3
+isustain = p3 - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain = 0
+p3 = iattack + isustain + irelease
+longenvelope:
+; Amplitude.
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 /  3185
+; Pan.
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+kformant1 = ifrequency / 2.1
+kformant2 = kformant1 * 2.1
+kformant3 = kformant2 * 2.1
+
+; KONTROL
+; Amplitude envelope
+k1  expseg  .000001, iattack, iamplitude , irelease, .000001  
+k25  linseg 1, iattack, 1, irelease,4
+k1 =  k25 * k1
+; Power to partials.
+k10 linseg  2.25, iattack, 3, irelease, 2 
+a1 gbuzz k1, ifrequency, k10, 0, 35, 42
+a2 reson a1, kformant1, kformant1 * .05, 1
+a3 reson a1, kformant2, kformant2 * .05, 1
+a4 reson a1, kformant2, kformant2 * .05, 1
+a8 balance a4, a1
+ga1 = a8 * ileftpan
+ga2 = a8 * irightpan
+outs  ga1, ga2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 2 ; Sampled string bass
+; INITIALIZATION
+iamplitude = ampdb(p5) * 15848.926 / 15848.926
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+ifrequency = cpsoct(p4)
+itablefrequency = cpsoct(7)
+itablenumber = 97
+if p3 > .06 then goto longenvelope
+p3 = .06
+longenvelope:
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; KONTROL
+kamplitude linen iamplitude, -1, p3, .02
+; AUDIO
+asignal loscil kamplitude, ifrequency, itablenumber, itablefrequency
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 3 ; Plucked String
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+iattack = .012
+irelease = .075
+isustain = p3 - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain = 0
+p3 = iattack + isustain + irelease
+longenvelope:
+ifrequency = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 5398.0
+ileftpan = 0.5 - p6 / 2
+irightpan = 0.5 + p6 / 2
+
+; KONTROL
+kenvelope expseg .00001, iattack, iamplitude, isustain, iamplitude, irelease, .00001
+
+; AUDIO
+asignal1 pluck 1, ifrequency, ifrequency * 1.002, 0, 1
+asignal2 pluck 1, ifrequency * 1.003, ifrequency, 0, 1
+apluckout = (asignal1 + asignal2) * kenvelope
+outs ileftpan * apluckout, irightpan * apluckout
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 4 ; Horner Pipa
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+; ip5 = Amplitude scaling factor.
+; Inital values of the original modelled tone:
+;                       p3      p4      p5
+;       pipa:      7.4     6.07    1
+;
+; Note: If you use the pipa above about middle C (higher than the  modelled range), then you'll want 
+; to bandlimit the wavetables so they stay below the Nyquist  frequency. Just delete the higher 
+; harmonics of the wavetables appropriately (especially wavetable  #12). 
+
+; INITIALIZATION
+giseed = .5
+ipch = p4
+iamplitude = ampdb(p5)
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+iampscale = 1
+ip5 = 1
+; frequency envelope
+ifreq = cpsoct(ipch)
+; 0.15% freq.  variation.
+kfreqr randi .0015*ifreq,10, giseed             
+giseed = frac(giseed*3.14159)
+kfreq = kfreqr + ifreq 
+
+;  allow wavetable synchronization to vary by +-10%
+i1 = giseed/5 + .9                                      
+giseed = frac(giseed*3.14159)   ; update random seed
+i2 = giseed/5 + .9
+giseed = frac(giseed*3.14159)
+i3 = giseed/5 + .9
+giseed = frac(giseed*3.14159)
+i4 = giseed/5 + .9
+giseed = frac(giseed*3.14159)
+i5 = giseed/5 + .9
+giseed = frac(giseed*3.14159)
+
+; KONTROL
+; Wavetable amplitude envelopes.
+kamp1 linseg 0, .01*i1, 11, .02*i1, 20, .03*i1, 18, .02*i1,  9, .04*i1, 14, .06*i1, 11, .62*i1, 7, .4*i1, 0, .7*i1, 4, 1.5*i1, .4,  1.0*i1, .7, 1.2*i1, -.1, 1.8*i1, 0, p3, 0
+; kamp2 linseg 0, .01*i2, 2, .02*i2, 2.5, .15*i2, 1.5, .15*i2,  .8, .17*i2, .5, .15*i2, 0, 6.75*i2, 0, p3, 0
+kamp2 linseg 0, .01*i2, 2, .02*i2, 2.5, .15*i2, 1.5, .15*i2,  .8, .17*i2, .5, .4*i2, -.7, .5*i2, .16, .4*i2, .02, .5*i2, .1, .6*i2,  -.03, .2*i2, 0, .5*i2, -.06, .6*i2, .05, 1.4*i2, -.02, 1.8*i2, 0, p3,  0
+kamp3 linseg 0, .01*i3, -17, .05*i3, 8, .12*i3, 1, .22*i3,  -2, .04*i3, -.5, .14*i3, .2, .32*i3, -6, .6*i3, 2, .5*i3, -.2, .4*i3,  2.5, .8*i3, .2, 1.4*i3, 1.6, .8*i3, .7, 2.0*i3, 0, p3, 0
+kamp4 linseg 0, .015*i4, 1.5, .035*i4, -1.2, .03*i4, .8, .14*i4, 1, .4*i4, .25, .48*i4, 1.3, .6*i4, -.1, 1.9*i4, .1, .6*i4,  -.1, 3.2*i4, 0, p3, 0
+kamp5 linseg 0, .01*i5, 10, .02*i5, -40, .11*i5, -10, .46*i5, -5, .3*i5, 12, .5*i5, -1.5, .4*i5, 2, .4*i5, -2.5, 1.4*i5, 1, .8*i5, -1.2, 1.2*i5, .2, 1.8*i5, 0, p3, 0
+
+; AUDIO
+; Wavetable  synthesis.
+awt1 oscili kamp1, kfreq, 61                    
+awt2 oscili kamp2, kfreq, 62
+awt3 oscili kamp3, kfreq, 63
+awt4 oscili kamp4, kfreq, 64
+awt5 oscili kamp5, kfreq, 65
+; Allow  wavetable overall amplitude to vary by +-25%.
+iamp1 = giseed/2 + .75                      
+giseed = frac(giseed*3.14159)
+iamp2 = giseed/2 + .75
+giseed = frac(giseed*3.14159)
+iamp3 = giseed/2 + .75
+giseed = frac(giseed*3.14159)
+iamp4 = giseed/2 + .75
+giseed = frac(giseed*3.14159)
+iamp5 = giseed/2 + .75
+giseed = frac(giseed*3.14159)
+aout = iamp1*awt1 + iamp2*awt2 + iamp3*awt3 + iamp4*awt4  +  iamp5*awt5
+; Ramp decay for shorter notes.
+kramp linseg 1, p3, 0
+aout = kramp*aout
+; Time-varying lowpass filter for spectral decay.
+filt:                                                                    
+kcutoff linseg sr/2, 7.4, ifreq, p3, ifreq
+afilt tone aout, kcutoff
+afilt balance afilt, aout
+aout2 = iampscale*afilt
+outs aout2 * ileftpan, aout2 * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 5 ; Plucked String Stretched Drum
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+iattack = .02
+irelease = .075
+isustain = p3 - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain = 0
+p3 = iattack + isustain + irelease
+longenvelope:
+ifrequency = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 12712.0
+ileftpan = 0.5 - p6 / 2
+irightpan = 0.5 + p6 / 2
+
+; KONTROL
+kenvelope expseg .00001, iattack, iamplitude, isustain, iamplitude, irelease, .00001
+
+; AUDIO
+asignal1 pluck 1, ifrequency, ifrequency * 1.002, 0, 4, .9, 1.6 
+asignal2 pluck 1, ifrequency * 1.003, ifrequency, 0, 4, .8, 1.5
+; Amplitude correction.
+apluckout = (asignal1 + asignal2) * kenvelope * 2.8824
+outs ileftpan * apluckout, irightpan * apluckout
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 6 ; Plucked String Filtered
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+iattack = .02
+irelease = .075
+isustain = p3  - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain = 0
+p3 = iattack + isustain + irelease
+longenvelope:
+ifrequency = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 24681.1
+ileftpan = 0.5 - p6 / 2
+irightpan = 0.5 + p6 / 2
+
+; KONTROL
+kenvelope expseg .00001, iattack, iamplitude, isustain, iamplitude, irelease, .00001
+
+; AUDIO
+asignal1 pluck 1, ifrequency, ifrequency * 1.002, 0, 6
+asignal2 pluck 1, ifrequency * 1.003, ifrequency, 0, 6
+apluckout = (asignal1 + asignal2) * kenvelope * 7.5257
+outs ileftpan * apluckout, irightpan * apluckout
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 7 ; Nelson Melody Instrument (Chebyshev / FM / Additive)
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+; Pitch.
+i1 = cpsoct(p4)
+; Amplitude.
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 /  15848.926 
+; Pan.
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+;ip6=cheby# 
+ip6 = 32
+;ip7=choice 
+ip7 =1
+iattack = .05
+irelease = .1
+isustain = p3 - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain = 0
+p3 = iattack + isustain + irelease
+longenvelope:
+
+; KONTROL                                          
+k100 randi   1,10
+k101 oscili  i1 / 65, 5 + k100, 1
+k102 linseg  0, .5, 1, p3 - .5, 1
+k100 =  i1 + (k101 * k102)
+; Envelope for driving oscillator.
+k1 linen .5, p3 * .4, p3 , p3 * .2
+k2 line 1, p3, .5
+k1 =  k2 * k1
+if ip7=2 goto cresc
+if ip7=3 goto dim
+if ip7=4 goto sfz
+if ip7=5 goto slow
+; Amplitude envelope.
+k10 expseg  .0001, iattack, iamplitude , isustain, iamplitude * .8, irelease, .0001
+; Power to partials.
+k20 linseg 1.485, iattack, 1.5, isustain + irelease, 1.485              
+goto next
+cresc:
+; Amplitude envelope.
+k8 expseg  .0001, iattack, p5 * .25, isustain, p5, irelease, .0001
+k9 linseg 1, p3 - .15, 1.5, .1, 0
+k10  = (k8 * k9) / 2
+; Power to partials.
+k20 line 1.475, p3, 1.5
+goto next
+dim:
+; Amplitude envelope.
+k10 linseg  0, .05, iamplitude, .05, iamplitude * .8, p3 * .33, p5 *.7, (p3 * .66) - .1, 0
+; Power to partials.
+k20 line 1.5, p3, 1.475
+goto next
+sfz:
+; Amplitude envelope.
+k10 linseg  0, .03, p5, .04, p5, .03, p5 * .3, p3 - .15, p5 * .3, .05, 0
+; Power to partials.
+k20 linseg  1.4, .03, 1.7, .04, 1.7, .03, 1.4, p3 - .1, 1.385
+goto next
+slow:
+; Amplitude envelope.
+k10 linseg  0,.06, p5 * .45, .04, p5 * .2, (p3 / 3) - .1, p5, p3 / 3, p5 * .9, p3 / 3, 0 
+; Power to partials.
+k20 linseg 1.475, p3 / 3, 1.5, p3 / 3, 1.4999, p3 / 3, 1.475
+next:      
+;a1-3 are for cheby with p6=1-4
+a1 oscili  k1, k100 - .025, 3
+; Tables a1 to fn13, others normalize,
+a2 tablei  a1, ip6, 1, .5
+a3 balance a2,a1
+; Try other waveforms as well.
+a4 foscil  1, k100 + .04, 1, 2.005, k20, 1
+a5 oscili  1, k100, 1
+a6  =  ((a3 * .1) + (a4 * .1) + (a5 * .8)) * k10
+a7 comb a6, .5, 1 / i1
+a6  = (a6 * .9) + (a7 * .1)
+outs a6 * ileftpan, a6 * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 8 ; Cook Voice Formant Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal voiceformant ifrequency, iamplitude, 0, 0, 0, 0
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 9 ; Kelley Harpsichord
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+; Envelope initialization.
+iduration = p3
+ifrequency = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 4739
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+
+; KONTROL
+kenvelope expon iamplitude, iduration, 1
+
+; AUDIO
+apluck pluck iamplitude, ifrequency, ifrequency, 0, 1
+aharp oscil kenvelope, ifrequency, 46
+aoutsignal = apluck + aharp
+outs aoutsignal * ileftpan, aoutsignal * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 10 ; Risset Pseudo-Flanger
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+iattack = .015
+idecay = .5
+ifrequency = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 42633.1
+ileftpan = 0.5 - p6 / 2
+irightpan = 0.5 + p6 / 2
+; Offsets for oscillators based on original p6.
+ioffset = 0.04
+i1 = ioffset
+i2 = 2 * ioffset
+i3 = 3 * ioffset 
+i4 = 4 * ioffset 
+
+; AUDIO
+; A simple envelope to prevent clicking.
+aenvelope linen iamplitude, iattack, p3, idecay
+; Nine oscillators with the same envelope
+; and waveform, but slightly different
+; frequencies to create the beating effect.
+a1 oscili aenvelope, ifrequency, 33
+a2 oscili aenvelope, ifrequency + i1, 33
+a3 oscili aenvelope, ifrequency + i2, 33
+a4 oscili aenvelope, ifrequency + i3, 33
+a5 oscili aenvelope, ifrequency + i4, 33
+a6 oscili aenvelope, ifrequency - i1, 33
+a7 oscili aenvelope, ifrequency - i2, 33
+a8 oscili aenvelope, ifrequency - i3, 33
+a9 oscili aenvelope, ifrequency - i4, 33
+asignal = a1 + a2 + a3 + a4 + a5 + a6 + a7 + a8 + a9
+outs asignal * ileftpan, asignal * irightpan 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 11 ; Horner Erhu
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+; ip6 = Amplitude scaling factor
+; ip7 = Tremolo rate in Hz
+; ip8 = Wavetable number to use with first pitch in tremolo
+; ip9 = Wavetable number to use with second pitch in tremolo
+; Inital values of modelled tones:
+;                       p3      p4      p5       p6     p7   p8       p9
+;       tone1:   3.3     7.11    8.03    1       5       51      52
+;       tone2:   3.9     8.06    8.10    1       5       53      54
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+iamplitude = ampdb(p5)
+ip6 = 1
+ip7 = 5
+ip8 = 51
+ip9 = 52
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+giseed = .5
+ipch1 = p4
+ipch2 = p4 + 1 + 3/12
+iampscale =1
+ivibrate = ip7
+iwt1 = ip8
+iwt2 = ip9
+
+; KONTROL
+; Frequency envelope
+ifreq1 = cpsoct(ipch1)
+ifreq2 = cpsoct(ipch2)
+kfreq = ifreq1
+;       kfreqr randi .0015*ifreq1,10, giseed            ; 0.15% freq.  variation
+;       giseed = frac(giseed*3.14159)
+;       kfreq = kfreq + kfreqr 
+ivibrate = ivibrate *(giseed/50 + .99)          ; +-1% vib  rate variation
+giseed = frac(giseed*3.14159)
+; print ivibrate
+
+; Start vibrato with a slow cycle.
+kvibrate linseg ivibrate/2, 1.0/(ivibrate), ivibrate/2, .01, ivibrate, p3, ivibrate
+; 1% t.v.  vib. rate variation.
+kvibr randi .01*ivibrate, ivibrate/2, giseed    
+giseed = frac(giseed*3.14159)
+kvibrate = kvibrate + kvibr 
+kvib oscili (ifreq2 - ifreq1), kvibrate, 55, .5
+kfreq = kfreq + kvib
+;display kvib, p3
+
+; Allow ampEnv brkpts to vary by +-10%.
+i1 = .15*(giseed/5 + .9)                                
+; Update random seed.
+giseed = frac(giseed*3.14159)   
+i2 = .6*(giseed/5 + .9)
+giseed = frac(giseed*3.14159)
+i3 = .35*(giseed/5 + .9)
+giseed = frac(giseed*3.14159)
+i4 = (giseed/5 + .9)
+giseed = frac(giseed*3.14159)
+i5 = (giseed/5 + .9)
+giseed = frac(giseed*3.14159)
+                                                                         
+; Wavetable amplitude envelopes.
+
+; Overall amplitude.
+
+isum = i1+i2+i3+i4+i5
+if p3-isum < .1 goto ae2
+ae1:    
+kamp linseg 0, i1, .8, i2, 1.7, i3, 1.3, p3-isum, .9, i4, .1,  i5, 0
+goto ae3
+ae2:    
+kamp linseg 0, i1, .8, i2, 1.7, i3, 1.3, .1, .9, i4, .1, i5,  0
+; Ramp decay  for shorter notes.
+kramp linseg 1, .8*p3, 1, .2*p3, 0              
+kamp = kamp*kramp
+ae3:    
+; 10% tremolo  amplitude variation.
+ktremr randi .05*kamp, ivibrate/2, giseed        
+giseed = frac(giseed*3.14159)
+kamp = kamp + ktremr
+atrem1 oscili kamp, kvibrate, 55, 0
+atrem2 oscili kamp, kvibrate, 55, .5
+
+; Wavetable  synthesis.
+awt1 oscili atrem1, kfreq, iwt1                 
+awt2 oscili atrem2, kfreq, iwt2
+
+; Allow  wavetable overall amplitude to vary by +-10%.
+iamp1 = giseed/5 + .9                           
+giseed = frac(giseed*3.14159)
+iamp2 = giseed/5 + .9
+giseed = frac(giseed*3.14159)
+;print iamp1
+;print iamp2
+
+; AUDIO
+
+asrc = iamp1*awt1 + iamp2*awt2
+
+; Time-varying lowpass filter for spectral decay.
+filt:                                                                    
+kcutoff linseg sr/2, .5*p3, sr/2, .5*p3, ifreq1
+afilt tone asrc, kcutoff
+afilt balance afilt, asrc
+
+asrc = iampscale*asrc
+outs asrc * ileftpan, asrc * irightpan
+                                                                         
+; Chorus.
+ig1 = 0.8
+ig2 = 0.7
+ig3 = 0.6
+ig4 = 0.5
+
+kdt linseg .005, p3, .028
+adump delayr .1
+ad1 deltapi kdt
+delayw asrc
+kdt linseg .009, p3/2, .023, p3/2, .017
+adump delayr .1
+ad2 deltapi kdt
+delayw asrc
+kdt linseg .021, p3, .007
+adump delayr .1
+ad3 deltapi kdt
+delayw asrc
+kdt linseg .012, p3, .019
+adump delayr .1
+ad4 deltapi kdt
+delayw asrc
+
+achorus = ig1*ad1 +  ig2*ad2 +  ig3*ad3 +  ig4*ad4 
+outs achorus * ileftpan, achorus * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 12 ; Cook Rhodes Electric Piano Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal rhodes ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 13 ; Kelley Violin
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+; p3 = duration
+; ip4 = slur information
+ip4 = 0
+icpsp   = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+ip6 = ampdb(p5) * 15848.926 /  2727.7
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+
+if (ip4 == int(p4/2) * 2) goto initslurs
+ihold
+
+initslurs:
+iatttm  = 0.075
+idectm  = 0.1
+isustm  = p3 - iatttm - idectm
+idec    = p6
+ireinit = -1
+
+if (ip4 > 1) goto checkafterslur
+ilast   = 0
+
+checkafterslur:
+if (ip4 == 1 || ip4 == 3) goto doneslurs
+idec = 0
+ireinit = 0
+
+doneslurs:
+if (isustm <= 0) goto simpleenv
+
+; KONTROL
+kamp linseg ilast, iatttm, ip6, isustm, ip6, idectm, idec, 0, idec
+goto doneenv
+
+simpleenv:
+kamp linseg ilast, p3 / 2, ip6, p3 / 2, idec, 0, idec
+
+doneenv:
+ilast = ip6
+
+; Some randomness for fun.
+krnd randi  .1, 10
+krnd = krnd + 1
+kamp = kamp * krnd
+
+; Some vibrato.
+kvrandamp rand .0125
+kvamp   = icpsp * (0.0125 + kvrandamp)
+kvrandfreq rand 1
+kvfreq  = 5 + kvrandfreq
+kvbra  oscil kvamp, kvfreq, 1, ireinit
+kfreq = icpsp + kvbra
+
+; AUDIO
+a1 oscili kamp, kfreq, 45, ireinit
+
+; Some resonance cavities.
+a2 tone a1, 3500, ireinit
+a3 comb a2, .15, .01, ireinit
+a4 comb a3, .15, .02, ireinit
+
+outs a1 * ileftpan, a1 * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 14 ; Schottstaedt FM String
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+irise = .2
+idecay = .2
+ivibdel = .4
+ivibwth = .01
+ivibrte = 5
+ifc = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 5000.0
+ileftpan = 0.5 - p6 / 2
+irightpan = 0.5 + p6 / 2
+ifm1 = ifc
+ifm2 = ifc * 3
+ifm3 = ifc * 4
+; Range from carrier 2 to 1.
+index1 = 7.5 / log(ifc)
+; Range from carrier 2.6 to .5.
+index2 = 15 / sqrt(ifc)
+; Range from carrier .2 to .083
+index3 = 1.25 / sqrt(ifc)
+
+; KONTROL
+kvibrato init 0
+; Delays vibrato for ivibdel seconds.
+timout 0, ivibdel, transient
+; Vibrato control envelope.
+kvbctl linen 1, .5, p3 - ivibdel, .1
+; Random deviation in vibrato width.
+krnd randi .005, 11
+; Vibrato generator.
+kvibrato oscili kvbctl * ivibwth + krnd, ivibrte * kvbctl, 1
+transient:
+; Execute for .2 seconds only.
+timout .2, p3, continue
+; Transient envelope.
+ktrans linseg 1, .2, 0, 1, 0
+
+; AUDIO
+; Noise...
+anoise randi ktrans, .4 * ifc
+; ...centered around 2 KHz.
+attack oscil anoise, 2000, 1
+continue:
+amod1 oscili ifm1 * (index1 + ktrans), ifm1, 1
+amod2 oscili ifm2 * (index2 + ktrans), ifm2, 1
+amod3 oscili ifm3 * (index3 + ktrans), ifm3, 1
+aenvelope linen iamplitude + attack, irise, p3, idecay
+asignal oscili aenvelope, (ifc + amod1 + amod2 + amod3) * (1 + kvibrato), 1
+outs asignal * ileftpan, asignal * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 15 ; FM Very High Ratio
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+iratio = 1.5
+ifmamplitude = 2
+index = 1.5
+iattack = .0125
+irelease = .125
+isustain = p3  - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain = 0
+p3 = iattack + isustain + irelease
+longenvelope:
+icarrier = cpsoct(p4)
+icarrierb = icarrier * 1.006
+imodulator = icarrier * iratio
+imodulatorb = imodulator * 1.003
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 12729.0
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+
+; KONTROL
+kindenv expseg .00001, iattack, 1, isustain, .1, irelease, .00001
+kindex = kindenv * index * ifmamplitude
+
+; AUDIO
+aouta foscili iamplitude, icarrier, imodulator, iratio, kindex, 1
+aoutb foscili iamplitude, icarrierb, imodulatorb, iratio, kindex, 1
+afmout = (aouta + aoutb) * kindenv * 2.556
+outs ileftpan * afmout, irightpan * afmout
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 16 ; FM Low Index
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+imodulator = 6.166667
+ifmamplitude = 3
+index = .05
+iattack = .015
+irelease = .125
+isustain = p3  - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain = 0.03
+p3 = iattack + isustain + irelease
+longenvelope:
+ifrequency = cpsoct(p4)
+icarrier =  .998
+icarrierb =  1.002
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 12729.0
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+
+; KONTROL
+kindenv expseg .00001, iattack, 1, isustain, .1, irelease, .00001
+kindex = kindenv * index * ifmamplitude
+
+; AUDIO	
+aouta foscili iamplitude, ifrequency, icarrier, imodulator, kindex, 1
+aoutb foscili iamplitude, ifrequency, icarrierb, imodulator, kindex, 1
+afmout = (aouta + aoutb) * kindenv * 2.556
+outs ileftpan * afmout, irightpan * afmout
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 17 ; Cook Percussive Flute Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal percussiveflute ifrequency, iamplitude, 20, 20, 45, 4
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 18 ; Cook Mandolin Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal mandolin ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 19 ; Cook Wurlitzer Electric Piano Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal wurlitzer ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 20 ; Cook Agogobell Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal agogobell ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 21 ; Cook Heavy Metal Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal heavymetal ifrequency, iamplitude, 100, 100, 10, 1
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 22 ; Guitar
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+iattack = .015
+irelease = .065
+isustain = p3 - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain = 0
+p3 = iattack + isustain + irelease
+longenvelope:
+ifrequency = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 1848
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+
+; KONTROL
+kamp	linseg	0.0, iattack, iamplitude, isustain, iamplitude, irelease, 0.0
+
+; AUDIO
+asig	pluck 	kamp, ifrequency, ifrequency, 0, 1
+af1	reson	asig, 110, 80
+af2	reson	asig, 220, 100
+af3	reson	asig, 440, 80
+aout	balance 0.6*af1+af2+0.6*af3+0.4*asig, asig
+outs 	aout * ileftpan, aout* irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 23 ; Pinkston Koto
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;         basic koto orchestra file                              ;
+;                                                                ;
+;         	p3 = duration        
+;	p4 = amplitude                    ;
+;         	p5 = pitch in pch    
+;	p6 = pitch bend in oct.decimal    ;
+;                                                                ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ip4 = ampdb(p5)
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+ip6 = 0
+ihz	=	cpsoct(p4)
+ihz2	=       ihz * 2.0006
+ihz3	=	ihz * 1.9999
+ihz4	=	ihz * 1.0005
+ihz5	=	ihz * .9998
+koct	init	octcps(ihz)
+koct2	init	octcps(ihz2)
+koct3	init	octcps(ihz3)
+koct4	init	octcps(ihz4)
+koct5	init	octcps(ihz5)
+kbend   oscil1i 0.15, ip6, p3,8;   /* p6 in oct.decimal */
+khz	=	cpsoct(koct+kbend)
+khz2	=	cpsoct(koct2+kbend)
+khz3	=	cpsoct(koct3+kbend)
+khz4	=	cpsoct(koct4+kbend)
+khz5	=	cpsoct(koct5+kbend)
+aplk1	pluck	(ip4*.42),khz,ihz,6,3,1
+timout	0.0,p3*.2,continue         ;.002 not p3;
+koto2:	aplk2	pluck	(ip4*.62),khz2,ihz2,6,3,1
+timout	0.0,p3*.4,continue        ; .oo4 not p3;
+koto3:	aplk3	pluck	(ip4*.62),khz3,ihz3,6,3,1
+timout	0.0,p3*.6,continue       ;  .005 not p3;
+koto4:	aplk4	pluck	(ip4*.62),khz4,ihz4,6,3,1
+timout	0.0,p3*.8,continue      ;.oo7 not  p3;
+koto5:	aplk5	pluck	(ip4*.62),khz5,ihz5,6,3,1
+continue:
+asignal	=	aplk1+aplk2+aplk3+aplk4+aplk5
+asig	envlpx	asignal,.001,p3,(p3*.001),8,1.02,.008
+;asig	envlpx	asignal,.06,p3,(p3*.1),8,1.02,.008 ;
+outs	asig * ileftpan, asig * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 24 ; Guitar Harmonics
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+iattack = .015
+irelease = .02
+isustain = p3 - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain = 0
+p3 = iattack + isustain + irelease
+longenvelope:
+ifrequency = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80)
+iamplitude = ampdb(p5) * 15848.926 / 1220
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+
+; KONTROL
+kamp	linseg 0.0, iattack, iamplitude, isustain, iamplitude,irelease, 0.0
+
+; AUDIO
+asig	pluck	kamp, ifrequency, ifrequency, 0, 6
+outs asig * ileftpan, asig * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 25 ; Sampled Steinway
+; INITIALIZATION
+iamplitude = ampdb(p5) * 15848.926 / 3978
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+ifrequency = cpsoct(p4)
+ioctave = int(p4 * 100)
+itablenumber table ioctave, 100
+itableoctave table ioctave, 101
+itablefrequency = cpsoct (itableoctave)
+if p3 > .20  then goto longenvelope
+p3 = .20
+longenvelope:
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+print itablenumber, itableoctave, itablefrequency
+; KONTROL
+kamplitude linen iamplitude, -1, p3, .012
+; AUDIO
+asignal loscil kamplitude, ifrequency, int(itablenumber), itablefrequency
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 26 ; Kelley Oboe
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+icpsp   = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+ip6 = ampdb(p5) * 15848.926 / 2500
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+ip4 = 0
+
+if (ip4 == int(ip4/2) * 2) goto initslurs
+ihold
+
+initslurs:
+iatttm  = 0.06
+idectm  = 0.05
+isustm  = p3 - iatttm - idectm
+idec    = p6
+ireinit = -1
+
+if (ip4 > 1) goto checkafterslur
+ilast   = 0
+
+checkafterslur:
+if (ip4 == 1 || ip4 == 3) goto doneslurs
+idec = 0
+ireinit = 0
+
+doneslurs:
+if (isustm <= 0) goto simpleenv
+
+; KONTROL
+kamp linseg ilast, iatttm, ip6, isustm, ip6, idectm, idec, 0, idec
+goto doneenv
+
+simpleenv:
+kamp linseg ilast, p3 / 2, ip6, p3 / 2, idec, 0, idec
+
+doneenv:
+ilast = ip6
+
+; Some vibrato.
+kvrandamp rand .003
+kvamp   = icpsp * (0.007 + kvrandamp)
+kvrandfreq rand 1
+kvfreq  = 5 + kvrandfreq
+kvbra  oscil kvamp, kvfreq, 1, ireinit
+kfreq = icpsp + kvbra
+
+; AUDIO
+a1 oscili kamp, kfreq, 47, ireinit
+outs a1 * ileftpan, a1 * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 27 ; Cook Plucked Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5)
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal plucked ifrequency, iamplitude, 0, 0, 0, 0
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 28 ; Risset Waveshaper
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITILIZATION
+iattack = 0.015
+irelease = 0.03
+isustain = p3 - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain = 0
+p3 = iattack + isustain + irelease
+longenvelope:
+ifrequency = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 12649.9
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+i1 = 1 / p3
+i2 = ifrequency
+
+; AUDIO
+; Scaling factor.
+a1 oscili iamplitude, i1, 2
+a2 oscili a1, i2, 1
+a3 linenr 1, iattack, irelease, .01
+a4 oscili a3, i2 * .7071, 1      
+; Transfer function:
+; f(x)=1+.841x-.707x**2-.595x**3+.5x**4+.42x**5-;.354x**6.279x**7+.25x**8+.21x**9
+a5 = a4 * a4
+a6 = a5 * a4
+a7 = a5 * a5
+a8 = a7 * a4
+a9 = a6 * a6
+a10 = a9 * a4
+a11 = a10 * a4
+a12 = a11 * a4
+a13 = 1 + .841 * a4 - .707 * a5 - .595 * a6 + .5 * a7 + .42 * a8 - .354 * a9 - .297 * a10 + .25 * a11 + .21 * a12
+; Amplitude correction.
+a14 = a13 * a2 * 5.06
+outs a14 * ileftpan, a14 * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 29 ; Cook Flute Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal flute ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 30 ; Cook FM Voices Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal fmvoices ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 31 ; Nelson Shimmer
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+iduration = p3
+ifrequency = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 2480.4
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+ipower = 3
+
+; KONTROL
+k1 linseg 0, iduration / 2, iamplitude, iduration / 2, 0
+k2 randi 2, 25
+k3 oscil .03, 4 + k2, 1
+
+; AUDIO
+a1 gbuzz .33 + k3, ifrequency, ipower, 1, 50, 4
+k4 randi 1.2, 15
+k5 oscil .03, 4 + k2, 1
+a2 gbuzz .33 + k5, ifrequency + (ifrequency *.02), ipower, 1, 50, 4
+k6 randi 1.5, 20
+k7 oscil .03, 4 + k2, 1
+a3 gbuzz .33 + k7, ifrequency - (ifrequency * .021), ipower, 1, 50, 4
+a4 = (a1 + a2 + a3) * k1
+outs a4 * ileftpan, a4 * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 32 ; Vercoe Plucked String FM Vox
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+itime = p2
+iduration = p3
+ifrequency = cpsoct(p4)
+iformant = cpsoct(p4 / 3)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 27453.5
+ileftpan = 0.5 - p6 / 2
+irightpan = 0.5 + p6 / 2
+ipluckamplitude = 1
+ipluckduration = .9 * p3
+ipluckoff = p3 - ipluckduration
+ifmamplitude = 1
+ifmattack = .2 * p3
+ifmdecay = .35
+ifmoff = p3 - (ifmattack + ifmdecay)
+index = 5
+ivibratodepth = 1
+ivibratorate = 5
+iformantamplitude = p4 / 3
+iformantattack = .6
+iformantdecay = p3 - iformantattack
+ioverlaps = 200
+
+; KONTROL
+kpluck linseg ipluckamplitude, ipluckduration, 0, ipluckoff, 0
+
+; AUDIO
+apluck1 pluck iamplitude, ifrequency, ifrequency, 0, 1
+apluck2 pluck iamplitude, ifrequency * 1.003, ifrequency * 1.003, 0, 1
+apluck = kpluck * (apluck1 + apluck2)
+kfm linseg 0, ifmattack, ifmamplitude, ifmdecay, 0, ifmoff, 0
+kindex = kfm * index
+afm1 foscili iamplitude, ifrequency, 1, 2, kindex, 30
+afm2 foscili iamplitude, ifrequency * 1.003, 1.003, 2.003, kindex, 30
+afm = kfm * (afm1 + afm2)
+kformant linseg 0, iformantattack, iformantamplitude, iformantdecay, 0
+kvibrato oscili ivibratodepth, ivibratorate, 30
+aformant1 fof iamplitude, ioverlaps + kvibrato, iformant, 0, 40, .003, .017, .007, 4, 30, 31, p3
+aformant2 fof iamplitude, (ioverlaps * 1.001) + kvibrato * .009, iformant, 0, 40, .003, .017, .007, 10, 30, 31, p3
+aformant = kformant * (aformant1 + aformant2)
+asignal = apluck + afm + aformant
+outs asignal * ileftpan, asignal * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 33 ; Chowning Soprano
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+iattack = .02
+irelease = .1
+isustain = p3 - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain = 0
+p3 = iattack + isustain + irelease
+longenvelope:
+ifrequency = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 19262.3
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+i7 = ifrequency
+i2 = i7 * 7 ; Old p6.
+i2 = (i2 / i7) + .5
+i2 = int(i2)
+i3 = .009 ; Old p7.
+i4 = p4 / 150 ; Old p8.
+i5 = p4 / 6 * .4 ; .09 = old p9.
+i6 = p4 / 5 + 1 ; Old p10.
+i8 = i5 / i4
+i9 = exp(1.5 * log(iamplitude / 32767))
+i10 = .00311 * log(ifrequency)
+i11 = sqrt(iamplitude / 32767)
+i12 = (1 - i3) * i11
+i13 = i4 * i7
+i14 = i9 * i3
+
+; AUDIO
+a1 linen i12, .1, p3, .08
+a2 oscil i13, i7, 3
+a8 = i7 + a2
+a4 linen i10, .6, p3, .1
+a4 oscil a4, i6, 3
+a5 randi i10, 15
+a6 linseg -.03, .07, .03, .03, 0, p3 - irelease, 0
+a6 = a4 + a5 + a6 + 1.
+a1 oscili a1, (a8 + a2) * a6, 3
+a7 = (a2 * i8) + i2
+a3 linseg 0, .07, .1, .03, 1., p3 - .18, 1, .02, .1, .06, 0
+a3 = a3 * (i9 * i3)
+a3 oscili a3, a7 * a6, 3
+asignal = (a1 + a3) * iamplitude * 14.0350
+outs asignal * ileftpan, asignal * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 34 ; Kung FM Modulated Left and Right Detuned Chorusing
+; INITIALIZATION
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 4901
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+iattack = .05
+irelease= .1
+if p3 > .15 then goto longenvelope
+p3 = .15
+longenvelope:
+iattack = p3/3
+isustain = p3/3
+irelease = p3 - (iattack + isustain)
+ip6 = .3
+ip7 = 2.2
+ishift	=	8.0 / 1200.0
+ipch	=	cpsoct(p4)
+ioct	=	p4
+
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; KONTROL
+kadsr	linseg	0,iattack,1,isustain,1,irelease,0
+kmodi	linseg	0,iattack,5,isustain,3,irelease,0
+kmodr	linseg	ip6,p3,ip7	;r moves from ip6 to ip7 in p3 secs.
+
+; AUDIO
+a1	=	kmodi*(kmodr - 1/kmodr)/2
+a1ndx	=	abs(a1*2/20)	;a1*2 is argument normalized from 0-1.
+a2	=	kmodi*(kmodr + 1/kmodr)/2	
+a3	tablei	a1ndx,43,1	;look up table is in f43, normalized index.
+ao1	oscil	a1,ipch,42		;cosine
+a4	=	exp(-0.5*a3+ao1)
+ao2	oscil	a2*ipch,ipch,42		;cosine
+aoutl	oscil	iamplitude*kadsr*a4,ao2+cpsoct(ioct+ishift),1	;final output left
+aoutr	oscil	iamplitude*kadsr*a4,ao2+cpsoct(ioct-ishift),1	;final output right
+outs	ileftpan * aoutl, irightpan * aoutr
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 35 ; Morrill FM Trumpet
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+iduration = p3
+icarrier1 = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 2998.7
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+icarrier2 = 1500
+index1 = 2.66
+index2 = 1.8
+imodulator = icarrier1 
+iratio = index2 / index1
+ivibratowidth = .007
+irandev = .007
+ifqr = 125
+ivibratorate = 7
+iportamentodeviation = .03
+
+; KONTROL
+; Vibrato signal.
+kwidth linseg 0, .6, ivibratowidth, iduration - .6 - .2, ivibratowidth, .2, 0
+kv1 randi irandev, ifqr
+kv2 oscili kwidth, ivibratorate, 1
+kv3 oscili iportamentodeviation, 1 / iduration, 32
+kvibrato = (1 + kv1) * (1 + kv2) * (1 + kv3)
+; Double carrier, single modulator frequency modulation signal.
+kdynamic linseg 0, .03, 1, iduration - .03 - .01, .9, .01, 0
+
+; AUDIO
+amodulator oscili kdynamic * imodulator * index1, imodulator * kvibrato, 1
+kamplitude1 linseg 0, .03, 1, iduration - .03 - .15, .9, .15, 0
+a1 oscili kamplitude1 * iamplitude, amodulator + (icarrier1 * kvibrato), 1
+kamplitude2 linseg 0, .03, 1, iduration - .03 - .3, .9, .3, 0
+a2 oscili kamplitude2 * iamplitude * .2, ((amodulator * iratio) + (icarrier2 * kvibrato)), 1
+asignal = a1 + a2
+outs asignal * ileftpan, asignal * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 36 ; Cook Mini-Moog Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal minimoog ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 37 ; Cook Hammond Organ Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal hammond ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 38 ; Kung Plucked String Chorused Pitch-Shifted Delayed
+; INITIALIZATION
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 4200
+iattack = .015
+irelease = .03
+isustain = p3 - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain = 0
+longenvelope:
+p3 = iattack + isustain + irelease
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+ishift = 8.0 / 1200.0
+ipch = cpsoct(p4)
+ioct = p4
+
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; KONTROL
+kvib oscil 1.0 / 120.0, ipch / 50.0, 41
+
+; AUDIO
+aenv expseg 1.0 / 10000.0, iattack, 1.0, isustain, 1.0, irelease, 1.0 / 10000.0
+ag pluck iamplitude,cpsoct(ioct+kvib),iamplitude/2,1,1
+agleft pluck iamplitude,cpsoct(ioct+ishift),iamplitude/2,1,1
+agright pluck iamplitude,cpsoct(ioct-ishift),iamplitude/2,1,1
+adump delayr 0.3
+delayw ag * aenv ;put ag signal into delay line.
+ad1 deltap 0.1
+ad2 deltap 0.21
+outs ileftpan * aenv * (agleft + ad1), irightpan * aenv * (agright + ad2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 39 ; Cook Brass Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5)
+ileftpan = (0.5 - p6) / 2.0 * iamplitude
+irightpan = (0.5 + p6) / 2.0 *iamplitude
+; AUDIO
+asignal brass ifrequency, 1, 10, 10, 10, 10
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 40 ; Cook Bowed String Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5)
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal bowed ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 41 ; Cook Vibraphone Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5)
+ileftpan = (0.5 - p6) / 2.0 * 1000
+irightpan = (0.5 + p6) / 2.0 * 1000
+; AUDIO
+asignal vibraphone ifrequency, iamplitude, 20, 20, 5, 5
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 42 ; Bergeman 1
+; INITIALIZATION
+; Original pfields
+; p1  p2 p3   p4 p5      p6 p7    p8       p9
+; ins  st  dur  db func   at  dec freq1  freq2
+ip3 = p3
+ip4 = p5
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+ip5 = 77
+ip6 = ip3 * .25
+ip7 = ip3 * .75
+ip8 = cpsoct(p4 - .01)
+ip9 = cpsoct(p4 + .01)
+idb=ampdb(ip4) * 100
+isc=idb * .333
+; KONTROL
+k1 line 40, ip3, 800
+k2 line 440, ip3, 220
+k3 linen isc, ip6, p3, ip7
+k4 line 800, ip3,40
+k5 line 220,ip3,440
+k6 linen isc, ip6, ip3, ip7
+; AUDIO
+a5 oscili k3, ip8, ip5
+a6 oscili k3, ip8 * .999, ip5
+a7 oscili k3, ip8 * 1.001, ip5
+a1=a5 + a6 + a7
+a8 oscili k6, ip9, ip5
+a9 oscili k6, ip9 * .999, ip5
+a10 oscili k6, ip9 * 1.001, ip5
+a11=a8 + a9 + a10
+a2 butterbp a1, k1, 40
+a3 butterbp a2, k5, k2 * .8
+a4 balance a3, a1
+a12 butterbp a11, k4, 40
+ butterbp a12, k2, k5 * .8
+a14 balance , a11
+outs ileftpan * a4, irightpan * a14
+
+
+endin
+
+instr 43 ; FM Moderate Index
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+icarrier = 1
+iratio = 1.66667
+ifmamplitude = 8
+index = 6
+iattack = .02
+irelease = .05
+isustain = p3  - (iattack + irelease)
+if isustain > 0 goto longenvelope
+isustain = 0
+p3 = iattack + isustain + irelease
+longenvelope:
+ifrequency = cpsoct(p4)
+ifrequencyb = ifrequency * 1.003
+icarrierb = icarrier * 1.004
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 12748.1
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+
+; KONTROL
+kindenv expseg .000001, iattack, 1, isustain, .125, irelease, .000001
+kindex = kindenv * index * ifmamplitude
+
+; AUDIO
+aouta foscili iamplitude, ifrequency, icarrier, iratio, index, 1
+aoutb foscili iamplitude, ifrequencyb, icarrierb, iratio, index, 1
+; Plus amplitude correction.
+afmout = (aouta + aoutb) * kindenv * 2.565
+outs ileftpan * afmout, irightpan * afmout
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 44 ; Gogins Elementary Signal (Cosine FM Grain with Hanning Envelope)
+; LOGGING
+; Elementary Signal Instrument (Cosine FM grain with Hanning envelope)
+; p1 = Instrument
+; p2 = Start
+; p3 = Length (time/frequency aspect ratio)
+; p4 = Octave of carrier
+; p5 = Decibels at peak
+; p6 = Pan
+; p7 = Ratio (modulator Hz = Carrier Hz * Ratio)
+; p8 = iNdex of modulation
+print p2, p3, p4, p5, p6, p6
+
+; INITIALIZATION
+ienvelopehz = 1.0 / p3
+icarrierhz = cpsoct(p4)
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 /  1405.0
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+icarrierratio = 1.0
+imodulationratio = 1.0
+imodulationindex =1.0
+
+; KONTROL
+ihanningwindow = 50
+kenvelope oscili iamplitude, ienvelopehz, ihanningwindow
+
+; AUDIO
+icosinewave = 42
+asignal foscili kenvelope, icarrierhz, icarrierratio, imodulationratio, imodulationindex, icosinewave
+outs asignal * ileftpan, asignal * irightpan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 45 ; Fitch Marimba
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+iamplitude = ampdb(p5) * 15848.926 / 330
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+i1 = cpsoct(p4)
+ip6 = .15
+i2 = log(i1)/10.0 - ip6
+icosinetable = 34
+iattack = .03
+irelease = .03
+isustain = p3
+p3 = iattack + isustain
+if p3 > .06 then goto longenvelope
+p3 = .06
+longenvelope:
+
+; KONTROL
+; Envelope.
+k1 expseg  1.0 / 100000.0, iattack, iamplitude, isustain, 1.0 / 100000.0
+k25 linseg  1, iattack, 1, isustain, 3
+k1= k25 * k1
+; Power to partials.
+k10 linseg 2.25, .03, 3, p3 - .03, 2
+
+; AUDIO
+a1 gbuzz k1, i1, k10, 0, 35, icosinetable 
+a2 reson a1, 500, 50, 1
+a3 reson a2, 1500, 100, 1
+a4 reson a3, 2500, 150, 1
+a5 reson a4, 3500, 150, 1
+a6 balance a5, a1
+i6 = ip6
+a7 = a6 * ileftpan
+a8 = a6 * irightpan
+outs a7, a8
+
+
+
+
+
+endin
+
+instr 46 ; Cook Clarinet Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal clarinet ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+instr 47 ; Nelson Finger Cymbals
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; INITIALIZATION
+; Pitch.
+ifrequency = cpsoct(p4)
+; Amplitude.
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 /  2491
+; Pan.
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+
+; KONTROL                                          
+; Amplitude envelope.
+k1 expseg  .0001, .05, iamplitude, p3 - .05, .0001
+; Power to partials.
+k2 linseg 1.69, .1, 1.75, p3 -.1, 1.69
+
+; AUDIO
+a1 foscil  k1, ifrequency, 1, 2.01, k2, 1
+gleftsignal = a1* ileftpan
+grightsignal = a1* irightpan
+outs grightsignal, gleftsignal
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 48 ; Kung Plucked Strings Chorused Pitch-Shifted Delayed Exponentially
+; INITIALIZATION
+if p3 > .015  then goto longenvelope
+p3 = .015
+longenvelope:
+; Normalize to 80 dB = ampdb(80).
+iamplitude = ampdb(p5) * 15848.926 / 6375
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+ishift	=	8.0 / 1200.0
+ipch	=	cpsoct(p4)
+ioct	=	p4	          
+
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+
+; KONTROL
+kvib	oscil	1.0 / 120.0, ipch / 50.0, 41	;vibrato
+
+; AUDIO
+ag	pluck	iamplitude, cpsoct(ioct + kvib), iamplitude / 2, 1, 1
+agleft	pluck	iamplitude, cpsoct(ioct + ishift), iamplitude / 2, 1, 1
+agright	pluck	iamplitude, cpsoct(ioct - ishift), iamplitude / 2, 1, 1
+kf1	expon 	.1, p3, 1.0	;exponential from 0.1 to 1.0
+kf2	expon	1.0, p3, .1	;exponential from 1.0 to 0.1
+adump	delayr	2.0		;set delay line of 2.0 sec
+	delayw	ag		;put ag signal into delay line.
+atap1	deltapi	kf1		;tap delay line with kf1 function.
+atap2	deltapi      kf2		;tap delay line with kf2 function.
+ad1	deltap	2.0		;delay 2 sec.
+ad2	deltap	1.1		;delay 1.1 sec.
+outs	ileftpan * (agleft+atap1+ad1), irightpan * (agright+atap2+ad2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+endin
+
+instr 49 ; Cook Tubular Bell Model
+; Csound plugin implementation by Michael Gogins
+; LOGGING
+; p1 = Instrument
+; p2 = Start
+; p3 = Length
+; p4 = Octave
+; p5 = Decibels
+; p6 = Pan
+print p2, p3, p4, p5, p6
+; INITIALIZATION
+ifrequency = cpsoct(p4)
+iamplitude = ampdb(p5) * 10
+ileftpan = (0.5 - p6) / 2.0
+irightpan = (0.5 + p6) / 2.0
+; AUDIO
+asignal tubularbell ifrequency, iamplitude, 20, 20, 3, 6
+outs ileftpan * asignal, irightpan * asignal
+
+
+endin
+
+</CsInstruments>
+<CsArrangement>
+Guitar
+Nelson Melody Instrument (Chebyshev / FM / Additive)
+Guitar
+Fitch Marimba
+</CsArrangement>
+<CsNotes>
+</CsNotes>
+<CsScaleTargetMinima>
+i 1.0 0.0 4.0 6.58333 40.0 -0.5
+</CsScaleTargetMinima>
+<CsScaleTargetRanges>
+i 2.0 250.0 4.0 3.58333 20.0 1.0
+</CsScaleTargetRanges>
+<CsScaleActualMinima>
+i 1.0 0.0 4.0 6.58333 40.0 -0.5
+</CsScaleActualMinima>
+<CsScaleActualRanges>
+i 2.0 250.0 4.0 3.58333 20.0 1.0
+</CsScaleActualRanges>
+<CsSoundfileOptions>
+Format = W
+kr=441
+g = g
+R=R
+V = 
+ksmps=1
+sr = 44100
+R = R
+OtherOptions = -z
+sr=44100
+H = H
+nchnls=2
+Sample = s
+N = N
+nchnls = 2
+SoundPlayer=MPLAYER
+Sample=s
+Other=
+Format=W
+ksmps = 1
+g=g
+</CsSoundfileOptions>
+<CsScoreOptions>
+UseEqualTemperament=True
+UseEqualTemperament = true
+DivisionsPerOctave = 12
+DivisionsPerOctave=12
+</CsScoreOptions>
+<CsTestScore>
+i  1 0 2 8 60 0
+i  1 2 0.999999998 5 60 0
+i  1 3 0.999999998 6 60 0
+i  1 4 0.999999998 7 60 0
+i  1 5 0.999999998 8 60 0
+i  1 6 0.999999998 9 60 0
+i  1 7 0.999999998 10 60 0
+i  1 8 0.999999998 11 60 0
+i  1 9 0.999999998 12 60 0
+i  1 10 0.499999999 7 69.7 0
+i  1 10.25 0.499999999 7.25 76.4383562 0
+i  1 10.75 0.499999999 7 73.8082192 0
+i  1 11 0.499999999 7.5 82.3561644 0
+i  1 11.5 0.499999999 7 65.9178082 0
+i  1 11.75 0.499999999 8.75 70.1917808 0
+i  1 11.75 0.499999999 7.91666667 63.9452055 0
+i  1 12 0.499999999 9.16666667 66.5753425 0
+i  1 12.25 0.499999999 7 66.5753425 0
+i  1 12.5 0.499999999 8.75 72.4931507 0
+i  1 12.5 0.499999999 8.16666667 71.8356164 0
+i  1 12.75 0.499999999 9.25 81.369863 0
+i  1 13 0.499999999 7 68.8767123 0
+i  1 13.25 0.499999999 8.75 72.1643836 0
+i  1 13.25 0.499999999 8.41666667 80.3835616 0
+i  1 13.5 0.499999999 9.75 73.479452 0
+i  1 13.5 0.499999999 6.75 64.6027397 0
+i  1 13.75 0.499999999 7.16666667 67.5616438 0
+i  1 14 0.499999999 8.75 76.7671233 0
+i  1 14.25 0.499999999 9.91666667 75.4520548 0
+i  1 14.25 0.499999999 6.75 69.7 0
+i  1 14.5 0.499999999 7.41666667 72.4931507 0
+i  1 14.75 0.499999999 8.75 82.6849315 0
+i  1 15 0.499999999 10.1666667 72.8219178 0
+i  1 15 0.499999999 6.75 81.6986302 0
+i  1 15.25 0.499999999 7.75 78.0821918 0
+i  1 15.75 0.499999999 6.75 68.8767123 0
+i  1 16 0.499999999 8 80.0547945 0
+i  1 16.5 0.499999999 6.75 69.2054794 0
+i  1 16.75 0.499999999 8.25 75.1232877 0
+i  1 17.25 0.499999999 7.25 70.520548 0
+i  1 17.375 0.499999999 7.5 84 0
+i  1 17.625 0.499999999 7.25 82.6849315 0
+i  1 17.75 0.499999999 7.75 65.260274 0
+i  1 18 0.499999999 7.25 68.8767123 0
+i  1 18.125 0.499999999 9 66.5753425 0
+i  1 18.125 0.499999999 8.16666667 75.7808219 0
+i  1 18.25 0.499999999 9.41666667 83.6986 0
+i  1 18.375 0.499999999 7.25 76.109589 0
+i  1 18.5 0.499999999 9 75.1232877 0
+i  1 18.5 0.499999999 8.41666667 71.8356164 0
+i  1 18.625 0.499999999 9.5 65.9178082 0
+i  1 18.75 0.499999999 7.25 74.7945206 0
+i  1 18.875 0.499999999 9 68.2191781 0
+i  1 18.875 0.499999999 8.75 77.7534246 0
+i  1 19 0.499999999 10 71.1780822 0
+i  1 19 0.499999999 7 71.1780822 0
+i  1 19.125 0.499999999 7.41666667 65.260274 0
+i  1 19.25 0.499999999 9 72.1643836 0
+i  1 19.375 0.499999999 10.1666667 71.5068493 0
+i  1 19.375 0.499999999 7 69.7 0
+i  1 19.5 0.499999999 7.75 79.3972603 0
+i  1 19.625 0.499999999 9 65.260274 0
+i  1 19.75 0.499999999 10.4166667 76.4383562 0
+i  1 19.75 0.499999999 7 73.479452 0
+i  1 19.875 0.499999999 8 72.4931507 0
+i  1 20.125 0.499999999 7 78.739726 0
+i  1 20.25 0.499999999 8.25 67.2328767 0
+i  1 20.5 0.499999999 7 82.0273972 0
+i  1 20.625 0.499999999 8.5 70.8493151 0
+i  1 21 0.499999999 9.16666667 75.4520548 0
+i  1 21 0.499999999 8.75 68.5479452 0
+i  1 21.25 0.499999999 10.1666667 75.4520548 0
+i  1 21.75 0.499999999 9.16666667 79.0684932 0
+i  1 22 0.499999999 10.25 64.6027397 0
+i  1 22.25 0.499999999 7.75 74.1369863 0
+i  1 22.5 0.499999999 9.16666667 65.260274 0
+i  1 22.75 0.499999999 10.5 82.3561644 0
+i  1 23 0.749999999 8.16666667 69.5342466 0
+i  1 23.75 0.749999999 8.41666667 71.5068493 0
+i  1 24.5 0.749999999 8.75 69.7 0
+i  1 25.125 0.499999999 8 67.2328767 0
+i  1 25.875 0.0104166667 9.5 66.2465754 0
+i  1 25.5 0.499999999 8.16666667 69.2054794 0
+i  1 26 0.0104166667 10 67.5616438 0
+i  1 26.125 0.0104166667 9.75 66.2465754 0
+i  1 26.1875 0.0104166667 10.1666667 66.2465754 0
+i  1 26.25 0.0104166667 10.1666667 67.5616438 0
+i  1 26.25 0.0104166667 9.5 65.9178082 0
+i  1 26.3125 0.0104166667 10.5 67.5616438 0
+i  1 25.875 0.499999999 8.5 67.5616438 0
+i  1 26.375 0.0104166667 10.1666667 74.1369863 0
+i  1 26.4375 0.0104166667 10.4166667 66.2465754 0
+i  1 26.5 0.0104166667 9.75 65.9178082 0
+i  1 26.5625 0.0104166667 10.75 67.5616438 0
+i  1 26.5625 0.0104166667 10.1666667 65.9178082 0
+i  1 26.625 0.0104166667 10.4166667 74.1369863 0
+i  1 26.625 0.0104166667 9.5 69.2054794 0
+i  1 26.6875 0.0104166667 10.75 74.1369863 0
+i  1 26.25 0.499999999 8.75 74.7945206 0
+i  1 26.75 0.0104166667 10.5 80.7123288 0
+i  1 26.8125 0.0104166667 10.4166667 65.9178082 0
+i  1 26.875 0.0104166667 9.75 69.2054794 0
+i  1 26.9375 0.0104166667 11 74.1369863 0
+i  1 26.9375 0.0104166667 10.1666667 69.2054794 0
+i  1 27 0.0104166667 10.75 80.7123288 0
+i  1 27 0.0104166667 9.5 75.7808219 0
+i  1 27.0625 0.0104166667 11.1666667 80.7123288 0
+i  1 26.625 0.499999999 9.16666667 66.2465754 0
+i  1 27.125 0.0104166667 10.75 65.9178082 0
+i  1 27.1875 0.0104166667 10.4166667 69.2054794 0
+i  1 27.234375 0.0104166667 6.5 66.2465754 0
+i  1 27.25 0.0104166667 9.75 75.7808219 0
+i  1 27.3125 0.0104166667 11.4166667 80.7123288 0
+i  1 27.3125 0.0104166667 10.1666667 75.7808219 0
+i  1 27.359375 0.0104166667 7 67.5616438 0
+i  1 26.875 0.499999999 7.75 68.2191781 0
+i  1 27.375 0.0104166667 11 65.9178082 0
+i  1 27.375 0.0104166667 9.5 77.7534246 0
+i  1 27.4375 0.0104166667 11.4166667 65.9178082 0
+i  1 27.484375 0.0104166667 6.75 66.2465754 0
+i  1 27.5 0.0104166667 11 67.2328767 0
+i  1 27.546875 0.0104166667 7.16666667 66.2465754 0
+i  1 27.5625 0.0104166667 10.4166667 75.7808219 0
+i  1 27.609375 0.0104166667 6.5 65.9178082 0
+i  1 27.609375 0.0104166667 7.16666667 67.5616438 0
+i  1 27.625 0.0104166667 9.75 77.7534246 0
+i  1 27.671875 0.0104166667 7.5 67.5616438 0
+i  1 27.6875 0.0104166667 11.5 65.9178082 0
+i  1 27.6875 0.0104166667 10.1666667 77.7534246 0
+i  1 27.734375 0.0104166667 7.16666667 74.1369863 0
+i  1 27.25 0.499999999 8.16666667 73.1506849 0
+i  1 27.75 0.0104166667 11.1666667 67.2328767 0
+i  1 27.796875 0.0104166667 7.41666667 66.2465754 0
+i  1 27.8125 0.0104166667 11.5 67.2328767 0
+i  1 27.859375 0.0104166667 6.75 65.9178082 0
+i  1 27.921875 0.0104166667 7.16666667 65.9178082 0
+i  1 27.921875 0.0104166667 7.75 67.5616438 0
+i  1 27.9375 0.0104166667 10.4166667 77.7534246 0
+i  1 27.984375 0.0104166667 6.5 69.2054794 0
+i  1 27.984375 0.0104166667 7.41666667 74.1369863 0
+i  1 27.5 0.499999999 7 69.7 0
+i  1 28.046875 0.0104166667 7.75 74.1369863 0
+i  1 28.0625 0.0104166667 11.75 67.2328767 0
+i  1 28.109375 0.0104166667 7.5 80.7123288 0
+i  1 27.625 0.499999999 8.41666667 74.4657534 0
+i  1 28.171875 0.0104166667 7.41666667 65.9178082 0
+i  1 28.234375 0.0104166667 6.75 69.2054794 0
+i  1 27.75 0.499999999 7.25 76.4383562 0
+i  1 28.296875 0.0104166667 7.16666667 69.2054794 0
+i  1 28.296875 0.0104166667 8 74.1369863 0
+i  1 28.359375 0.0104166667 6.5 75.7808219 0
+i  1 28.359375 0.0104166667 7.75 80.7123288 0
+i  1 28.421875 0.0104166667 8.16666667 80.7123288 0
+i  1 28.484375 0.0104166667 7.75 65.9178082 0
+i  1 28 0.499999999 8.75 65.260274 0
+i  1 28.546875 0.0104166667 7.41666667 69.2054794 0
+i  1 28.609375 0.0104166667 6.75 75.7808219 0
+i  1 28.671875 0.0104166667 7.16666667 75.7808219 0
+i  1 28.671875 0.0104166667 8.41666667 80.7123288 0
+i  1 28.734375 0.0104166667 6.5 77.7534246 0
+i  1 28.734375 0.0104166667 8 65.9178082 0
+i  1 28.25 0.499999999 7 73.8082192 0
+i  1 28.796875 0.0104166667 8.41666667 65.9178082 0
+i  1 28.859375 0.0104166667 8 67.2328767 0
+i  1 28.921875 0.0104166667 7.41666667 75.7808219 0
+i  1 28.984375 0.0104166667 6.75 77.7534246 0
+i  1 28.5 0.499999999 7.5 82.3561644 0
+i  1 29.046875 0.0104166667 7.16666667 77.7534246 0
+i  1 29.046875 0.0104166667 8.5 65.9178082 0
+i  1 29.109375 0.0104166667 8.16666667 67.2328767 0
+i  1 29.171875 0.0104166667 8.5 67.2328767 0
+i  1 29.296875 0.0104166667 7.41666667 77.7534246 0
+i  1 29.421875 0.0104166667 8.75 67.2328767 0
+i  1 29 0.499999999 7 65.9178082 0
+i  1 29.25 0.499999999 8.91666667 70.1917808 0
+i  1 29.25 0.499999999 7.91666667 63.9452055 0
+i  1 29.5 0.499999999 9.25 66.5753425 0
+i  1 29.75 0.499999999 7 66.5753425 0
+i  1 30 0.499999999 8.91666667 72.4931507 0
+i  1 30 0.499999999 8.16666667 71.8356164 0
+i  1 30.25 0.499999999 9.5 81.369863 0
+i  1 30.5 0.499999999 7 68.8767123 0
+i  1 30.75 0.499999999 8.91666667 72.1643836 0
+i  1 30.75 0.499999999 8.41666667 80.3835616 0
+i  1 31 0.499999999 9.91666667 73.479452 0
+i  1 31 0.499999999 6.75 64.6027397 0
+i  1 31.25 0.499999999 7.16666667 67.5616438 0
+i  1 31.5 0.499999999 8.91666667 76.7671233 0
+i  1 31.75 0.499999999 10.1666667 75.4520548 0
+i  1 31.75 0.499999999 6.75 69.7 0
+i  1 32 0.499999999 7.41666667 72.4931507 0
+i  1 32.25 0.499999999 8.91666667 82.6849315 0
+i  1 32.5 0.499999999 10.25 72.8219178 0
+i  1 32.5 0.499999999 6.75 81.6986302 0
+i  1 32.75 0.499999999 7.75 78.0821918 0
+i  1 33.25 0.499999999 6.75 68.8767123 0
+i  1 33.5 0.499999999 8 80.0547945 0
+i  1 34 0.499999999 6.75 69.2054794 0
+i  1 34.25 0.499999999 8.25 75.1232877 0
+i  1 0 2 8 80 0
+i  1 2 1 5 80 0
+i  1 3 1 6 80 0
+i  1 4 1 7 80 0
+i  1 5 1 8 80 0
+i  1 6 1 9 80 0
+i  1 7 1 10 80 0
+i  1 8 1 11 80 0
+i  1 9 1 12 80 0
+i  1 10 0.5 7 63.8630137 0
+i  1 10.25 0.5 7.25 70.4383562 0
+i  1 10.75 0.5 7 67.8082192 0
+i  1 11 0.5 7.58333333 76.3561644 0
+i  1 11.5 0.5 7 59.9178082 0
+i  1 11.75 0.5 8.75 64.1917808 0
+i  1 11.75 0.5 7.91666667 57.9452055 0
+i  1 12 0.5 9.16666667 60.5753425 0
+i  1 12.25 0.5 7 60.5753425 0
+i  1 12.5 0.5 8.75 66.4931507 0
+i  1 12.5 0.5 8.16666667 65.8356164 0
+i  1 12.75 0.5 9.25 75.369863 0
+i  1 13 0.5 7 62.8767123 0
+i  1 13.25 0.5 8.75 66.1643836 0
+i  1 13.25 0.5 8.41666667 74.3835616 0
+i  1 13.5 0.5 9.75 67.4794521 0
+i  1 13.5 0.5 6.75 58.6027397 0
+i  1 13.75 0.5 7.16666667 61.5616438 0
+i  1 14 0.5 8.75 70.7671233 0
+i  1 14.25 0.5 9.91666667 69.4520548 0
+i  1 14.25 0.5 6.75 63.8630137 0
+i  1 14.5 0.5 7.41666667 66.4931507 0
+i  1 14.75 0.5 8.75 76.6849315 0
+i  1 15 0.5 10.1666667 66.8219178 0
+i  1 15 0.5 6.75 75.6986301 0
+i  1 15.25 0.5 7.75 72.0821918 0
+i  1 15.75 0.5 6.75 62.8767123 0
+i  1 16 0.5 8 74.0547945 0
+i  1 16.5 0.5 6.75 63.2054795 0
+i  1 16.75 0.5 8.25 69.1232877 0
+i  1 17.25 0.5 7.33333333 64.5205479 0
+i  1 17.375 0.5 7.58333333 78 0
+i  1 17.625 0.5 7.33333333 76.6849315 0
+i  1 17.75 0.5 7.75 59.260274 0
+i  1 18 0.5 7.33333333 62.8767123 0
+i  1 18.125 0.5 9 60.5753425 0
+i  1 18.125 0.5 8.16666667 69.7808219 0
+i  1 18.25 0.5 9.41666667 77.0136986 0
+i  1 18.375 0.5 7.33333333 70.109589 0
+i  1 18.5 0.5 9 69.1232877 0
+i  1 18.5 0.5 8.41666667 65.8356164 0
+i  1 18.625 0.5 9.5 59.9178082 0
+i  1 18.75 0.5 7.33333333 68.7945205 0
+i  1 18.875 0.5 9 62.2191781 0
+i  1 18.875 0.5 8.75 71.7534247 0
+i  1 19 0.5 10 65.1780822 0
+i  1 19 0.5 7 65.1780822 0
+i  1 19.125 0.5 7.41666667 59.260274 0
+i  1 19.25 0.5 9 66.1643836 0
+i  1 19.375 0.5 10.1666667 65.5068493 0
+i  1 19.375 0.5 7 63.8630137 0
+i  1 19.5 0.5 7.75 73.3972603 0
+i  1 19.625 0.5 9 59.260274 0
+i  1 19.75 0.5 10.4166667 70.4383562 0
+i  1 19.75 0.5 7 67.4794521 0
+i  1 19.875 0.5 8 66.4931507 0
+i  1 20.125 0.5 7 72.739726 0
+i  1 20.25 0.5 8.25 61.2328767 0
+i  1 20.5 0.5 7 76.0273973 0
+i  1 20.625 0.5 8.5 64.8493151 0
+i  1 21 0.5 9.16666667 69.4520548 0
+i  1 21 0.5 8.75 62.5479452 0
+i  1 21.25 0.5 10.1666667 69.4520548 0
+i  1 21.75 0.5 9.16666667 73.0684932 0
+i  1 22 0.5 10.25 58.6027397 0
+i  1 22.25 0.5 7.83333333 68.1369863 0
+i  1 22.5 0.5 9.16666667 59.260274 0
+i  1 22.75 0.5 10.5 76.3561644 0
+i  1 23 0.75 8.16666667 63.5342466 0
+i  1 23.75 0.75 8.41666667 65.5068493 0
+i  1 24.5 0.75 8.75 63.8630137 0
+i  1 25.125 0.5 8 61.2328767 0
+i  1 25.875 0.0104166667 9.5 60.2465753 0
+i  1 25.5 0.5 8.16666667 63.2054795 0
+i  1 26 0.0104166667 10 61.5616438 0
+i  1 26.125 0.0104166667 9.75 60.2465753 0
+i  1 26.1875 0.0104166667 10.1666667 60.2465753 0
+i  1 26.25 0.0104166667 10.1666667 61.5616438 0
+i  1 26.25 0.0104166667 9.5 59.9178082 0
+i  1 26.3125 0.0104166667 10.5 61.5616438 0
+i  1 25.875 0.5 8.5 61.5616438 0
+i  1 26.375 0.0104166667 10.1666667 68.1369863 0
+i  1 26.4375 0.0104166667 10.4166667 60.2465753 0
+i  1 26.5 0.0104166667 9.75 59.9178082 0
+i  1 26.5625 0.0104166667 10.75 61.5616438 0
+i  1 26.5625 0.0104166667 10.1666667 59.9178082 0
+i  1 26.625 0.0104166667 10.4166667 68.1369863 0
+i  1 26.625 0.0104166667 9.5 63.2054795 0
+i  1 26.6875 0.0104166667 10.75 68.1369863 0
+i  1 26.25 0.5 8.75 68.7945205 0
+i  1 26.75 0.0104166667 10.5 74.7123288 0
+i  1 26.8125 0.0104166667 10.4166667 59.9178082 0
+i  1 26.875 0.0104166667 9.75 63.2054795 0
+i  1 26.9375 0.0104166667 11 68.1369863 0
+i  1 26.9375 0.0104166667 10.1666667 63.2054795 0
+i  1 27 0.0104166667 10.75 74.7123288 0
+i  1 27 0.0104166667 9.5 69.7808219 0
+i  1 27.0625 0.0104166667 11.1666667 74.7123288 0
+i  1 26.625 0.5 9.16666667 60.2465753 0
+i  1 27.125 0.0104166667 10.75 59.9178082 0
+i  1 27.1875 0.0104166667 10.4166667 63.2054795 0
+i  1 27.234375 0.0104166667 6.58333333 60.2465753 0
+i  1 27.25 0.0104166667 9.75 69.7808219 0
+i  1 27.3125 0.0104166667 11.4166667 74.7123288 0
+i  1 27.3125 0.0104166667 10.1666667 69.7808219 0
+i  1 27.359375 0.0104166667 7 61.5616438 0
+i  1 26.875 0.5 7.83333333 62.2191781 0
+i  1 27.375 0.0104166667 11 59.9178082 0
+i  1 27.375 0.0104166667 9.5 71.7534247 0
+i  1 27.4375 0.0104166667 11.4166667 59.9178082 0
+i  1 27.484375 0.0104166667 6.75 60.2465753 0
+i  1 27.5 0.0104166667 11 61.2328767 0
+i  1 27.546875 0.0104166667 7.16666667 60.2465753 0
+i  1 27.5625 0.0104166667 10.4166667 69.7808219 0
+i  1 27.609375 0.0104166667 6.58333333 59.9178082 0
+i  1 27.609375 0.0104166667 7.16666667 61.5616438 0
+i  1 27.625 0.0104166667 9.75 71.7534247 0
+i  1 27.671875 0.0104166667 7.58333333 61.5616438 0
+i  1 27.6875 0.0104166667 11.5833333 59.9178082 0
+i  1 27.6875 0.0104166667 10.1666667 71.7534247 0
+i  1 27.734375 0.0104166667 7.16666667 68.1369863 0
+i  1 27.25 0.5 8.16666667 67.1506849 0
+i  1 27.75 0.0104166667 11.1666667 61.2328767 0
+i  1 27.796875 0.0104166667 7.41666667 60.2465753 0
+i  1 27.8125 0.0104166667 11.5833333 61.2328767 0
+i  1 27.859375 0.0104166667 6.75 59.9178082 0
+i  1 27.921875 0.0104166667 7.16666667 59.9178082 0
+i  1 27.921875 0.0104166667 7.75 61.5616438 0
+i  1 27.9375 0.0104166667 10.4166667 71.7534247 0
+i  1 27.984375 0.0104166667 6.58333333 63.2054795 0
+i  1 27.984375 0.0104166667 7.41666667 68.1369863 0
+i  1 27.5 0.5 7 63.8630137 0
+i  1 28.046875 0.0104166667 7.75 68.1369863 0
+i  1 28.0625 0.0104166667 11.75 61.2328767 0
+i  1 28.109375 0.0104166667 7.58333333 74.7123288 0
+i  1 27.625 0.5 8.41666667 68.4657534 0
+i  1 28.171875 0.0104166667 7.41666667 59.9178082 0
+i  1 28.234375 0.0104166667 6.75 63.2054795 0
+i  1 27.75 0.5 7.33333333 70.4383562 0
+i  1 28.296875 0.0104166667 7.16666667 63.2054795 0
+i  1 28.296875 0.0104166667 8 68.1369863 0
+i  1 28.359375 0.0104166667 6.58333333 69.7808219 0
+i  1 28.359375 0.0104166667 7.75 74.7123288 0
+i  1 28.421875 0.0104166667 8.16666667 74.7123288 0
+i  1 28.484375 0.0104166667 7.75 59.9178082 0
+i  1 28 0.5 8.75 59.260274 0
+i  1 28.546875 0.0104166667 7.41666667 63.2054795 0
+i  1 28.609375 0.0104166667 6.75 69.7808219 0
+i  1 28.671875 0.0104166667 7.16666667 69.7808219 0
+i  1 28.671875 0.0104166667 8.41666667 74.7123288 0
+i  1 28.734375 0.0104166667 6.58333333 71.7534247 0
+i  1 28.734375 0.0104166667 8 59.9178082 0
+i  1 28.25 0.5 7 67.8082192 0
+i  1 28.796875 0.0104166667 8.41666667 59.9178082 0
+i  1 28.859375 0.0104166667 8 61.2328767 0
+i  1 28.921875 0.0104166667 7.41666667 69.7808219 0
+i  1 28.984375 0.0104166667 6.75 71.7534247 0
+i  1 28.5 0.5 7.58333333 76.3561644 0
+i  1 29.046875 0.0104166667 7.16666667 71.7534247 0
+i  1 29.046875 0.0104166667 8.5 59.9178082 0
+i  1 29.109375 0.0104166667 8.16666667 61.2328767 0
+i  1 29.171875 0.0104166667 8.5 61.2328767 0
+i  1 29.296875 0.0104166667 7.41666667 71.7534247 0
+i  1 29.421875 0.0104166667 8.75 61.2328767 0
+i  1 29 0.5 7 59.9178082 0
+i  1 29.25 0.5 8.91666667 64.1917808 0
+i  1 29.25 0.5 7.91666667 57.9452055 0
+i  1 29.5 0.5 9.25 60.5753425 0
+i  1 29.75 0.5 7 60.5753425 0
+i  1 30 0.5 8.91666667 66.4931507 0
+i  1 30 0.5 8.16666667 65.8356164 0
+i  1 30.25 0.5 9.5 75.369863 0
+i  1 30.5 0.5 7 62.8767123 0
+i  1 30.75 0.5 8.91666667 66.1643836 0
+i  1 30.75 0.5 8.41666667 74.3835616 0
+i  1 31 0.5 9.91666667 67.4794521 0
+i  1 31 0.5 6.75 58.6027397 0
+i  1 31.25 0.5 7.16666667 61.5616438 0
+i  1 31.5 0.5 8.91666667 70.7671233 0
+i  1 31.75 0.5 10.1666667 69.4520548 0
+i  1 31.75 0.5 6.75 63.8630137 0
+i  1 32 0.5 7.41666667 66.4931507 0
+i  1 32.25 0.5 8.91666667 76.6849315 0
+i  1 32.5 0.5 10.25 66.8219178 0
+i  1 32.5 0.5 6.75 75.6986301 0
+i  1 32.75 0.5 7.75 72.0821918 0
+i  1 33.25 0.5 6.75 62.8767123 0
+i  1 33.5 0.5 8 74.0547945 0
+i  1 34 0.5 6.75 63.2054795 0
+i  1 34.25 0.5 8.25 69.1232877 0
+
+</CsTestScore>
+</CsScoreManager>
+</CsMinMuse>

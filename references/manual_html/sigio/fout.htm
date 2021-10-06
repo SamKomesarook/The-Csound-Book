@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>fout, foutk, fouti, foutir, fiopen</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="dumpk.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="fin.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#fileio" class="toqr">
+Signal Input and Output: File I/O</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>fout, foutk, fouti, foutir, fiopen</h2>
+<pre>
+          <strong>fout</strong>      &quot;ifilename&quot;, iformat, aout1[, aout2, aout3,...,aoutN]
+          <strong>foutk</strong>     &quot;ifilename&quot;, iformat, kout1[, kout2, kout3,....,koutN]
+          <strong>fouti</strong>     ihandle, iformat, iflag, iout1[, iout2, iout3,....,ioutN]
+          <strong>foutir</strong>    ihandle, iformat, iflag, iout1[, iout2, iout3,....,ioutN]
+  ihandle <strong>fiopen</strong>    &quot;ifilename&quot;,imode
+
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+
+<p><strong>fout</strong>, <strong>foutk</strong>, <strong>fouti</strong> and <strong>foutir</strong> output <em>N</em> a-, k-, or i-rate signals to a specified file of <em>N</em> channels. <strong>fiopen</strong> can be used to open a file in one of the specified modes.</p>
+
+<h3>Initialization</h3>
+
+<p><em>ifilename</em> &#8211; a double-quote delimited string file name</p>
+<p><em>iformat</em> &#8211; a flag to choose output file format:</p>
+<ul>
+	<li>for <strong>fout</strong> and <strong>foutk</strong> only:
+		<ul>
+			<li>0 - 32-bit floating point samples without header (binary PCM multichannel file)
+			<li>1 - 16-bit integers without header (binary PCM multichannel file)
+			<li>2 - 16-bit integers with .wav type header (Microsoft WAV mono or stereo file)
+	    </ul>
+	<li>for <strong>fouti</strong> and <strong>foutir</strong> only:
+		<ul>
+			<li>0 - floating point in text format
+			<li>1 - 32-bit floating point in binary format
+		</ul>
+</ul>
+<p><em>iflag</em> &#8211; choose the mode of writing to the ASCII file (valid only in ASCII mode; in binary mode <em>iflag</em> has no meaning, but it must be present anyway). <em>iflag</em> can be a value chosen among the following:</p>
+<ul>
+	<li>0 - line of text without instrument prefix
+	<li>1 - line of text with instrument prefix (see below)
+	<li>2 - reset the time of instrument prefixes to zero (to be used only in some particular cases. See below)
+</ul>
+
+<p><em>iout,..., ioutN</em> &#8211; values to be written to the file</p>
+
+<p><em>imode</em> &#8211; choose the mode of opening the file. <em>imode</em> can be a value chosen among the following:</p>
+<ul>
+	<li>0 - open a text file for writing
+	<li>1 - open a text file for reading
+	<li>2 - open a binary file for writing
+	<li>3 - open a binary file for reading
+</ul>
+
+<h3>Performance</h3>
+
+<p><em>aout1,... aoutN</em> &#8211; signals to be written to the file</p>
+<p><em>kout1,...koutN</em> &#8211; signals to be written to the file</p>
+<p><strong>fout</strong> (file output) writes samples of audio signals to a file with any number of channels. Channel number depends by the number of <em>aoutN</em> variables (i.e. a mono signal with only an a-rate argument, a stereo signal with two a-rate arguments etc.) Maximum number of channels is fixed to 64. Multiple <strong>fout</strong> opcodes can be present in the same instrument, referring to different files.</p>
+<p>Notice that, unlike <strong>out</strong>, <strong>outs</strong> and <strong>outq</strong>, <strong>fout</strong> does not zero the audio variable, so you must zero it after calling <strong>fout</strong>, if polyphony is to be used. You can use <strong>incr</strong> and <strong>clear</strong> opcodes for this task.</p>
+<p><strong>foutk</strong> operates in the same way as <strong>fout</strong>, but with k-rate signals. <em>iformat</em> can be set only to 0 or 1.</p>
+<p><strong>fouti</strong> and <strong>foutir</strong> write i-rate values to a file. The main use of these opcodes is to generate a score file during a realtime session. For this purpose, the user should set <em>iformat</em> to 0 (text file output) and <em>iflag</em> to 1, which enable the output of a prefix consisting of the strings <em>inum</em>, <em>actiontime</em>, and <em>duration</em>, before the values of <em>iout1...ioutN</em> arguments. The arguments in the prefix refer to instrument number, action time and duration of current note.</p>
+<p>The difference between <strong>fouti</strong> and <strong>foutir</strong> is that, in the case of <strong>fouti</strong>, when <em>iflag</em> is set to 1, the duration of the first opcode is undefined (so it is replaced by a dot). Whereas, <strong>foutir</strong> is defined at the end of note, so the corresponding text line is written only at the end of the current note (in order to recognize its duration). The corresponding file is linked by the <em>ihandle</em> value generated by the <strong>fiopen</strong> opcode (see below). So <strong>fouti</strong> and <strong>foutir</strong> can be used to generate a Csound score while playing  a realtime session.</p>
+<p><strong>fiopen</strong> opens a file to be used by the <strong>fout</strong> family of opcodes. It must be defined in the header section, external to any instruments. It returns a number, <em>ihandle</em>, which is unequivocally referring to the opened file.</p>
+<p>Notice that <strong>fout</strong> and <strong>foutk</strong> can use either a string containing a file pathname, or a handle-number generated by <strong>fiopen</strong>. Whereas, with <strong>fouti</strong> and <strong>foutir</strong>, the target file can be only specified by means of a handle-number.</p>
+
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+1999<br>
+New in Csound version 3.56
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="dumpk.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="fin.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#fileio" class="toqr">
+Signal Input and Output: File I/O</font></a>
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>harmon</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="streson.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="flanger.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#effects" class="toqr">
+Signal Modifiers: Special Effects</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>harmon</h2>
+
+<pre>
+  ar      <strong>harmon</strong>     asig, kestfrq, kmaxvar, kgenfreq1, kgenfreq2, imode, iminfrq, iprd
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Analyze an audio input and generate harmonizing voices in synchrony.
+</p>
+<h3>Initialization</h3>
+<p><em>imode</em> &#8211; interpreting mode for the generating frequency inputs <em>kgenfreq1</em>, <em>kgenfreq2</em>. 0: input values are ratios with respect to the audio signal analyzed frequency. 1: input values are the actual requested frequencies in Hz.
+</p>
+<p><em>iminfrq</em> &#8211; the lowest expected frequency (in Hz) of the audio input. This parameter determines how much of the input is saved for the running analysis, and sets a lower bound on the internal pitch tracker.
+</p>
+<p><em>iprd</em> &#8211; period of analysis (in seconds). Since the internal pitch analysis can be time-consuming, the input is typically analyzed only each 20 to 50 milliseconds.
+</p>
+<h3>Performance</h3>
+<p>This unit is a harmonizer, able to provide up to two additional voices with the same amplitude and spectrum as the input. The input analysis is assisted by two things: an input estimated frequency <em>kestfrq</em> (in Hz), and a fractional maximum variance <em>kmaxvar</em> about that estimate which serves to limit the size of the search. Once the real input frequency is determined, the most recent pulse shape is used to generate the other voices at their requested frequencies.
+</p>
+<p>The three frequency inputs can be derived in various ways from a score file or MIDI source. The first is the expected pitch, with a variance parameter allowing for inflections or inaccuracies; if the expected pitch is zero the harmonizer will be silent. The second and third pitches control the output frequencies; if either is zero the harmonizer will output only the non-zero request; if both are zero the harmonizer will be silent. When the requested frequency is higher than the input, the process requires additional computation due to overlapped output pulses. This is currently limited for efficiency reasons, with the result that only one voice can be higher than the input at any one time.
+</p>
+<p>This unit is useful for supplying a background chorus effect on demand, or for correcting the pitch of a faulty input vocal. There is essentially no delay between input and output. Output includes only the generated parts, and does not include the input.
+</p>
+<h3></h3>
+
+<h3>Example</h3>
+
+
+
+
+
+
+
+
+<pre>   asig1    <strong>in</strong> ; get the live input
+   kcps1    <strong>cpsmidib</strong> ; and its target pitch
+   asig2    <strong>harmon</strong>   asig1, kcps1, .3, kcps1, kcps1 * 1.25, 1, 110, .04 ; add maj 3rd
+            <strong>out</strong> asig2 ; output just the corrected and added voices</pre>
+
+
+
+
+
+
+
+
+<h3>Author</h3>
+<p>Barry Vercoe<br>
+M.I.T., Cambridge, Mass<br>
+1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="streson.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="flanger.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#effects" class="toqr">
+Signal Modifiers: Special Effects</font></a>
+</body>
+
+</html>

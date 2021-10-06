@@ -1,0 +1,884 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>QuickRef: Instrument Control</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body text="black" link="black" vlink="black" alink="black" bgcolor="white">
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent">
+      <img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" width="10">
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="orch.htm">
+      <img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="math.htm">
+      <img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h1>Instrument Control</h1>
+
+<a class="qr" name="invocation"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Instrument Control: Instrument Invocation</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="50" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../control/schedule.htm">
+      <strong>schedule</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      insnum, iwhen, idur[, p4, p5, ...]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../control/schedule.htm">
+      <strong>schedwhen</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ktrigger, kinsnum, kwhen, kdur[, p4, p5, ...]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../control/schdkwhn.htm">
+      <strong>schedkwhen</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ktrigger, kmintim, kmaxnum, kinsnum, kwhen, kdur[,
+kp4, kp5, ...] 
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../durctl/turnon.htm">
+      <strong>turnon</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      insnum[, itime]
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="duration"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Instrument Control: Duration Control</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="89%" valign="TOP">
+      <a class="qr" href="../durctl/ihold.htm">
+      <strong>ihold</strong></a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="89%" valign="TOP">
+      <a class="qr" href="../durctl/ihold.htm">
+      <strong>turnoff</strong></a>
+    </td>
+  </tr>
+</table>
+
+
+<a class="qr" name="realtime"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Instrument Control: Real-time Performance Control</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      ir
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/active.htm">
+      <strong>active</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      insnum
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/cpuprc.htm">
+      <strong>cpuprc</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      insnum, ipercent
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/cpuprc.htm">
+      <strong>maxalloc</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      insnum, icount
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/cpuprc.htm">
+      <strong>prealloc</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      insnum, icount
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="timeread"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Instrument Control: Time Reading</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/kr 
+    </td>
+    <td class="qr" nowrap width="88%" valign="TOP">
+      <a class="qr" href="../control/timek.htm">
+      <strong>timek</strong></a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/kr 
+    </td>
+    <td class="qr" nowrap width="88%" valign="TOP">
+      <a class="qr" href="../control/timek.htm">
+      <strong>times</strong></a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kr 
+    </td>
+    <td class="qr" nowrap width="88%" valign="TOP">
+      <a class="qr" href="../control/timek.htm">
+      <strong>timeinstk</strong></a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kr 
+    </td>
+    <td class="qr" nowrap width="88%" valign="TOP">
+      <a class="qr" href="../control/timek.htm">
+      <strong>timeinsts</strong></a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kr 
+    </td>
+    <td class="qr" nowrap width="88%" valign="TOP">
+      <a class="qr" href="../control/timek.htm">
+      <strong>clock</strong></a>
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="clock"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Instrument Control: Clock Control</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/clockon.htm">
+      <strong>clockon</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      inum
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/clockon.htm">
+      <strong>clockoff</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      inum
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      ir
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/clockon.htm">
+      <strong>readclock</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      inum
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="sensing"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Instrument Control: Sensing and Control</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="638">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kpitch, kamp
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../sigmod/pitch.htm">
+      <strong>pitch</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      asig, iupdte, ilo, ihi, idbthresh[, ifrqs, iconf, istrt, iocts, iq, inptls, irolloff, iskip]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kcps,
+krms
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../sigmod/pchamdf.htm">
+      <strong>pitchamdf</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      asig, imincps, imaxcps[, icps[, imedi[, idowns
+[, iexcps]]]]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      ktemp
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/tempest.htm">
+      <strong>tempest</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      kin, iprd, imindur, imemdur, ihp, ithresh, ihtim, ixfdbak, istartempo, ifn[, idisprd, itweek]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kr
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../sigmod/follow.htm">
+      <strong>follow</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      asig, idt
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kout
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../siggen/trigger.htm">
+      <strong>trigger</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ksig, kthreshold, kmode
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      k/ar
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../sigmod/peak.htm">
+      <strong>peak</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      k/asig
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/tempo.htm">
+      <strong>tempo</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ktempo, istartempo
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">kr
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/tempo.htm">
+      <strong>tempoval</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kx, ky
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/xyin.htm">
+      <strong>xyin</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      iprd, ixmin, ixmax, iymin, iymax[, ixinit, iyinit]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      ar
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/follow2.htm">
+      <strong>follow2</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      asig, katt, krel
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      &nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/setctrl.htm">
+      <strong>setctrl</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      inum, kval, itype
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kr
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/setctrl.htm">
+      <strong>control</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      knum
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kr
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/button.htm">
+      <strong>button</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      inum
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kr
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/button.htm">
+      <strong>checkbox</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      inum
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      kr
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../control/sense.htm">
+      <strong>sensekey</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      &nbsp;
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="conditional"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Instrument Control: Conditional Values</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      (a</a>
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>&gt;</strong></a>
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      b</a>
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>?</strong></a>
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      v1</a>
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>:</strong></a>
+    </td>
+    <td class="qr" nowrap width="59%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      v2)</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      (a</a>
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>&lt;</strong></a>
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      b</a>
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>?</strong></a>
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      v1</a>
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>:</strong></a>
+    </td>
+    <td class="qr" nowrap width="59%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      v2)</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      (a</a>
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>&gt;=</strong></a>
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      b</a>
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>?</strong></a>
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      v1</a>
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>:</strong></a>
+    </td>
+    <td class="qr" nowrap width="59%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      v2)</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      (a</a>
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>&lt;=</strong></a>
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      b</a>
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>?</strong></a>
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      v1</a>
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>:</strong></a>
+    </td>
+    <td class="qr" nowrap width="59%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      v2)</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      (a</a>
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>==</strong></a>
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      b</a>
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>?</strong></a>
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      v1</a>
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>:</strong></a>
+    </td>
+    <td class="qr" nowrap width="59%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      v2)</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      (a</a>
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>!=</strong></a>
+    </td>
+    <td class="qr" nowrap width="7%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      b</a>
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>?</strong></a>
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      v1</a>
+    </td>
+    <td class="qr" nowrap width="6%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      <strong>:</strong></a>
+    </td>
+    <td class="qr" nowrap width="59%" valign="TOP">
+      <a class="qr" href="../syntax/conditn.htm">
+      v2)</a>
+    </td>
+  </tr>
+</table>
+
+
+<a class="qr" name="macros"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Instrument Control: Macros</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/macros.htm">
+      <strong>#define</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      NAME # replacement text #
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/macros.htm">
+      <strong>#define</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      NAME(a'b'c') # replacement text # 
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="89%" valign="TOP" colspan="2">
+      <a class="qr" href="../syntax/macros.htm">
+      <strong>$NAME.</strong></a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/macros.htm">
+      <strong>#undef</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      NAME
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/mult.htm">
+      <strong>#include</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      &quot;filename&quot;
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="flow"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Instrument Control: Program Flow Control</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="692">
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="15%" valign="TOP">
+      <a class="qr" href="../pgmctl/igoto.htm">
+      <strong>igoto</strong></a>
+    </td>
+    <td class="qr" nowrap width="74%" valign="TOP" colspan="5">
+      label
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="15%" valign="TOP">
+      <a class="qr" href="../pgmctl/igoto.htm">
+      <strong>tigoto</strong></a>
+    </td>
+    <td class="qr" nowrap width="74%" valign="TOP" colspan="5">
+      label
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="15%" valign="TOP">
+      <a class="qr" href="../pgmctl/igoto.htm">
+      <strong>kgoto</strong></a>
+    </td>
+    <td class="qr" nowrap width="74%" valign="TOP" colspan="5">
+      label
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="15%" valign="TOP">
+      <a class="qr" href="../pgmctl/igoto.htm">
+      <strong>goto</strong></a>
+    </td>
+    <td class="qr" nowrap width="74%" valign="TOP" colspan="5">
+      label
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="15%" valign="TOP">
+      <a class="qr" href="../pgmctl/igoto.htm">
+      <strong>if</strong></a>
+    </td>
+    <td class="qr" nowrap width="9%" valign="TOP">
+      ia
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      R
+    </td>
+    <td class="qr" nowrap width="9%" valign="TOP">
+      ib
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      <strong>igoto</strong>
+    </td>
+    <td class="qr" nowrap width="36%" valign="TOP">
+      label
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="15%" valign="TOP">
+      <a class="qr" href="../pgmctl/igoto.htm">
+      <strong>if</strong></a>
+    </td>
+    <td class="qr" nowrap width="9%" valign="TOP">
+      ka
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      R
+    </td>
+    <td class="qr" nowrap width="9%" valign="TOP">
+      kb
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      <strong>kgoto</strong>
+    </td>
+    <td class="qr" nowrap width="36%" valign="TOP">
+      label
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="15%" valign="TOP">
+      <a class="qr" href="../pgmctl/igoto.htm">
+      <strong>if</strong></a>
+    </td>
+    <td class="qr" nowrap width="9%" valign="TOP">
+      ia
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      R
+    </td>
+    <td class="qr" nowrap width="9%" valign="TOP">
+      ib
+    </td>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      <strong>goto</strong>
+    </td>
+    <td class="qr" nowrap width="36%" valign="TOP">
+      label
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="15%" valign="TOP">
+      <a class="qr" href="../pgmctl/igoto.htm">
+      <strong>timout</strong></a>
+    </td>
+    <td class="qr" nowrap width="9%" valign="TOP">
+      istrt
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">
+      idur
+    </td>
+    <td class="qr" nowrap width="57%" valign="TOP" colspan="3">
+      label
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      label
+    </td>
+    <td class="qr" nowrap width="15%" valign="TOP">
+      <a class="qr" href="../syntax/top.htm">
+      <strong>:</strong></a>
+    </td>
+    <td class="qr" nowrap width="9%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="8%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="57%" valign="TOP" colspan="3">&nbsp;
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="reinit"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Instrument Control: Reinitialization</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="692">
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="15%" valign="TOP">
+      <a class="qr" href="../pgmctl/reinit.htm">
+      <strong>reinit</strong></a>
+    </td>
+    <td class="qr" nowrap width="74%" valign="TOP">
+      label
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="15%" valign="TOP">
+      <a class="qr" href="../pgmctl/reinit.htm">
+      <strong>rigoto</strong></a>
+    </td>
+    <td class="qr" nowrap width="74%" valign="TOP">
+      label
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="89%" valign="TOP" colspan="2">
+      <a class="qr" href="../pgmctl/reinit.htm">
+      <strong>rireturn</strong></a>
+    </td>
+  </tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent">
+      <img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" width="10">
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="orch.htm">
+      <img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="math.htm">
+      <img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+</body>
+
+</html>

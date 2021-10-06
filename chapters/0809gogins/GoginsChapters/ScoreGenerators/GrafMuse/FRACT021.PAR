@@ -1,0 +1,10 @@
+                   {
+  reset=1820 type=formula formulafile=tritz.frm formulaname=ok-09
+  function=sin
+  corners=0.030942785962/0.024646585101/2.4617605813/2.4585704945/0.030207\
+  395306/2.4627411022 params=100/0/100/0 float=y potential=255/300/0
+  colors=000C0M<2>60NB0BG00L00<40>a00a10b30<2>c91dC4<44>ST0RU0RT0SS0TR0UQ0\
+  VP1<2>XM6Yb7<15>kNYlL_lM_<26>cqFbsEbrE<15>WP1WO0WM0VK0<7>S50R30R30<12>K9\
+  0KA1JA1JB2IB3<27>3PM<8>ga3kc1pd0uf0uf0te0sdL<6>mZUI0MG0ME0M
+  }
+

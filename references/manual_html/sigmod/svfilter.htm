@@ -1,0 +1,130 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>svfilter</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="biquad.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="hilbert.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>svfilter</h2>
+
+<pre>
+  alow, ahigh, aband  <strong>svfilter</strong>  asig, kcf, kq[, iscl]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Implementation of a resonant second order filter, with simultaneous lowpass, highpass and bandpass outputs.
+</p>
+<h3>Initialization</h3>
+<p><em>iscl</em> &#8211; coded scaling factor, similar to that in <a href="port.htm"><strong>reson</strong></a>. A non-zero value signifies a peak response factor of 1, i.e. all frequencies other than <em>kcf</em> are attenuated in accordance with the (normalized) response curve. A zero value signifies no scaling of the signal, leaving that to some later adjustment (see <a href="rms.htm"><strong>balance</strong></a>). The default value is 0.
+</p>
+<h3>Performance</h3>
+<p><strong>svfilter</strong> is a second order state-variable filter, with k-rate controls for cutoff frequency and Q.  As Q is increased, a resonant peak forms around the cutoff frequency. <strong>svfilter</strong> has simultaneous lowpass, highpass, and bandpass filter outputs; by mixing the outputs together, a variety of frequency responses can be generated. The state-variable filter, or &quot;multimode&quot; filter was a common feature in early analog synthesizers, due to the wide variety of sounds available from the interaction between cutoff, resonance, and output mix ratios. <strong>svfilter</strong> is well suited to the emulation of &quot;analog&quot; sounds, as well as other applications where resonant filters are called for.
+</p>
+<p><em>asig</em> &#8211; Input signal to be filtered.
+</p>
+<p><em>kcf</em> &#8211; Cutoff or resonant frequency of the filter, measured in Hz.
+</p>
+<p><em>kq</em> &#8211; Q of the filter, which is defined (for bandpass filters) as bandwidth/cutoff. <em>kq</em> should be in a range between 1 and 500. As <em>kq</em> is increased, the resonance of the filter increases, which corresponds to an increase in the magnitude and &quot;sharpness&quot; of the resonant peak. When using <strong>svfilter</strong> without any scaling of the signal (where <em>iscl</em> is either absent or 0), the volume of the resonant peak increases as Q increases. For high values of Q, it is recommended that <em>iscl</em> be set to a non-zero value, or that an external scaling function such as
+<a href="rms.htm"><strong>balance</strong></a> is used.
+</p>
+<p><strong>svfilter</strong> is based upon an algorithm in Hal Chamberlin's <em>Musical Applications of Microprocessor</em>s (Hayden Books, 1985).
+</p>
+<h3>Example</h3>
+
+<pre>
+  ; Orchestra file for resonant filter sweep of a sawtooth-like waveform. 
+  ; The seperate outputs of the filter are scaled by values from the score,
+  ; and are mixed together.
+  <strong>sr</strong>     = 44100
+  <strong>kr</strong>     = 2205
+  <strong>ksmps</strong>  = 20
+  <strong>nchnls</strong> = 1
+  
+<strong>instr</strong> 1
+  
+  idur     = p3
+  ifreq    = p4
+  iamp     = p5
+  ilowamp  = p6              ; determines amount of lowpass output in signal
+  ihighamp = p7              ; determines amount of highpass output in signal
+  ibandamp = p8              ; determines amount of bandpass output in signal
+  iq       = p9              ; value of q
+  
+  iharms   =        (sr*.4) / ifreq
+  
+  asig    <strong>gbuzz</strong>     1, ifreq, iharms, 1, .9, 1             ; Sawtooth-like waveform
+  kfreq   <strong>linseg</strong>    1, idur * 0.5, 4000, idur * 0.5, 1     ; Envelope to control filter cutoff
+  
+  alow, ahigh, aband   <strong>svfilter</strong>  asig, kfreq, iq
+  
+  aout1   =         alow * ilowamp
+  aout2   =         ahigh * ihighamp
+  aout3   =         aband * ibandamp
+  asum    =         aout1 + aout2 + aout3
+  kenv    <strong>linseg</strong>    0, .1, iamp, idur -.2, iamp, .1, 0     ; Simple amplitude envelope
+          <strong>out</strong>       asum * kenv
+  
+<strong>endin</strong>
+  
+  
+  ; Score file for above
+  f1 0 8192 9 1 1 .25
+  
+  i1  0 5 100 1000 1 0 0  5  ; lowpass sweep
+  i1  5 5 200 1000 1 0 0 30  ; lowpass sweep, octave higher, higher q
+  i1 10 5 100 1000 0 1 0  5  ; highpass sweep
+  i1 15 5 200 1000 0 1 0 30  ; highpass sweep, octave higher, higher q
+  i1 20 5 100 1000 0 0 1  5  ; bandpass sweep
+  i1 25 5 200 1000 0 0 1 30  ; bandpass sweep, octave higher, higher q
+  i1 30 5 200 2000 .4 .6  0  ; notch sweep - notch formed by combining highpass and lowpass outputs
+  e
+</pre>
+
+
+<h3>Author</h3>
+<p>Sean Costello<br>
+Seattle, Washington<br>
+1999<br>
+New in Csound version 3.55
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="biquad.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="hilbert.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</font></a>
+</body>
+
+</html>

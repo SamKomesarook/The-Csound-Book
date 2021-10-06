@@ -1,0 +1,923 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>The Public Csound Manual</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="manual.css" TITLE="formal">
+</head>
+<body text="black" link="black" vlink="black" bgcolor="white">
+<h2 align="center"><a class="con" style="font-size : 16 pt; font-weight : bold; font-variant : small-caps" name="contents">Contents</a></h2>
+<hr size="1" color="#A9A9A9" noshade>
+<a href="qr/orch.htm" target="dynamic" class="head4center" style="margin-top: 1 em;">QuickRef</a>
+<hr size="1" color="#A9A9A9" noshade>
+<pre class="con">
+<a class="con" href="preface/preface.htm" target="dynamic">Preface</a>
+
+<a class="con" href="preface/use.htm" target="dynamic">Using
+this
+Manual</a>
+
+<a class="con" href="preface/get.htm" target="dynamic">Obtaining
+Csound</a>
+
+<a class="con" href="preface/install.htm" target="dynamic">Installing
+Csound</a>
+
+<a class="con" href="preface/list.htm" target="dynamic">Support</a>
+
+<a class="con" href="preface/copy.htm" target="dynamic">Copyright
+Notice</a>
+
+<a class="con" href="preface/contrib.htm" target="dynamic">Contributors</a>
+
+<a class="con" href="syntax/top.htm" target="dynamic">Syntax of the
+Orchestra</a>
+
+<a class="con" href="qr/instrctl.htm" target="dynamic">Instrument
+Control</a>
+
+<a class="con" href="qr/math.htm" target="dynamic">Mathematical
+Operations</a>
+
+<a class="con" href="qr/pitch.htm" target="dynamic">Pitch
+Converters</a>
+
+<a class="con" href="qr/midi.htm" target="dynamic">MIDI
+Support</a>
+
+<a class="con" href="qr/siggen.htm" target="dynamic">Signal
+Generators</a>
+
+<a class="con" href="qr/table.htm" target="dynamic">Function Table
+Control</a>
+  
+<a class="con" href="qr/sigmod.htm" target="dynamic">Signal
+Modifiers</a>
+ 
+<a class="con" href="zak/top.htm" target="dynamic">Zak Patch</a>
+
+<a class="con" href="spectral/top.htm" target="dynamic">Spectral
+Operations</a>
+
+<a class="con" href="qr/sigio.htm" target="dynamic">Signal Input
+and Output</a>
+
+<a class="con" href="score/top.htm" target="dynamic">The Standard
+Numeric
+Score</a>
+
+<a class="con" href="gen/top.htm" target="dynamic">GEN
+Routines</a>
+
+<a class="con" href="command/top.htm" target="dynamic">The Csound
+Command</a>
+
+<a class="con" href="misc/unifile.htm" target="dynamic">Unified
+File
+Format</a>
+
+<a class="con" href="misc/preproc.htm" target="dynamic">Score Pre-
+Processing</a>
+
+<a class="con" href="utility/top.htm" target="dynamic">The Csound
+Utilities</a>
+
+<a class="con" href="cscore/top.htm" target="dynamic">Cscore</a>
+
+<a class="con" href="misc/addmod.htm" target="dynamic">Adding
+Modules</a>
+
+<a class="con" href="appendix/top.htm" target="dynamic">Appendices</a>
+
+</pre>
+<hr size="4" color="#A9A9A9" noshade>
+<h2 align="center"><a class="con" style="font-size : 16 pt; font-weight : bold; font-variant : small-caps" name="alphandx">Index</a></h2>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a class="alpha" name="symbols">Symbols</a>
+<pre class="con"> 
+ <a class="con" href="syntax/math.htm" target="dynamic"> -</a>
+ <a class="con" href="syntax/math.htm" target="dynamic"> %</a>
+ <a class="con" href="syntax/math.htm" target="dynamic"> &amp;&amp;</a>
+ <a class="con" href="score/ramp.htm" target="dynamic"> (</a>
+ <a class="con" href="score/ramp.htm" target="dynamic"> )</a>
+ <a class="con" href="syntax/math.htm" target="dynamic"> *</a>
+ <a class="con" href="syntax/math.htm" target="dynamic"> /</a>
+ <a class="con" href="syntax/math.htm" target="dynamic"> ^</a>
+ <a class="con" href="score/ramp.htm" target="dynamic"> {</a>
+ <a class="con" href="syntax/math.htm" target="dynamic"> ||</a>
+ <a class="con" href="score/ramp.htm" target="dynamic"> }</a>
+ <a class="con" href="score/ramp.htm" target="dynamic"> ~</a>
+ <a class="con" href="syntax/math.htm" target="dynamic"> +</a>
+ <a class="con" href="score/ramp.htm" target="dynamic"> &lt;</a>
+ <a class="con" href="syntax/assign.htm" target="dynamic"> =</a>
+ <a class="con" href="score/eval.htm" target="dynamic">  &#64;</a>
+ <a class="con" href="score/eval.htm" target="dynamic"> &#64;&#64;</a>
+</pre>
+<hr size="1" noshade>
+<a class="alpha" name="tfe">Tags, Files, and Extensions</a>
+<pre class="con"> 
+<a class="con" href="syntax/macros.htm" target="dynamic">#define,
+orchestra</a>
+
+<a class="con" href="score/macros.htm" target="dynamic">#define,
+score</a>
+
+<a class="con" href="syntax/macros.htm" target="dynamic">#include,
+orchestra</a>
+
+<a class="con" href="score/mult.htm" target="dynamic">#include,
+score</a>
+
+<a class="con" href="syntax/macros.htm" target="dynamic">#undef,
+orchestra</a>
+
+<a class="con" href="score/macros.htm" target="dynamic">#undef,
+score</a>
+
+<a class="con" href="syntax/macros.htm" target="dynamic">$NAME,
+orchestra</a>
+
+<a class="con" href="score/macros.htm" target="dynamic">$NAME,
+score</a>
+
+.<a class="con" href="misc/unifile.htm" target="dynamic">csd</a>
+.<a class="con" href="misc/unifile.htm" target="dynamic">csoundrc</a>
+.<a class="con" href="preface/preface.htm" target="dynamic">orc</a>
+.<a class="con" href="preface/preface.htm" target="dynamic">sco</a>
+
+<a class="con" href="misc/unifile.htm" target="dynamic">&lt;Cs
+Instruments&gt;</a>
+
+<a class="con" href="misc/unifile.htm" target="dynamic">&lt;Cs
+Instruments&gt;</a>
+
+<a class="con" href="misc/unifile.htm">&lt;CsMidifileB&gt;</a>
+
+<a class="con" href="misc/unifile.htm" target="dynamic">&lt;CsOptions&gt;</a>
+
+<a class="con" href="misc/unifile.htm" target="dynamic">&lt;Csound
+Synthesizer&gt;</a>
+
+<a class="con" href="misc/unifile.htm">&lt;CsSampleB&gt;</a>
+
+<a class="con" href="misc/unifile.htm" target="dynamic">&lt;CsScore&gt;</a>
+
+<a class="con" href="misc/unifile.htm">&lt;CsVersion&gt;</a>
+</pre>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="A" class="alpha">A</a>
+
+<pre class="con"> 
+<a class="con" href="score/a.htm" target="dynamic">a Statement</a>
+<a class="con" href="valcnv/int.htm" target="dynamic">abs</a>
+<a class="con" href="control/active.htm" target="dynamic">active</a>
+<a class="con" href="siggen/adsr.htm" target="dynamic">adsr</a>
+<a class="con" href="siggen/adsyn.htm" target="dynamic">adsyn</a>
+<a class="con" href="siggen/adsynt.htm" target="dynamic">adsynt</a>
+<a class="con" href="midi/notnum.htm" target="dynamic">aftouch</a>
+<a class="con" href="sigmod/comb.htm" target="dynamic">alpass</a>
+<a class="con" href="valcnv/dbamp.htm" target="dynamic">ampdb</a>
+<a class="con" href="midi/notnum.htm" target="dynamic">ampmidi</a>
+<a class="con" href="sigmod/port.htm" target="dynamic">areson</a>
+<a class="con" href="sigmod/port.htm" target="dynamic">aresonk</a>
+<a class="con" href="sigmod/port.htm" target="dynamic">atone</a>
+<a class="con" href="sigmod/port.htm" target="dynamic">atonek</a>
+<a class="con" href="sigmod/tonex.htm" target="dynamic">atonex</a>
+</pre>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="B" class="alpha">B</a>
+       
+
+<pre class="con"> 
+<a class="con" href="score/b.htm" target="dynamic">b Statement</a>
+<a class="con" href="sigmod/rms.htm" target="dynamic">balance</a>
+<a class="con" href="siggen/x.htm" target="dynamic">betarand</a>
+<a class="con" href="siggen/x.htm" target="dynamic">bexprnd</a>
+<a class="con" href="sigmod/biquad.htm" target="dynamic">biquad</a>
+<a class="con" href="sigmod/biquad.htm" target="dynamic">biquada</a>
+<a class="con" href="valcnv/rnd.htm" target="dynamic">birnd</a>
+
+<a class="con" href="preface/list.htm#bugs" target="dynamic">bug reports,
+code</a>
+
+<a class="con" href="preface/use.htm#bugs" target="dynamic">bug reports,
+documentation</a>
+
+<a class="con" href="siggen/guiro.htm" target="dynamic">bamboo</a>
+<a class="con" href="sigmod/babo.htm" target="dynamic">babo</a>
+<a class="con" href="sigmod/bbcut.htm" target="dynamic">bbcutm</a>
+<a class="con" href="sigmod/bbcut.htm" target="dynamic">bbcuts</a>
+<a class="con" href="sigmod/butterhp.htm" target="dynamic">butbp</a>
+<a class="con" href="sigmod/butterhp.htm" target="dynamic">butbr</a>
+<a class="con" href="sigmod/butterhp.htm" target="dynamic">buthp</a>
+<a class="con" href="sigmod/butterhp.htm" target="dynamic">butlp</a>
+<a class="con" href="sigmod/butterhp.htm" target="dynamic">butterbp</a>
+<a class="con" href="sigmod/butterhp.htm" target="dynamic">butterbr</a>
+<a class="con" href="sigmod/butterhp.htm" target="dynamic">butterhp</a>
+<a class="con" href="sigmod/butterhp.htm" target="dynamic">butterlp</a>
+<a class="con" href="control/button.htm" target="dynamic">button</a>
+<a class="con" href="siggen/buzz.htm" target="dynamic">buzz</a>
+</pre>
+<hr size="1" color="#A9A9A9" noshade>
+<a name="C" class="alpha">C</a>
+
+
+<pre class="con"> 
+<a class="con" href="siggen/cabasa.htm" target="dynamic">cabasa</a>
+<a class="con" href="siggen/x.htm" target="dynamic">cauchy</a>
+<a class="con" href="midi/chanctrl.htm" target="dynamic">chanctrl</a>
+<a class="con" href="control/button.htm" target="dynamic">checkbox</a>
+<a class="con" href="sigmod/vincr.htm" target="dynamic">clear</a>
+<a class="con" href="sigmod/clip.htm" target="dynamic">clip</a>
+<a class="con" href="control/clock.htm" target="dynamic">clock</a>
+<a class="con" href="control/clockon.htm" target="dynamic">clockoff</a>
+<a class="con" href="control/clockon.htm" target="dynamic">clockon</a>
+<a class="con" href="sigmod/comb.htm" target="dynamic">comb</a>
+<a class="con" href="siggen/cabasa.htm" target="dynamic">crunch</a>
+
+<a class="con" href="syntax/conditn.htm" target="dynamic">conditional
+expressions</a>
+
+<a class="con" href="control/setctrl.htm" target="dynamic">control</a>
+<a class="con" href="sigmod/convolve.htm" target="dynamic">convle</a>
+<a class="con" href="sigmod/convolve.htm" target="dynamic">convolve</a>
+<a class="con" href="valcnv/sin.htm" target="dynamic">cos</a>
+<a class="con" href="valcnv/sin.htm" target="dynamic">cosh</a>
+<a class="con" href="valcnv/sin.htm" target="dynamic">cosinv</a>
+<a class="con" href="pchcnv/cps2pch.htm" target="dynamic">cps2pch</a>
+<a class="con" href="midi/notnum.htm" target="dynamic">cpsmidi</a>
+<a class="con" href="midi/notnum.htm" target="dynamic">cpsmidib</a>
+<a class="con" href="pchcnv/octpch.htm" target="dynamic">cpsoct</a>
+<a class="con" href="pchcnv/octpch.htm" target="dynamic">cpspch</a>
+<a class="con" href="midi/cpstmid.htm" target="dynamic">cpstmid</a>
+<a class="con" href="pchcnv/cpstun.htm" target="dynamic">csptun</a>
+<a class="con" href="pchcnv/cpstun.htm" target="dynamic">csptuni</a>
+<a class="con" href="pchcnv/cps2pch.htm" target="dynamic">cpsxpch</a>
+<a class="con" href="control/cpuprc.htm" target="dynamic">cpuprc</a>
+<a class="con" href="sigmod/cross2.htm" target="dynamic">cross2</a>
+<a class="con" href="midi/midic7.htm" target="dynamic">ctrl14</a>
+<a class="con" href="midi/midic7.htm" target="dynamic">ctrl21</a>
+<a class="con" href="midi/midic7.htm" target="dynamic">ctrl7</a>
+<a class="con" href="midi/massign.htm" target="dynamic">ctrlinit</a>
+<a class="con" href="siggen/duserrnd.htm" target="dynamic">cuserrnd</a>
+<a class="con" href="utility/cvanal.htm" target="dynamic">cvanal</a>
+</pre>
+<hr size="1" color="#A9A9A9" noshade>
+<a name="D" class="alpha">D</a>
+
+
+<pre class="con"> 
+<a class="con" href="sigmod/dam.htm" target="dynamic">dam</a>
+<a class="con" href="valcnv/dbamp.htm" target="dynamic">dbamp</a>
+<a class="con" href="sigmod/dcblock.htm" target="dynamic">dcblock</a>
+<a class="con" href="sigmod/dconv.htm" target="dynamic">dconv</a>
+<a class="con" href="sigmod/deltapx.htm" target="dynamic">deltapx</a>
+<a class="con" href="sigmod/deltapx.htm" target="dynamic">deltapxw</a>
+<a class="con" href="sigmod/delayr.htm" target="dynamic">delay</a>
+<a class="con" href="sigmod/delayr.htm" target="dynamic">delay1</a>
+<a class="con" href="sigmod/delayr.htm" target="dynamic">delayr</a>
+<a class="con" href="sigmod/delayr.htm" target="dynamic">delayw</a>
+<a class="con" href="sigmod/deltap.htm" target="dynamic">deltap</a>
+<a class="con" href="sigmod/deltap.htm" target="dynamic">deltap3</a>
+<a class="con" href="sigmod/deltap.htm" target="dynamic">deltapi</a>
+<a class="con" href="sigmod/deltap.htm" target="dynamic">deltapn</a>
+<a class="con" href="sigmod/samphold.htm" target="dynamic">diff</a>
+<a class="con" href="sigio/in.htm" target="dynamic">diskin</a>
+<a class="con" href="sigio/print.htm" target="dynamic">dispfft</a>
+<a class="con" href="sigio/print.htm" target="dynamic">display</a>
+<a class="con" href="sigmod/distort1.htm" target="dynamic">distort1</a>
+<a class="con" href="syntax/assign.htm" target="dynamic">divz</a>
+<a class="con" href="utility/dnoise.htm" target="dynamic">dnoise</a>
+<a class="con" href="sigmod/samphold.htm" target="dynamic">downsamp</a>
+<a class="con" href="siggen/guiro.htm" target="dynamic">dripwater</a>
+<a class="con" href="sigio/dumpk.htm" target="dynamic">dumpk</a>
+<a class="con" href="sigio/dumpk.htm" target="dynamic">dumpk2</a>
+<a class="con" href="sigio/dumpk.htm" target="dynamic">dumpk3</a>
+<a class="con" href="sigio/dumpk.htm" target="dynamic">dumpk4</a>
+<a class="con" href="siggen/duserrnd.htm" target="dynamic">duserrnd</a>
+</pre>
+<hr size="1" color="#A9A9A9" noshade>
+<a name="E" class="alpha">E</a>
+
+
+<pre class="con"> 
+<a class="con" href="score/e.htm" target="dynamic">e Statement</a>
+<a class="con" href="syntax/iblock.htm" target="dynamic">endin</a>
+<a class="con" href="sigmod/linen.htm" target="dynamic">envlpx</a>
+<a class="con" href="sigmod/linen.htm" target="dynamic">envlpxr</a>
+<a class="con" href="valcnv/int.htm" target="dynamic">exp</a>
+<a class="con" href="siggen/line.htm" target="dynamic">expon</a>
+<a class="con" href="siggen/x.htm" target="dynamic">exprand</a>
+<a class="con" href="siggen/line.htm" target="dynamic">expseg</a>
+<a class="con" href="siggen/expsega.htm" target="dynamic">expsega</a>
+<a class="con" href="siggen/line.htm" target="dynamic">expsegr</a>
+</pre>
+<hr size="1" color="#A9A9A9" noshade>
+<a name="F" class="alpha">F</a>
+
+
+<pre class="con"> 
+<a class="con" href="score/f.htm" target="dynamic">f Statement</a>
+<a href="valcnv/filefax.htm" target="dynamic">filelen</a>
+<a href="valcnv/filefax.htm" target="dynamic">filenchnls</a>
+<a href="valcnv/filefax.htm" target="dynamic">filesr</a>
+<a href="valcnv/filefax.htm" target="dynamic">filpeak</a>
+<a class="con" href="sigmod/filter2.htm" target="dynamic">filter2</a>
+<a class="con" href="sigio/fin.htm" target="dynamic">fin</a>
+<a class="con" href="sigio/fin.htm" target="dynamic">fini</a>
+<a class="con" href="sigio/fin.htm" target="dynamic">fink</a>
+<a class="con" href="sigio/fout.htm" target="dynamic">fiopen</a>
+<a class="con" href="sigmod/flanger.htm" target="dynamic">flanger</a>
+<a class="con" href="sigio/flashtxt.htm" target="dynamic">flashtxt</a>
+<a class="con" href="siggen/fmbell.htm" target="dynamic">fmb3</a>
+<a class="con" href="siggen/fmbell.htm" target="dynamic">fmbell</a>
+<a class="con" href="siggen/fmbell.htm" target="dynamic">fmmetal</a>
+<a class="con" href="siggen/fmbell.htm" target="dynamic">fmpercfl</a>
+<a class="con" href="siggen/fmbell.htm" target="dynamic">fmrhode</a>
+<a class="con" href="siggen/fmvoice.htm" target="dynamic">fmvoice</a>
+<a class="con" href="siggen/fmbell.htm" target="dynamic">fmwurlie</a>
+<a class="con" href="siggen/fof.htm" target="dynamic">fof</a>
+<a class="con" href="siggen/fof.htm" target="dynamic">fof2</a>
+<a class="con" href="siggen/fog.htm" target="dynamic">fog</a>
+<a class="con" href="sigmod/fold.htm" target="dynamic">fold</a>
+<a class="con" href="sigmod/follow.htm" target="dynamic">follow</a>
+<a class="con" href="control/follow2.htm" target="dynamic">follow2</a>
+<a class="con" href="siggen/foscil.htm" target="dynamic">foscil</a>
+<a class="con" href="siggen/foscil.htm" target="dynamic">foscili</a>
+<a class="con" href="sigio/fout.htm" target="dynamic">fout</a>
+<a class="con" href="sigio/fout.htm" target="dynamic">foutk</a>
+<a class="con" href="sigio/fout.htm" target="dynamic">fouti</a>
+<a class="con" href="sigio/fout.htm" target="dynamic">foutir</a>
+<a class="con" href="valcnv/int.htm" target="dynamic">frac</a>
+<a class="con" href="siggen/ftgen.htm" target="dynamic">ftgen</a>
+<a class="con" href="valcnv/ftlen.htm" target="dynamic">ftlen</a>
+<a class="con" href="valcnv/ftlen.htm" target="dynamic">ftlptim</a>
+<a class="con" href="valcnv/ftlen.htm" target="dynamic">ftsr</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="G" class="alpha">G</a>
+
+<pre class="con"> 
+<a class="con" href="sigmod/rms.htm" target="dynamic">gain</a>
+<a class="con" href="siggen/x.htm" target="dynamic">gauss</a>
+<a class="con" href="siggen/buzz.htm" target="dynamic">gbuzz</a>
+<a class="con" href="gen/gen01.htm" target="dynamic">GEN01</a>
+<a class="con" href="gen/gen02.htm" target="dynamic">GEN02</a>
+<a class="con" href="gen/gen03.htm" target="dynamic">GEN03</a>
+<a class="con" href="gen/gen04.htm" target="dynamic">GEN04</a>
+<a class="con" href="gen/gen05.htm" target="dynamic">GEN05</a>
+<a class="con" href="gen/gen06.htm" target="dynamic">GEN06</a>
+<a class="con" href="gen/gen05.htm" target="dynamic">GEN07</a>
+<a class="con" href="gen/gen08.htm" target="dynamic">GEN08</a>
+<a class="con" href="gen/gen09.htm" target="dynamic">GEN09</a>
+<a class="con" href="gen/gen09.htm" target="dynamic">GEN10</a>
+<a class="con" href="gen/gen11.htm" target="dynamic">GEN11</a>
+<a class="con" href="gen/gen12.htm" target="dynamic">GEN12</a>
+<a class="con" href="gen/gen13.htm" target="dynamic">GEN13</a>
+<a class="con" href="gen/gen13.htm" target="dynamic">GEN14</a>
+<a class="con" href="gen/gen15.htm" target="dynamic">GEN15</a>
+<a class="con" href="gen/gen16.htm" target="dynamic">GEN16</a>
+<a class="con" href="gen/gen17.htm" target="dynamic">GEN17</a>
+<a class="con" href="gen/gen09.htm" target="dynamic">GEN19</a>
+<a class="con" href="gen/gen20.htm" target="dynamic">GEN20</a>
+<a class="con" href="gen/gen21.htm" target="dynamic">GEN21</a>
+<a class="con" href="gen/gen23.htm" target="dynamic">GEN23</a>
+<a class="con" href="gen/gen25.htm" target="dynamic">GEN25</a>
+<a class="con" href="gen/gen25.htm" target="dynamic">GEN27</a>
+<a class="con" href="gen/gen28.htm" target="dynamic">GEN28</a>
+<a class="con" href="gen/gen30.htm" target="dynamic">GEN30</a>
+<a class="con" href="gen/gen31.htm" target="dynamic">GEN31</a>
+<a class="con" href="siggen/gogobel.htm" target="dynamic">gogobel</a>
+<a class="con" href="pgmctl/igoto.htm" target="dynamic">goto</a>
+<a class="con" href="siggen/grain.htm" target="dynamic">grain</a>
+<a class="con" href="siggen/grain2.htm" target="dynamic">grain2</a>
+<a class="con" href="siggen/grain2.htm" target="dynamic">grain3</a>
+<a class="con" href="siggen/granule.htm" target="dynamic">granule</a>
+<a class="con" href="siggen/guiro.htm" target="dynamic">guiro</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="H" class="alpha">H</a>
+
+<pre class="con"> 
+<a class="con" href="sigmod/harmon.htm" target="dynamic">harmon</a>
+<a class="con" href="utility/hetro.htm" target="dynamic">hetro</a>
+<a class="con" href="sigmod/hilbert.htm" target="dynamic">hilbert</a>
+<a class="con" href="sigio/hrtfer.htm" target="dynamic">hrtfer</a>
+<a class="con" href="siggen/hsboscil.htm" target="dynamic">hsboscil</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="i" class="alpha">I</a>
+
+
+<pre class="con"> 
+<a class="con" href="valcnv/int.htm" target="dynamic">i </a>
+<a class="con" href="score/i.htm" target="dynamic">i Statement</a>
+<a class="con" href="pgmctl/igoto.htm" target="dynamic">if</a>
+<a class="con" href="pgmctl/igoto.htm" target="dynamic">igoto</a>
+<a class="con" href="durctl/ihold.htm" target="dynamic">ihold</a>
+<a class="con" href="sigio/in.htm" target="dynamic">in</a>
+<a class="con" href="sigio/inx.htm" target="dynamic">in32</a>
+<a class="con" href="sigio/inx.htm" target="dynamic">inc</a>
+<a class="con" href="sigio/in.htm" target="dynamic">inh</a>
+<a class="con" href="syntax/assign.htm" target="dynamic">init</a>
+<a class="con" href="midi/initc7.htm" target="dynamic">initc14</a>
+<a class="con" href="midi/initc7.htm" target="dynamic">initc21</a>
+<a class="con" href="midi/initc7.htm" target="dynamic">initc7</a>
+<a class="con" href="sigio/in.htm" target="dynamic">ino</a>
+<a class="con" href="sigio/in.htm" target="dynamic">inq</a>
+<a class="con" href="sigio/in.htm" target="dynamic">ins</a>
+<a class="con" href="syntax/iblock.htm" target="dynamic">instr</a>
+<a class="con" href="valcnv/int.htm" target="dynamic">int</a>
+<a class="con" href="sigmod/samphold.htm" target="dynamic">integ</a>
+<a class="con" href="sigmod/samphold.htm" target="dynamic">interp</a>
+<a class="con" href="sigio/inx.htm" target="dynamic">inx</a>
+<a class="con" href="sigio/inx.htm" target="dynamic">inz</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="J" class="alpha">J</a>
+
+<pre>
+<a class="con" href="sigmod/vibrato.htm" target="dynamic">jitter</a>
+<a class="con" href="sigmod/vibrato.htm" target="dynamic">jitter2</a>
+</pre>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="K" class="alpha">K</a>
+
+<pre class="con"> 
+<a class="con" href="pgmctl/igoto.htm" target="dynamic">kgoto</a>
+<a class="con" href="syntax/header.htm" target="dynamic">kr</a>
+<a class="con" href="syntax/header.htm" target="dynamic">ksmps</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="L" class="alpha">L</a>
+
+<pre class="con">          
+<a class="con" href="siggen/lfo.htm" target="dynamic">lfo</a>
+<a class="con" href="sigmod/limit.htm" target="dynamic">limit</a>
+<a class="con" href="siggen/line.htm" target="dynamic">line</a>
+<a class="con" href="sigmod/linen.htm" target="dynamic">linen</a>
+<a class="con" href="sigmod/linen.htm" target="dynamic">linenr</a>
+<a class="con" href="sigmod/lineto.htm" target="dynamic">lineto</a>
+<a class="con" href="siggen/x.htm" target="dynamic">linrand</a>
+<a class="con" href="siggen/line.htm" target="dynamic">linseg</a>
+<a class="con" href="siggen/line.htm" target="dynamic">linsegr</a>
+<a class="con" href="sigio/locsig.htm" target="dynamic">locsend</a>
+<a class="con" href="sigio/locsig.htm" target="dynamic">locsig</a>
+<a class="con" href="valcnv/int.htm" target="dynamic">log</a>
+<a class="con" href="valcnv/int.htm" target="dynamic">log10</a>
+<a class="con" href="valcnv/powoftwo.htm" target="dynamic">logbtwo</a>
+<a class="con" href="siggen/loopseg.htm" target="dynamic">loopseg</a>
+<a class="con" href="siggen/lorenz.htm" target="dynamic">lorenz</a>
+<a class="con" href="siggen/loscil.htm" target="dynamic">loscil</a>
+<a class="con" href="siggen/loscil.htm" target="dynamic">loscil3</a>
+<a class="con" href="sigmod/lowpass2.htm" target="dynamic">lowpass2</a>
+<a class="con" href="sigmod/lowres.htm" target="dynamic">lowres</a>
+<a class="con" href="sigmod/lowres.htm" target="dynamic">lowresx</a>
+<a class="con" href="utility/lpanal.htm" target="dynamic">lpanal</a>
+<a class="con" href="sigmod/lpf18.htm" target="dynamic">lpf18</a>
+<a class="con" href="sigmod/lpread.htm" target="dynamic">lpfreson</a>
+<a class="con" href="sigmod/lpslot.htm" target="dynamic">lpinterp</a>
+<a class="con" href="siggen/lposcil.htm" target="dynamic">lposcil</a>
+<a class="con" href="siggen/lposcil.htm" target="dynamic">lposcil3</a>
+<a class="con" href="sigmod/lpread.htm" target="dynamic">lpread</a>
+<a class="con" href="sigmod/lpread.htm" target="dynamic">lpreson</a>
+<a class="con" href="siggen/loopseg.htm" target="dynamic">lpshold</a>
+<a class="con" href="sigmod/lpslot.htm" target="dynamic">lpslot</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="M" class="alpha">M</a>
+
+<pre class="con"> 
+<a class="con" href="score/m.htm" target="dynamic">m Statement</a>
+<a class="con" href="valcnv/mac.htm" target="dynamic">mac</a>
+<a class="con" href="valcnv/mac.htm" target="dynamic">maca</a>
+
+<a class="con" href="syntax/macros.htm" target="dynamic">macros,
+orchestra</a>
+
+<a class="con" href="score/macros.htm" target="dynamic">macros,
+score</a>
+
+<a class="con" href="siggen/adsr.htm" target="dynamic">madsr</a>
+<a class="con" href="siggen/mandol.htm" target="dynamic">mandol</a>
+<a class="con" href="siggen/marimba.htm" target="dynamic">marimba</a>
+<a class="con" href="midi/massign.htm" target="dynamic">massign</a>
+<a class="con" href="control/cpuprc.htm" target="dynamic">maxalloc</a>
+<a class="con" href="midi/mclock.htm" target="dynamic">mclock</a>
+<a class="con" href="midi/mdelay.htm" target="dynamic">mdelay</a>
+<a class="con" href="midi/slider8.htm" target="dynamic">MIDI sliders</a>
+<a class="con" href="midi/midic7.htm" target="dynamic">midic14</a>
+<a class="con" href="midi/midic7.htm" target="dynamic">midic21</a>
+<a class="con" href="midi/midic7.htm" target="dynamic">midic7</a>
+<a class="con" href="midi/notnum.htm" target="dynamic">midictrl</a>
+<a class="con" href="midi/midiin.htm" target="dynamic">midiin</a>
+<a class="con" href="midi/moscil.htm" target="dynamic">midion</a>
+<a class="con" href="midi/midion2.htm" target="dynamic">midion2</a>
+<a class="con" href="midi/midiout.htm" target="dynamic">midiout</a>
+<a class="con" href="sigmod/limit.htm" target="dynamic">mirror</a>
+<a class="con" href="siggen/moog.htm" target="dynamic">moog</a>
+<a class="con" href="sigmod/biquad.htm" target="dynamic">moogvcf</a>
+<a class="con" href="midi/moscil.htm" target="dynamic">moscil</a>
+<a class="con" href="siggen/mpulse.htm" target="dynamic">mpulse</a>
+<a class="con" href="midi/mclock.htm" target="dynamic">mrtmsg</a>
+
+<a class="con" href="syntax/mult.htm" target="dynamic">multiple file
+orchestras</a>
+ 
+<a class="con" href="score/mult.htm" target="dynamic">multiple file
+scores</a>
+
+<a class="con" href="sigmod/multitap.htm" target="dynamic">multitap</a>
+<a class="con" href="siggen/adsr.htm" target="dynamic">mxadsr</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="N" class="alpha">N</a>
+
+<pre class="con"> 
+<a class="con" href="score/n.htm" target="dynamic">n Statement</a>
+<a class="con" href="syntax/header.htm" target="dynamic">nchnls</a>
+<a class="con" href="sigmod/nestedap.htm" target="dynamic">nestedap</a>
+<a class="con" href="sigmod/nlfilt.htm" target="dynamic">nlfilt</a>
+<a class="con" href="siggen/noise.htm" target="dynamic">noise</a>
+<a class="con" href="midi/noteon.htm" target="dynamic">noteoff</a>
+<a class="con" href="midi/noteon.htm" target="dynamic">noteon</a>
+<a class="con" href="midi/noteon.htm" target="dynamic">noteondur</a>
+<a class="con" href="midi/noteon.htm" target="dynamic">noteondur2</a>
+<a class="con" href="midi/notnum.htm" target="dynamic">notnum</a>
+<a class="con" href="score/nextp.htm" target="dynamic">np</a>
+<a class="con" href="sigmod/reverb2.htm" target="dynamic">nreverb</a>
+<a class="con" href="midi/nrpn.htm" target="dynamic">nrpn</a>
+<a class="con" href="valcnv/ftlen.htm" target="dynamic">nsamp</a>
+<a class="con" href="sigmod/ntrpol.htm" target="dynamic">ntrpol</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="O" class="alpha">O</a>
+
+<pre class="con"> 
+<a class="con" href="pchcnv/octpch.htm" target="dynamic">octcps</a>
+<a class="con" href="midi/notnum.htm" target="dynamic">octmidi</a>
+<a class="con" href="midi/notnum.htm" target="dynamic">octmidib</a>
+<a class="con" href="pchcnv/octpch.htm" target="dynamic">octpch</a>
+<a class="con" href="siggen/oscbnk.htm" target="dynamic">oscbnk</a>
+<a class="con" href="siggen/oscil.htm" target="dynamic">oscil</a>
+<a class="con" href="siggen/table.htm" target="dynamic">oscil1</a>
+<a class="con" href="siggen/table.htm" target="dynamic">oscil1i</a>
+<a class="con" href="siggen/oscil.htm" target="dynamic">oscil3</a>
+<a class="con" href="siggen/oscil.htm" target="dynamic">oscili</a>
+<a class="con" href="siggen/table.htm" target="dynamic">osciln</a>
+<a class="con" href="sigio/out.htm" target="dynamic">out</a>
+<a class="con" href="sigio/outx.htm" target="dynamic">out32</a>
+<a class="con" href="sigio/outx.htm" target="dynamic">outc</a>
+<a class="con" href="sigio/outx.htm" target="dynamic">outch</a>
+<a class="con" href="sigio/in.htm" target="dynamic">outh</a>
+<a class="con" href="midi/outic.htm" target="dynamic">outiat</a>
+<a class="con" href="midi/outic.htm" target="dynamic">outic</a>
+<a class="con" href="midi/outic.htm" target="dynamic">outic14</a>
+<a class="con" href="midi/outic.htm" target="dynamic">outipat</a>
+<a class="con" href="midi/outic.htm" target="dynamic">outipb</a>
+<a class="con" href="midi/outic.htm" target="dynamic">outipc</a>
+<a class="con" href="midi/outic.htm" target="dynamic">outkat</a>
+<a class="con" href="midi/outic.htm" target="dynamic">outkc</a>
+<a class="con" href="midi/outic.htm" target="dynamic">outkc14</a>
+<a class="con" href="midi/outic.htm" target="dynamic">outkpat</a>
+<a class="con" href="midi/outic.htm" target="dynamic">outkpb</a>
+<a class="con" href="midi/outic.htm" target="dynamic">outkpc</a>
+<a class="con" href="sigio/out.htm" target="dynamic">outo</a>
+<a class="con" href="sigio/out.htm" target="dynamic">outq</a>
+<a class="con" href="sigio/out.htm" target="dynamic">outq1</a>
+<a class="con" href="sigio/out.htm" target="dynamic">outq2</a>
+<a class="con" href="sigio/out.htm" target="dynamic">outq3</a>
+<a class="con" href="sigio/out.htm" target="dynamic">outq4</a>
+<a class="con" href="sigio/out.htm" target="dynamic">outs</a>
+<a class="con" href="sigio/out.htm" target="dynamic">outs1</a>
+<a class="con" href="sigio/out.htm" target="dynamic">outs2</a>
+<a class="con" href="sigio/outx.htm" target="dynamic">outx</a>
+<a class="con" href="sigio/outx.htm" target="dynamic">outz</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="P" class="alpha">P</a>
+
+<pre class="con"> 
+<a class="con" href="sigio/pan.htm" target="dynamic">pan</a>
+<a class="con" href="sigmod/pareq.htm" target="dynamic">pareq</a>
+<a class="con" href="siggen/x.htm" target="dynamic">pcauchy</a>
+<a class="con" href="midi/noteon.htm" target="dynamic">pchbend</a>
+<a class="con" href="midi/notnum.htm" target="dynamic">pchmidi</a>
+<a class="con" href="midi/notnum.htm" target="dynamic">pchmidib</a>
+<a class="con" href="pchcnv/octpch.htm" target="dynamic">pchoct</a>
+<a class="con" href="sigmod/peak.htm" target="dynamic">peak</a>
+<a class="con" href="sigmod/phaser1.htm" target="dynamic">phaser1</a>
+<a class="con" href="sigmod/phaser1.htm" target="dynamic">phaser2</a>
+<a class="con" href="siggen/phasor.htm" target="dynamic">phasor</a>
+<a class="con" href="siggen/phasrbnk.htm" target="dynamic">phasorbnk</a>
+<a class="con" href="siggen/pinkish.htm" target="dynamic">pinkish</a>
+<a class="con" href="sigmod/pitch.htm" target="dynamic">pitch</a>
+<a class="con" href="sigmod/pchamdf.htm" target="dynamic">pitchamdf</a>
+<a class="con" href="siggen/planet.htm" target="dynamic">planet</a>
+<a class="con" href="siggen/pluck.htm" target="dynamic">pluck</a>
+<a class="con" href="siggen/x.htm" target="dynamic">poisson</a>
+<a class="con" href="midi/notnum.htm" target="dynamic">polyaft</a>
+<a class="con" href="sigmod/port.htm" target="dynamic">port</a>
+<a class="con" href="sigmod/port.htm" target="dynamic">portk</a>
+<a class="con" href="siggen/poscil.htm" target="dynamic">poscil</a>
+<a class="con" href="siggen/poscil.htm" target="dynamic">poscil3</a>
+<a class="con" href="valcnv/pow.htm" target="dynamic">pow</a>
+<a class="con" href="valcnv/powoftwo.htm" target="dynamic">powoftwo</a>
+<a class="con" href="score/nextp.htm" target="dynamic">pp</a>
+<a class="con" href="control/cpuprc.htm" target="dynamic">prealloc</a>
+<a class="con" href="sigio/print.htm" target="dynamic">print</a>
+<a class="con" href="sigio/printk.htm" target="dynamic">printk</a>
+<a class="con" href="sigio/printk2.htm" target="dynamic">printk2</a>
+<a class="con" href="sigio/printk.htm" target="dynamic">printks</a>
+<a class="con" href="valcnv/product.htm" target="dynamic">product</a>
+<a class="con" href="syntax/strset.htm" target="dynamic">pset</a>
+<a class="con" href="siggen/pvadd.htm" target="dynamic">pvadd</a>
+<a class="con" href="utility/pvanal.htm" target="dynamic">pvanal</a>
+<a class="con" href="siggen/pvread.htm" target="dynamic">pvbufread</a>
+<a class="con" href="siggen/pvread.htm" target="dynamic">pvcross</a>
+<a class="con" href="siggen/pvread.htm" target="dynamic">pvinterp</a>
+<a class="con" href="utility/pvlook.htm" target="dynamic">pvlook</a>
+<a class="con" href="siggen/pvoc.htm" target="dynamic">pvoc</a>
+<a class="con" href="siggen/pvread.htm" target="dynamic">pvread</a>
+<a class="con" href="siggen/pvsynth.htm" target="dynamic">pvsadsyn</a>
+<a class="con" href="siggen/pvsanal.htm" target="dynamic">pvsanal</a>
+<a class="con" href="siggen/pvscross.htm" target="dynamic">pvscross</a>
+<a class="con" href="siggen/pvsread.htm" target="dynamic">pvsread</a>
+<a class="con" href="siggen/pvsftw.htm" target="dynamic">pvsftr</a>
+<a class="con" href="siggen/pvsftw.htm" target="dynamic">pvsftw</a>
+<a class="con" href="siggen/pvsinfo.htm" target="dynamic">pvsinfo</a>
+<a class="con" href="siggen/pvsmaska.htm" target="dynamic">pvsmaska</a>
+<a class="con" href="siggen/pvsynth.htm" target="dynamic">pvsynth</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="R" class="alpha">R</a>
+
+
+<pre class="con"> 
+<a class="con" href="score/r.htm" target="dynamic">r Statement</a>
+<a class="con" href="siggen/rand.htm" target="dynamic">rand</a>
+<a class="con" href="siggen/rand.htm" target="dynamic">randh</a>
+<a class="con" href="siggen/rand.htm" target="dynamic">randi</a>
+<a class="con" href="control/clockon.htm" target="dynamic">readclock</a>
+<a class="con" href="sigio/dumpk.htm" target="dynamic">readk</a>
+<a class="con" href="sigio/dumpk.htm" target="dynamic">readk2</a>
+<a class="con" href="sigio/dumpk.htm" target="dynamic">readk3</a>
+<a class="con" href="sigio/dumpk.htm" target="dynamic">readk4</a>
+<a class="con" href="pgmctl/reinit.htm" target="dynamic">reinit</a>
+<a class="con" href="midi/xtratim.htm" target="dynamic">release</a>
+<a class="con" href="siggen/repluck.htm" target="dynamic">repluck</a>
+<a class="con" href="sigmod/port.htm" target="dynamic">reson</a>
+<a class="con" href="sigmod/port.htm" target="dynamic">resonk</a>
+<a class="con" href="sigmod/resonr.htm" target="dynamic">resonr</a>
+<a class="con" href="sigmod/tonex.htm" target="dynamic">resonx</a>
+<a class="con" href="sigmod/resony.htm" target="dynamic">resony</a>
+<a class="con" href="sigmod/resonr.htm" target="dynamic">resonz</a>
+<a class="con" href="sigmod/comb.htm" target="dynamic">reverb</a>
+<a class="con" href="sigmod/reverb2.htm" target="dynamic">reverb2</a>
+<a class="con" href="sigmod/biquad.htm" target="dynamic">rezzy</a>
+<a class="con" href="pgmctl/reinit.htm" target="dynamic">rigoto</a>
+<a class="con" href="pgmctl/reinit.htm" target="dynamic">rireturn</a>
+<a class="con" href="sigmod/rms.htm" target="dynamic">rms</a>
+<a class="con" href="valcnv/rnd.htm" target="dynamic">rnd</a>
+<a class="con" href="siggen/rnd31.htm" target="dynamic">rnd31</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="S" class="alpha">S</a>
+
+<pre class="con"> 
+<a class="con" href="score/s.htm" target="dynamic">s Statement</a>
+<a class="con" href="midi/slider8.htm" target="dynamic">s16b14</a>
+<a class="con" href="midi/slider8.htm" target="dynamic">s32b14</a>
+<a class="con" href="sigmod/samphold.htm" target="dynamic">samphold</a>
+<a class="con" href="siggen/cabasa.htm" target="dynamic">sandpaper</a>
+<a class="con" href="siggen/scans.htm" target="dynamic">scans</a>
+<a class="con" href="siggen/scanu.htm" target="dynamic">scanu</a>
+<a class="con" href="control/schedule.htm" target="dynamic">schedule</a>
+<a class="con" href="control/schdkwhn.htm" target="dynamic">schedkwhen</a>
+<a class="con" href="control/schedule.htm" target="dynamic">schedwhen</a>
+<a class="con" href="utility/sdif2ads.htm"  target="dynamic">sdif2ads</a>
+<a class="con" href="syntax/seed.htm" target="dynamic">seed</a>
+<a class="con" href="siggen/cabasa.htm" target="dynamic">sekere</a>
+<a class="con" href="control/sense.htm" target="dynamic">sensekey</a>
+<a class="con" href="control/setctrl.htm" target="dynamic">setctrl</a>
+<a class="con" href="siggen/sf2.htm" target="dynamic">sfload</a>
+<a class="con" href="siggen/sf2.htm" target="dynamic">sfpassign</a>
+<a class="con" href="siggen/sf2.htm" target="dynamic">sfpreset</a>
+<a class="con" href="siggen/sf2.htm" target="dynamic">sfplist</a>
+<a class="con" href="siggen/sf2.htm" target="dynamic">sfilist</a>
+<a class="con" href="siggen/sf2.htm" target="dynamic">sfplay</a>
+<a class="con" href="siggen/sf2.htm" target="dynamic">sfplaym</a>
+<a class="con" href="siggen/sf2.htm" target="dynamic">sfinstr</a>
+<a class="con" href="siggen/sf2.htm" target="dynamic">sfinstrm</a>
+<a class="con" href="siggen/shaker.htm" target="dynamic">shaker</a>
+<a class="con" href="valcnv/sin.htm" target="dynamic">sin</a>
+<a class="con" href="valcnv/sin.htm" target="dynamic">sinh</a>
+<a class="con" href="valcnv/sin.htm" target="dynamic">sininv</a>
+<a class="con" href="siggen/guiro.htm" target="dynamic">sleighbells</a>
+<a class="con" href="midi/slider8.htm" target="dynamic">slider16</a>
+<a class="con" href="midi/slider8.htm" target="dynamic">slider16f</a>
+<a class="con" href="midi/slider8.htm" target="dynamic">slider32</a>
+<a class="con" href="midi/slider8.htm" target="dynamic">slider32f</a>
+<a class="con" href="midi/slider8.htm" target="dynamic">slider64</a>
+<a class="con" href="midi/slider8.htm" target="dynamic">slider64f</a>
+<a class="con" href="midi/slider8.htm" target="dynamic">slider8</a>
+<a class="con" href="midi/slider8.htm" target="dynamic">slider8f</a>
+<a class="con" href="utility/sndinfo.htm" target="dynamic">sndinfo</a>
+<a class="con" href="siggen/sndwarp.htm" target="dynamic">sndwarp</a>
+<a class="con" href="siggen/sndwarp.htm" target="dynamic">sndwarpst</a>
+<a class="con" href="sigio/in.htm" target="dynamic">soundin</a>
+<a class="con" href="sigio/out.htm" target="dynamic">soundout</a>
+<a class="con" href="sigio/out.htm" target="dynamic">soundouts</a>
+<a class="con" href="sigio/space.htm" target="dynamic">space</a>
+<a class="con" href="sigmod/spat.htm" target="dynamic">pat3d</a>
+<a class="con" href="sigmod/spat.htm" target="dynamic">spat3di</a>
+<a class="con" href="sigmod/spat.htm" target="dynamic">spat3dt</a>
+<a class="con" href="sigio/space.htm" target="dynamic">spdist</a>
+<a class="con" href="spectral/specaddm.htm" target="dynamic">specaddm</a>
+<a class="con" href="spectral/specaddm.htm" target="dynamic">specdiff</a>
+<a class="con" href="spectral/specsum.htm" target="dynamic">specdisp</a>
+<a class="con" href="spectral/specaddm.htm" target="dynamic">specfilt</a>
+<a class="con" href="spectral/specaddm.htm" target="dynamic">spechist</a>
+<a class="con" href="spectral/specptrk.htm" target="dynamic">specptrk</a>
+<a class="con" href="spectral/specaddm.htm" target="dynamic">specscal</a>
+<a class="con" href="spectral/specsum.htm" target="dynamic">specsum</a>
+<a class="con" href="spectral/spectrum.htm" target="dynamic">spectrum</a>
+<a class="con" href="sigio/space.htm" target="dynamic">spsend</a>
+<a class="con" href="valcnv/int.htm" target="dynamic">sqrt</a>
+<a class="con" href="syntax/header.htm" target="dynamic">sr</a>
+<a class="con" href="utility/srconv.htm" target="dynamic">srconv</a>
+<a class="con" href="siggen/cabasa.htm" target="dynamic">stix</a>
+<a class="con" href="sigmod/streson.htm" target="dynamic">streson</a>
+<a class="con" href="syntax/strset.htm" target="dynamic">strset</a>
+<a class="con" href="valcnv/sum.htm" target="dynamic">sum</a>
+<a class="con" href="sigmod/svfilter.htm" target="dynamic">svfilter</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="T" class="alpha">T</a>
+
+<pre class="con"> 
+<a class="con" href="score/t.htm" target="dynamic">t Statement</a>
+<a class="con" href="siggen/table.htm" target="dynamic">table</a>
+<a class="con" href="siggen/table.htm" target="dynamic">table3</a>
+<a class="con" href="siggen/tablegpw.htm" target="dynamic">tablecopy</a>
+<a class="con" href="siggen/tablegpw.htm" target="dynamic">tablegpw</a>
+<a class="con" href="siggen/table.htm" target="dynamic">tablei</a>
+<a class="con" href="siggen/tablegpw.htm" target="dynamic">tableicopy</a>
+<a class="con" href="siggen/tablegpw.htm" target="dynamic">tableigpw</a>
+<a class="con" href="siggen/tablekt.htm" target="dynamic">tableikt</a>
+<a class="con" href="siggen/tablegpw.htm" target="dynamic">tableimix</a>
+<a class="con" href="siggen/tableiw.htm" target="dynamic">tableiw</a>
+<a class="con" href="siggen/tablekt.htm" target="dynamic">tablekt</a>
+<a class="con" href="siggen/tablegpw.htm" target="dynamic">tablemix</a>
+<a class="con" href="siggen/tableng.htm" target="dynamic">tableng</a>
+<a class="con" href="siggen/tablera.htm" target="dynamic">tablera</a>
+<a class="con" href="siggen/pvoc.htm" target="dynamic">tableseg</a>
+<a class="con" href="siggen/tableiw.htm" target="dynamic">tablew</a>
+<a class="con" href="siggen/tablera.htm" target="dynamic">tablewa</a>
+<a class="con" href="siggen/tableiw.htm" target="dynamic">tablewkt</a>
+<a class="con" href="siggen/pvoc.htm" target="dynamic">tablexseg</a>
+<a class="con" href="siggen/guiro.htm" target="dynamic">tambourine</a>
+<a class="con" href="valcnv/sin.htm" target="dynamic">tan</a>
+<a class="con" href="valcnv/sin.htm" target="dynamic">tanh</a>
+<a class="con" href="valcnv/sin.htm" target="dynamic">taninv</a>
+<a class="con" href="valcnv/taninv2.htm" target="dynamic">taninv2</a>
+<a class="con" href="sigmod/tbvcf.htm" target="dynamic">tbvcf</a>
+<a class="con" href="control/tempest.htm" target="dynamic">tempest</a>
+<a class="con" href="control/tempo.htm" target="dynamic">tempo</a>
+<a class="con" href="control/tempo.htm" target="dynamic">tempoval</a>
+<a class="con" href="pgmctl/igoto.htm" target="dynamic">tigoto</a>
+<a class="con" href="control/timek.htm" target="dynamic">timek</a>
+<a class="con" href="control/timek.htm" target="dynamic">times</a>
+<a class="con" href="control/timek.htm" target="dynamic">timeinstk</a>
+<a class="con" href="control/timek.htm" target="dynamic">timeinsts</a>
+<a class="con" href="pgmctl/igoto.htm" target="dynamic">timout</a>
+<a class="con" href="syntax/assign.htm" target="dynamic">tival</a>
+<a class="con" href="sigmod/lineto.htm" target="dynamic">tlineto</a>
+<a class="con" href="sigmod/port.htm" target="dynamic">tone</a>
+<a class="con" href="sigmod/port.htm" target="dynamic">tonek</a>
+<a class="con" href="sigmod/tonex.htm" target="dynamic">tonex</a>
+<a class="con" href="siggen/transeg.htm" target="dynamic">transeg</a>
+<a class="con" href="siggen/trigger.htm" target="dynamic">trigger</a>
+<a class="con" href="siggen/x.htm" target="dynamic">trirand</a>
+<a class="con" href="durctl/ihold.htm" target="dynamic">turnoff</a>
+<a class="con" href="durctl/turnon.htm" target="dynamic">turnon</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="U" class="alpha">U</a>
+
+<pre class="con"> 
+<a class="con" href="siggen/x.htm" target="dynamic">unirand</a>
+<a class="con" href="sigmod/samphold.htm" target="dynamic">upsamp</a>
+<a class="con" href="valcnv/urd.htm" target="dynamic">urd</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="V" class="alpha">V</a>
+
+<pre class="con"> 
+<a class="con" href="score/v.htm" target="dynamic">v Statement</a>
+<a class="con" href="sigmod/vbap.htm" target="dynamic">vbaplsinit</a>
+<a class="con" href="sigmod/vbap.htm" target="dynamic">vbap4</a>
+<a class="con" href="sigmod/vbap.htm" target="dynamic">vbap8</a>
+<a class="con" href="sigmod/vbap.htm" target="dynamic">vbap16</a>
+<a class="con" href="sigmod/vbap.htm" target="dynamic">vbap4move</a>
+<a class="con" href="sigmod/vbap.htm" target="dynamic">vbap8move</a>
+<a class="con" href="sigmod/vbap.htm" target="dynamic">vbap16move</a>
+<a class="con" href="sigmod/vbap.htm" target="dynamic">vbapz</a>
+<a class="con" href="sigmod/vbap.htm" target="dynamic">vbapzmove</a>
+<a class="con" href="siggen/vco.htm" target="dynamic">vco</a>
+<a class="con" href="sigmod/vdelay.htm" target="dynamic">vdelay3</a>
+<a class="con" href="sigmod/vdelay.htm" target="dynamic">vdelay</a>
+<a class="con" href="sigmod/vdelayx.htm" target="dynamic">vdelayx</a>
+<a class="con" href="sigmod/vdelayx.htm" target="dynamic">vdelayxq</a>
+<a class="con" href="sigmod/vdelayx.htm" target="dynamic">vdelayxs</a>
+<a class="con" href="sigmod/vdelayx.htm" target="dynamic">vdelayxw</a>
+<a class="con" href="sigmod/vdelayx.htm" target="dynamic">vdelayxwq</a>
+<a class="con" href="sigmod/vdelayx.htm" target="dynamic">vdelayxws</a>
+<a class="con" href="midi/notnum.htm" target="dynamic">veloc</a>
+<a class="con" href="siggen/marimba.htm" target="dynamic">vibes</a>
+<a class="con" href="sigmod/vibrato.htm" target="dynamic">vibrato</a>
+<a class="con" href="sigmod/vibrato.htm" target="dynamic">vibr</a>
+<a class="con" href="sigmod/vincr.htm" target="dynamic">vincr</a>
+<a class="con" href="sigmod/vlowres.htm" target="dynamic">vlowres</a>
+<a class="con" href="siggen/voice.htm" target="dynamic">voice</a>
+<a class="con" href="siggen/pvoc.htm" target="dynamic">vpvoc</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="W" class="alpha">W</a>
+
+<pre class="con"> 
+<a class="con" href="sigmod/waveset.htm" target="dynamic">waveset</a>
+<a class="con" href="siggen/x.htm" target="dynamic">weibull</a>
+<a class="con" href="siggen/wgbow.htm" target="dynamic">wgbow</a>
+<a class="con" href="siggen/wgbowedbar.htm" target="dynamic">wgbowedbar</a>
+<a class="con" href="siggen/wgbrass.htm" target="dynamic">wgbrass</a>
+<a class="con" href="siggen/wgclar.htm" target="dynamic">wgclar</a>
+<a class="con" href="siggen/wgflute.htm" target="dynamic">wgflute</a>
+<a class="con" href="siggen/wgpluck.htm" target="dynamic">wgpluck</a>
+<a class="con" href="siggen/repluck.htm" target="dynamic">wgpluck2</a>
+<a class="con" href="sigmod/wguide1.htm" target="dynamic">wguide1</a>
+<a class="con" href="sigmod/wguide1.htm" target="dynamic">wguide2</a>
+<a class="con" href="sigmod/limit.htm" target="dynamic">wrap</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="X" class="alpha">X</a>
+
+<pre class="con"> 
+<a class="con" href="siggen/adsr.htm" target="dynamic">xadsr</a>
+
+<a class="con" href="siggen/x.htm" target="dynamic">x-class noise
+generators</a>
+
+<a class="con" href="midi/xtratim.htm" target="dynamic">xtratim</a>
+<a class="con" href="control/xyin.htm" target="dynamic">xyin</a>
+</pre>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a name="Z" class="alpha">Z</a>
+
+<pre class="con"> 
+<a class="con" href="zak/zkmod.htm" target="dynamic">zacl</a>
+<a class="con" href="zak/zakinit.htm" target="dynamic">zakinit</a>
+<a class="con" href="zak/zkmod.htm" target="dynamic">zamod</a>
+<a class="con" href="zak/zir.htm" target="dynamic">zar</a>
+<a class="con" href="zak/zir.htm" target="dynamic">zarg</a>
+<a class="con" href="zak/ziw.htm" target="dynamic">zaw</a>
+<a class="con" href="zak/ziw.htm" target="dynamic">zawm</a>
+<a class="con" href="sigmod/filter2.htm" target="dynamic">zfilter2</a>
+<a class="con" href="zak/zir.htm" target="dynamic">zir</a>
+<a class="con" href="zak/ziw.htm" target="dynamic">ziw</a>
+<a class="con" href="zak/ziw.htm" target="dynamic">ziwm</a>
+<a class="con" href="zak/zkmod.htm" target="dynamic">zkcl</a>
+<a class="con" href="zak/zkmod.htm" target="dynamic">zkmod</a>
+<a class="con" href="zak/zir.htm" target="dynamic">zkr</a>
+<a class="con" href="zak/ziw.htm" target="dynamic">zkw</a>
+<a class="con" href="zak/ziw.htm" target="dynamic">zkwm</a>
+</pre>
+<hr size="4" color="#A9A9A9" noshade>
+<h3 class="alph"><a class="con" href="manual2.htm" target="_parent">Use Non-Frames Version</a></h3>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>v Statement</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="b.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="s.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#statements" class="toqr">
+Score Syntax: Statements</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>v Statement</h2>
+
+<pre>
+  <strong>v</strong>  p1</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>The <strong>v statement</strong> provides for locally variable time warping of score events.
+</p>
+<h3>P Fields</h3>
+
+<pre>
+  p1    Time warp factor (must be positive).
+</pre>
+
+<h3>Special Considerations</h3>
+<p>The <strong>v statement</strong> takes effect with the following <strong>i statement</strong>, and remains in effect until the next <strong>v statement</strong>, <a href="s.htm"><strong>s statement</strong></a>, or <a href="e.htm"><strong>e statement</strong></a>.
+</p>
+<h3>Examples</h3>
+<p>The value of p1 is used as a multiplier for the start times (p2) of subsequent <a href="i.htm"><strong>i statements</strong></a>.
+</p>
+<pre>
+  <strong>i</strong>1   0 1  ;note1
+  <strong>v</strong>2
+  <strong>i</strong>1   1 1  ;note2
+</pre>
+<p>In this example, the second note occurs two beats after the first note, and is twice as long.
+</p>
+<p>Although the <strong>v statement</strong> is similar to the <a href="t.htm"><strong>t statement</strong></a>, the <strong>v statement</strong> is local in operation. That is, <strong>v</strong> affects only the following notes, and its effect may be cancelled or changed by another <strong>v statement</strong>.
+</p>
+<p>Carried values are unaffected by the <strong>v statement</strong> (see <a href="top.htm#carry">Carry</a>).
+</p>
+<pre>
+  <strong>i</strong>1   0 1  ;note1
+  <strong>v</strong>2
+  <strong>i</strong>1   1 .  ;note2
+  <strong>i</strong>1   2 .  ;note3
+  <strong>v</strong>1
+  <strong>i</strong>1   3 .  ;note4
+  <strong>i</strong>1   4 .  ;note5
+  <strong>e</strong>
+</pre>
+<p>In this example, note2 and note4 occur simultaneously, while note3 actually occurs before note2, that is, at its original place. Durations are unaffected.
+</p>
+<pre>
+  <strong>i</strong>1   0 1
+  <strong>v</strong>2
+  <strong>i</strong>.   + .
+  <strong>i</strong>.   . .
+</pre>
+<p>In this example, the <strong>v statement</strong> has no effect.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="b.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="s.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#statements" class="toqr">
+Score Syntax: Statements</font></a>
+</body>
+
+</html>

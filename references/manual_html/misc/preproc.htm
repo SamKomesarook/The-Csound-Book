@@ -1,0 +1,84 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>Score File Preprocessing</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="unifile.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../utility/top.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Score File Preprocessing</font>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h1>Score File Preprocessing</h1>
+<hr size="2" color="#A9A9A9" noshade>
+
+<a name="extract"><h2>The Extract Feature</h2></a>
+
+<p>This feature will extract a segment of a sorted numeric score file according to instructions taken from a control file. The control file contains an instrument list and two time points, from and to, in the form:
+</p>
+<pre>  instruments 1  2  from  1:27.5  to  2:2</pre>
+<p>The component labels may be abbreviated as i, f and t. The time points denote the beginning and end of the extract in terms of:
+</p>
+<pre>  [section no.] : [beat no.].</pre>
+<p>each of the three parts is also optional. The default values for missing i, f or t are:
+</p>
+<pre>  all instruments, beginning of score, end of score.</pre>
+
+<hr size="2" color="#A9A9A9" noshade>
+
+<a name="scsort"><h2>Independent Pre-Processing with Scsort</h2></a>
+<p>Although the result of all score preprocessing is retained in the file score.srt after orchestra performance (it exists as soon as score preprocessing has completed), the user may sometimes want to run these phases independently. The command
+</p>
+<pre>  <strong>scot</strong> filename  </pre>
+<p>will process the Scot formatted filename, and leave a <a href="../score/top.htm"><em>standard numeric score</em></a> result in a file named score for perusal or later processing.
+</p>
+<p>The command
+</p>
+<pre>  <strong>scscort</strong> &lt; infile &gt; outfile  </pre>
+<p>will put a numeric score infile through Carry, Tempo, and Sort preprocessing, leaving the result in outfile.
+</p>
+<p>Likewise <strong>extract</strong>, also normally invoked as part of the <a href="../command/top.htm"><strong>Csound</strong> command</a>, can be invoked as a standalone program:
+</p>
+<pre>  <strong>extract</strong> xfile &lt; score.sort &gt; score.extract  </pre>
+<p>This command expects an already sorted score. An unsorted score should first be sent through Scsort then piped to the extract program:
+</p>
+<pre>  <strong>scsort</strong> &lt; scorefile | <strong>extract</strong> xfile &gt; score.extract  </pre>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="unifile.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../utility/top.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Score File Preprocessing</font>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>foscil, foscili</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="oscbnk.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="fmvoice.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#fm" class="toqr">
+Signal Generators: FM Synthesis</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>foscil, foscili</h2>
+<pre>
+  ar      <strong>foscil</strong>     xamp, kcps, kcar, kmod, kndx, ifn[, iphs]
+  ar      <strong>foscili</strong>    xamp, kcps, kcar, kmod, kndx, ifn[, iphs]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Basic frequency modulated oscillators.</p>
+<h3>Initialization</h3>
+<p><em>ifn</em> &#8211; function table number. Requires a wrap-around guard point.</p>
+<p><em>iphs</em> (optional) &#8211; initial phase of waveform in table <em>ifn</em>, expressed as a fraction of a cycle (0 to 1). A negative value will cause phase initialization to be skipped. The default value is 0.</p>
+
+
+<h3>Performance</h3>
+
+<p><strong>foscil</strong> is a composite unit that effectively banks two <strong>oscils</strong> in the familiar Chowning FM setup, wherein the audio-rate output of one generator is used to modulate the frequency input of another (the &quot;carrier&quot;). Effective carrier frequency = <em>kcps</em> * <em>kcar</em>, and modulating frequency = <em>kcps</em> * <em>xmod</em>. For integral values of <em>xcar</em> and <em>xmod</em>, the perceived fundamental will be the minimum positive value of <em>kcps</em> * (<em>xcar</em> &#8211; n * <em>xmod</em>), n = 1,1,2,... The input <em>kndx</em> is the index of modulation (usually time-varying and ranging 0 to 4 or so) which determines the spread of acoustic energy over the partial positions given by n = 0,1,2,.., etc. <em>ifn</em> should point to a stored sine wave. Previous to version 3.50, <em>xcar</em> and <em>xmod</em> could be k-rate only.</p>
+
+<p><strong>foscili</strong> differs from <strong>foscil</strong> in that the standard procedure of using a truncated phase as a sampling index is here replaced by a process that interpolates between two successive lookups. Interpolating generators will produce a noticeably cleaner output signal, but they may take as much as twice as long to run. Adequate accuracy can also be gained without the time cost of interpolation by using large stored function tables of 2K, 4K or 8K points if the space is available.</p>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="oscbnk.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="fmvoice.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#fm" class="toqr">
+Signal Generators: FM Synthesis</font></a>
+</body>
+
+</html>

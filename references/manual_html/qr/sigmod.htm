@@ -1,0 +1,1024 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>QuickRef: Signal Modifiers</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body text="black" link="black" vlink="black" alink="black" bgcolor="white">
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td class="qr" width="10"></td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="table.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="zak.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+
+
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h1>Signal Modifiers</h1>
+
+<a class="qr" name="stdfilters"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Modifiers: Standard Filters</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="643">
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/port.htm"><strong>portk</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig, khtim[, isig]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/port.htm"><strong>port</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig, ihtim[, isig]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/port.htm"><strong>tonek</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig, khp[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/port.htm"><strong>tone</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, khp[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/port.htm"><strong>atonek</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig, khp[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/port.htm"><strong>atone</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, khp[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/port.htm"><strong>resonk</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig, kcf, kbw[, iscl, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/port.htm"><strong>reson</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kcf, kbw[, iscl, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/port.htm"><strong>aresonk</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig, kcf, kbw[, iscl, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/port.htm"><strong>areson</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kcf, kbw[, iscl, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/tonex.htm"><strong>tonex</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, khp[, inumlayer, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/tonex.htm"><strong>atonex</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, khp[, inumlayer, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/tonex.htm"><strong>resonx</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kcf, kbw[, inumlayer, iscl, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/resonr.htm"><strong>resonr</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kcf, kbw[,iscl, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/resonr.htm"><strong>resonz</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kcf, kbw[,iscl, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/resony.htm"><strong>resony</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kbf, kbw, inum, ksep[, isepmode, iscl, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/lowres.htm"><strong>lowres</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kcutoff, kresonance[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/lowres.htm"><strong>lowresx</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kcutoff, kresonance[, inumlayer, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vlowres.htm"><strong>vlowres</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kfco, kres, iord, ksep</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/lowpass2.htm"><strong>lowpass2</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kcf, kq[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/biquad.htm"><strong>biquad</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kb0, kb1, kb2, ka0, ka1, ka2[, iskip]</td>
+</tr>
+
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/biquad.htm"><strong>biquada</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, ab0, ab1, ab2, aa0, aa1, aa2[, iskip]</td>
+</tr>
+
+
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/biquad.htm"><strong>rezzy</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, xfco, xres[, imode]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/biquad.htm"><strong>moogvcf</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, xfco, xres[, iscale]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+alow, ahigh, aband</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/svfilter.htm"><strong>svfilt</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kcf, kq[, iscl]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP" height="19">
+ar1, ar2</td>
+<td class="qr" nowrap width="16%" valign="TOP" height="19">
+<a class="qr" href="../sigmod/hilbert.htm"><strong>hilbert</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP" height="19">
+asig</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/butterhp.htm"><strong>butterhp</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kfreq[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/butterhp.htm"><strong>butterlp</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kfreq[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/butterhp.htm"><strong>butterbp</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kfreq, kband[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/butterhp.htm"><strong>butterbr</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kfreq, kband[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+k/ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/filter2.htm"><strong>filter2</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+k/asig, iM, iN, ib0, ib1, ..., ibM, ia1, ia2, ..., iaN</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/filter2.htm"><strong>zfilter2</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kdamp, kfreq, iM, iN, ib0, ib1, ..., ibM, ia1, ia2, ..., iaN</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/lpf18.htm"><strong>lpf18</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kfco, kres, kdist</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/tbvcf.htm"><strong>tbvcf</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, xfco, xres, kdist, kasym</td>
+</tr>
+<!-- Csound 4.13 -->
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/lineto.htm"><strong>lineto</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig, ktime</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/lineto.htm"><strong>tlineto</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig, ktime, ktrig</td>
+</tr>
+
+
+</table>
+
+<a class="qr" name="specfilters"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Modifiers: Specialized Filters</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="643">
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/nlfilt.htm"><strong>nlfilt</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ain, ka, kb, kd, kL, kC</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/pareq.htm"><strong>pareq</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kc, iv, iq, imode</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/dcblock.htm"><strong>dcblock</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig[, ig]</td>
+</tr>
+
+</table>
+
+
+<a class="qr" name="env"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Modifiers: Envelope Modifiers</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="643">
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+k/ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/linen.htm"><strong>linen</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+k/xamp, irise, idur, idec</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+k/ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/linen.htm"><strong>linenr</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+k/xamp, irise, idec, iatdec</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+k/ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/linen.htm"><strong>envlpx</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+k/xamp, irise, idur, idec, ifn, iatss, iatdec[, ixmod]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+k/ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/linen.htm"><strong>envlpxr</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+k/xamp, irise, idur, idec, ifn, iatss, iatdec[, ixmod[, irind]]</td>
+</tr>
+
+
+</table>
+
+<a class="qr" name="amp"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Modifiers: Amplitude Modifiers</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="643">
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/rms.htm"><strong>rms</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig[, ihp, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/rms.htm"><strong>gain</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, krms[, ihp, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/rms.htm"><strong>balance</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, acomp[, ihp, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/dam.htm"><strong>dam</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kthreshold, icomp1, icomp2, irtime, iftime</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/clip.htm"><strong>clip</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, imeth, ilimit[, iarg]</td>
+</tr>
+
+</table>
+
+<a class="qr" name="limiters"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Modifiers: Signal Limiters</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="643">
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+i/k/ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/limit.htm"><strong>wrap</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+i/k/asig, i/k/klow, i/k/khigh</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+i/k/ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/limit.htm"><strong>mirror</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+i/k/asig, i/k/klow, i/k/khigh</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+i/k/ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/limit.htm"><strong>limit</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+i/k/asig, i/k/klow, i/k/khigh</td>
+</tr>
+
+
+</table>
+
+<a class="qr" name="delay"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Modifiers: Delay</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="643">
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/delayr.htm"><strong>delayr</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+idlt[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/delayr.htm"><strong>delayw</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/delayr.htm"><strong>delay</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, idlt[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/delayr.htm"><strong>delay1</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/deltap.htm"><strong>deltap</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+kdlt</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/deltap.htm"><strong>deltapi</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+xdlt</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/deltap.htm"><strong>deltapn</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+xnumsamps</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/deltap.htm"><strong>deltap3</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+xdlt</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/multitap.htm"><strong>multitap</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, itime1, igain1, itime2, igain2...</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vdelay.htm"><strong>vdelay</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, adel, imaxdel[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vdelay.htm"><strong>vdelay3</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, adel, imaxdel[, iskip]</td>
+</tr>
+
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vdelayx.htm"><strong>vdelayx</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, adel, imaxdel[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar1, ar2</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vdelayx.htm"><strong>vdelayxs</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig1, asig2, adel, imaxdel[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar1, ar2, ar3, ar4</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vdelayx.htm"><strong>vdelayxq</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig1, asig2, asig3, asig4, adel, imaxdel[, iskip]</td>
+</tr>
+
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vdelayx.htm"><strong>vdelayxw</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, adel, imaxdel[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar1, ar2</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vdelayx.htm"><strong>vdelayxws</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig1, asig2, adel, imaxdel[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar1, ar2, ar3, ar4</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vdelayx.htm"><strong>vdelayxwq</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig1, asig2, asig3, asig4, adel, imaxdel[, iskip]</td>
+</tr>
+<!-- added in 4.13 -->
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/deltapx.htm"><strong>deltapx</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+adel, iwsize</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/deltapx.htm"><strong>deltapxw</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, adel, iwsize</td>
+</tr>
+
+</table>
+
+<a class="qr" name="reverb"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Modifiers: Reverberation</h2>
+
+<table cellspacing="0" border="0" cellpadding="7" width="643">
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/comb.htm"><strong>reverb</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, krvt[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/reverb2.htm"><strong>reverb2</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, ktime, khdif[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/reverb2.htm"><strong>nreverb</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, ktime, khdif[, iskip][,inumCombs, ifnCombs][, inumAlpas, ifnAlpas]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/comb.htm"><strong>comb</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, krvt, ilpt[, iskip][, insmps]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/comb.htm"><strong>alpass</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, krvt, ilpt[, iskip][, insmps]</td>
+</tr>
+<tr>
+<td>ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/nestedap.htm"><strong>nestedap</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, imode, imaxdel, idel1, igain1[, idel2, igain2[, idel3, igain3]]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+a1, a2</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/babo.htm"><strong>babo</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, ksrcx, ksrcy, ksrcz, irx, iry, irz[, idiff[, ifno]]</td>
+</tr>
+
+
+</table>
+
+<a class="qr" name="waveguides"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Modifiers: Waveguides</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="643">
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/wguide1.htm"><strong>wguide1</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kfreq, kcutoff, kfeedback</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/wguide1.htm"><strong>wguide2</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kfreq1, kfreq2, kcutoff1, kcutoff2, kfeedback1, kfeedback2</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/streson.htm"><strong>streson</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kfr, ifdbgain</td>
+</tr>
+
+
+</table>
+
+<a class="qr" name="effects"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Modfiers: Special Effects</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="643">
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/harmon.htm"><strong>harmon</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig,<strong> </strong>kestfrq, kmaxvar, kgenfreq1, kgenfreq2, imode, iminfrq, iprd</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/flanger.htm"><strong>flanger</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, adel, kfeedback[, imaxd]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/distort1.htm"><strong>distort1</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig[, kpregain[, kpostgain[, kshape1[, kshape2]]]]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/phaser1.htm"><strong>phaser1</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kfreq, iord, kfeedback[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/phaser1.htm"><strong>phaser2</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kfreq, iord, imode, ksep, kfeedback</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/waveset.htm"><strong>waveset</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ain, krep</td>
+</tr>
+
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/bbcut.htm"><strong>bbcutm</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, ibps, isubdiv, ibarlength, iphrasebars, inumrepeats[, istutterspeed, istutterchance, ienvchoice]</td>
+</tr>
+
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar1, ar2</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/bbcut.htm"><strong>bbcuts</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig1, asig2, ibps, isubdiv, ibarlength, iphrasebars, inumrepeats[, istutterspeed, istutterchance, ienvchoice]</td>
+</tr>
+
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vibrato.htm"><strong>vibrato</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+kAvgAmp, kAvgFreq, kRandAmp, kRandFreq, kAmpMinRate, kAmpMaxRate, kfreqMinRate, kfreqMaxRate, ifn [, iphs]</td>
+</tr>
+
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vibrato.htm"><strong>vibr</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+kAvgAmp, kAvgFreq, ifn</td>
+</tr>
+
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vibrato.htm"><strong>jitter</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+kamp, kfreqMin, kfreqMax</td>
+</tr>
+
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vibrato.htm"><strong>jitter2</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ktotamp, kamp1, kfreq1, kamp2, kfreq2, kamp3, kfreq3
+</td>
+</tr>
+
+
+</table>
+
+<a class="qr" name="convolution"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Modifiers: Convolution and Morphing</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="643">
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar1[, ar2[, ar3[, ar4]]]</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/convolve.htm"><strong>convolve</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ain, ifilcod, ichannel</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/cross2.htm"><strong>cross2</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ain1, ain2, isize, ioverlap, iwin, kbias</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/dconv.htm"><strong>dconv</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, isize, ifn</td>
+</tr>
+
+
+</table>
+
+<a class="qr" name="panning"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Modifiers: Panning and Spatialization</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+a1, a2, a3, a4</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/pan.htm"><strong>pan</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kx, ky, ifn[, imode[, ioffset]]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+a1, a2</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/locsig.htm"><strong>locsig</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kdegree, kdistance, kreverbsend</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+a1, a2, a3, a4</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/locsig.htm"><strong>locsig</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kdegree, kdistance, kreverbsend</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+a1, a2</td>
+<td class="qr" nowrap width="88%" valign="TOP" colspan="2">
+<a class="qr" href="../sigio/locsig.htm"><strong>locsend</strong></a></td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+a1, a2, a3, a4</td>
+<td class="qr" nowrap width="88%" valign="TOP" colspan="2">
+<a class="qr" href="../sigio/locsig.htm"><strong>locsend</strong></a></td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+a1, a2, a3, a4</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/space.htm"><strong>space</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, ifn, ktime, kreverbsend[, kx, ky]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+a1, a2, a3, a4</td>
+<td class="qr" nowrap width="88%" valign="TOP" colspan="2">
+<a class="qr" href="../sigio/space.htm"><strong>spsend</strong></a></td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="72%" valign="TOP">&nbsp;</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+k1</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/space.htm"><strong>spdist</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ifn, ktime[, kx, ky]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+aleft, aright</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigio/hrtfer.htm"><strong>hrtfer</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kaz, kelev, &quot;HRTFcompact&quot;</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vbap.htm"><strong>vbaplsinit</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+idim, ilsnum, idir1, idir2,...</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar1, ar2, ar3, ar4</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vbap.htm"><strong>vbap4</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, iazim, ielev, ispread</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vbap.htm"><strong>vbap8</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, iazim, ielev, ispread</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8,<br>ar9, ar10, ar11, ar12, ar13, ar14, ar15, ar16</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vbap.htm"><strong>vbap16</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, iazim, ielev, ispread</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar1, ar2, ar3, ar4</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vbap.htm"><strong>vbap4move</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, ispread, ifldnum, ifld1, ifld2, ...</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vbap.htm"><strong>vbap8move</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, ispread, ifldnum, ifld1, ifld2, ...</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8,<br>ar9, ar10, ar11, ar12, ar13, ar14, ar15, ar16</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vbap.htm"><strong>vbap16move</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, ispread, ifldnum, ifld1, ifld2, ...</td>
+</tr>
+<!-- vbapz -->
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vbap.htm"><strong>vbapz</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+inumchnls, istartndx, asig, iazim, ielev, ispread</td>
+</tr>
+<!-- vbapzmove -->
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/vbap.htm"><strong>vbapzmove</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+inumchnls, istartndx, ispread, ifldnum, ifld1, ifld2,...</td>
+</tr>
+<!-- spat3di -->
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar1, ar2, ar3, ar4</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/spat.htm"><strong>spat3di</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+iasig, ix, iy, iz, idist, ifn, imode[, istor]</td>
+</tr>
+<!-- spat3d -->
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar1, ar2, ar3, ar4</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/spat.htm"><strong>spat3d</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kx, ky, kz, idist, ifn, imode, imdel, iovr[, istor]</td>
+</tr>
+<!-- spat3dt -->
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/spat.htm"><strong>spat3dt</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ioutfn, kx, ky, kz, idist, ifn, imode, irlen[, iftnocl]</td>
+</tr>
+
+</table>
+
+
+<a class="qr" name="sample"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Signal Modifiers: Sample Level Operators</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="643">
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/samphold.htm"><strong>downsamp</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig[, iwlen]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/samphold.htm"><strong>upsamp</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/samphold.htm"><strong>interp</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+k/ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/samphold.htm"><strong>integ</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+k/asig[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+k/ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/samphold.htm"><strong>diff</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+k/asig[, iskip]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+k/ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/samphold.htm"><strong>samphold</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+x/asig, k/xgate[, ival, ivstor]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+i/k/ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/ntrpol.htm"><strong>ntrpol</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+i/k/asig1, i/k/asig2, i/k/kpoint[, imin, imax]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../sigmod/fold.htm"><strong>fold</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kincr</td>
+</tr>
+
+
+</table>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td class="qr" width="10"></td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="table.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="zak.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+
+
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+</body>
+</html>

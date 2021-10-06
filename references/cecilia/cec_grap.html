@@ -1,0 +1,90 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>CEC_graph</title>
+	</head>
+
+	<body>
+		&nbsp;
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="cec_rsli.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="cec_sepa.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<h2>The&nbsp; cgraph object</h2>
+		</center>
+		<center>
+			<a href="#NAME">Name</a></center>
+		<center>
+			<a href="#SYNOPSIS">Synopsis</a></center>
+		<center>
+			<a href="#OPTIONS">Options</a></center>
+		<center>
+			<a href="#DESCRIPTION">Description</a></center>
+		<center>
+			<a href="#SUBSTITUTION">Substitution</a></center>
+		<center>
+			<a href="#EXAMPLE">Examples</a><br>
+			<br>
+		</center>
+		<center>
+			<hr>
+		</center>
+		<h4><a name="NAME"></a><u>NAME</u>&nbsp; <font size="-2"><a href="#">top</a></font></h4>
+		<b>cgraph</b> - Creation of a breakpoint graph drawing interface.
+		<h4><a name="SYNOPSIS"></a><u>SYNOPSIS</u>&nbsp; <font size="-2"><a href="#">top</a></font></h4>
+		<pre><b>cgraph</b> name ?options?</pre>
+		<h4><a name="OPTIONS"></a><u>OPTIONS</u>&nbsp; <font size="-2"><a href="#">top</a></font></h4>
+		<b><tt>-label</tt></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i><tt>character string</tt></i><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; will replace the name label of the graph&nbsp; ; <b>default&nbsp; name</b>
+		<p><tt><b>-min</b>&nbsp;&nbsp;&nbsp;&nbsp; <i>int | float</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the minimum value of the graph&nbsp; ; <b>default&nbsp; 0</b>
+		<p><tt><b>-max</b>&nbsp;&nbsp;&nbsp;&nbsp; <i>int | float</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the maximum value of the graph&nbsp; ; <b>default&nbsp; 100</b><br>
+		&nbsp;<br>
+		<tt><b>-unit</b>&nbsp;&nbsp;&nbsp; <i>character string</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the unit of measurement for the graph&nbsp; ; <b>default&nbsp; x</b>
+		<p><tt><b>-rel&nbsp;</b>&nbsp;&nbsp;&nbsp; <i>log | lin | raw</i></tt><br>
+		<i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i>determines whether the graph will be linear or log or raw data&nbsp; ; <b>default&nbsp; lin</b>
+		<p><tt><b>-init</b>&nbsp;&nbsp;&nbsp; <i>int | float</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the initial value of the graph&nbsp; ; <b>default&nbsp; 0 | -min</b>
+		<p><tt><b>-gen</b>&nbsp;&nbsp;&nbsp; <i>int</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the number of the function table to use&nbsp; ; <b>default&nbsp; automatic</b>
+		<p><tt><b>-size</b>&nbsp;&nbsp;&nbsp; <i>int | float</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the power-of-2 size for the function&nbsp; ; <b>default&nbsp; user preference</b>
+		<p><tt><b>-func</b>&nbsp;&nbsp;&nbsp; <i>&quot;list&quot;</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the initial breakpoint function ; <b>default none</b>
+		<h4><br>
+		<a name="DESCRIPTION"></a><u>DESCRIPTION</u>&nbsp; <font size="-2"><a href="#">top</a></font></h4>
+		The <b>cgraph</b> command creates interface objects used to manipulate time-variant functions in the x-y plane. The function will span from min to max in the y dimension according to the relationship defined while time is always represented in the x plane.
+		<p>If the <b>-func</b> flag is given, it must be followed by a list of x - y&nbsp; value pairs describing the function such as:
+		<p><tt>&nbsp;&nbsp;&nbsp; &quot;0 val1 time2 val2 time3 val3 time4 val4 ... 1 valx&quot;</tt>
+		<p>The <i>time</i> values must be in ascending order and be floating points between 0 and 1. The first <i>time</i> must be 0 and the last <i>time </i>must be 1. The times get scaled automatically to values in seconds. The y axis values must be between the <b>-min</b> and <b>-max</b>. If <b>-func</b> is given, any <b>-init</b> flag is ignored.
+		<p>When compiled, graph values are converted to function tables in the score using the gen05 method for logarithmic representations (<b>-rel </b><i>log</i>), the gen07 for linear representation (<b>-rel </b><i>lin</i>) and the gen02 for raw data representation (<b>-rel</b> <i>raw)</i>. The use of the (<b>-rel</b> <i>raw</i>) method is recommended when access to the actual graph data is desired.&nbsp; If the <b>-size</b> flag is specified, the size of the table will be set to that value. If not, the default &quot;gen size&quot; value in the Main window will be used. If the <b>-gen</b> flag is specified, that number will be used to define the number of this function in the score; otherwise, the number of the function is generated automatically. If a function is to be used in the orchestra (ie: for an oscil, envelope, etc.), the user should specify a function number using the<b> -gen</b> flag and refer to that number in the orchestra.
+		<p>The <b>-label</b> flag allows a label name in the interface that is different than the name of the graph. The <b>-unit</b> flag defines the unit that is displayed in the cross hair when points are added to the graph.<br>
+		&nbsp;
+		<h4><a name="SUBSTITUTION"></a><u>SUBSTITUTION</u>&nbsp; <font size="-2"><a href="#">top</a></font></h4>
+		Graphs are always substituted in the orchestra through the global variable <i>gkname.</i><br>
+		&nbsp;
+		<h4><a name="EXAMPLE"></a><u>EXAMPLE</u>&nbsp; <font size="-2"><a href="#">top</a></font></h4>
+		The definition:
+		<pre>&nbsp;&nbsp;&nbsp;&nbsp; <b>cgraph</b> gain -unit db -min -24 -max 24 -func &quot;0 -24 .1 24 .3 0 .8 0 1 -24&quot;</pre>
+		produces a graph titled <i>gain</i>. Its y-axis, representing decibels is initialized with an adsr type envelope, and its value can vary linearly from -24 to +24. At compilation the following function will be generated in the score:
+		<pre>&nbsp;&nbsp;&nbsp;&nbsp; f14 0 8192 -7 ...</pre>
+		and will be useable in the orchestra for any appropriate purpose.
+		<p>
+		<hr>
+		<br>
+		Copyright &copy; 1996
+	</body>
+
+</html>

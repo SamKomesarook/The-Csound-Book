@@ -1,0 +1,61 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>The Cybil compositional language</title>
+	</head>
+
+	<body>
+		<center>
+			&nbsp;</center>
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="funcs.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="pik.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<h2>The ran function</h2>
+		</center>
+		<center>
+			<a href="cybil.html">The Cybil composition language</a></center>
+		<center>
+			<a href="gensyn.html">Cybil general syntax</a></center>
+		<center>
+			<a href="commands.html">Algorithms</a><b><a href="sq.html"> sq</a> - <a href="li.html">li </a>-<a href="li.html"> </a><a href="lo.html">lo </a>- <a href="ma.html">ma</a> - <a href="gr.html">gr</a></b></center>
+		<center>
+			<a href="funcs.html">Functions</a> <b><a href="ran.html">ran </a>- <a href="pik.html">pik</a> - <a href="pa.html">pa</a> - <a href="co.html">co</a></b></center>
+		<center>
+			<a href="oper.html">Operations</a></center>
+		<center>
+			<a href="examp.html">Examples of Cybil command lines</a></center>
+		<center>
+			<hr>
+		</center>
+		<h4>The ran function</h4>
+		<pre>{ran f/i min max}</pre>
+		<b>ran</b> is for random. <b>ran </b>will generate a random number between <b>min</b> and <b>max</b> as a floating point (<b>f</b>) or an integer (<b>i</b>). Functions have no duration and can only be used inside an algorith or as an operand.
+		<p><b>min</b> and <b>max</b> can be:
+		<ol>
+			<li><b>a real number.</b>
+			<pre>{ran f 1.2 9}&nbsp;
+{ran i 3 6000}</pre>
+			<li><b>a CECILIA irate variable.</b> Any irate variable from the , CECILIA interface can be used (sliders, toggles, option) by including the name of the variable between <b>[]</b> brackets. The substitution is done before the score is pre-compiled.
+			<pre>{ran f [blue] [black] }</pre>
+			where <b>blue</b> and <b>black</b> have been defined as irate variables in the CECILIA interface.&nbsp;<br>
+			<br>
+			<li><b>a Cybil function.</b>Any Cybil function can be used to generate a value. Each time the value is needed, the function is evaluated .
+			<pre>{ran i {ran f .5 3.3} {pik 3 4 5 6 7}}</pre>
+		</ol>
+		<hr>
+		<br>
+		&nbsp;
+	</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>dconv</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="cross2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../sigio/pan.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#convolution" class="toqr">
+Signal Modifiers: Convolution and Morphing</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>dconv</h2>
+
+<pre>
+  ar      <strong>dconv</strong>     asig, isize, ifn
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+
+<p>Output is the result of two signals directly convolved together, not the spectral based method of the <strong>convolve</strong> opcode.</p>
+
+<h3>Initialization</h3>
+<p><em>isize</em> &#8211; the size of the convolution buffer to use.  If the buffer size is smaller than the size of <em>ifn</em>, then only the first <em>isize</em> values will be used from the table.
+</p>
+<p><em>ifn</em> &#8211; table number of a stored function containing the impulse response for convolution. If the size of <em>ifn</em> is smaller than <em>isize</em>, then <em>isize</em> will be adjusted accordingly.
+</p>
+
+<h3>Performance</h3>
+<p><em>ar</em> &#8211; a-rate signal to be convolved
+</p>
+
+<p>Rather than the analysis/resynthesis method of the <strong>convolve</strong> opcode, <strong>dconv</strong> uses direct convolution to create the result.  For small tables it can do this quite efficiently, however larger tables require much more time to run.  <strong>dconv</strong> does <em>isize</em> * <strong>ksmps</strong> multiplies on every k-cycle.  Therefore, reverb and delay effects are best done with other opcodes (unless the times are short).
+</p>
+
+<p><strong>dconv</strong> was designed to be used with time varying tables to facilitate new real-time filtering capabilities.</p>
+
+<h3>Example</h3>
+
+<pre>
+/* dconvtest.orc */
+  <strong>sr</strong>      = 44100
+	<strong>kr</strong>      = 4410
+  <strong>ksmps</strong>   = 10
+  <strong>nchnls</strong>  = 1
+  
+  #define RANDI(A) #kout	randi	1, kfq, $A*.001+iseed, 1
+          tablew	kout, $A, itable#
+  
+  	       <strong>instr</strong> 1
+  	itable <strong>init</strong>  1
+  	iseed  <strong>init</strong>  .6
+  	isize	 <strong>init</strong>  <strong>ftlen</strong>(itable)
+  	kfq    <strong>line</strong>  1, p3, 10
+  
+  $RANDI(0)
+  $RANDI(1)
+  $RANDI(2)
+  $RANDI(3)
+  $RANDI(4)
+  $RANDI(5)
+  $RANDI(6)
+  $RANDI(7)
+  $RANDI(8)
+  $RANDI(9)
+  $RANDI(10)
+  $RANDI(11)
+  $RANDI(12)
+  $RANDI(13)
+  $RANDI(14)
+  $RANDI(15)
+  
+  	
+  asig     <strong>rand</strong>  10000, .5, 1
+  asig     <strong>butlp</strong> asig, 5000
+  asig     <strong>dconv</strong> asig, isize, itable
+           <strong>out</strong>   asig *.5
+           <strong>endin</strong>
+  
+/* dconvtest.orc */
+  
+/* dconvtest.sco */
+  <strong>f</strong>1 0 16 10 1
+  
+  <strong>i</strong>1 0 10
+  <strong>e</strong>
+/* dconvtest.sco */
+
+</pre>
+
+<h3>Author</h3>
+<p>William &quot;Pete&quot; Moss<br>
+University of Texas at Austin<br>
+Austin, Texas USA<br>
+March, 2001<br>
+New in Csound 4.12
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="cross2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../sigio/pan.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#convolution" class="toqr">
+Signal Modifiers: Convolution and Morphing</font></a>
+</body>
+
+</html>

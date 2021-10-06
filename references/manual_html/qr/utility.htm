@@ -1,0 +1,1250 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>QuickRef: Utilities</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body text="black" link="black" vlink="black" alink="black" bgcolor="white">
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td class="qr" width="10"></td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="command.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td class="qr" width="45" align="right">
+			<img src="../nonext.gif" width="38" height="18" alt="Next Page" border="0">
+		</td>
+	</tr>
+</table>
+<span class="toqr">
+The Csound Quick Reference</span>
+
+<hr size="1" color="#A9A9A9" noshade>
+<a class="qr" href="../utility/top.htm"><span class="head1">Utilities</span></a>
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="hetro">&nbsp;</a>
+<h2>Utilities: Analysis File Generation</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+<tr><td class="qr" nowrap valign="TOP">
+<a class="qr" href="../utility/hetro.htm"><strong>hetro</strong></a></td>
+<td class="qr" nowrap valign="TOP">
+-sr <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+Hetrodyne analysis <em>sample rate</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-c <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+Hetrodyne analysis <em>channel number</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-b <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+Hetrodyne analysis <em>segment</em> <em>begin time</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-d <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+Hetrodyne analysis<em> segment duration</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-f <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+Hetrodyne analysis <em>beginning frequency</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-h <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+Hetrodyne analysis <em>number of partials</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-M <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+Hetrodyne analysis <em>maximum amplitude</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-m <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+Hetrodyne analysis <em>minimum amplitude</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-n <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+Hetrodyne analysis <em>number of breakpoints</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-l <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+Hetrodyne analysis use third order low-pass filter with f<sub>c </sub>of <em>n</em></td>
+</tr>
+</table>
+<a class="qr" name="lpanal">&nbsp;</a>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+<tr><td class="qr" nowrap valign="TOP">
+<a class="qr" href="../utility/lpanal.htm"><strong>lpanal</strong></a></td>
+<td class="qr" nowrap valign="TOP">
+-a</td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+LPC analysis write filter pole instead of coeffecients</td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-s <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+LPC analysis <em>sample rate</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-c <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+LPC analysis <em>channel number</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-b <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+LPC analysis <em>segment</em> <em>begin time</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-d <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+LPC analysis <em>segment duration</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-p <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+LPC analysis <em>number of poles</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-h <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+LPC analysis <em>hop size </em>in samples</td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-C <em>s</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+LPC analysis <em>text string</em> for comments</td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-P <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+LPC analysis <em>lowest frequency</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-Q <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+LPC analysis <em>highest frequency</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-v <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+LPC analysis <em>verbosity level </em>of terminal messages</td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">&nbsp;</td>
+</tr>
+</table>
+
+<a class="qr" name="pvanal">&nbsp;</a>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+<tr><td class="qr" nowrap valign="TOP">
+<a class="qr" href="../utility/pvanal.htm"><strong>pvanal</strong></a></td>
+<td class="qr" nowrap valign="TOP">
+-s <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+STFT analysis <em>sample rate</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-c <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+STFT analysis <em>channel number</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-b <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+STFT analysis <em>segment</em> <em>begin time</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-d <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+STFT analysis <em>segment duration</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-n <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+STFT analysis <em>frame size</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-w <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+STFT analysis <em>window overlap factor</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-h <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td class="qr" nowrap valign="TOP">
+STFT analysis <em>hop size </em>in samples</td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">&nbsp;</td>
+</tr>
+</table>
+
+<a class="qr" name="cvanal">&nbsp;</a>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+<tr><td class="qr" nowrap valign="TOP">
+<a class="qr" href="../utility/cvanal.htm"><strong>cvanal</strong></a></td>
+<td class="qr" nowrap valign="TOP">
+<p>-s <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+<p>infilename</td>
+<td class="qr" nowrap valign="TOP">
+<p>outfilename</td>
+<td class="qr" nowrap valign="TOP">
+<p>FFT analysis <em>sample rate</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+<p>-c <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+<p>infilename</td>
+<td class="qr" nowrap valign="TOP">
+<p>outfilename</td>
+<td class="qr" nowrap valign="TOP">
+<p>FFT analysis <em>channel number</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+<p>-b <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+<p>infilename</td>
+<td class="qr" nowrap valign="TOP">
+<p>outfilename</td>
+<td class="qr" nowrap valign="TOP">
+<p>FFT analysis <em>segment</em> <em>begin time</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+<p>-d <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+<p>infilename</td>
+<td class="qr" nowrap valign="TOP">
+<p>outfilename</td>
+<td class="qr" nowrap valign="TOP">
+<p>FFT analysis <em>segment duration</em></td>
+</tr>
+</table>
+
+
+<a class="qr" name="sndinfo"></a>
+<hr size="2" color="#A9A9A9" noshade>
+<h2>Utilities: File Queries</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+<tr><td class="qr" nowrap valign="TOP">
+<a class="qr" href="../utility/sndinfo.htm"><strong>sndinfo</strong></a></td>
+<td class="qr" nowrap valign="TOP" colspan="2">
+soundfilename</td>
+<td class="qr" nowrap valign="TOP">
+get info about one or more sound files <em>soundfilename</em></td>
+</tr>
+</table>
+
+<a class="qr" name="pvlook">&nbsp;</a>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+<tr><td class="qr" nowrap valign="TOP">
+<a class="qr" href="../utility/pvlook.htm"><strong>pvlook</strong></a></td>
+<td class="qr" nowrap valign="TOP">
+-bb <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+STFT analysis file formatted text
+output <em>beginning bin number</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-eb <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+STFT analysis file formatted text
+output <em>ending bin number</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-bf <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+STFT analysis file formatted text
+output <em>beginning frame number</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-ef <em>n</em></td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+STFT analysis file formatted text
+output <em>ending frame number</em></td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+-i  </td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+STFT analysis file formatted text
+output as integers</td>
+</tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<h2>Utilities: File Conversions</h2>
+<a class="qr" name="sdif2ads"></a>
+<table cellspacing="0" border="0" cellpadding="7" width="649">
+<tr><td class="qr" nowrap valign="TOP">
+<a class="qr" href="../utility/sdif2ads.htm"><strong>sdif2ads</strong></a></td>
+<td>&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+infilename</td>
+<td class="qr" nowrap valign="TOP">
+outfilename</td>
+<td>&nbsp;</td>
+<td class="qr" nowrap valign="TOP">
+Convert files Sound Description Interchange Format (SDIF) to the format usable by Csound's <strong>adsyn</strong> opcode.</td>
+</tr>
+</table>
+
+<a class="qr" name="dnoise">&nbsp;</a>
+<table cellspacing="15">
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>dnoise</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-N
+		</em> num</td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+number of bandpass filters
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-w
+		</em> num</td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+filter overlap factor: 0, 1, (2), or 3.
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-M
+		</em> num</td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+analysis window length
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-L
+		</em> num</td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+synthesis window length
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-D
+		</em> num</td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+decimation factor
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-b
+		</em>time</td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+begin time in noise reference soundfile
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-B
+		</em> num</td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+starting sample in noise reference soundfile
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-e
+		</em> time</td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+end time in noise reference soundfile
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-E
+		</em> sampnum</td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+final sample in noise reference soundfile
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-t
+		</em> num</td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+threshold above noise reference in dB
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-S
+		</em> num</td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+sharpness of noise-gate turnoff in the range 1 to 5
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-n
+		</em> num</td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+number of FFT frames to average
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-m
+		</em> num</td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+minimum gain of noise-gate when off, in dB
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-A
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+AIFF format output
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-W
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+WAV format output
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-J
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+IRCAM format output
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-h
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+skip soundfile header
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-8
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+8-bit unsigned character sound samples
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-c
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+8-bit signed character sound samples
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-a
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+alaw sound samples
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-u
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+ulaw sound samples
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-s
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+short integer sound samples
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-l
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+long integer sound samples
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-f
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+float sound samples
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-V
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+verbose status information
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-R
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+continually rewrite header while writing soundfile
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+--
+		</em>filename</td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+output to log file <em>filename</em>
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-H1
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+generates a rotating line progress report
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-H2
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+generates a &quot;.&quot; every time a buffer is written
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-H3
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+reports the size in seconds of the output
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-H4
+		</em></td>
+		<td class="qr" nowrap valign="TOP"><em>-i</em> noisefilename</td>
+		<td class="qr" nowrap valign="TOP"><em>-o</em> outputfilename</td>
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+sounds a bell for every buffer of the output written
+		</td>
+	</tr>
+</table>
+
+<a class="qr" name="srconv">&nbsp;</a>
+<table cellspacing="15">
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>srconv</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-o
+		</em> filename</td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+output filename</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-r
+		</em> num</td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+output sample rate
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-P
+		</em> num</td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+pitch transposition ratio 
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-Q
+		</em> num</td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+quality factor in the range of 1 to 4
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-i
+		</em> filename</td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+break file
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-A
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+AIFF format output
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-W
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+WAV format output
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-J
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+IRCAM format output
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-h
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+skip soundfile header
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-8
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+8-bit unsigned character sound samples
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-c
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+8-bit signed character sound samples
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-a
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+alaw sound samples
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-u
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+ulaw sound samples
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-s
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+short integer sound samples
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-l
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+long integer sound samples
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-f
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+float sound samples
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-K
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+do not generate PEAK chunks
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-R
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+continually rewrite header while writing soundfile
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-H1
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+generates a rotating line progress report
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-H2
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+generates a &quot;.&quot; every time a buffer is written
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-H3
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+reports the size in seconds of the output
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+-N
+		</em></td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+sounds a bell for every buffer of the output written
+		</td>
+	</tr>
+
+	<tr>
+		<td class="qr" nowrap valign="TOP">
+		<a class="qr" href="../utility/cvanal.htm"><strong>&nbsp;</strong></a></td>
+		<td class="qr" nowrap valign="TOP"><em>
+--
+		</em>filename</td>
+		
+		
+		<td class="qr" nowrap valign="TOP">inputfilename</td>
+		<td nowrap valign="TOP">
+output to log file <em>filename</em>
+		</td>
+	</tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td class="qr" width="10"></td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="command.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td class="qr" width="45" align="right">
+			<img src="../nonext.gif" width="38" height="18" alt="Next Page" border="0">
+		</td>
+	</tr>
+</table>
+<span class="toqr">
+The Csound Quick Reference</span>
+
+</body>
+</html>

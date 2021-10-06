@@ -1,0 +1,62 @@
+
+               REGISTERING VMCI PLUS
+               ---------------------
+VMCI Plus is shareware. Older versions of VMCI are
+freeware/donationware and still available for download.
+
+All versions of VMCI are copyright of the author.
+Until further notice, this software may be used for
+personal use only for free for up to 90 days. Thereafter,
+in order to continue personal use, you must register
+the software. Registration entitles the user to use
+this version of VMCI Plus, but not to technical support.
+
+VMCI Plus may not be copied, sold, distributed or used
+in any other manner without the prior written consent of
+the author. Those interested in licensing VMCI for other
+than personal or individual commercial use
+should contact the author.
+
+To the maximum extent permitted by law, the author disclaims
+all warranties regarding this software, express or implied,
+including but not limited to warranties of merchantability
+and fitness for a particular purpose.  In no event shall the
+author be liable for consequential, special, incidental or
+indirect damages arising out of the use or inability to use
+this software even the author is aware of the possibility of
+such damages or a known defect.
+
+DirectCsound is not included in the package (because
+Csound is copyright of MIT). However it is available for
+free and can be downloaded at the following url:
+
+http://www.tiscalinet.it/G-Maldonado
+
+Current registering fee (September 1999 version 2.0) for 
+a single copy of the program is US$ 85.  
+Price is subject to change.
+
+Send an international check to the following address:
+
+Gabriel Maldonado
+via Donna Olimpia 166
+00152 Roma - Italia
+
+including a sheet with your address (eventual email) and the
+reason of the payment (i.e. VMCI Plus registration).
+
+The key-code which suppresses the warning dialog boxes will be sent
+immediately after the author has received the check via email (or
+eventually via standard mail if the customer cannot access the
+Internet).
+
+Conditions of payment may change in the future (credit
+card payment will be allowed).
+
+For any question contact:
+
+    g.maldonado@agora.stm.it
+or
+    g.maldonado@tiscalinet.it
+
+By using this software, you are agreeing to the above terms.

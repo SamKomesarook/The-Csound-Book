@@ -1,0 +1,71 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>streson</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="wguide1.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="harmon.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#waveguides" class="toqr">
+Signal Modifiers: Waveguides</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>streson</h2>
+
+
+<pre>  
+  ar      <strong>streson</strong>    asig, kfr, ifdbgain</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<p>An audio signal is modified by a string resonator with variable fundamental frequency.
+</p>
+<h3>Initialization</h3>
+<p><em>ifdbgain</em> &#8211; feedback gain, between 0 and 1, of the internal delay line. A value close to 1 creates a slower decay and a more pronounced resonance. Small values may leave the input signal unaffected. Depending on the filter frequency, typical values are &gt; .9.
+</p>
+<h3>Performance</h3>
+<p><strong>streson</strong> passes the input <em>asig</em> through a network composed of comb, low-pass and all-pass filters, similar to the one used in some versions of the Karplus-Strong algorithm, creating a string resonator effect. The fundamental frequency of the &quot;string&quot; is controlled by the k-rate variable <em>kfr</em>.This opcode can be used to simulate sympathetic resonances to an input signal.
+</p>
+<p><strong>streson</strong> is an adaptation of the StringFlt object of the SndObj Sound Object Library developed by the author.
+</p>
+<h3>Author</h3>
+<p>Victor Lazzarini<br>
+Music Department<br>
+National University of Ireland, Maynooth<br>
+Maynooth, Co. Kildare<br>
+1998 (New in Csound version 3.494)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="wguide1.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="harmon.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#waveguides" class="toqr">
+Signal Modifiers: Waveguides</font></a>
+</body>
+
+</html>

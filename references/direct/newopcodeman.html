@@ -1,0 +1,1623 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.06 [en] (Win95; I) [Netscape]">
+		<!-- Created with AOLpress/2.0 -->
+		<title>New opcodes of DirectCsound</title>
+	</head>
+
+	<body background="bkgnd.gif">
+		<center>
+			<b>DirectCsound RELEASE 2.6</b></center>
+		<p>
+		<center>
+			<h1><b><font size="+4">ADDITIONAL OPCODES MANUAL</font></b></h1>
+		</center>
+		<center>
+			by Gabriel Maldonado<br>
+			g.maldonado@agora.stm.it<br>
+			http://www.agora.stm.it/G.Maldonado/home2.htm</center>
+		<p>
+		<hr size="15">
+		<p><b><font color="#004000"><font size="+1">THIS IS A LISTING OF ALL OPCODES IMPLEMENTED BY GABRIEL MALDONADO</font></font></b>
+		<p><font color="#8000FF"><font size="+3">MIDI-RELATED OPCODES</font></font>
+		<p><b><i><a href="#1">MIDI CONTROLLERS</a></i></b>
+		<p><b><i><a href="#2">MIDI MICRO TUNING</a></i></b>
+		<p><b><i><a href="#3">MIDI GENERATORS</a></i></b>
+		<p><b><i><a href="#4">MIDI IN/OUT FLOW MANAGERS</a></i></b>
+		<p><b><i><a href="#5">DURATION EXTENSION OF MIDI NOTES</a></i></b>
+		<h2>
+		<hr size="15">
+		</h2>
+		<p><font color="#8000FF"><font size="+3">GENERIC OPCODES</font></font>
+		<p><b><i><a href="#6">SUBROUTINE CALL RELATED</a></i></b>
+		<p><b><i><a href="#7">WRAPPING SIGNALS AROUND</a></i></b>
+		<p><b><i><a href="#8">INTERPOLATORS</a></i></b>
+		<p><b><i><a href="#9">PHYSICAL MODELING WAVEGUIDE BLOCKS</a></i></b>
+		<p><b><i><a href="#10">AUDIO RATE EXPONENTIAL ENVELOPE GENERATOR</a></i></b>
+		<p><b><i><a href="#11">MEMORY OPTIMIZED 16-BIT SOUND USAGE</a></i></b>
+		<p><b><i><a href="#12">PRINT K-RATE VALUES TO SCREEN</a></i></b>
+		<p><b><i><a href="#13">PRECISE OSCILLATORS</a></i></b>
+		<p><b><i><a href="#fm">FM OSCILLATORS</a></i></b>
+		<p><b><i><a href="#14">FILTERS</a></i></b>
+		<p><b><i><a href="#15">FAST POWER OF TWO FUNCTIONS</a></i></b>
+		<p><b><i><a href="#16">INFORMATIONS ABOUT SOUNDIFILE FUNCTION TABLES</a></i></b>
+		<p><b><i><a href="#17">NEW GEN FUNCTIONS</a></i></b>
+		<p><b><i><a href="#18">TRIGGER BOOLEAN GENERATOR</a></i></b>
+		<p><b><i><a href="#MULTI">MULTI-TRACK FILES</a></i></b>
+		<p><b><i><a href="#foldover">ARTIFICIAL FOLDOVER</a></i></b>
+		<p>
+		<hr size="15">
+		<p><font color="#8000FF"><font size="+3"><small>SCORE OPCODES AND OTHER SCORE STUFF</small></font></font>
+		<p><b><i><a href="#sop">SCORE OPCODES</a></i></b>
+		<p><b><i><a href="#nmac">NESTED MACROS</a></i></b>
+		<p><b><i><a href="#macar">MACRO ARITHMETIC</a></i></b>
+		<p>
+		<hr size="15">
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="1"></a><!-- -->
+					<b><i>MIDI CONTROLLERS</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#control1">midic7, midic14, midic21, ctrl7, ctrl14, ctrl21</a>
+					<p><a href="#control2">initc7, initc14, initc21</a>
+					<p><a href="#control3">slider8, slider16, slider32, slider64, slider8f, slider16f, slider32f, slider64f, s16b14, s32b14</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="2"></a><!-- -->
+					<b><i>MIDI MICRO TUNING&nbsp;</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#cpstmid">cpstmid</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="3"></a><!-- -->
+					<b><i>MIDI GENERATORS</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#midigen1">noteon, noteoff, ondur, ondur2</a>
+					<p><a href="#midigen2">moscil, midion</a>
+					<p><a href="#midigen3">outic, outkc, outic14, outkc14, outipb, outkpb, outiat, outkat, outipc, outkpc, outpiat, outkpat</a>
+					<p><a href="#midigen4">mclock, mrtmsg</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="4"></a><!-- -->
+					<b><i>MIDI IN/OUT FLOW MANAGERS</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#midiflow1">midiin</a>
+					<p><a href="#midiflow2">midiout</a>
+					<p><a href="#midiflow3">midion2</a>
+					<p><a href="#midiflow4">nrpn</a>
+					<p><a href="#midiflow5">mdelay</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="5"></a><!-- -->
+					<b><i>DURATION EXTENSION OF MIDI NOTES</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#release">xtratim, release</a></td>
+			</tr>
+		</table>
+		<p>
+		<hr size="15">
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="6"></a><!-- -->
+					<b><i>SUBROUTINE CALL RELATED&nbsp;</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#sub1">call, calld, callm, callmd</a>
+					<p><a href="#sub2">parmck, parmtk, parmca, parmta, rtrnck, rtrntk, rtrnca, rtrnta</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="7"></a><!-- -->
+					<b><i>WRAPPING SIGNALS AROUND</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#wrap">wrap, mirror</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><!-- -->
+					<b><i>INTERPOLATOR</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#interpol">ntrpol</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="9"></a><!-- -->
+					<b><i>PHYSICAL MODELING WAVEGUIDE BLOCKS</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#physic">wguide1, wguide2</a>
+					<p><a href="#flanger">flanger</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="10"></a><!-- -->
+					<b><i>AUDIO RATE EXPONENTIAL ENVELOPES GENERATOR</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#aexpseg">expsega</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="11"></a><!-- -->
+					<b><i>MEMORY OPTIMIZED 16-BIT SOUND USAGE</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#16bit1">loscil2</a>
+					<p><a href="#16bit2">fof3</a>
+					<p><a href="#posc">lposcint</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="12"></a><!-- -->
+					<b><i>PRINT K-RATE VALUES TO SCREEN</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#printk2">printk2</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="13"></a><!-- -->
+					<b><i>PRECISE OSCILLATORS</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#posc">poscil, lposcil</a>
+					<p><a href="#posc">lposcint</a></td>
+			</tr>
+		</table>
+		<p>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><b><i>FM OSCILLATORS</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#fm2">foscili2</a></td>
+			</tr>
+		</table>
+		<p>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="14"></a><!-- -->
+					<b><i>FILTERS</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#filter1">lpres, lpresx</a>
+					<p><a href="#filter2">tonex, atonex, resonx</a>
+					<p><a href="#filter3">vlpres</a>
+					<p><a href="#resony">resony</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="15"></a><!-- -->
+					<b><i>FAST POWER OF TWO FUNCTIONS&nbsp;</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#powof2">powoftwo, logbtwo</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="16"></a><!-- -->
+					<b><i>INFORMATIONS ABOUT SOUNDIFILE FUNCTION TABLES&nbsp;</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#infofunc1">ftlen2</a>
+					<p><a href="#infofunc2">nsamp</a>
+					<p><a href="#infofunc3">ftsr</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="17"></a><!-- -->
+					<b><i>NEW GEN FUNCTIONS</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#gen22">GEN22</a>
+					<p><a href="#gen23">GEN23</a>
+					<p><a href="#gen24">GEN24</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="18"></a><!-- -->
+					<b><i>TRIGGER BOOLEAN GENERATOR</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#trig">trigger</a></td>
+			</tr>
+		</table>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><!-- -->
+					<b><i>MULTI-TRACK FILES</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#fout">fout</a>
+					<p><a href="#vincr">vincr</a>
+					<p><a href="#vincr">clear</a></td>
+			</tr>
+		</table>
+		<p>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="foldover"><!-- -->
+					</a><b><i>ARTIFICIAL FOLDOVER</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#fold">fold</a></td>
+			</tr>
+		</table>
+		<p>
+		<hr size="15">
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="sop"><!-- -->
+					</a><b><i>SCORE OPCODES</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#nestr"><b>{ &nbsp;} </b>-&nbsp;Nested Loops</a>
+					<p><a href="#scotab"><b>F </b>- Score Tables</a></td>
+			</tr>
+		</table>
+		<p>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="nmac"><!-- -->
+					</a><b><i>NESTED MACROS</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#newmac">New Macro Syntax</a></td>
+			</tr>
+		</table>
+		<p>
+		<table border="" cellpadding="2">
+			<tr>
+				<td><a name="macar"><!-- -->
+					</a><b><i>MACRO ARITHMETIC</i></b></td>
+			</tr>
+			<tr>
+				<td><a href="#scotab2"><b>T</b> - Table operator</a>
+					<p><a href="#rand"><b>R</b> - Random operator</a>
+					<p><a href="#pow"><b>^</b> - Power operator</a>
+					<p><a href="#mod"><b>%</b> - Modulus operator</a></td>
+			</tr>
+		</table>
+		<p>
+		<hr size="15">
+		<h2><b>THE MANUAL OF EACH OPCODE</b></h2>
+		<p>
+		<hr size="15">
+		<p><a name="control1"></a><!-- -->
+		<b><font size="+1">Single slider control</font></b>
+		<p>idest <b>midic7</b> ictlno, imin, imax [, ifn]<br>
+		kdest <b>midic7</b> ictlno, kmin, kmax [, ifn]
+		<p>idest <b>midic14</b> ictlno1, ictlno2, imin, imax [, ifn]<br>
+		kdest <b>midic14</b> ictlno1, ictlno2, kmin, kmax [, ifn]
+		<p>idest <b>midic21</b> ictlno1, ictlno2, ictlno3, imin, imax [, ifn]<br>
+		kdest <b>midic21</b> ictlno1, ictlno2, ictlno3, kmin, kmax [, ifn]
+		<p>idest <b>ctrl7</b> ichan, ictlno, imin, imax [,ifn]<br>
+		kdest <b>ctrl7</b> ichan, ictlno, kmin, kmax [,ifn]
+		<p>idest <b>ctrl14</b> ichan, ictlno1, ictlno2, imin, imax [,ifn]<br>
+		kdest <b>ctrl14</b> ichan, ictlno1, ictlno2, kmin, kmax [,ifn]
+		<p>idest <b>ctrl21</b> ichan, ictlno1, ictlno2, ictlno3, imin, imax [,ifn]<br>
+		kdest <b>ctrl21</b> ichan, ictlno1, ictlno2, ictlno3, kmin, kmax [,ifn]
+		<p><b>DESCRIPTION</b>
+		<p>Return precise signal from a MIDI slider.
+		<p><b>INITIALIZATION</b>
+		<p><b>idest</b> - output signal<br>
+		<b>ichan</b> - MIDI channel (1-16). In (i)ctrl14 and (i)ctrl21 all the controllers used in an opcode instance must be of the same channel<br>
+		<b>ictlno</b> - midi controller number (1-127)<br>
+		<b>ictlno1</b> - most-significant byte controller number (1-127)<br>
+		<b>ictlno2</b> - in midic14: less-significant byte controller number (1-127); in midic21: mid-significant byte controller number (1-127)<br>
+		<b>ictlno3</b> - less-significant byte controller number (1-127)<br>
+		<b>imin</b> - user-defined minimum floating-point value of output<br>
+		<b>imax</b> - user-defined maximum floating-point value of output<br>
+		<b>ifn</b> (optional) - table to be read when indexing is required. Table must be normalized. Output is scaled according to max and min val.
+		<p><b>PERFORMANCE</b>
+		<p><b>kdest</b> - output signal<br>
+		<b>kmin</b> - user-defined minimum floating-point value of output<br>
+		<b>kmax</b> - user-defined maximum floating-point value of output
+		<p><b>midic7</b> (i and k rate 7 bit midi control) allows floating point 7 bit midi signal scaled with a minimum and a maximum range. They also allow optional non-interpolated table indexing.<br>
+		In <b>midic7</b> minimum and maximum values can be varied at krate.
+		<p><b>midic14</b> (i and k-rate 14 bit midi control) does the same as the above with 14 bit precision.
+		<p><b>midic21</b> (i and k rate 21 bit midi control) do the same as the above with 21 bit precision.
+		<p><b>midic14</b> and <b>midic21</b> can use optional interpolated table indexing. They require two or three midi controllers as input.
+		<p>Warnig! Don't use (i)midicXX opcodes within a sco-activated i-statement or Csound will crash. Instruments containing (i)midicXX opcodes can be only activated by a MIDI note-on message. Use (i)ctrlXX opcodes if you need to include them in a sco-oriented instrument instead.
+		<p><b>ctrl7, ctrl14, ctrl21</b> are very similar to <b>midicXX </b>opcodes the only differeces are:
+		<ol>
+			<li><b>ctrlXX</b> UGs can be included in sco-oriented instruments without Csound crashes.
+			<li>They need the addictional parameter ichan containing the MIDI channel of the controller.
+		</ol>
+		<p>MIDI channel is the same for all the controller used in a single (i)ctrl14 or (i)ctrl21 opcode.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="control2"></a><!-- -->
+		<b><font size="+1">Single slider control initialization</font></b>
+		<p><b>initc7</b> ichan, ictlno, ivalue<br>
+		<b>initc14</b> ichan, ictlno1, ictlno2, ivalue<br>
+		<b>initc21</b> ichan, ictlno1, ictlno2, ictlno3, ivalue
+		<p><b>DESCRIPTION</b>
+		<p>Initializes MIDI controller ictlno with ivalue
+		<p><b>INITIALIZATION</b>
+		<p><b>ichan</b> - midi channel (1-16)<br>
+		<b>ictlno</b> - controller number (initc7)<br>
+		<b>ictlno1</b> - MSB controller number<br>
+		<b>ictlno2</b> - in initc14 LSB controller number; in initc21 Medium Significant Byte controller number<br>
+		<b>ictlno3</b> - LSB controller number<br>
+		<b>ivalue</b> - floating point value (must be within 0 to 1)
+		<p><b>initc7</b>, <b>initc14</b>, <b>initc21</b> can be used togheter with both <b>(i)midicXX</b> and
+		<p><b>(i)ctrlXX</b> opcodes for initializing the first controllers' value.<br>
+		Ivalue argument must be set with a number within 0 to 1. An error occurs if it is not.
+		<p>Use the following formula to set ivalue according with <b>(i)midicXX</b> and <b>(i)ctrlXX </b>min and max range:
+		<p><b><font color="#800040"><font size="+1">ivalue = (initial_value - min) / (max - min)</font></font></b>
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="midigen1"></a><!-- -->
+		<b>MIDI NOTE GENERATORS</b>
+		<p><b>noteon</b> ichn, inum, ivel<br>
+		<b>noteoff</b> ichn, inum, ivel<br>
+		<b>ondur</b> ichn, inum, ivel, idur<br>
+		<b>ondur2</b> ichn, inum, ivel, idur
+		<p><b>DESCRIPTION</b>
+		<p>send note-on and note-off messages to the MIDI OUT port.<br>
+		(<b>warning!</b> these opcodes have been renamed in to avoid namespace pollution. Before <b>noteon</b> was <b>ion</b>, <b>noteoff</b> was <b>ioff</b>, <b>ondur</b> was <b>iondur</b> and <b>ondur2</b> was <b>iondur2</b>).
+		<p><b>INITIALIZATION</b>
+		<p><b>ichn</b> - MIDI channel number (1-16)<br>
+		<b>inum</b> - note number (0-127)<br>
+		<b>ivel</b> - velocity (0-127)<br>
+		<b>idur</b> - duration in seconds beetween noteon and relative noteoff messages
+		<p><b>PERFORMANCE</b>
+		<p><b>ion</b> (i-rate note on) and ioff (i-rate note off) are the simplest MIDI OUT opcodes.<br>
+		<b>ion</b> sends a MIDI noteon message to MIDI OUT port, and ioff sends a noteoff message.<br>
+		A <b>ion</b> opcode must always be follwed by an <b>ioff</b> with the same channel and number inside the same instrument, otherwise the note will play endlessly.
+		<p><b>ion</b> and <b>ioff</b> are useful only when introducing a timout statement to play a non zero duration MIDI note. For most purposes it is better to use <b>iondur</b> and <b>iondur2</b>.
+		<p><b>iondur</b> and <b>iondur2</b> (i-rate note on with duration) send a note-on and a note-off MIDI message both with the same channel, number and velocity. A note-off message is sent after idur seconds are elapsed by the time iondur was activated.
+		<p><b>iondur</b> differs from <b>iondur2</b> in that iondur truncates note duration when current instrument is deactivated by score or by realtime playing, whereas <b>iondur2</b> will extend performance time of current instrument until <i>idur</i> seconds have elapsed.
+		<p>In realtime playing it is suggested to use <b>iondur</b> also for undefined durations, giving a large idur value.
+		<p>Any number of <b>iondur</b> or <b>iondur2</b> opcodes can appear in the same Csound instrument, allowing chords to be played by a single instr.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="midigen2"></a><!-- -->
+		<b>STREAMS OF MIDI NOTES</b>
+		<p><b>moscil</b> kchn, knum, kvel, kdur, kpause<br>
+		<b>midion</b> kchn, knum, kvel
+		<p><b>DESCRIPTION</b>
+		<p>Send stream of note-on and note-off messages to the MIDI OUT port.<br>
+		(Note that <b>midion</b> opcode was previously named <b>kon</b>. This opocode has been renamed to avoid namespace pollution).
+		<p><b>PERFORMANCE</b>
+		<p><b>kchn</b> - MIDI channel number (1-16)<br>
+		<b>knum</b> - note number (0-127)<br>
+		<b>kvel</b> - velocity (0-127)<br>
+		<b>kdur</b> - note duration in seconds<br>
+		<b>kpause</b> - pause duration after each noteoff and before new note in seconds
+		<p><b>moscil</b> and kon are the most powerful MIDI OUT opcodes.
+		<p><b>moscil</b> (midi oscil) plays a stream of notes of <i>kdur</i> duration. Channel, pitch, velocity, duration and pause can be controlled at k-rate, allowing very complex algorythmically generated melodic lines.<br>
+		When current instrument is deactivated, the note played by current instance of <b>moscil</b> is forcely truncated.
+		<p><b>midion</b> (before called <b>kon</b> i.e. k-rate note on) plays MIDI notes with current kchn, knum and kvel. These arguments can be varied at k-rate. Each time the MIDI converted value of any of these arguments changes, last MIDI note played by current instance of <b>kon</b> is immediately turned off and a new note with the new argument values is activated.<br>
+		This opcode, as well as <b>moscil</b>, can generate very complex melodic textures if controlled by complex k-rate signals.
+		<p>Any number of moscil or <b>kon</b> opcodes can appear in the same Csound instrument, allowing a counterpoint-style polyphony within a single instrument.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="midigen3"></a><!-- -->
+		<b>MIDI MESSAGES OUTPUT</b>
+		<p><b>outic</b> ichn, inum, ivalue, imin, imax<br>
+		<b>outkc</b> kchn, knum, kvalue, kmin, kmax<br>
+		<b>outic14</b> ichn, imsb, ilsb, ivalue, imin, imax<br>
+		<b>oukc14</b> kchn, kmsb, klsb, kvalue, kmin, kmax
+		<p><b>outipb</b> ichn, ivalue, imin, imax<br>
+		<b>outkpb</b> kchn, kvalue, kmin, kmax<br>
+		<b>outiat</b> ichn, ivalue, imin, imax<br>
+		<b>outkat</b> kchn, kvalue, kmin, kmax<br>
+		<b>outipc</b> ichn, iprog, imin, imax<br>
+		<b>outkpc</b> kchn, kprog, kmin, kmax
+		<p><b>outipat</b> ichn, inotenum, ivalue, imin, imax<br>
+		<b>outkpat</b> kchn, knotenum, kvalue, kmin, kmax
+		<p><b>DESCRIPTION</b>
+		<p>Send a single Channel message to the MIDI OUT port.
+		<p><b>INITIALIZATION AND PERFORMANCE</b>
+		<p><b>ichn, kchn</b> - MIDI channel number (1-16)<br>
+		<b>inum, knum</b> - controller number (0-127 for examp. 1 = ModWheel; 2 = BreathControl etc.)<br>
+		<b>ivalue, kvalue</b> - floating point value<br>
+		<b>imin, kmin</b> - minimum floating point value (converted in midi integer value 0)<br>
+		<b>imax, kmax</b> - maximum floating point value (converted in midi integer value 127 (7 bit) or 16383 (14 bit))<br>
+		<b>imsb, kmsb</b> - most significant byte controller number when using 14 bit parameters<br>
+		<b>ilsb, klsb</b> - less significant byte controller number when using 14 bit parameters<br>
+		<b>iprog, kprog</b> - program change number in floating point<br>
+		<b>inotenum, knotenum </b>- MIDI note number (used in polyphonic aftertouch messages)
+		<p><b>ioutc</b> and <b>koutc</b> (i and k-rate midi controller output) send controller messages to MIDI OUT device.
+		<p><b>ioutc14</b> and <b>koutc14</b> (i and k-rate midi 14 bit controller output) send a pair of controller messages. These opcodes can drive 14 bit parameters on MIDI instruments that recognize them. The first control message contains the most significant byte of i(k)value argument while the second message contains the less significant byte.<br>
+		i(k)msb and i(k)lsb are the number of the most and less significant controller.
+		<p><b>ioutpb</b> and <b>koutpb</b> (i and k-rate pitch bend output) send pitch bend messages.
+		<p><b>ioutat</b> and <b>koutat</b> (i and k-rate aftertouch output) send aftertouch messages.
+		<p><b>ioutat</b> and <b>koutat</b> (i and k-rate aftertouch output) send aftertouch messages.
+		<p><b>ioutpc</b> and <b>koutpc</b> (i and k-rate program change output) send program change messages.
+		<p><b>ioutpat</b> and <b>koutpat</b> (i and k-rate polyphonic aftertouch output) send polyphonic aftertouch messages. These opcodes can drive a different value of a parameter for each note currently active. They work only with MIDI instruments which recognize them.
+		<p><b><i>N.B.</i></b> All these opcodes can scale the i(k)value floating-point argument according with i(k)max and i(k)min values. For example, setting i(k)min = 1.0 and i(k)max = 2.0, when i(k)value argument receives a 2.0 value, the opcode will send a 127 value to MIDI OUT device, while when receiving a 1.0 it will send a 0 value.
+		<p>I-rate opcodes send their message once during instrument initialization.<br>
+		K-rate opcodes send a message each time the MIDI converted value of argument i(k)value changes.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="midigen4"></a><!-- -->
+		<b>MIDI REALTIME MESSAGES OUTPUT</b>
+		<p><b>mclock</b> ifreq<br>
+		<b>mrtmsg</b> imsgtype
+		<p><b>DESCRIPTION</b>
+		<p>Send System Realtime messages to the MIDI OUT port.
+		<p><b>INITIALIZATION</b>
+		<p><b>ifreq</b> - clock message frequency rate in Hz
+		<p>imsgtype - type of real-time message:
+		<p>1 sends a START message (0xFA);<br>
+		2 sends a CONTINUE message (0xFB);<br>
+		0 sends a STOP message (0xFC);<br>
+		-1 sends a SYSTEM RESET message (0xFF);<br>
+		-2 sends an ACTIVE SENSING message (0xFE)
+		<p><b>PERFORMANCE</b>
+		<p><b>mclock</b> (midi clock) sends a MIDI CLOCK message (0xF8) every 1/ifreq seconds. So ifreq is the frequency rate of CLOCK messages in Hz.
+		<p><b>mrtmsg</b> (midi realtime message) sends a realtime message once, in init stage of current instrument. imsgtype parameter is a flag to indicate the message type (see above, in ARGUMENTS description).
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="release"></a><!-- -->
+		<b>DURATION EXTENSION OF MIDI NOTES</b>
+		<p><b>xtratim</b> iextradur<br>
+		<b>kflag</b> release
+		<p><b>DESCRIPTION</b>
+		<p>Extend the duration of realtime generated events and handle their extra life.
+		<p><b>INITIALIZATION</b>
+		<p><b>iextradur</b> - additional duration of current instrument instance
+		<p><b>PERFORMANCE</b>
+		<p><b>xtratim</b> extends current MIDI-activated note duration of <i>iextradur</i> seconds after the corresponding note-off message has deactivated current note itself.<br>
+		This opcode has no output arguments.
+		<p><b>release</b> outputs current note state. If current note is in the release stage (i.e. if its duration has been exetended with <b>xtratim</b> opcode and if it has only just deactivated), <i>kflag</i> output argument is set to 1, else (in sustain stage of current note) is set to 0.
+		<p>These two opcodes are useful for implementing complex release-oriented envelopes.
+		<p><b><i>Example</i></b>:
+		<pre>	<tt>instr&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;allows complex ADSR envelope with MIDI events</tt>
+<tt>inum	notnum</tt>
+<tt>icps	cpsmidi</tt>
+<tt>iamp	ampmidi 4000</tt>
+<tt>;</tt>
+<tt>;############## complex envelope section ##############</tt>
+<tt>	xtratim 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;extra-time, i.e. release dur</tt>
+<tt>krel	init&nbsp;&nbsp;&nbsp; 0</tt>
+<tt>krel	release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;outputs release-stage flag (0 or 1 values)</tt>
+<tt>if	(krel &gt; .5) kgoto&nbsp; rel&nbsp; ;if in relase-stage goto relase section</tt>
+<tt>;</tt>
+<tt>;************ attack and sustain section ***********</tt>
+<tt>kmp1	linseg&nbsp; 0,.03,1,.05,1,.07,0,.08,.5,4,1,50,1&nbsp;</tt>
+<tt>kmp	=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kmp1*iamp</tt>
+<tt>	kgoto&nbsp;&nbsp; done</tt>
+<tt>;</tt>
+<tt>;************ release section **********************</tt>
+<tt>rel:</tt>
+<tt>kmp2	linseg&nbsp; 1,.3,.2,.7,0&nbsp;&nbsp;&nbsp;&nbsp;</tt>
+<tt>kmp&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kmp1*kmp2*iamp</tt>
+<tt>done:</tt>
+<tt>;###################################################</tt>
+<tt>;</tt>
+<tt>a1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; oscili&nbsp; kmp, icps, 1</tt>
+<tt>	out&nbsp;&nbsp;&nbsp;&nbsp; a1</tt>
+<tt>	endin</tt>
+</pre>
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="wrap"></a><!-- -->
+		<b>WRAPPING SIGNALS AROUND</b>
+		<p>idest <b>wrap</b> isig, ilow, ihigh<br>
+		kdest <b>wrap</b> ksig, klow, khigh<br>
+		adest <b>wrap</b> asig, klow, khigh
+		<p>idest <b>mirror</b> isig, ilow, ihigh<br>
+		kdest <b>mirror</b> ksig, klow, khigh<br>
+		adest <b>mirror</b> asig, klow, khigh
+		<p><b>DESCRIPTION</b>
+		<p>Wraps the signal in various ways (similar to <b>limit</b> opcode by Robin Whittle).
+		<p><b>INITIALIZATION - PERFORMANCE</b>
+		<p><b>xdest</b> - output signal<br>
+		<b>xsig</b> - input ignal<br>
+		<b>xlow</b> - low threshold<br>
+		<b>xhigh</b> - high threshold
+		<p><b>mirror</b> &quot;reflects&quot; the signal that exceeds low and high thresholds.
+		<p><b>wrap</b> wraps-around the signal that exceeds low and high thresholds.
+		<p>These opcodes are useful in several situations, such as for table indexing and for clipping and modeling irate, krate or arate signals.<br>
+		<b>wrap</b> are also useful for wrapping-around tables data when maximum index is not a power of two (see table and tablei).<br>
+		Another use of <b>wrap</b> is in cyclical event repeating with arbirary cycle length.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="infofunc1"></a><!-- -->
+		<b>ftlen2(x)</b>
+		<p><b>DESCRIPTION</b>
+		<p>this function is the same as ftlen( ) but operates also with deferred-allocation function size with GEN1 and GEN22 (see them for more informations).
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="infofunc2"></a><!-- -->
+		<b>nsamp(x)</b>
+		<p><b>DESCRIPTION</b>
+		<p>This function returns the number of samples effectively loaded by <i>GEN01</i> or <i>GEN22</i> from a file. This function is useful when table length is a power of two (i.e. not deferred allocation is used) larger than the file sample number of the file.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="infofunc3"></a><!-- -->
+		<b>ftsr(x)</b>
+		<p><b>DESCRIPTION</b>
+		<p>This function returns the sampling-rate of a <i>GEN01</i> or <i>GEN22</i> generated table. The sampling-rate is determined from the header of the original file. If the original file has not header, ftsr returns 0.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="16bit1"></a><!-- -->
+		<b><font size="+2">LOSCIL2</font></b>
+		<p>ar1 [,ar2] <b>loscil2</b> xamp, kcps, ifn[, ibas] [,imod1,ibeg1,iend1] [, imod2,ibeg2,iend2]
+		<p><b>DESCRIPTION</b>
+		<p>Read sampled sound (mono or stereo) from a table of 16-bit integer samples, with optional sustain and release looping. Uses 16-bit integer table (see GEN 22).
+		<p><b>INITIALIZATION</b>
+		<p>See loscil for details.
+		<p><b>PERFORMANCE</b>
+		<p>See loscil for details.
+		<p><b><i>N.B.</i></b>
+		<p>This opcode is almost identical to loscil, the only difference is loscil2 uses 16-bit integer function table (see GEN 22) for storing samples, increasing realtime performance and reducing sample-memory consumption in half.
+		<p>WARNING! You MUST use only GEN 22 to allow this opcode operates correctly!
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="16bit2"></a><!-- -->
+		<b><font size="+2">FOF3</font></b>
+		<p>ar <b>fof3</b> xamp, xfund, xform, koct, kband, kris, kdur, kdec, iolaps, ifna, ifnb, itotdur, kphs, kgliss
+		<p><b>DESCRIPTION</b>
+		<p>Audio output is a succession of sinusoid bursts initiated at frequency xfund with a spectral peak at xform. For xfund above 25 Hz these bursts produce a speech-like formant with spectral characteristics determined by the k-input parameters. For lower fundamentals this generator provides a special form of granular synthesis.
+		<p><b>fof3</b> is identical to fof, except that the optional arguments iphs and iform are required k-rate arguments, kphs and kgliss, allowing granular synthesis and grain glissandi.
+		<p><b>INITIALIZATION</b> and <b>PERFORMANCE</b>
+		<p>see fof, fof2 and fog
+		<p><b><i>N.B.</i></b>
+		<p><b>fof3</b> is identical to <b>fof2</b>, except that:
+		<p>1) samples of ifna are lineary interpolated to icrease sound quality and to lower distortion<br>
+		2) ifna argument must refer to a GEN22 generated table (16-bit integers stored in RAM). This halves RAM need for sample-functions.
+		<p>See fof, fof2 and fog for more informations.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="gen22"></a><!-- -->
+		<b>GEN22</b>
+		<p>Transfer data from a soundfile into a function table using 16-bit integers for storing it in RAM.
+		<p>f # time size <b>-22</b> filcod skiptime format channel
+		<p>for more information see GEN 01.
+		<p>This gen-function is almost identical to <b>GEN01</b>. The only difference is <b>GEN22</b> can only read 16 bit integer samples in mono or stereo and stores them in RAM keeping 16-bit integer format This halves RAM need. Very useful for LONG samples.
+		<p>For now <b>GEN22 </b>can operate only with <b>loscil2</b>, <b>lposcint</b> and <b>fof3</b> opcodes . You must&nbsp; always suppress normalization by using a negative GEN number, otherwise you will obtain a meaningless sequence of 1 , -1 and 0 integer values!
+		<p>WARNING! The only opcodes which can use GEN22-generated functions are <b>loscil2</b>, <b>lposcint</b> and <b>fof3</b>. You must rescale the output of <b>loscil2</b> and <b>fof3</b> opcodes, when upgrading instruments written with the older opcodes (i.e. <b>loscil</b> and <b>fof2</b>) otherwise they could surpass the range limit of output.
+		<p>Don&#146;t attempt to use <b>GEN22</b> with any other opcode (for now).
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="printk2"></a><!-- -->
+		<b><font size="+2">printk2</font></b>
+		<p><b>printk2</b> kvar [, numspaces]
+		<p><b>INITIALIZATION</b>
+		<p>numspaces - number of space characters printed before the value of kvar
+		<p><b>PERFORMANCE</b>
+		<p><b>kvar</b> - signal to be printed
+		<p>Derived from Robin Whittle's printk, prints a new value of kvar each time kvar changes. Useful for monitoring MIDI control changes when using sliders.
+		<p>Warning! don't use this opcode with normal, continuously variant k-signals, because it can hang the computer, as the rate of printing is too fast.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="filter1"></a><!-- -->
+		<b><font size="+2">lpres, lpresx</font></b>
+		<p>ar <b>lpres</b> asig, kcutoff, kresonance [,istor]
+		<p>ar <b>lpresx</b> asig, kcutoff, kresonance [, inumlayer, istor]
+		<p><b>DESCRIPTION</b>
+		<p><b>lpres</b> is a resonant lowpass filter.
+		<p><b>lpresx</b> is equivalent to more layer of lpres, with the same arguments, serially connected.
+		<p><b>INITIALIZATION</b>
+		<p><b>inumlayer</b> - number of elements of lpresx stack. Default value is 4. Maximum value is 10<br>
+		<b>istor</b> - initial disposition of internal data space.
+		<p>A zero value will clear the space; a non-zero value will allow previous information to remain. The default value is 0.
+		<p><b>PERFORMANCE</b>
+		<p><b>ar</b> - output signal<br>
+		<b>asig</b> - input signal<br>
+		<b>kcutoff</b> - filter cutoff frequency point<br>
+		<b>kresonance</b> - resonance amount
+		<p><b>lpres</b> is a resonant lowpass filter derived from a Hans Mikelson&acute;s orchestra.
+		<p>This implementation is very much faster than implementing it in Csound language, and it allows kr lower than sr. kcutoff is not in cps and kresonance is not in dB, so experiment for finding best results.
+		<p><b>lpresx</b> is equivalent to more layer of lpres, with the same arguments, serially connected. Using a stack of more filters allows a sharper freqency cutoff. It is very faster than using more lpres instances in Csound orchestra, because only one initialization and 'k' cycle are needed at time, and the audio loop falls enterely inside the cache memory of processor.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="filter2"></a><!-- -->
+		<b><font size="+2">tonex, atonex, resonx</font></b>
+		<p>ar <b>tonex</b> asig, khp[, inumlayer, istor]
+		<p>ar <b>atonex</b> asig, khp[, inumalayer, istor]
+		<p>ar <b>resonx</b> asig, kcf, kbw[, inumlayer, iscl, istor]
+		<p><b>INITALIZATION</b>
+		<p><b>inumlayer</b> - number of elements of filter stack. Default value is 4. Maximum value is 10<br>
+		<b>isig</b> - some as tone, atone and reson<br>
+		<b>istor</b> - some as tone, atone and reson<br>
+		<b>iscl</b> - some as reson
+		<p><b>PERFORMANCE</b>
+		<p><b>ar</b> - output signal<br>
+		<b>asig</b> - input signal<br>
+		<b>khp</b> - some as tone, atone<br>
+		<b>kcf</b> - some as reson<br>
+		<b>kbw</b> - some as reson
+		<p><b>tonex</b>, <b>atonex</b> and <b>resonx</b> are equivalent to more layer of tone, atone and reson, with the same arguments, serially connected.<br>
+		Using a stack of more filters allows a sharper frequency cutoff.<br>
+		They are very faster than using more instances in Csound orchestra of old opcodes,because only one initialization and 'k' cycle are needed at time, and the audio loop falls enterely inside the cache memory of processor.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="posc"></a><!-- -->
+		<b><font size="+2">poscil and lposcil</font></b>
+		<p>ar <b>poscil</b> kamp, kcps, ift [,iphs]<br>
+		kr <b>poscil</b> kamp, kcps, ift [,iphs]<br>
+		ar <b>poscil3</b> kamp, kcps, ift [,iphs]<br>
+		kr <b>poscil3</b> kamp, kcps, ift [,iphs]
+		<p>
+		<p>
+		<p>ar <b>lposcil</b> kamp, kfreqratio, kloop, kend, ift [,iphs]<br>
+		ar <b>lposcil3</b> kamp, kfreqratio, kloop, kend, ift [,iphs]
+		<p>ar <b>lposcint</b> kamp, kfreqratio, kloop, kend, ift [,iphs]
+		<p>(Note that <b>poscil </b>and <b>lposcil</b> opcode were previously named <b>posc</b> and <b>lposc</b>. These opocodes have been renamed to avoid namespace pollution. <b>poscil3</b> and <b>lposcil3</b> are cubic interpolated versions of poscil and lposcil by John Fitch).
+		<p><b>INITALIZATION</b>
+		<p><b>ift</b> - function table number
+		<p><b>iphs</b> - initial phase (in samples)
+		<p><b>PERFORMANCE</b>
+		<p><b>ar</b> - output signal<br>
+		<b>kamp</b> - amplitude<br>
+		<b>kcps</b> - frequency<br>
+		<b>kfreqratio</b> - multiply factor of table frequency (for example: 1 = original frequency, 1.5 = a fifth up , .5 = an octave down)<br>
+		<b>kloop</b> - loop point (in samples)<br>
+		<b>kend</b> - end loop point (in samples)
+		<p><b>poscil</b> (precise oscillator) is the same as <b>oscili</b> but allows hugely more precise frequency control (especially when using long tables and low frequency values). &nbsp;It uses floating-point table indexing instead of integer math, differently by <b>oscil</b> and <b>oscili</b>. It is only a bit slower than <b>oscili</b>.
+		<p><b>lposcil</b> (loop oscillator) allows to vary in k rate the starting and ending point of a sample contained in a table. This can be useful when reading samples loop of a wavetable whose repeat speed can be varied during the performance.
+		<p><b>lposcint</b> is the same as <b>lposcil</b>, but read integer stored sample tables (<b>GEN22</b>) to reduce RAM memory needs.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="physic"><!-- -->
+		</a><!-- -->
+		<b>wguide1 and wguide2</b>
+		<p>ar <b>wguide1</b> asig, kfreq, kcutoff, kfeedback;<br>
+		ar <b>wguide2</b> asig, kfreq1, kfreq2, kcutoff1, kcutoff2, kfeedback1, kfeedback2
+		<p>(Note that <b>wguide1</b> and <b>wguide2</b> were previously named <b>physic1</b>. and <b>physic2</b>. These opocodew have been renamed to avoid namespace pollution).
+		<p><b>DESCRIPTION</b>
+		<p>Simple waveguide blocks (see picture)<br>
+		<img src="physic.gif" height="600" width="500">
+		<p><b>PERFORMANCE</b>
+		<p><b>wguide1</b> is the most elemental waveguide model consisting of one delay line and one first-order lowpass filter.
+		<p><b>wguide2</b> is a model of beaten plate consisting of two parallel delay lines and two first-order lowpass filters. The two feedabak lines are mixed and sent to the delay again each cycle.
+		<p><i>asig</i> is the input of excitation noise, <i>kfreq</i> the frequency (i.e. the inverse of delay time), <i>kcutoff</i> is the filter cutoff frequency in Hz and <i>kfeedback</i> is the feedback factor.
+		<p>Implementing waveguide algoritms as opcodes, instead of as orc instr, allows the user to set kr different than sr, allowing better performance particulary when using real-time. (see also the block diagram included in 'physic.bmp' picture)
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><!-- -->
+		<a name="trig"><!-- -->
+		</a><b><font size="+2">trigger</font></b>
+		<p>kout <b>trigger</b> ksig, kthreshold, kmode<br>
+		(previously called <b>trig</b>).
+		<p><b>DESCRIPTION</b>
+		<p>informs when a krate signal crosses a threshold
+		<p><b>PERFORMANCE</b>
+		<p><b>kout</b> - output signal (a stream of zeroes with some 1)<br>
+		<b>ksig</b> - input signal<br>
+		<b>kthreshold</b> - trigger threshold<br>
+		<b>kmode</b> - can be 0 , 1 or 2
+		<p>Normally <b>trigger</b> outputs zeroes: only each time ksig crosses kthreshold <b>trigger</b> outputs a 1.
+		<p>There are three modes of using <b>trigger</b>:
+		<p><i>kmode = 0 </i>- (down-up) trigger outputs a 1 when current value of ksig is higher than kthreshold whereas old value of ksig was equal or lower than kthreshold
+		<p><i>kmode = 1 </i>- (up-down) trigger outputs a 1 when current value of ksig is lower than kthreshold whereas old value of ksig was equal or higher than kthreshold
+		<p><i>kmode = 2 </i>- (both) trigger outputs a 1 in both the two previous cases.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="midiflow1"></a><!-- -->
+		<b>midiin</b>
+		<p>kstatus, kchan, kdata1, kdata2 <b>midiin</b>
+		<p><b>DESCRIPTION</b>
+		<p>Returns a generic midi message received by the midi in port
+		<p><b>PERFORMANCE</b>
+		<p><b>kstatus</b> - the type of midi message. Can be:
+		<p>128 (note off),<br>
+		144 (note on),<br>
+		160 (polyphonic aftertouch),<br>
+		176 (control change),<br>
+		192 (program change),<br>
+		208 (channel aftertouch),<br>
+		224 (pitch bend)
+		<p>or 0 if no midi message are pending in the MIDI IN buffer.
+		<p><b>kchan</b> - midi channel (1-16)<br>
+		<b>kdata1, kdata2</b> - message-dependent data values
+		<p>midiin has no input arguments, because it reads at the midi in port implicitly. It works at k-rate. Normally (i.e. when no messages are pending) kstatus is zero, only each time midi data are present in the midi in buffer, kstatus is set to the type of the relative messages.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="midiflow2"></a><!-- -->
+		<b>midiout</b>
+		<p><b>midiout</b> kstatus, kchan, kdata1, kdata2
+		<p><b>DESCRIPTION</b>
+		<p>sends a generic midi message to the midi out port
+		<p><b>PERFORMANCE</b>
+		<p><b>kstatus</b> - the type of midi message. Can be:
+		<p>128 (note off),<br>
+		144 (note on),<br>
+		160 (polyphonic aftertouch),<br>
+		176 (control change),<br>
+		192 (program change),<br>
+		208 (channel aftertouch),<br>
+		224 (pitch bend)<br>
+		or 0 when no midi messages must be sent to the MIDI OUT port.
+		<p><b>kchan</b> - midi channel (1-16)<br>
+		<b>kdata1, kdata2 </b>- message-dependent data values
+		<p><b>midiout</b> has not output arguments, because it sends the message to the midi out port implicitly. It works at k-rate. It sends a midi message only when kstatus is different than zero.
+		<p>Warning! Normally kstatus should be set to 0, only when the user intend to send a midi message, it can be set to the corresponding message type number.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><!-- -->
+		<b><font size="+2">midion2</font></b>
+		<p><b>midion2</b> kchn, knum, kvel, ktrig
+		<p><b>DESCRIPTION</b>
+		<p>sends note on and off messages to the midi out port when triggered by a value different than zero.<br>
+		(Note that <b>midion2</b> opcode was previously named <b>kon2</b>. This opocode has been renamed to avoid namespace pollution).
+		<p><b>PERFORMANCE</b>
+		<p><b>kchn</b> - midi channel<br>
+		<b>knum</b> - midi note number<br>
+		<b>kvel</b> - note velocity<br>
+		<b>ktrig</b> - trigger input signal (normally 0)
+		<p>Similary to <b>midion</b>, this opcode sends note-on and note-off messages to the midi out port, but <b>midion2</b> does it only when ktrig is different than zero. This opcode is thinked to work toghether with the output of the <b>trig</b> opcode.
+		<p>-----------------------------------------------------------
+		<p><a name="midiflow4"></a><!-- -->
+		<b><font size="+2">nrpn</font></b>
+		<p><b>nrpn</b> kchan, kparmnum, kparmvalue
+		<p><b>DESCRIPTION</b>
+		<p>sends a <b>nprn</b> (Non Registered Parameter Number) message to the midi out port each time one of the input arguments changes.
+		<p><b>PERFORMANCE</b>
+		<p><b>kchan</b> - midi channel<br>
+		<b>kparmnum</b> - number of NRPN parameter<br>
+		<b>kparmvalue</b> - value of NRPN parameter
+		<p>This opcode sends new message when the MIDI translated value of one of the input arguments changes. It operates at k-rate. Useful with the midi instruments that recognize NRPNs (for example with the newest sound-cards with internal midi synthesizer such as SB AWE32, AWE64, GUS etc. in which each patch parameter can be changed during the performance via NRPN)
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="midiflow5"></a><!-- -->
+		<b><font size="+2">mdelay</font></b>
+		<p><b>mdelay</b> kstatus, kchan, kdata1, kdata2, kdelay
+		<p><b>DESCRIPTION</b>
+		<p>A midi delay
+		<p><b>PERFORMANCE</b>
+		<p><b>kstatus</b> - status byte of midi message to be delayed<br>
+		<b>kchan</b> - midi channel (1-16)<br>
+		<b>kdata1</b> - first midi data byte<br>
+		<b>kdata2</b> - second midi data byte<br>
+		<b>kdelay</b> - delay time in seconds
+		<p>This opcode grabs a midi message each time kstatus is different than zero and sends it to the midi out port after kdelay seconds.<br>
+		This opcode is useful to implement midi delays.<br>
+		More instance of this opcode can be present in the same instr with different argument values, so complex and colourful midi echoes can be implemented. Furthermore, the delay can be changed at k-rate.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><!-- -->
+		<b><font size="+2">expsega</font></b>
+		<p>asig <b>expsega</b> ia, idur1, ib[, idur2, ic[...]]
+		<p><b>DESCRIPTION</b>
+		<p>An exponential segment generator operating at a-rate. This unit is almost identical to expseg, but very more precise when defining segments with very short duration (i.e. in percussive attack phase) at audio-rate.
+		<p>Note that old expseg opcode does not operate correctly at audio rate when segments are shorter than a k-period.
+		<p><b>INITIALISATION</b>
+		<p><b>ia</b> - starting value. Zero is illegal.<br>
+		<b>ib, ic</b>, etc. - value after idur1 seconds, etc. must be non-zero and must agree in sign with ia.<br>
+		<b>idur1</b> - duration in seconds of first segment.
+		<p>A zero or negative value will cause all initialization to be skipped.
+		<p><b>idur2, idur3</b>, etc. - duration in seconds of subsequent segments.<br>
+		A zero or negative value will terminate the initialization process with the preceding point, permitting the last-defined line or curve to be continued indefinitely in performance. The default is zero.
+		<p><b>PERFORMANCE</b>
+		<p>These units generate control or audio signals whose values can pass through 2 or more specified points.The sum of dur values may or may not equal the instrument's performance time: a shorter performance will truncate the specified pattern, while a longer one will cause the last-defined segment to continue on in the same direction.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><b>Perry Cook opcodes</b>
+		<p>(derived by a Michael Gogins Csound version which supports an external library of opcodes. The 'perry_toolkit.opc' file must be present in the same directory of DirectCsound executable in order to enable these opcodes)
+		<p>list of opcodes:
+		<p><b>marimba</b><br>
+		<b>vibraphone</b><br>
+		<b>agogobell</b><br>
+		<b>plucked</b><br>
+		<b>mandolin</b><br>
+		<b>clarinet</b><br>
+		<b>flute</b><br>
+		<b>brass</b><br>
+		<b>bowed</b><br>
+		<b>rhodes</b><br>
+		<b>wurlitzer</b><br>
+		<b>tubularbell</b><br>
+		<b>heavymetal</b><br>
+		<b>percussiveflute</b><br>
+		<b>hammond</b><br>
+		<b>fmvoices</b><br>
+		<b>minimoog</b><br>
+		<b>voiceformant</b>
+		<p>example:
+		<p>ar <b>marimba</b> xcps, xamp, xconstatus, xcondata1, xcondata2, xmodwheel
+		<p>Audio output is a physical model of the named instrument based on waveguide synthesis,
+		<p>frequency modulation synthesis, or modal synthesis.
+		<p><b>Initialization</b>
+		<p>There are no specifically initialization-time variables.
+		<p><b>Performance</b>
+		<p><b>xcps</b> - Frequency in cycles per second.<br>
+		<b>xamp</b> - Amplitude multiplier.<br>
+		<b>xconstatus</b>&nbsp; - MIDI control message status byte. Meaning depends upon opcode, but analogous to corresponding MIDI patch.<br>
+		<b>xcondata1</b> -&nbsp;&nbsp; MIDI control message data byte 1. Meaning depends upon opcode, but analogous to corresponding MIDI patch.<br>
+		<b>xcondata2</b> - MIDI control message data byte 2. Meaning depends upon opcode, but analogous to corresponding MIDI patch.<br>
+		<b>xmodwheel</b>&nbsp; - MIDI modulation wheel value. Meaning depends upon opcode, but analogous to corresponding MIDI patch.
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><b>marimjpff</b>
+		<p>the marimba described in the 3.47 manual by John Fitch (ranamed &nbsp;to avoid name-conflict with original Perry Cook algorythms included in the external library).
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="control3"></a><!-- -->
+		<b><font size="+1">Banks of sliders</font></b>
+		<p><b>slider8,&nbsp; slider16,&nbsp; slider32,&nbsp; slider64</b><br>
+		<b>slider8f,&nbsp; slider16f,&nbsp; slider32f,&nbsp; slider64f</b><br>
+		<b>s16b14,&nbsp; s32b14</b>
+		<p><b>SYNTAX</b>
+		<p>k1,k2,k3,k4,k5,k6,k7,k8 <b>slider8</b> ichan, ictlnum1, imin1, imax1, init1, ifn1, .... , \<br>
+		ictlnum8, imin8, imax8, init8, ifn8
+		<p>k1, ... , k16 <b>slider16</b> ichan, ictlnum1, imin1, imax1, init1, ifn1, .... , \<br>
+		ictlnum16, imin16, imax16, init16, ifn16
+		<p>k1, ... , k32 <b>slider32</b> ichan, ictlnum1, imin1, imax1, init1, ifn1, .... , \<br>
+		ictlnum32, imin32, imax32, init32, ifn32
+		<p>k1, ... , k64 <b>slider64</b> ichan, ictlnum1, imin1, imax1, init1, ifn1, .... , \<br>
+		ictlnum64, imin64, imax64, init64, ifn64
+		<p>k1,k2,k3,k4,k5,k6,k7,k8 <b>slider8f</b> ichan, ictlnum1, imin1, imax1, init1, ifn1, icutoff1, .... , \<br>
+		ictlnum8, imin8, imax8, init8, ifn8, icutoff8
+		<p>k1, ... , k16 <b>slider16f</b> ichan, ictlnum1, imin1, imax1, init1, ifn1, icutoff1, .... , \<br>
+		ictlnum16, imin16, imax16, init16, ifn16, icutoff16
+		<p>k1, ... , k32 <b>slider32f</b> ichan, ictlnum1, imin1, imax1, init1, ifn1, icutoff1, .... , \<br>
+		ictlnum32, imin32, imax32, init32, ifn32, icutoff32
+		<p>k1, ... , k64 <b>slider64f</b> ichan, ictlnum1, imin1, imax1, init1, ifn1, icutoff1, .... , \<br>
+		ictlnum64, imin64, imax64, init64, ifn64, icutoff64
+		<p>i1, ... , i8 <b>slider8</b> ichan, ictlnum1, imin1, imax1, ifn1, .... , \<br>
+		ictlnum8, imin8, imax8, ifn8
+		<p>i1, ... , i16 <b>slider16</b> ichan, ictlnum1, imin1, imax1, ifn1, .... , \<br>
+		ictlnum16, imin16, imax16, ifn16
+		<p>i1, ... , i32 <b>slider32</b> ichan, ictlnum1, imin1, imax1, ifn1, .... , \<br>
+		ictlnum32, imin32, imax32, ifn32
+		<p>i1, ... , i64 <b>slider64</b> ichan, ictlnum1, imin1, imax1, ifn1, .... , \<br>
+		ictlnum64, imin64, imax64, ifn64
+		<p>i1, ... , i16 <b>s16b14</b> ichan, ictlno_msb1, ictlno_lsb1, imin1, imax1, initvalue1, ifn1, ....., \<br>
+		ictlno_msb16, ictlno_lsb16, imin16, imax16, initvalue16, ifn16
+		<p>i1, ... , i16 <b>is16b14</b> ichan, ictlno_msb1, ictlno_lsb1, imin1, imax1, ifn1, .......... \<br>
+		ictlno_msb16, ictlno_lsb16, imin16, imax16, ifn16
+		<p>i1, ... , i32 <b>s32b14</b> ichan, ictlno_msb1, ictlno_lsb1, imin1, imax1, initvalue1, ifn1, ....., \<br>
+		ictlno_msb32, ictlno_lsb32, imin32, imax32, initvalue32, ifn32
+		<p>i1, ... , i32 <b>s32b14</b> ichan, ictlno_msb1, ictlno_lsb1, imin1, imax1, ifn1, .......... \<br>
+		ictlno_msb32, ictlno_lsb32, imin32, imax32, ifn32
+		<p><b>DESCRIPTION</b>
+		<p>MIDI slider control banks
+		<p><b>INITIALIZATION</b>
+		<p><b>i1 ... i64</b> - output values<br>
+		<b>ichan</b> - midi channel (1-16)<br>
+		<b>ictlnum1 ... ictlnum64</b> - midi control number<br>
+		<b>ictlno_msb1 .... ictlno_msb32</b> - midi control number (most significant byte)<br>
+		<b>ictlno_lsb1 .... ictlno_lsb32 </b>- midi control number (less significant byte)<br>
+		<b>imin1 ... imin64</b> - minimum values for each controller<br>
+		<b>imax1 ... imax64</b> - maximum values for each controller<br>
+		<b>init1 ... init64 </b>- inital value for each controller<br>
+		<b>ifn1 ... ifn64</b> - function table for conversion for each controller<br>
+		<b>icutoff1 ... icutoff64</b> - low pass filter frequency cutoff for each controller
+		<p><b>PERFORMANCE</b>
+		<p><b>k1 ... k64</b> - output values
+		<p><b>isliderN</b>, <b>sliderN</b> and <b>sliderNf</b> are banks of MIDI controller (useful together with <b>VMCI</b> and when using midi mixer such as KAWAI MM-16 or others for changing whatever sound parameter in realtime).
+		<p>The raw midi control messages at the input port are converted to agree with iminN and imaxN, and an initial value can be set. Also an optional non-interpolated function table with a custom translation curve is allowed, useful for enabling exponential response curves.
+		<p>When no function table translation is required, set the ifnN value to 0, else set ifnN to a valid function table number.
+		<p>When table translation is enabled (i.e. setting ifnN value to a non-zero number referring to an already allocated function table), initN value should be set equal to iminN or imaxN value, else the initial output value will not be the same as specified in initN argument.
+		<p><b>slider8</b> allows a bank of 8 different midi control message numbers, slider16 does the same with a bank of 16 controls, and so on.
+		<p><b>sliderNf</b> filter the signal before output for eliminating discontinuities due to the low resolution of the MIDI (7 bit); the cutoff frequency can be set separately for each controller (suggested range: .1 to 5 cps). Warning! <b>sliderNf</b> opcodes do not output the required initial value immediately, but only after some k-cycle because the filter slightly delays the output.
+		<p>As the input and output arguments are many, you can split the line using '\' (backslash) character (new in 3.47 version) to improve the readability. Using these opcodes is quite more efficient than using the separate ones (<b>ctrl7</b> and <b>ktone</b>) when more controllers are required.
+		<p>In <b>isliderN</b> there is not an initial-value input argument because the output is get directly from current status of internal controller array of Csound.
+		<p><b>isNb14</b> and <b>sNb14</b> opcodes are the 14-bit versions of these banks of controllers.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="powof2"></a><!-- -->
+		<b><font size="+2">Power of two related</font></b>
+		<p><b>powoftwo(x)</b><br>
+		<b>logbtwo(x)</b>
+		<p><b>powoftwo()</b> function returns 2 ^ x and allows positive and negatives numbers as argument. The range of values admitted in <b>powoftwo() </b>is -5 to +5 allowing a precision more fine than one cent in a range of ten octaves. If a greater range of values is required, use the slower opcodes ipow, kpow and apow.
+		<p><b>logbtwo()</b> returns the logarithm base two of x. The range of values admitted as argument is .25 to 4 (i.e. from -2 octave to +2 octave response). This function is the inverse of <b>powoftwo()</b>.
+		<p>These functions are fast, because they read values stored in tables.<br>
+		Also they are very useful when working with tuning ratios. They work at i and k-rate.
+		<p>Warning! values out of range will crash Csound with an invalid memory access error.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="filter3"></a><!-- -->
+		<b><font size="+2">vlpres</font></b>
+		<p>ar <b>vlpres</b> asig, kfco, kres, iord, ksep;
+		<p><b>DESCRIPTION</b>
+		<p>a bank of filters in which freqency cutoff can be separated under user control
+		<p><b>INITIALIZATION</b>
+		<p>iord - total nuber of filter (1 to 10)
+		<p><b>PERFORMANCE</b>
+		<p><b>ar</b> - output signal<br>
+		<b>asig</b> - input signal<br>
+		<b>kfco</b> - frequency cutoff (not in cps)<br>
+		<b>ksep</b> - frequency cutoff separation for each filter
+		<p><b>vlpres</b> (variable resonant lowpass filter) allow a variable response curve in resonant filters. It can be thinked as a bank of lowpass resonant filters with the same resonance, serially connected. The frequency cutoff of each filter can vary with the kcutoff and ksep parameters.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="flanger"></a><!-- -->
+		<b><font size="+2">flanger</font></b>
+		<p>ar <b>flanger</b> asig, adel, kfeedback, imaxd
+		<p><b>DESCRIPTION</b>
+		<p>A user controlled flanger (see picture)<br>
+		<img src="flanger.gif" height="187" width="330">
+		<p><b>INITALIZATION</b>
+		<p><b>imaxd</b> - maximum delay in seconds (needed for inital memory allocation)
+		<p><b>PERFORMANCE</b>
+		<p><b>ar</b> - output signal<br>
+		<b>asig</b> - input signal<br>
+		<b>adel</b> - delay in seconds<br>
+		<b>kfeedback</b> - feedback amount (in normal tasks this should not exceed 1, even if bigger values are allowed)
+		<p>This unit is useful for generating chourses and flangers. The delay must be varied at a-rate connecting adel to an oscillator output. Also the feedback can vary at k-rate.
+		<p>This opcode is implemented to allow kr different than sr (else delay could not be lower than ksmps) enhancing realtime performance. (BtW: this unit is very similar to physic1, the only difference is flanger does not have the lowpass filter. See also the block diagram in figure 'flanger.bmp').
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="interpol"><!-- -->
+		</a><b><font size="+2">ntrpol</font></b>
+		<p>ir <b>ntrpol</b> isig1, isig2, ipoint [, imin, imax]<br>
+		kr <b>ntrpol</b> ksig1, ksig2, kpoint [, imin, imax]<br>
+		ar <b>ntrpol</b> asig1, asig2, kpoint [, imin, imax]
+		<p><b>DESCRIPTION</b>
+		<p>Calculates the weighted mean value (i.e. linear interpolation) of two input signals
+		<p><b>INITALIZATION</b>
+		<p><b>imin</b> - minimum xpoint value (optional, default 0)<br>
+		<b>imax</b> - maximum xpoint value (optional, default 1)
+		<p><b>PERFORMANCE</b>
+		<p><b>xr</b> - output signal<br>
+		<b>xsig1, xsig2</b> - input signals<br>
+		<b>xpoint</b> - interpolation point beetween the two values
+		<p><b>nterpol</b> opcode outputs the linear interpolation beetween two input values. <b>xpoint</b> is the distance of evaluation point from the first value. With the default values of imin and imax, (0 and 1) a zero value indicates no distance from the first value and the maximum distance from the second one. With a 0.5 xntrpol value will output the mean value of the two inputs, indicating the exact half point beetween xsig1 and xsig2 . A 1 value indicates the maximum distance from the first value and no distance from the second one.
+		<p>The range of xpoint can be also defined with imin and imax to make easier its management.<br>
+		These opcodes are useful for crossfading two signals.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="gen23"></a><!-- -->
+		<b>GEN23</b>
+		<p>This subroutine reads numeric values from an external ascii file
+		<p>f# time size <b>-23</b> &quot;filename.txt&quot;
+		<p>The numeric values contained in &quot;filename.txt&quot; (which indicates the complete pathname of the ascii file to be read), can be separated by spaces, tabs, newline characters or commas.<br>
+		Also words that contains non-numeric characters can be used as comments since they are ignored.<br>
+		All characters following ';' (comment) are ignored until next line (numbers too).
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="gen24"></a><!-- -->
+		<b>GEN24</b>
+		<p>This subroutine reads numeric values from another allocated function-table and rescales them according to the max and min values given by the user.
+		<p>f# time size <b>-24 </b>numsource min max
+		<p><i>numsource</i> must be an already allocated table with the same size of this function.<br>
+		This GEN is useful, for example, to eliminate the starting offset in exponential segmets allowing a real starting from zero.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="fm2"><!-- -->
+		</a><b>foscili2</b>
+		<p>ar <b>foscili2</b> xamp, kcps, kcar, kmod, kndx, ifn1, ifn2 [, iphs]
+		<p><b>INITIALISATION</b>
+		<p><b>ifn1</b> - carrier function table number. Requires a wrap-around guard point.<br>
+		<b>ifn1</b> - modulator function table number. Requires a wrap-around guard point.<br>
+		<b>iphs</b> (optional) - initial phase of sampling, expressed as a fraction of a cycle (0 to 1). A negative value will cause phase initialization to be skipped. The default value is 0.
+		<p><b>PERFORMANCE</b>
+		<p>This unit is very similar to 'foscili'. The only difference is in that the user can use two different function tables, the first for the carrier (ifn1) , the second for the modulator (ifn2).<br>
+		See foscili help for more informations.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="cpstmid"></a><!-- -->
+		<b>MIDI MICRO TUNING</b>
+		<p><b>cpstmid</b>
+		<p>icps <b>cpstmid</b> ifn
+		<p><b>INITIALIZATION</b>
+		<p><b>ifn</b> - function table containing the parameters (numgrades, interval, basefreq, basekeymidi) and the tuning ratios.
+		<p>(init rate only)
+		<p>This unit is similar to cpsmidi, but allows fully customized micro-tuning scales. It requires five parameters, the first ifn is the function table number of the tuning ratios, and the other parameters must be stored in the function tables itself.<br>
+		The function table ifn should be generated by the GEN2 and the first four values stored in this function are:
+		<p><b>numgrades</b> (the number of grades of the micro-tuning scale),<br>
+		<b>interval</b> (the frequency range covered before repeating the grade ratios, for example 2 for one octave, 1.5 for a fift etcetera), <b>basefreq</b> (the base frequency of the scale in cps),<br>
+		<b>basekeymidi</b> (the midi-note-number to which to assign the basefreq unmodified).
+		<p>After these four values, the user can begin to insert the tuning ratios. For example, for a standard 12-grade scale with the base-frequency of 261 cps assigned to the key-number 60, the corresponding f-statement in the score to generate the table should be:
+		<pre><tt>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; numgrades&nbsp;&nbsp;&nbsp; basefreq&nbsp;&nbsp;&nbsp;&nbsp; tuning-ratios (eq.temp) .......&nbsp;&nbsp;&nbsp;</tt>
+<tt>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; interval&nbsp;&nbsp;&nbsp; basekeymidi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt>
+<tt>f1 0 64 -2&nbsp; 12&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp; 261&nbsp;&nbsp; 60&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp; 1.059463 1.12246 1.18920 ..etc...</tt>
+</pre>
+		<p>Another example with a 24-grade scale with a base frequency of 440 assigned to the key-number 48, and a repetition interval of 1.5:
+		<pre><tt>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; numgrades&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; basefreq&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tuning-ratios .......&nbsp;&nbsp;&nbsp;</tt>
+<tt>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; basekeymidi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt>
+<tt>f1 0 64 -2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.5&nbsp;&nbsp;&nbsp;&nbsp; 440&nbsp;&nbsp;&nbsp; 48&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp; 1.01&nbsp; 1.02&nbsp; 1.03&nbsp;&nbsp; ..etc...</tt>
+</pre>
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="sub1"><!-- -->
+		</a><b>call,calld,callm,callmd</b>
+		<p><b>call</b> instrno, iactime, idur [,ip4,ip5,ip6,ip7,... ,ipn ]<br>
+		<b>calld</b> instrno, iactime, idur [,ip4,ip5,ip6,ip7,... ,ipn ]<br>
+		<b>callm</b> instrno, iactime [,ip3,ip4,ip5,ip6,ip7,... ,ipn ]<br>
+		<b>callmd</b> instrno, iactime, idur [,ip4,ip5,ip6,ip7,... ,ipn ]
+		<p><b>DESCRIPTION</b>
+		<p>Activate an instrument from within another instrument at performance time (subroutine call)
+		<p><b>INITIALIZATION</b>
+		<p><b>instrno</b> - instrument number to be activated<br>
+		<b>iactime</b> - action time in seconds (should be zero when using call)<br>
+		<b>idur</b> - duration of the note to be activated<br>
+		<b>ip3,ip4,ip5,ip6, ... ,ipn </b>- p-fields of the instrument to be activated
+		<p><b>PERFORMANCE</b>
+		<p>An instrument containing <b>call</b> (instrument call), <b>calld</b> (delayed instrument call), <b>callm</b> (MIDI-oriented instrument call) or <b>callmd</b> (delayed MIDI-oriented instrument call) opcodes, can activate an instance of another instrument of the same orchestra during the performance.
+		<p>These opcodes can also be thinked as subroutine calls. Any number of additional init arguments (ip4,ip5,ip6 etc.) can be sent to the target instruments, in the same way of p-fields in a score note event.
+		<p>More instances of <b>call</b>, <b>calld</b>, <b>callm</b> and <b>callmd</b> can co-exist in the same calling instr, so chords of more notes (played by different target instruments) can be activated by a single MIDI note-on event, as well as by a single i-statement in the score. This possibility allows the user to do several things, for example to easily implement multi-layered instruments, or tho inherit the features of an instrument by a more specialized instrument (by using this opcodes together with the <b>parmXX</b> and <b>rtrnXX</b> opcode family, see below).
+		<p>A multiple inheritance of several instruments can be also implemented by using these opcodes in Csound.
+		<p>The difference beetween the four opcodes concerns the activation and the duration of the target note, and is described below:
+		<ol>
+			<li><b>call</b> plays the target note immediately (so 'iactime' argument must be set to zero), and its duration is 'idur' seconds, even if the caller instrument is turned off beforehand or afterward. This opcode has no output and operates at i-rate only.
+			<li><b>calld</b> can schedule the target note activation 'iactime' seconds after the caller instrument init-time. Again, the target note duration is 'idur' seconds, even if the caller instrument is turned off beforehand or afterward. This opcode has no output and operates at k-rate.
+			<li><b>callm</b> plays the target note immediately (so <i>iactime</i> argument must be set to zero), but its duration is indeterminate and depends by a midi midi note-off message recognized by the caller instrument. This opcode is useful when the caller instrument is activated by MIDI. In fact in this case it is impossible to know the caller duration beforehand. Notice that it is still possible to use <b>call</b> and <b>calld</b> with a MIDI-activated caller instrument instead of <b>callm</b>. In that case the target notes will be simply turned off after <i>idur</i> seconds, whether the caller instr is turned off before or after <i>idur</i> seconds are elapsed or it isn't. <b>callm</b> has no output and operates at k-rate.
+			<li><b>callmd</b> can schedule the target note activation <i>iactime</i> seconds after the caller instrument init-time. The duration of the target note is indeterminate (so 'idur' parameter is meaningless) and depends by a midi note-off message recognized by the caller instrument. The target note is not allocated until iactime seconds are elapsed. <b>callmd</b> has no output and operates at k-rate.
+		</ol>
+		<p>Notice that each of these opcodes makes the processing point do not return to the caller until all the target instr initialization phase has been completed.
+		<pre><tt>;//////////////////////////////////////</tt>
+<tt>;//////////&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EXAMPLE 1&nbsp;&nbsp;&nbsp;&nbsp;/////////</tt>
+<tt>;//////////&nbsp; call and calld   /////////</tt>
+<tt>;//////////////////////////////////////</tt>
+<tt>gifn&nbsp;&nbsp;&nbsp; ftgen 1,0,1024,10,1,0,0,0,0,0,0,.5,0,0,0,0,0.2</tt>
+<tt>;***************************************************</tt>
+<tt>	instr&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;**** caller instrument ****</tt>
+<tt>;***************************************************</tt>
+<tt>ifreq&nbsp;&nbsp; cpsmidi</tt>
+	<tt>call&nbsp;&nbsp; 2,0,2, 2000,ifreq</tt>
+<tt>	calld 2,1,4, 2000,ifreq*1.2</tt>
+<tt>	calld 2,3,6, 2000,ifreq*1.77</tt>
+<tt>	calld 2,5,8, 2000,ifreq*2.1</tt>
+<tt>	calld 2,8,10,2000,ifreq*2.4555</tt>
+<tt>	endin</tt>
+<tt></tt>
+<tt>;***************************************************</tt>
+<tt>&nbsp;&nbsp;&nbsp; instr&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;**** target instrument ****</tt>
+<tt>;***************************************************</tt>
+<tt>k1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; linseg&nbsp; 0,p3/2,1,p3/2,0</tt>
+<tt>a1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; oscili&nbsp; p4,p5,gifn</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; out&nbsp;&nbsp;&nbsp;&nbsp; a1*k1</tt>
+<tt>&nbsp;&nbsp; endin</tt>
+<tt></tt>
+<tt>;//////////////////////////////////////</tt>
+<tt>;//////////&nbsp;&nbsp;&nbsp;&nbsp; EXAMPLE 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ////////</tt>
+<tt>;////////// callm and callmd ////////</tt>
+<tt>;//////////////////////////////////////</tt>
+<tt></tt>
+<tt>gifn&nbsp;&nbsp;&nbsp; ftgen 1,0,1024,10,1,0,0,0,0,0,0,.5,0,0,0,0,0.2</tt>
+<tt>;***************************************************</tt>
+	<tt>instr&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;**** caller instrument ****</tt>
+<tt>;***************************************************</tt>
+<tt>iamp	ampmidi 2000</tt>
+<tt>ifreq	cpsmidi</tt>
+<tt>	callm&nbsp; 2,0,2 ,iamp,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ifreq</tt>
+<tt>	callmd 2,1,4 ,iamp * .5, ifreq * 1.2</tt>
+<tt>	callmd 2,3,6 ,iamp * .25,ifreq * 1.77</tt>
+<tt>	callmd 2,6,8 ,iamp * .2, ifreq * 2.1</tt>
+<tt>	callmd 2,8,10,iamp * .1, ifreq * 2.4555</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endin</tt>
+<tt>;***************************************************</tt>
+<tt>	instr&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;**** target instrument ****</tt>
+<tt>;***************************************************</tt>
+<tt>k1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; linenr&nbsp; 1,p3/2,p3/2,.03</tt>
+<tt>a1	oscili&nbsp; p4,p5,gifn</tt>
+<tt>	out&nbsp;&nbsp;&nbsp;&nbsp; a1*k1</tt>
+<tt>	endin</tt>
+
+
+
+
+
+
+
+<hr size="15">
+
+
+
+
+
+
+</pre>
+		<p>
+		<hr size="15">
+		<p><a name="sub2"><!-- -->
+		</a><b>parmck, parmtk, parmca, parmta, rtrnck, rtrntk, rtrnca, rtrnta</b>
+		<p><b>parmck</b> kinarg1, kinarg2, kinarg3,....kinargN<br>
+		<b>parmtk</b> koutarg1,koutarg2,koutarg3,...koutargN<br>
+		<b>parmca</b> ainarg1, ainarg2, ainarg3,....ainargN<br>
+		<b>parmta</b> aoutarg1,aoutarg2,aoutarg3,...aoutargN<br>
+		<b>rtrnck</b> koutarg1,koutarg2,koutarg3,...koutargN<br>
+		<b>rtrntk</b> kinarg1, kinarg2, kinarg3,....kinargN<br>
+		<b>rtrnca</b> aoutarg1,aoutarg2,aoutarg3,...aoutargN<br>
+		<b>rtrnta</b> ainarg1, ainarg2, ainarg3,....ainargN
+		<p><b>DESCRIPTION</b>
+		<p>These opcodes deal with a-rate and k-rate argument-signals and return signals to be sent when using subroutine calls
+		<p><b>PERFORMANCE</b>
+		<p><b>kinarg1, kinarg2, kinarg3,....kinargN</b> - k-rate input arguments<br>
+		<b>koutarg1,koutarg2,koutarg3,...koutargN</b> - k-rate output arguments<br>
+		<b>ainarg1, ainarg2, ainarg3,....ainargN</b> - a-rate input arguments<br>
+		<b>aoutarg1,aoutarg2,aoutarg3,...aoutargN</b> - a-rate output arguments
+		<p>This opcode family allows the user to define input and output signals to use as arguments (or parameters) and return values when calling a subroutine (together with the <b>call</b> opcode family).
+		<p>Some k-rate examples will be presented below, the corresponding a-rate oriented opcodes can be used in the same way, the only difference is that the arguments are a-rate variables.
+		<p><b>parmck</b> (k-rate parameters handling to be placed in the caller instrument) and <b>parmtk</b> (k-rate parameters handling to be placed in the target instrument) work in pair.
+		<p>The caller instrument can send several k-rate signals to the target instrument by using this couple of opcodes:
+		<pre><tt>;***************************************************</tt>
+<tt>	instr&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;**** caller instrument ****</tt>
+<tt>;***************************************************</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;**** calculating the k-rate arguments to be sent to the target instrument</tt>
+<tt>karg1	oscil   ...</tt>
+<tt>karg2	linen   ...</tt>
+<tt>karg3	expseg  ...</tt>
+<tt>karg4	linseg  ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;****&nbsp;&nbsp; instrno&nbsp;&nbsp; actime&nbsp;&nbsp;&nbsp; dur&nbsp;&nbsp;&nbsp;&nbsp; init-rate arguments sent to instr 2&nbsp;</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; call &nbsp;&nbsp; 2,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; iarg1,iarg2,iarg3&nbsp;&nbsp; ;*** call the target instr</tt>
+<tt>	parmck&nbsp;&nbsp;karg1,karg2,karg3,karg4&nbsp;&nbsp;&nbsp;&nbsp; ;*** send the four signals</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .....</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endin</tt>
+<tt></tt>
+<tt>;***************************************************</tt>
+<tt>	instr&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;**** target instrument ****</tt>
+<tt>;***************************************************</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .....</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parmtk&nbsp;&nbsp; k1,k2,k3,k4     ;*** receive the four signals from the caller instr</tt>
+                                 <tt>;*** using the k-rate arguments...</tt>
+<tt>a1	oscil    k1,k2,k3,1</tt>
+<tt>	out      a1*k4</tt>
+<tt>	.....</tt>
+<tt>	endin</tt>
+</pre>
+		<p>In this case instr 1 (the caller) calls instr 2 (the target) and sends three i-rate variables (iarg1, iarg2 and iarg3 which are interpreted as p4, p5 and p6 by the target instr) and four k-rate arguments (karg1,karg2,karg3,karg4 which are interpreted by the target instrument as k1,k2,k3 and k4 local variables) to the target instrument.
+		<p><b>IMPORTANT</b>: Notice that, in the previous example, the k1,k2,k3 and k4 arguments of <b>parmtk</b> opcode are output arguments, even if they appear on the right of the opcode instead of on the left. This because Csound at the moment doesn't support a variable number of arguments at the left of the opcode.<br>
+		Also you must put <b>parmck</b> (as well as <b>parmca</b>) immediately after the <b>call</b> opcode.
+		<p><b>rtrnck</b> (k-rate return values received by the caller instrument) and <b>rtrntk</b> (k-rate return values sent by the target instrument) work in pair. The target instrument can return several k-rate signals to the caller intrument by using these two pcodes. The following example shows this concept:
+		<pre><tt>;***************************************************</tt>
+<tt>	instr&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;**** caller instrument ****</tt>
+<tt>;***************************************************</tt>
+<tt>;**** calculating the k-rate arguments....</tt>
+<tt>;**** to be sent to the target instrument</tt>
+<tt>	....</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;****&nbsp;&nbsp; instrno&nbsp;&nbsp; actime&nbsp;&nbsp;&nbsp; dur&nbsp;&nbsp;&nbsp;&nbsp; init-rate arguments sent to instr 2&nbsp;</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; call &nbsp;&nbsp; 2,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; iarg1,iarg2,iarg3&nbsp;&nbsp; ;*** call the target instr</tt>
+	<tt>rtrnck&nbsp; karg1,karg2,karg3,karg4 ;*** receive the return signals from the target instr</tt>
+<tt>;*** using the return signals ...</tt>
+<tt>a1	oscil&nbsp;&nbsp; karg1,karg1,karg1,1</tt>
+<tt>	out&nbsp;&nbsp;&nbsp;&nbsp; a1*karg1</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .....</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endin</tt>
+<tt></tt>
+<tt>;***************************************************</tt>
+<tt>&nbsp;&nbsp;&nbsp; instr&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;**** target instrument ****</tt>
+<tt>;***************************************************</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .....</tt>
+<tt>;*** generating k-rate signals to be returned to the caller instr...</tt>
+<tt>k1	oscil	...</tt>
+<tt>k2	linseg	...</tt>
+<tt>k3	oscil1	...</tt>
+<tt>k4	expseg	....</tt>
+<tt>	rtrntk	k1,k2,k3,k4&nbsp; ;*** return the four signals to the caller instr</tt>
+	<tt>.....</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endin</tt>
+</pre>
+		<p>It is important to be sure that the number of arguments of the pair <b>parmck/parmtk </b>and <b>rtrnck/rtrntk</b> is the same.<br>
+		Using a-rate opcodes (<b>parmca/parmta</b> and <b>rtrnca/rtrnta</b>) is almost identical.<br>
+		Here is a summing-up example:
+		<pre><tt>;****</tt>
+<tt>;**** An example of parmck, parmca, parmtk, parmta, rtrnck,rtrnca, rtrntk and rtrnta opcodes</tt>
+<tt>;****</tt>
+<tt></tt>
+<tt>	sr = 44100</tt>
+	<tt>kr = 441</tt>
+<tt>	ksmps = 100</tt>
+<tt>	nchnls = 2</tt>
+<tt></tt>
+<tt>gifn	ftgen&nbsp;&nbsp; 1,0,1024,10 ,1 ,0,0,0,0,0,0,.1,0,0,0,0,0,.05,0,0,0,0,0,0,0,.01</tt>
+<tt>gikfn	ftgen&nbsp;&nbsp; 2,0,1024,10 ,1</tt>
+<tt>;***************************************************</tt>
+        <tt>instr&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;**** caller instrument ****</tt>
+<tt>;***************************************************</tt>
+<tt>iamp	ampmidi 2000</tt>
+<tt>ifreq	cpsmidi</tt>
+<tt>a1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; oscili&nbsp; iamp, ifreq, gifn</tt>
+<tt>a2	oscili&nbsp; iamp, ifreq*1.3, gifn</tt>
+<tt>a3	oscili&nbsp; iamp, ifreq*1.5555, gifn</tt>
+<tt>k1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; oscili&nbsp; 1, .5, gikfn</tt>
+<tt>k2	oscili&nbsp; 1, 1.3, gikfn</tt>
+<tt>k3	oscili&nbsp; 1, 2.1.5555, gikfn</tt>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <tt>xtratim 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;when using a-rate arguments in subroutine call,</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;you must be sure that the extra-time of the instrument</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;containing the out opcode is</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;grater or equal to that of the target instr</tt>
+<tt>;//////// first&nbsp; call /////////////</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; callm	2,0,4,iamp, ifreq&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;call instr 2 as subroutine</tt>
+<tt>	parmck	k1,k2,k3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;send k-rate arguments to instr 2</tt>
+<tt>	parmca	a1,a2,a3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;send a-rate arguments to instr 2</tt>
+<tt>	rtrnca	aout1,aout2        &nbsp;&nbsp;&nbsp;&nbsp; ;receive a-signals returned by the first call of instr 2</tt>
+<tt>;//////// second&nbsp; call /////////////</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; callm	2,0,4,iamp, ifreq*2.2 ;call instr 2 as subroutine</tt>
+<tt>	parmck&nbsp;&nbsp;k3,k2,k1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;send k-rate arguments to instr 2</tt>
+<tt>	parmca&nbsp;&nbsp;a3,a1,a2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;send a-rate arguments to instr 2</tt>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <tt>rtrnck&nbsp; kenv&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;receive k-signals returned by the second call of instr 2</tt>
+<tt>	rtrnca&nbsp; aout3,aout4&nbsp;&nbsp;&nbsp;&nbsp; ;receive a-signals returned by the second call of instr 2</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; outs&nbsp;&nbsp;&nbsp; (aout1+aout3)*kenv, (aout2+aout4)*kenv</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endin</tt>
+<tt></tt>
+<tt>;***************************************************</tt>
+<tt>&nbsp;&nbsp;&nbsp; instr&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;**** target instrument ****</tt>
+<tt>;***************************************************</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parmtk&nbsp;&nbsp;ksig,ksig2,ksig3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;receive k-signals sent by caller arguments</tt>
+<tt>	parmta&nbsp;&nbsp;asig,asig2,asig3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;receive a-signals sent by caller arguments</tt>
+<tt>k1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; linenr&nbsp; 1,p3/2,p3/2,.03</tt>
+<tt>a1	oscili&nbsp; p4*ksig,p5,gifn</tt>
+<tt>a2	oscili&nbsp; p4*ksig2,p5*1.5,gifn</tt>
+<tt>a3	oscili&nbsp; p4*ksig3,p5*1.8,gifn</tt>
+<tt>	rtrntk&nbsp; k1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;return k-signals</tt>
+<tt>	rtrnta&nbsp; a1+asig2+asig3, a2+a3+asig&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;return a-signals</tt>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endin</tt>
+</pre>
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="fout"></a><!-- -->
+		<b>fout</b>
+		<p><b>fout</b>&nbsp;&nbsp; &quot;ifilename&quot;, iformat, aout1 [, aout2, aout3,....]
+		<p><b>DESCRIPTION</b>
+		<p>Output a list of audio signal to a specified file
+		<p><b>INITIALIZATION</b>
+		<p><b>ifilename</b> - a double-quote delimited string file name<br>
+		<b>iformat</b> - a flag to choose output file format:<br>
+		0 - 16-bit integers without header<br>
+		1 - 32-bit floating point samples without header<br>
+		2 - 16-bit integers with .wav type header
+		<p><b>PERFORMANCE</b>
+		<p><b>aout1,... aoutN</b> - output signals
+		<p>This opcode allows to write samples of audio signals to a file with any number of channels. Channel number depends by the number of <b>aoutN</b> variables (i.e. a mono signal with only an a-rate argument, a stereo signal with two a-rate arguments etc.) Maximum number of channels is fixed to 64.
+		<p>More <b>fout</b> opcodes can be present in the same instrument, allowing to open more audio to disk streams in parallel.
+		<p>Notice that, differently by out, outs and outq, fout does not zeroes the audio variable, so you must provide a zeroing after calling fout if poliphony is used. You can use <b>incr</b> and <b>clear</b> opcodes for this task.
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="vincr"></a><!-- -->
+		<b>vincr, clear</b>
+		<p><b>vincr</b>&nbsp; asig, aincr<br>
+		<b>clear</b> avar1 [,avar2, avar3,...,avarN]
+		<p><b>DESCRIPTION</b>
+		<p><b>vincr</b> increments an audio variable of another signal, i.e. accumulates output.<br>
+		<b>clear</b> zeroes a list of audio signals.
+		<p><b>PERFORMANCE</b>
+		<p><b>asig</b> - audio variable to be incremented<br>
+		<b>aincr</b> - incrementation signal<br>
+		<b>avar1 [,avar2, avar3,...,avarN]</b> - signals to be zeroed
+		<p><b>vincr</b> (variable increment) and <b>clear</b> are thinked to be used togheter. <b>vincr</b> stores the result of the sum of two audio variables into the first variable itself (which is thinked to be used as accumulator in case of polyphony). The accumulator-variable can be used for output signal by means of fout opcode. After the disk writing operation, the accumulator-variable should be set to zero by means of <b>clear</b> opcode (or it will explode).
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<a name="fold"><!-- -->
+		</a><b>fold</b>
+		<p>ar <b>fold</b> asig, kincr
+		<p><b>DESCRIPTION</b>
+		<p>Adds artificial foldover to an audio signal
+		<p><b>PERFORMANCE</b>
+		<p>asig - input signal<br>
+		kincr - amount of foldover expressed in multiple of sampling rate. Must be &gt;= 1
+		<p>fold is an opcode which creates artificial foldover. &nbsp;For example, when kincr is equal to 1 with sr=44100, no foldover is added, when kincr is set to 2 the foldover is equivalent to a downsampling to 22050, when it is set to 4 to 11025 etc. Fractional values of kincr are possible, allowing a continuous variation of foldover amount. This can be used for a wide range of special effects.
+		<p><b>EXAMPLE:</b>
+		<pre>	instr	1<br>
+
+
+
+
+
+kfreq	line	1,p3,200<br>
+
+
+
+
+
+a1	oscili	10000, 100, 1<br>
+
+
+
+
+
+k1	init	8.5<br>
+
+
+
+
+
+a1	fold	a1, kfreq<br>
+
+
+
+
+
+	out	a1	<br>
+
+
+
+
+
+	endin
+</pre>
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<p><a name="resony"><!-- -->
+		</a><b>resony</b>
+		<p>ar &nbsp; &nbsp;<b>resony</b> &nbsp; &nbsp; asig, kbf, kbw, inum, ksep [, iscl, istor]
+		<p><b>DESCRIPTION</b>
+		<p>A bank of second-order bandpass filters, connected in parallel.
+		<p><b>INITIALIZATION</b>
+		<p><b>inum</b> - number of filters.<br>
+		<b>iscl</b> - coded scaling factor for resonators. A value of 1 signifies a peak response factor of 1, i.e. all frequencies other than kcf are attenuated in accordance with the (normalized) response curve. A value of 2 raises the response factor so that its overall RMS value equals 1. (This intended equalization of input and output power assumes all frequencies are physically present; hence it is most applicable to white noise.) A zero value signifies no scaling of the signal, leaving that to some later adjustment (e.g. see balance). The default value is 0.<br>
+		<b>istor</b> - initial disposition of internal data space. Since filtering incorporates a feedback loop of previous output, the initial status of the storage space used is significant. A zero value will clear the space; a non-zero value will allow previous information to remain. The default value is 0.
+		<p><b>PERFORMANCE</b>
+		<p><b>asig</b> - audio input signal<br>
+		<b>kbf</b> - base frequency, i.e. center frequency of lowest filter in Hz<br>
+		<b>kbw</b> - bandwidth in Hz<br>
+		<b>ksep</b> - separation of the center frequency of filters in octaves<br>
+		<p><b>resony</b> is a bank of second-order bandpass filters, with k-rate variant frequency separation, base frequency and bandwidth, connected in parallel (i.e. the resulting signal is a mixing of the output of each filter). The center frequency of each filter depends of <b>kbf</b> and <b>ksep</b> variables. The maximum number of filters is set to 100.
+		<p><b>EXAMPLE:</b>
+		<p>asig, kbf, kbw, inum, ksep [, iscl, istor]
+		<p>In this example the global variable gk1 modifies <b>kbf</b>, gk2 modifies &nbsp;<b>kbw</b>, gk3 <b>&nbsp;inum</b>, gk4 <b>ksep</b> and gk5 the main volume.
+		<pre>	instr	1
+a1	soundin &quot;myfile.aif&quot;
+a2	resony	a1,   gk1 , gk2 ,i(gk3),gk4 ,2	
+	out	a2 * gk5 
+	endin
+</pre>
+		<p>
+		<hr size="15">
+		<hr size="15">
+		<h2><b>SCORE OPCODES</b></h2>
+		<p><a name="nestr"><!-- -->
+		</a><b>LOOPS</b>
+		<p><b>{ </b>- start of a loop
+		<p><b>}</b> - end of a loop
+		<p><b><u>Syntax:</u></b>
+		<p><b>{ </b>&nbsp;num NN
+		<p>&nbsp; &nbsp;...... body........
+		<p><b>}</b>
+		<p>Score <b>loops</b> are a very powerful tool. Derived by <b>repeats</b> (<b>r </b>opcode), they allow to define any parameter, and the score events inside the loop <u>are not separated</u> by a section termination in each iteration. So it is possible to implement overlapping loops. Loops can be nested. The syntax is similar to that of the repeats: the macro <b>$NN</b> is incremented in each iteration (notice that, differently from <b>repeats</b>, it starts with a zero value); <b>num</b> argument must be set to the number of iterations.
+		<p>NB: exponential ramp symbol has been changed to <b>'(' </b>or <b>')'</b> in order to allow curly-brace characters to be used for loops.
+		<p><b>EXAMPLE:</b>
+		<pre>{ 10 nn
+	i1	[$nn/2]  .5  [$Line(10, $nn , 10000, 4000)]  [$Line(10,$nn,440,110)]
+	{ 5 bb
+		i1 [$nn/2+$bb/10] .1 [(1+$nn/4)*$Line(10 , $bb, 2000, 500)] [$Line(10,  $bb, 400, 600)]
+	}
+}
+</pre>
+		<p>
+		<p>
+		<hr size="15">
+		<p><a name="scotab"><!-- -->
+		</a><b>SCORE TABLES</b>
+		<p><b>F</b> - score function tables
+		<p><b><u>Syntax:</u></b>
+		<p><b>F</b> p1 p2 p3 p4 ...
+		<p>This causes a GEN subroutine to place values in a stored function table for use by instruments.
+		<p>N.B. In this case the function&nbsp;tables are created before score processing, differently from<b> f</b> statement. The syntax and the gen routines used by <b>F </b>opcode are identical to those of <b>f </b>statement. Tables created by <b>F</b> opcode are intended to be used together with <b>T</b> score arithmetic operator (see below).
+		<p>
+		<hr size="15">
+		<h2><a name="newmac"><!-- -->
+		</a><b>NESTED MACROS</b> (new syntax)</h2>
+		<p>Now macros can be nested (both in orchestra and score), that is a &nbsp;previously defined macro can be called from inside another macro definition. When using nested macros, it is recommended to use different names for arguments in the caller and in the target macros to avoid &nbsp;unpredictable conflicts.<br>
+		To enable this feature I had to do&nbsp;a small change in macro argument syntax: instead of using a '<b>#</b>' character, a <b>':' </b>character is required in order to separate macro arguments:
+		<p><b>OLD SYNTAX:</b>
+		<pre>#define &nbsp;PLUTO(mikey#minnie#donald)#....body....# &nbsp; &nbsp; &nbsp; &nbsp; ;&nbsp;old macro definition
+
+$PLUTO(1#2#3) &nbsp; &nbsp; &nbsp; &nbsp;;old macro call
+</pre>
+		<p><b>NEW SYNTAX (nested macros):</b>
+		<pre>#define &nbsp;PLUTO( mikey: &nbsp;minnie: &nbsp;donald ) # ....body.... # &nbsp; &nbsp; &nbsp; ;&nbsp;new macro definition
+
+;nested macro definition. Notice that the argument names are changed
+#define PIPPO( mik: min: don) # &nbsp; &nbsp; &nbsp;<br>
+
+
+
+
+
+&nbsp; &nbsp; &nbsp;$PLUTO( 2*$mik : &nbsp;2+$min : &nbsp;3 ) <br>
+
+
+
+
+
+&nbsp; &nbsp; &nbsp;$PLUTO( 5: &nbsp; 8: &nbsp; 1 ) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>
+
+
+
+
+
+&nbsp; &nbsp; &nbsp;$PLUTO( $mik,$min,3 ) &nbsp; &nbsp; &nbsp;<br>
+
+
+
+
+
+&nbsp; &nbsp; &nbsp;$PLUTO( 1: &nbsp; 2:  &nbsp;$don ) &nbsp; &nbsp; &nbsp; &nbsp; <br>
+
+
+
+
+
+&nbsp; &nbsp; &nbsp;$PLUTO( 4: &nbsp; 5: &nbsp; 6 ) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>
+
+
+
+
+
+#   ;end of macro
+</pre>
+		<pre>$PIPPO( 1: 5: 8 )   ; macro call
+</pre>
+		<p>It is now possible to comment macros (before it generated errors):
+		<pre>;$PIPPO(1:2:3)
+
+ or
+
+/*
+$PIPPO(1:2:3)
+*/
+</pre>
+		<p>Comments (both old assebler style <b>';' </b>and new C-language style <b>'/* ... &nbsp;*/'</b>) are handled in a special way in macros. Inside macro body you are allowed to put only old style comments ( <b>';'</b>). If you intend to suppress an entire macro without erasing it physically, you can comment it using C-style comments externally &nbsp;(<b>'/* ... &nbsp;*/'</b>).
+		<p>Maximum number of macro arguments has been raised to 200 (before 5)
+		<p>N.B. underscore character <b>'_'</b> &nbsp;has a special purpose in macros (it allows to define prefixes or suffixes &nbsp;of words in macro body). Don't use underscore character in macro names or in macro arguments (or errors will occurr). You are allowed to use underscore in the body of macros&nbsp;in any case, instead.
+		<p>
+		<hr size="15">
+		<h2>SCORE <b>MACRO ARITHMETIC INFIX OPERATORS</b></h2>
+		<p><a name="scotab2"><!-- -->
+		</a><b>SCORE TABLES</b>
+		<p><b>T </b>- retrieves a value from a score function table.
+		<p><b>syntax</b>:
+		<p>(TabNum <b>T </b>&nbsp;TabIndex)
+		<p><b>TabNum</b> - table number<br>
+		<b>TabIndex</b> - absolute index of table element.
+		<p>N.B. the unusual infix syntax can be transformed into a more familiar syntax by means of macros:
+		<pre>#define Table(tabnum:index) # (($tabnum) T ($index)) #
+</pre>
+		<p>so you can call the <b>$Table( )</b> macro with the classic function call syntax:
+		<pre>$Table(num: element)
+</pre>
+		<p>
+		<hr size="15">
+		<p><a name="rand"><!-- -->
+		</a><b>RANDOM NUMBER OPERATOR</b>
+		<p><b>R</b> - retrieves a &nbsp;pseudo random value
+		<p><b>syntax</b>:
+		<p>(amp <b>&nbsp;R </b>&nbsp;seed)
+		<p>The operand <b>amp</b> is an amplitude factor that sets the range of random values from zero to amp itself.<br>
+		The operand <b>seed</b> allows the user to change the initial seed of the pseudo random sequence. When <b>seed</b> is set to a non-zero value, <b>R</b> operator sets the seed, while with seed = 0 it returns a normal random value. When <b>seed</b> is set to -1 the seed of pseudo random sequence is obtained by the current timer value of the computer, allowing a different pseudo random sequence each time Csound is run.
+		<p>N.B. the unusual infix syntax can be transformed into a more familiar syntax by means of macros:
+		<pre>#define RndSeed(seed) # (1 R ($seed)) #
+#define Rand(min:max) # ( ($min) + ((($max)-($min)) R 0)  ) #
+</pre>
+		<p>In these examples <b>$RndSeed( )</b> macro sets the seed, while <b>$Rand( ) </b>retrives a random value inside the &nbsp;<b>min</b>-<b>max</b> interval.
+		<p>
+		<hr size="15">
+		<p><a name="pow"><!-- -->
+		</a><b>POWER OPERATOR</b>
+		<p><b>^ </b>&nbsp;- retrieves the power
+		<p><b>syntax</b>:
+		<p>(a <b>&nbsp;^ </b>&nbsp;b)
+		<p>raises number <b>a</b> to the <b>b</b> power
+		<p>Here are two example of macros very useful when using loops or repeats:
+		<pre>#define Expon(stepnum: var: a: b) # ( ($a) *(((($b)/($a))^(1/(($steps)-1)))^($var))  ) #
+#define Expon1(stepnum: var: a: b) # ( ($a) *(((($b)/($a))^(1/(($steps)-1)))^($var-1)) ) #
+</pre>
+		<p>Notice that macro <b>$Expon</b> is provided for loops (where macro index <b>$var</b> starts from zero), while <b>$Expon1</b> is thought for repeats, where <b>$var</b> starts from 1.
+		<p>For reasons of completeness &nbsp;here are the &nbsp;corresponding linear macros:
+		<pre>#define  Line(steps: var: a: b) # ( ($a) +  (($b)-($a))*(($var))/(($steps)-1)  ) #
+#define  Line1(steps:var:a:b) # ( ($a) +  (($b)-($a))*(($var-1))/(($steps)-1)  ) #
+
+
+
+
+
+<hr size="15">
+
+
+
+
+
+
+</pre>
+		<p><a name="mod"><!-- -->
+		</a><b>MODULUS OPERATOR</b>
+		<p><b>%</b> - modulus operator
+		<p><b>syntax</b>:
+		<p>(a <b>&nbsp;% </b>&nbsp;b)
+		<p>retrives <b>a</b> MOD <b>b</b>
+		<p>
+		<hr size="15">
+		<p>
+		<hr size="15">
+		<hr size="15">
+	</body>
+
+</html>

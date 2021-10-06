@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>tables-lay.txt.html</title>
+		<header></header>
+		<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+	</head>
+
+	<body stylesrc="../admin/adpchtxt.html" bgcolor="white">
+		<h3>Naming Conventions: Table Numbers of the F Statement</h3>
+		<pre>
+Reserving certain table numbers for specific categories of table
+generators has several practical advantages.  When assembling big
+orchestras from smaller ones, functions will be more readily
+adapted to the new environment.  This leads to a more efficient,
+faster experimentation or composition.  The convention overloads the
+first parameter of the f statement by reserving table numbers 1-30
+for carrier waveforms, 31-70 for envelopes and 70-99 for others.
+Hence, the number of a GEN function table will additionally
+discriminate an oscillator as carrier or envelope generator, and
+even add information about the type of wave being used.
+
+Function tables numbers are restricted to a soft limit of 200
+(Vercoe 1993b: p.50).  This feature will hopefully disappear in
+future Csound updates to facilitate the creation of a larger
+function table library with associated graphs.  In practical terms,
+any instrument of the catalog will obey the following conventions
+of table numbers:
+
+GEN     Table   Function 
+number  number  type
+
+10       1-10   harmonic complex 
+09      11-20   weighted (in)harmonic, phase-adjustable
+11      21-30   buzz
+07      31-50   linear 
+05      51-70   exponential
+01,02   71-80   read into table from file/parameter fields
+        81-99   others
+</pre>
+	</body>
+
+</html>

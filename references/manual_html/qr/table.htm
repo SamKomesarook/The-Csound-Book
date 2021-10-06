@@ -1,0 +1,183 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>QuickRef: Function Table Control</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body text="black" link="black" vlink="black" alink="black" bgcolor="white">
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td class="qr" width="10"></td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="siggen.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="sigmod.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h1>Function Table Control</h1>
+
+<a class="qr" name="queries"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Function Table Control: Table Queries</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="643">
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../valcnv/ftlen.htm"><strong>nsamp</strong>(x)</a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+(init-rate args only)</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../valcnv/ftlen.htm"><strong>ftlen</strong>(x)</a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+(init-rate args only)</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../valcnv/ftlen.htm"><strong>ftlptim</strong>(x)</a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+(init-rate args only)</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../valcnv/ftlen.htm"><strong>ftsr</strong>(x)</a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+(init-rate args only)</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+i/kr</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../siggen/tableng.htm"><strong>tableng</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+i/kfn</td>
+</tr>
+</table>
+
+
+<a class="qr" name="selection"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Function Table Control: Table Selection</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="643">
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+k/ar</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../siggen/tablekt.htm"><strong>tablekt</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+k/xndx, i/kfn[, ixmode[, ixoff[, iwrap]]]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+k/ar</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../siggen/tablekt.htm"><strong>tableikt</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+k/xndx, kfn[, ixmode[, ixoff[, iwrap]]]</td>
+</tr>
+</table>
+
+<a class="qr" name="readwrite"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Function Table Control: Read/Write Operations</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="643">
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../siggen/tableiw.htm"><strong>tablew</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+i/k/asig, i/k/andx, ifn[, ixmode[, ixoff[, iwgmode]]]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../siggen/tableiw.htm"><strong>tablewkt</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+k/asig, k/andx, kfn[, ixmode[, ixoff[, iwgmode]]]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../siggen/tableiw.htm"><strong>tableiw</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+isig, indx, ifn[, ixmode[, ixoff[, iwrap]]]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../siggen/tablegpw.htm"><strong>tableigpw</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+ifn</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../siggen/tablegpw.htm"><strong>tablegpw</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+kfn</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../siggen/tablegpw.htm"><strong>tableimix</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+idft, idoff, ilen, is1ft, is1off, is1g, is2ft, is2off, is2g</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../siggen/tablegpw.htm"><strong>tablemix</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+kdft, kdoff, klen, ks1ft, ks1off, ks1g, ks2ft, ks2off, ks2g</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../siggen/tablegpw.htm"><strong>tableicopy</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+idft, isft</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../siggen/tablegpw.htm"><strong>tablecopy</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+kdft, ksft</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../siggen/tablera.htm"><strong>tablera</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+kfn, kstart, koff</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kstart</td>
+<td class="qr" nowrap width="17%" valign="TOP">
+<a class="qr" href="../siggen/tablera.htm"><strong>tablewa</strong></a></td>
+<td class="qr" nowrap width="71%" valign="TOP">
+kfn, asig, koff</td>
+</tr>
+<tr><td class="qr" nowrap valign="TOP" colspan="3">&nbsp;</td>
+</tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td class="qr" width="10"></td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="siggen.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="sigmod.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+</body>
+</html>

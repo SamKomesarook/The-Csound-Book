@@ -1,0 +1,75 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>  
+   <title>Orchestra Statement Types</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="nomen.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="sigtypes.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm"><font size="-2" color="#000000" face="Verdana, Arial, Helvetica, Century Gothic">
+Syntax of the Orchestra</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>Orchestra Statement Types</h2>
+
+<hr size="2" color="#A9A9A9" noshade>
+
+<p>
+An orchestra program in Csound is comprised of <a href="header.htm"><em>orchestra header statements</em></a> which set various global parameters, followed by a number of <a href="iblock.htm"><em>instrument blocks</em></a> representing different instrument types. An instrument block, in turn, is comprised of <em>ordinary statements</em> that set values, control the logical flow, or invoke the various signal processing subroutines that lead to audio output. 
+</p>
+
+<p>
+An <em>orchestra header statement</em> operates once only, at orchestra setup time. It is most commonly an assignment of some value to a <em>global reserved symbol</em> , e.g. sr = 20000. All orchestra header statements belong to a pseudo instrument 0, an <em>init</em> pass of which is run prior to all other instruments at score time 0. Any <em>ordinary statement</em> can serve as an orchestra header statement, eg. gifreq = cpspch(8.09) provided it is an init-time only operation. 
+</p>
+
+
+
+<p>
+An <em>ordinary statement</em> runs at either init time or performance time or both. Operations which produce a result formally run at the rate of that result (that is, at init time for i-rate results; at performance time for k- and a-rate results), with the sole exception of the <strong>init </strong>opcode. Most generators and modifiers, however, produce signals that depend not only on the instantaneous value of their arguments but also on some preserved internal state. These performance-time units therefore have an implicit init-time component to set up that state. The run time of an operation which produces no result is apparent in the opcode. 
+</p>
+
+
+
+<p>
+Arguments are values that are sent to an operation. Most arguments will accept arithmetic expressions composed of constants, variables, reserved symbols, value converters, arithmetic operations, and conditional values.
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="nomen.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="sigtypes.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm"><font size="-2" color="#000000" face="Verdana, Arial, Helvetica, Century Gothic">
+Syntax of the Orchestra</font></a>
+
+</body>
+</html>
+
+

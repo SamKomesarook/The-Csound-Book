@@ -1,0 +1,571 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Audification of Heart Rhythms in Csound</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">12. Audification of Heart Rhythms
+in Csound</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Mark Ballora, Bruce Pennycook,
+Leon Glass</FONT></H2>
+
+<H3><FONT FACE="Times New Roman">Background</FONT></H3>
+
+</h3>
+
+<P><FONT FACE="Times New Roman">This chapter describes preliminary
+steps in the creation of an auditory display for heart rate variability
+(HRV) data. In cardiology, researchers are showing increasing
+interest in the ever-present fluctuations of the heart&#146;s
+frequency patterns (the human internal tempo track). These fluctuations
+can be readily measured from an electrocardiogram and provide
+important insights into cardiac function [1]. For example, following
+a heart attack, patients whose heart rates are overly steady are
+prone to sudden arrhythmia, a large rhythmic jump which is often
+fatal. However, there have been a large number of different statistical
+measures proposed to evaluate heart rate variability and there
+is not agreement as to which are the most useful. This project
+is motivated by the desire to generate novel methods for displaying
+heart rate information that may be of potential clinical utility
+to physicians.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In synthesist&#146;s terms, the
+heart is analogous to a simple frequency modulation system. The
+heart&#146;s contractions are the result of electrochemical waves
+produced by the sinus node (analogous to the carrier oscillator).
+The sinus node is the pacemaker of the heart and produces excitation
+waves spontaneously at a frequency of roughly 70 cpm. The sinus
+frequency is modulated by the presence of chemicals secreted by
+the autonomic nervous system (ATN). The ATN&#146;s components
+are twofold: sympathetic nerves secretes norepinephrine, which
+increases the heart rate, while the parasympathetic nerves secrete
+acetylcholine, which decreases the heart rate. The autonomic system
+responds to a wide variety of internal and external cues, leading
+to continual fluctuation in the heart rate.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Medical literature pertaining
+to heart rate variability analysis [1] describes the implementation
+of a variety of statistical techniques. Researchers have considered
+time-based measures (mean, standard deviation) or frequency-based
+measures (power spectrum in a certain frequency range). These
+quantities may be computed over varying time periods, from five
+minutes, to an hour, to a day. Identifying the start of each heart
+beat depends on pinpointing a transient voltage jump known as
+the QRS complex [see Figure 1], which is associated with the cardiac
+contraction. Heart rate variability is measured by the time between
+QRS complexes, the RR interval. A stream of RR intervals was the
+set of values represented in this work.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Many composers have explored applications
+of chaos theories to music composition and synthesis (examples
+can be found within this same volume). The heart&#146;s rhythms
+are also not new to musical contexts [3][6]. This project, however,
+takes a different focus. Rather than setting out to create musically
+interesting sounds, our approach is to explore whether these chaotic
+patterns can be a source of medically useful sounds. The question
+pursued here is: can cardiological diagnoses be aided by information
+taken from an auditory display?</FONT></P>
+
+<P><FONT FACE="Times New Roman">Auditory display is already well
+established in the medical field for the purpose of real-time
+auditory monitoring (any episode of <I>ER, </I>or even a visit
+to a real emergency room, will be replete with examples). It has
+been documented that the ears are better suited than the eyes
+for following simultaneous streams of information </FONT><FONT
+ COLOR="#ff0000" FACE="Times New Roman">[</FONT><FONT FACE="Times New Roman"><A
+HREF="#Anchor">2</A></FONT><FONT COLOR="#ff0000" FACE="Times New Roman">][</FONT><FONT
+ FACE="Times New Roman"><A HREF="#Anchor">5</A></FONT><FONT COLOR="#ff0000"
+ FACE="Times New Roman">]</FONT><FONT FACE="Times New Roman">.
+Analyses of potentially volatile environments, such as emergency
+rooms or airline cockpits, have shown that people respond with
+greater speed and accuracy when sudden changes are signaled through
+sound monitor cues, rather than verbally- or visually-based cues.</FONT></P>
+
+<P><FONT FACE="Times New Roman">This project concerns itself with
+a newer and more complicated area of auditory display: non-real-time
+analysis of large data sets. The objective is not to create a
+direct analogy of the subject, as in the beeps of a medical monitor,
+but rather to come up with an abstraction represented by some
+appropriate auditory parameter. Since the analysis is done on
+already existing data, the listening time can be adjusted to whatever
+degree is desired, allowing large amounts of information to be
+displayed over relatively short listening periods. While the use
+of auditory displays for such analyses shows considerable promise,
+such displays have yet to provide a breakthrough in illumination
+that would result in their widespread acceptance and practice
+[5].</FONT></P>
+
+<P><FONT FACE="Times New Roman">The data vector, the series of
+RR values, was a stream of numbers ranging from roughly 0.7 seconds
+to 1.3 seconds. The HRV file was truncated to 3,650 values to
+streamline the task of creating a working test model. Event times
+were reduced to 1/100th their actual value, so that an hour of
+data was displayed in 30 seconds. Mapping the numbers effectively
+was, conceptually, a case of dealing with too much freedom: in
+just how many ways can one treat a single stream of numbers, all
+with values near 1.0? The success of the implementation lies in
+the degree to which the incoming data can be processed. While
+a MIDI implementation could have attempted, it would certainly
+have been clumsy and imprecise (having to assign a pitch bend
+value to every note-on, for example, to realize specific frequencies
+as opposed to equal-tempered pitches). Csound, however, with its
+flexibility in the creation and mapping of parameters, is an optimal
+platform on which to create such a display.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The work was undertaken without
+a specific intention as far as how the final product should sound.
+The goal was to map the HRV values onto as many synthesis parameters
+as possible, creating a sound mass within which identifiable parameters
+were in a continual state of change. With clear delineations of
+parameters within the sound mass, one can begin to explore whether
+they change with any aurally perceptible pattern. To explore whether
+similar patterns might appear in micro- and macrocosmic forms,
+four successive halvings of the data were adjusted to play back
+over the same listening period from four respective quadraphonic
+channels. (Both quadraphonic and stereo versions of the instrument
+are included on the accompanying CD-ROM). The next section describes
+of how the HRV values were mapped to parameters of note-entry
+time, pitch, amplitude, timbre and localization for each note.</FONT></P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman">Csound Implementation</FONT></B></P>
+
+<P><B><FONT FACE="Times New Roman">The .sco File</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">The instrument included here is
+the third set of auditory mappings created on an SGI Indy in McGill&#146;s
+Electronic Music Studio, and is the most sonically interesting.
+Before examining it in detail, we describe the first two versions.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The HRV data file was first opened
+in a spreadsheet, modified, formatted and saved in text form into
+a <B>.sco</B> file. Initial attempts at mapping parameters were
+based on calculations performed within the spreadsheet. A pitch
+value, for example, was created by taking a value for frequency
+based on each HRV value. Copying the numbers into a new column
+and multiplying each by 440 created a <B>p-field</B> in the <B>.sco</B>
+file for pitch values, all based in the region of Middle A, but
+not constrained by any tonal scale system.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The first version treated time
+sequentially, producing note events at regular intervals. The
+patch contained four instruments. The first three were based on
+pitch mapping described above. Their difference was in resolution.
+Increasingly &quot;smoother&quot; versions of the same overall
+pitch pattern were created. Each instrument&#146;s time/duration
+values represented a successive averaging of a set of 8192 HRV
+values which represented approximately two and a half hours of
+HRV activity. Instrument 1 consisted of 8192 note events, and
+was sounded with a glassy, sinus tone, panned center. Instrument
+2 had 4096 note events, each an average of two successive events
+from the 8192, and was sounded with a sawtooth tone, panned right.
+Instrument 3 was another averaging, with 2048 events, sounded
+by a square wave, panned left. Instrument 4 was a two-operator
+frequency modulation unit. The HRV values determined the modulator:carrier
+ratio. The carrier frequency was based on the HRV value multiplied
+by 110, so that this instrument served as the &quot;bass voice&quot;.
+Timbral fluctuation was achieved by having the carrier frequency
+modulated by the same frequency, multiplied by the HRV value.
+All ratios, then, were in the range of 0.7:1 to 1.3:1.</FONT></P>
+
+<P><FONT FACE="Times New Roman">A second instrument explored the
+effect of using only one pitch, but sounding it at time intervals
+determined by the HRV values. When a pitch of 440 was produced
+by a sine wave, and the note durations set to overlap the next
+note entry somewhat, the result was varying degrees of amplitude
+modulation. When the sound source was a short sample of a fingersnap,
+there was some change in global pitch which could be perceived
+with sufficient attention, but the overall effect was more of
+noise than anything else.</FONT></P>
+
+<P><FONT FACE="Times New Roman">By the third instrument, it was
+clear that the most flexible method was to limit the <B>.sco</B>
+file to four consistent columns. After adding the instrument number
+to create <B>p1</B>, the original HRV values were kept in <B>p3</B>.
+For <B>p2</B>, each HRV value was added successively, so that
+<B>p-field 2</B> was cumulative and <B>p-field 3</B> was incremental.
+The note entry times, then, were determined by the HRV values.
+It was a matter of multiplying each by a fractional value that
+produced the desired degree of time compression. All further conversions
+could then be made in the .<B>orc</B> file, by using the <B>p-fields</B>
+as factors in the variable assignment statements. To enable continuous
+values, a <B>p4</B> was added, which was an <B>np3</B> directive.
+Adding this <B>p4</B>, which enabled each note event to refer
+to the value of the next note event, allowed interpolation from
+each HRV value to the next. Attempts were made to introduce continuous
+pitch glissandi by using a <B>line</B> from the <B>p3</B> to the
+<B>p4</B> value for each <B>i-time</B>. Continuous vibrato or
+tremolo were also employed through a secondary <B>oscili</B> which
+determined the amplitude of the tone generator according to levels
+or frequencies determined by the HRV values. It turned out, however,
+that none of these continual changes were even remotely audible.
+As yet, any implementations of continuity are lost at the compression
+levels which are employed, and are thus not worth the extra computation
+required. The field was kept in the .<B>sco</B> file</FONT></P>
+
+<P><FONT FACE="Times New Roman">Once the HRV values were reduced
+to 1/100th their value, different time realizations were superimposed
+through another instrument for which the values were scaled differently.
+Assigning different fractional relationships of the data to different
+instruments was an attempt to realize a fractal relationship among
+the voices. In order to realize progressive divisions of the data
+simultaneously over the same amount of time, four instruments
+were created and sent to quad outs 1 through 4. <B>i1</B>, was
+all of the values, each divided by 100; <B>i2</B>, which was half
+the values, all divided by 50; <B>i3</B> was one quarter of the
+values, all divided by 25. <B>i4</B> was one eighth the values,
+all divided by 12.5. (For the stereo version of this patch, <B>i3</B>
+and <B>i4</B> were omitted). A side effect of using <B>p2</B>,
+the cumulative HRV total, as the parameter for note entry times
+is that different divisions do not end uniformly. Due to irregularities
+in the rate, the data for an hour&#146;s activity, for example,
+will not play back over precisely twice the time it takes to play
+a half hour&#146;s worth of data, even though the number of values
+may be a precise 2:1 ratio.</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">The .orc</FONT></B><FONT FACE="Times New Roman">
+<B>File</B></FONT></P>
+
+<P><FONT FACE="Times New Roman">The .<B>orc</B> file was created
+in two steps to enable use of the Ambisonics localization algorithms
+described in </FONT><FONT COLOR="#ff0000" FACE="Times New Roman">[</FONT><FONT
+ FACE="Times New Roman"><A HREF="#Anchor">7</A></FONT><FONT COLOR="#ff0000"
+ FACE="Times New Roman">]</FONT><FONT FACE="Times New Roman">.
+Ambisonics provides an alternative to Csound&#146;s pan generator,
+with two significant differences. The <B>pan</B> generator is
+based on a Cartesian coordinate system, in which the location
+of the sound is specified by <I>X</I> and <I>Y</I> values. Ambisonics
+is based on a polar coordinate system, so that the location is
+expressed as the angle from the listener, in radians. Ambisonics
+also requires that the file be created in two steps, encoding
+and decoding. The <B>.orc</B> files will be presented here in
+pieces, to allow commentary to be interspersed. The instrument
+below is replicated three times, with each sent to a different
+quad out channel.</FONT></P>
+
+<UL>
+  <DIR>
+    <P><FONT FACE="Courier New">idur = p3<BR>
+    ihrv = p3*100<BR>
+    ipitch = (1/ihrv)*440<BR>
+    iamp = ampdb(ihrv)<BR>
+    ivol = iamp*3000</FONT>
+  </DIR>
+</UL>
+
+<P><FONT FACE="Times New Roman">Following the standard header
+declaration of sample and control rates, the basic parameters
+are applied to multiples of <B>p3</B>. The variable <B>ihrv</B>
+is used when the original HRV value is needed. Pitch is derived
+by multiplying each value by 440, as described previously, and
+then taking the inverse of that value. The inverse avoids a counter-intuitive
+interpretation of pitch from the variability change: in other
+words, longer time intervals between beats represent a lowering
+of the heart rate. But if each value is simply multiplied by 440,
+higher pitch frequencies will be produced from lower heart frequencies.
+Taking the inverse of each HRV value per delta time creates pitch
+levels which increase in frequency as the heart frequency increases.
+The duration value, <B>idur</B>, is taken from <B>p3</B>, so that
+there is no overlap among the notes. The amplitude value, <B>iamp</B>,
+is taken from <B>(p3*100)</B>, and the actual volume is taken
+by multiplying the <B>iamp</B> value by 3000.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Ambisonics&#146; localization
+principles are based on simulating the response characteristics
+of the Soundfield microphone, which is actually four microphones
+in one. There are three perpendicular figure-eight microphones
+forming an <I>X</I>, <I>Y</I> and <I>Z</I> axis, and an omnidirectional
+microphone which acts as a scalar to the overall signal. The four
+signals contain information on the horizontal and the vertical
+angles within a unit sphere around the listener. The two angles
+are specified with variables <B>kone</B> and <B>ktwo</B>.</FONT></P>
+
+<UL>
+  <DIR>
+    <P><FONT FACE="Courier New">kone = ihrv*.7854 ; ihrv*pi/4 radians<BR>
+    ktwo = 0</FONT>
+  </DIR>
+</UL>
+
+<P><FONT FACE="Times New Roman">These are normally determined
+by pfields in the <B>.orc</B> file, which give the measurement
+in the <I>X-Y</I> and <I>Z</I> planes. The value <B>kone</B> represents
+the radian value of the intended angle in <I>X</I> -<I>Y</I> values,
+with the origin located to the listener&#146;s right. The value
+<B>ktwo</B> corresponds to the radian value in the <I>Z</I> axis.
+In practice, this axis is only realized when playback takes place
+in an 8-channel cube. For a quadraphonic system, this step is
+a formality, and the value is maintained at zero. As is seen in
+the figure, the value of 0 neutralizes the contribution of <B>ktwo</B>
+to the patch; it is included to complete the illustration of the
+Ambisonics&#146; encoding process. For <B>instr1</B>, a median
+HRV value of 1.0 corresponds to a position located directly in
+speaker one, at 45<IMG SRC="figures/degree.gif" HEIGHT="13" WIDTH="12"
+NATURALSIZEFLAG="0" ALIGN="BOTTOM"> ( \F(<IMG SRC="figures/pi.gif"
+HEIGHT="11" WIDTH="14" NATURALSIZEFLAG="0" ALIGN="BOTTOM">,4)
+radians, or .7854). Multiplying each HRV value by the float value
+for this radian measurement produces notes in <B>instr1</B> which
+all fall in the proximity of the speaker 1. Similarly, the values
+for <B>instr2</B> are located in the proximity of Channel 2, at
+135<IMG SRC="figures/degree.gif" HEIGHT="13" WIDTH="12" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM"> ( \F(3<IMG SRC="figures/pi.gif" HEIGHT="11" WIDTH="14"
+NATURALSIZEFLAG="0" ALIGN="BOTTOM">,4) radians, or .2.3562); <B>instr3</B>
+is located near Channel 3, at 225<IMG SRC="figures/degree.gif"
+HEIGHT="13" WIDTH="12" NATURALSIZEFLAG="0" ALIGN="BOTTOM"> ( \F(5<IMG 
+SRC="figures/pi.gif" HEIGHT="11" WIDTH="14" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM">,4) radians, or 3.927); <B>instr4</B> is assigned
+to Channel 4, at 315<IMG SRC="figures/degree.gif" HEIGHT="13"
+WIDTH="12" NATURALSIZEFLAG="0" ALIGN="BOTTOM"> ( \F(7<IMG SRC="figures/pi.gif"
+HEIGHT="11" WIDTH="14" NATURALSIZEFLAG="0" ALIGN="BOTTOM">,4)
+radians, or 5.4978).</FONT></P>
+
+<UL>
+  <DIR>
+    <P><FONT FACE="Courier New">kenv linen ivol, idur*.01, idur,
+    idur*.15<BR>
+    if (p3 &lt; .008) goto wave2<BR>
+    if ((p3 &gt;= .008) &amp;&amp; (p3 &lt; .0095)) goto wave3<BR>
+    if ((p3 &gt;= .0095) &amp;&amp; (p3 &lt; .011)) goto wave1<BR>
+    if (p3 &gt;= .011) goto wave4<BR>
+    wave2:<BR>
+    a5 oscili kenv, ipitch, 2<BR>
+    goto contin<BR>
+    wave3:<BR>
+    a5 oscili kenv, ipitch, 3<BR>
+    goto contin<BR>
+    wave1:<BR>
+    a5 oscili kenv, ipitch, 1<BR>
+    goto contin<BR>
+    wave4:<BR>
+    a5 oscili kenv, ipitch, 4<BR>
+    goto contin</FONT>
+  </DIR>
+</UL>
+
+<P><FONT FACE="Times New Roman">Following the declaration of a
+volume envelope, <B>kenv</B>, is a series of four conditional
+statements. Depending on four ranges for the HRV values, chosen
+arbitrarily for this model, the sound is produced by one of four
+definitions of <B>a5</B>, which differ only by lookup function
+table in the <B>.sco</B> file. This division of the data into
+four timbral elements is meant to emphasize any tendencies toward
+a certain value range.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The last lines of each instrument
+complete the Ambisonics algorithm by taking values from the sine
+and cosine of the <B>kone</B> parameter, producing four encoded
+channels and sending them to the four quadraphonic outputs. <B>ax</B>,
+<B>ay</B> and <B>az</B> are based on the location information
+recorded by each of the three figure-eight microphones. <B>aw</B>
+simulates the signal from the omni-directional microphone, which
+distributes a uniform, &quot;base&quot; signal over the four channels.</FONT></P>
+
+<UL>
+  <DIR>
+    <P><FONT FACE="Courier New">contin:<BR>
+    kca = cos(kone)<BR>
+    ksa = sin(kone)<BR>
+    kcb = cos(ktwo) ;for quad, cos(0)=1<BR>
+    ksb = sin(ktwo) ;for quad, sin(0)=0<BR>
+    ax = a5*kca*kcb<BR>
+    ay = a5*ksa*kcb<BR>
+    az = a5*ksb<BR>
+    aw = a5*.707<BR>
+    outq ax,ay,az,aw<BR>
+    endin</FONT>
+  </DIR>
+</UL>
+
+<P><FONT FACE="Times New Roman">The resulting soundfile is imported
+via a <B>soundin</B> generator to the decoding <B>.orc</B> file,
+where each channel is put through a decoding equation which distributes
+the signal over the four channels. These equations are based on
+phase relationships which are the basis of M-S stereophony, described
+in [4] and numerous other sources.</FONT></P>
+
+<UL>
+  <DIR>
+    <P><FONT FACE="Courier New">instr 1<BR>
+    ay,ax,az,aw soundin &quot;[<I>name of file</I>]&quot;<BR>
+    a1 = aw + (ax*.707) + (ay*.707)<BR>
+    a2 = aw + (ax*.707) - (ay*.707)<BR>
+    a3 = aw - (ax*.707) - (ay*.707)<BR>
+    a4 = aw - (ax*.707) + (ay*.707)<BR>
+    outq a1,a2,a3,a4<BR>
+    endin</FONT>
+  </DIR>
+</UL>
+
+<P><FONT FACE="Times New Roman">The first two channels for the
+<B>soundin</B> generator were switched because Csound treats quad
+channels differently than the circular pattern employed by the
+Ambisonics equations. In Csound, the odd channels, 1 and 3, are
+to the left front and rear, and the even channels are to the right.
+Switching <B>ax</B> and <B>ay</B> was just one way to compensate
+for this difference. It would have been just as easy to switch
+channels 1 and 2 the output stage of the encoding instrument,
+or to switch the two audio outputs.</FONT></P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman">Conclusions and Projections</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">The sound file produced by this
+instrument has a high density, due to the 6,300-or-so note events
+over the thirty seconds of its duration. The type of auditory
+overview created depends on the time compression employed. The
+intention of the conditional step in the encoding <B>.orc</B>
+file, as described above, is to give any significant indications
+of shifts among predefined, quantized steps. Refining these levels
+of definition is the next step, with the aim of creating effective
+auditory correlates to the elements which factor into a patient&#146;s
+risk stratification, the overall assessment of the patient&#146;s
+condition.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The reduced version of the <B>.sco</B>
+file for the third implementation can be created by a C function.
+The first two implementations were hampered by limited numbers
+of values which could be loaded into a spreadsheet and by long
+computation times. The beauty of Csound (in this case) is that
+it can just as easily perform all these computations with statements
+in the .<B>orc</B> file. As for the .<B>sco</B> file, it will
+be a simple matter to write a function which generates it automatically
+by reading each HRV value from the source file?or every <I>n</I>th
+value, or the average of every <I>n</I> values?dividing it by
+a user-specified amount, and then sending the new value and a
+cumulative total out to a <B>.sco</B> file.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Given the many different statistical
+measures applied to HRV data, auditory display may become an effective
+method for examining new superpositions of different statistical
+treatments. Localization may be a key to such comparisons. Spatial
+imaging is a somewhat slippery factor in the perception of multiple
+events, as reported in [2]. Spatial separation alone is not sufficient
+for the auditory system to perceive two events. Audio technology
+relies on this fact in its use of phantom imaging: a signal produced
+identically from two speakers will be localized directly between
+them. Panning effects are produced by adjusting the relative volumes
+of the speakers, causing the image to &quot;drift&quot; towards
+the speaker which produces the louder signal. The effect demonstrates
+a heuristic of the auditory system to fuse events from different
+locations?all other parameters being equal. The slightest difference
+in the signals, however, will cause them to segregate and be perceived
+as two independent streams. Small frequency differences, for example,
+which are imperceptible when two tones are panned center, become
+noticeable when the tones are panned to opposite channels. The
+phantom imaging falls apart, and the auditory image becomes that
+of two distinct streams, emitted from the respective speakers.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Discussion of stereophonic imaging,
+however, has a tendency to focus on localizability as the measure
+of its effectiveness. The better the listeners are able to localize
+sound events, the better the stereophonic system is said to be.
+Its place in auditory display consideration is somewhat tenuous
+as a result, as reported in [5]. Asking people to make judgments
+based on the location of a cue, which might differ by a few degrees
+from its last occurrence, is not likely to yield promising results.
+The eyes are superior to the ears in identifying precise changes
+in space. The place for localization in the auditory analysis
+of data, then, might seem curious: certainly, it is unlikely that
+a physician could determine anything based on pinpointing a blip
+in the quadraphonic field. Little has been written, however, on
+the auditory streaming effects inherent in stereophonic separation,
+and their qualitative changes in perception. Incorporating a spatial
+set of parameters can affect the cohesion and segregation of sound
+events. The quadraphonic implementation of this patch raises the
+question of whether similar timbral sources assigned to different
+speakers can be distinguished. Spatialization applied to a more
+sophisticated statistical treatment may yield significant commonalities
+or differences which may not be as readily apparent in a visual
+representation.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Ultimately, clinical implementation
+will be dependent on the amount of listener education which is
+necessary to understanding the auditory data. Since cardiologists
+have well-developed ears?accustomed as they are to detecting nuances
+in the heart through the stethoscope?the slope of the learning
+curve would depend on a balancing of two considerations, described
+in [1]. On the one hand, there is the auditory display concept
+of the &quot;beacon&quot;, which refers to a distinct sonic event
+designed to happen when some known condition is reached. (For
+a simplified example, if the heart rate were to go below a certain
+value, a bell could ring.) With a focus on creating beacons for
+significant HRV events, it becomes the burden of the synthesist
+to create a display which makes the significance clear, rather
+than the burden of the cardiologist to learn to hear it. On the
+other hand, by emphasizing known conditions, one would not want
+to impose constraints on the display which might obscure features
+that are not expected. A successful system will have to make known
+factors explicit, while remaining general enough to allow unexpected
+factors to be perceived.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Auditory display is a rewarding
+study due its inter-disciplinary nature. The sound synthesist
+must become familiar with the terminology and problems of a research
+field, in this case cardiology, in order to create an effective
+auditory display for it. Much work remains to be done before any
+clinical implementation of the work described here is feasible,
+but it is clear at this point that Csound can easily be tailored
+to function as an auditory spreadsheet, and as such it is a natural
+choice for research applications.<BR>
+&nbsp;&nbsp;</FONT></P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman">Figures</FONT></B></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/fig1.gif" HEIGHT="179"
+WIDTH="498" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">[1] The heart&#146;s voltage
+patterns, measured through an electrocardiogram. Normally, the
+QRS complex corresponds to the heart&#146;s contraction.</FONT></B></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/fig2.gif" HEIGHT="613"
+WIDTH="720" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">[2] Block diagram of the .orc
+encoding file</FONT></B></P>
+
+<P><B><FONT FACE="Times New Roman">Acknowledgment:</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">Partial funding for this project
+was provided from the Natural Sciences Engineering and Research
+Council.</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">References:</FONT></B></P>
+
+<UL>
+  <UL>
+    <DIR>
+      <P><FONT FACE="Times New Roman">[1] &quot;Heart Rate Variability:
+      Standards of Measurement, Physiological Interpretation, and Clinical
+      Use.&quot; Special Report of the Task Force of the European Society
+      of Cardiology and the North American Society of Pacing and Electrophysiology.
+      <I>Circulation</I>. 1996;93:1043-1065.</FONT>
+      <P><FONT FACE="Times New Roman"></FONT><A NAME="Anchor"></A>[2]
+      Bregman, Albert S. <I>Auditory Scene Analysis: The Perceptual
+      Organization of Sound</I>. Cambridge, MA: MIT Press, 1990.
+      <P><FONT FACE="Times New Roman">[3] Davids, Zach. <I>Heartsongs:
+      Musical Mappings of the Heartbeat</I>. Wellesley, MA: Ivory Moon
+      Recordings. 1995. Liner notes: Ary L. Goldberger, Zach Goldberger,
+      Chung-Kang Peng, Paul Trunfio.</FONT>
+      <P><FONT FACE="Times New Roman">[4] Dickreiter, Michael. <I>Tonmeister
+      Technology.</I> New York: Temmer Enterprises, Inc., 1989.</FONT>
+      <P><FONT FACE="Times New Roman"></FONT><A NAME="Anchor"></A>[5]
+      Kramer, Gregory, ed. <I>Auditory Display: Sonification, Audification
+      and Auditory Interfaces</I>. Proceedings Volume XVIII, Sante
+      Fe Institute: Studies in the Sciences of Complexity. Reading,
+      MA: Addison-Wesley Publishing Company, The Advanced Book Program,
+      1994.
+      <P><FONT FACE="Times New Roman">[6] Lombreglia, Ralph. &quot;Every
+      Good Boy Deserves Favor.&quot; <I>The Atlantic Monthly</I>, December
+      1993.</FONT>
+      <P><FONT FACE="Times New Roman"></FONT><A NAME="Anchor"></A>[7]
+      Malham, D.B. and A. Myatt. &quot;3-D Sound Spatialization using
+      Ambisonic Techniques.&quot; <I>Computer Music Journal</I> 19(4),
+      Spring 1995: <FONT COLOR="#000000" FACE="Times New Roman">58-70.</FONT>
+    </DIR>
+  </UL>
+</UL>
+
+</BODY>
+</HTML>

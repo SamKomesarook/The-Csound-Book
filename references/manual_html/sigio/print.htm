@@ -1,0 +1,87 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>print, display, dispfft</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../valcnv/filefax.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="printk.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#printing" class="toqr">
+Signal Input and Output: Printing and Display</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>print, display, dispfft</h2>
+
+<pre>
+          <strong>print</strong>     iarg[, iarg, ...]
+          <strong>display</strong>   xsig, iprd[, inprds[, iwtflg]]
+          <strong>dispfft</strong>   xsig, iprd, iwsiz[, iwtyp[, idbouti[, iwtflg]]]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>These units will print orchestra init-values, or produce graphic display of orchestra control signals and audio signals. Uses X11 windows if enabled, else (or if <a href="../command/desc.htm"><strong>-g</strong> flag</a> is set) displays are approximated in ASCII characters.
+</p>
+<h3><a name="correct1"></a>Initialization</h3>
+<p><em>iprd</em> &#8211; the period of display in seconds.
+</p>
+<p><em>iwsiz</em> &#8211; size of the input window in samples. A window of <em>iwsiz</em> points will produce a Fourier transform of <em>iwsiz</em>/2 points, spread linearly in frequency from 0 to sr/2. <em>iwsiz</em> must be a power of 2, with a minimum of 16 and a maximum of 4096. The windows are permitted to overlap.
+</p>
+<p><em>iwtyp</em> (optional) &#8211; window type. 0 = rectangular, 1 = Hanning. The default value is 0 (rectangular).
+</p>
+<p><em>idbout</em> (optional) &#8211; units of output for the Fourier coefficients. 0 = magnitude, 1 = decibels. The default is 0 (magnitude).
+</p>
+<p><em>iwtflg</em> (optional) &#8211; wait flag. If non-zero, each display is held until released by the user. The default value is 0 (no wait).
+</p>
+<p><em>inprds</em> (optional) &#8211; a scaling factor for the displayed waveform, controlling how many <em>iprd</em>-sized frames of samples are drawn in the window (the default and minimum value is 1.0).
+</p>
+<h3>Performance</h3>
+<p><strong>print</strong> &#8211; print the current value of the i-time arguments (or expressions) <em>iarg</em> at every i-pass through the instrument.
+</p>
+<p><strong>display</strong> &#8211; display the audio or control signal <em>xsig</em> every <em>iprd</em> seconds, as an amplitude vs. time graph. Higher <em>inprds</em> values draw more slowly, due to the increased number of points, but will show the waveform scrolling through the window. This is useful with low <em>iprd</em> values.
+</p>
+<p><strong>dispfft</strong> &#8211; display the Fourier Transform of an audio or control signal (<em>asig</em> or <em>ksig</em>) every <em>iprd</em> seconds using the Fast Fourier Transform method.
+</p>
+<h3>Example</h3>
+
+
+<pre>
+  k1      <strong>envlpx</strong>    l, .03, p3, .05, l, .5, .0l ; generate a note envelope 
+          <strong>display</strong>   k1, p3                      ; and display entire shape
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../valcnv/filefax.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="printk.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#printing" class="toqr">
+Signal Input and Output: Printing and Display</font></a>
+</body>
+
+</html>

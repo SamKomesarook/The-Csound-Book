@@ -1,0 +1,80 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>filelen, filesr, filenchnls, filepeak</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td width="45" align="right">
+      <a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td width="10">
+    </td>
+    <td width="45" align="right">
+      <a href="../sigmod/vincr.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td width="45" align="right">
+      <a href="../sigio/print.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#fileinfo">
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Signal Input and Output: Sound File Queries</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>filelen, filesr, filenchnls, filepeak</h2>
+<pre>
+  ir      filelen    &quot;ifilcod&quot;
+  ir      filesr     &quot;ifilcod&quot;
+  ir      filenchnls &quot;ifilcod&quot;
+  ir      filepeak   &quot;ifilcod&quot;[, ichnl]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Obtains information about a sound file.</p>
+<h3>Initialization</h3>
+<p><em>ifilecod</em> &#8211; sound file to be queried</p>
+<p><em>ichnl</em> &#8211; channel to be used in calculating the peak value. Default is 0.</p>
+<ul>
+<li><em>ichnl</em> = 0 returns peak value of all channels
+<li><em>ichnl</em> &gt; 0 returns peak value of <em>ichnl</em>
+</ul>
+<h3>Performance</h3>
+<p><strong>filelen</strong> returns the length of the sound file <em>ifilcod</em> in seconds. <strong>filesr</strong> returns the sample rate of the sound file <em>ifilcod</em>. <strong>filenchnls</strong> returns the number of channels in the sound file <em>ifilcod</em>. <strong>filepeak</strong> returns the peak absolute value of the sound file <em>ifilcod</em>. Currently, <strong>filepeak</strong> supports only AIFF-C float files.</p>
+
+<h3>Author</h3>
+<p>Matt Ingalls<br>
+July, 1999<br>
+New in Csound version 3.57
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td width="45" align="right">
+      <a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td width="10">
+    </td>
+    <td width="45" align="right">
+      <a href="../sigmod/vincr.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td width="45" align="right">
+      <a href="../sigio/print.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#fileinfo">
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Signal Input and Output: Sound File Queries</font></a>
+</body>
+
+</html>

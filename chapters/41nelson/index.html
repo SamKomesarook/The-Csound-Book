@@ -1,0 +1,426 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Granular Strategies</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">39. Granular Strategies</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Jon Christopher Nelson</FONT></H2>
+
+<P><FONT FACE="Times New Roman">Csound provides a flexible and
+rich environment for both synthesizing and processing sound. In
+my recent electro-acoustic compositions, I capitalize on Csound&#146;s
+unique sound processing capabilities, utilizing a panoply of linear,
+non-linear, and analysis/resynthesis techniques to generate material
+from sampled sounds. However, of these techniques, I have been
+most interested in exploring granular sonic worlds by incorporating
+quasi-synchronous and asynchronous granular synthesis and soundfile
+granulation instruments in my compositions.<B> (1)</B> This article
+examines three of my granular instruments and GrainMaker 2.0,
+my Csound score generator for soundfile granulation. <B>(2)</B></FONT></P>
+
+<P><FONT FACE="Times New Roman">My early granular synthesis instrument
+(see flowchart in Figure 1 and code for instr 1 below) predates
+the more recent <I>fof</I> and <I>grain</I> opcodes. In its essence,
+this instrument is a random note generator that creates streams
+of notes. The instrument uses an <I>oscili</I> to repeatedly cycle
+through a stored envelope function table. With each pass through
+this function table, a new note rate and pitch is calculated.
+If the note stream contains fewer than 25 notes per second, the
+individual notes are delineated aurally. In contrast, faster note
+streams reap quasi-synchronous granular synthesis in which the
+notes are heard as grains in a composite sound. In this instrument,
+the note or grain duration is inversely proportional to the grain
+rate: 10 notes per second reaps notes that are 1/10th of a second
+long, 50 notes per second generates notes that are 1/50th of a
+second long. More dense granular synthesis is achieved by using
+multiple copies of this instrument simultaneously. Using multiple
+copies of this instrument can also help diminish or accentuate
+amplitude modulation artifacts. This instrument was used to generate
+quasi-synchronous granular synthesis streams in my 1992 compositions
+<I>Bauxite Dreams </I>for tape and <I>Waves of Refraction</I>
+for guitar and tape. <B>(3)</B></FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/01.gif" HEIGHT="354"
+WIDTH="313" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+1 </FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Random
+Note Generator Flowchart.</FONT></P>
+
+<P><FONT FACE="Courier New">&nbsp;instr 1 ;random pitch/quasi-synchronous
+granular synthesis<BR>
+i1=cpspch(p4) ;starting center pitch<BR>
+i2=cpspch(p5) ;ending center pitch<BR>
+k2 line p6,p3,p7 ;dev around center pitch<BR>
+k3 line p8,p3,p9 ;notes/grains per second<BR>
+k5 randh 2,k3 ;random element to grain rate<BR>
+k4 randh k2,k3+k5 ;pitch deviation for each note<BR>
+;k3+k5=actual attack rate<BR>
+a5 oscili 1,k3+k5,p12 ;env determined by attack rate<BR>
+k6 line p10,p3,p11 ;amplitude change<BR>
+k1 line i1,p3,i2 ;center frequency line<BR>
+a1 oscili a5*k6,k1+k4,p13 ;actual sound<BR>
+a1=a1*p14<BR>
+a2=a1*(1-p14)<BR>
+outs a1,a2<BR>
+endin<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">;;;;;;;;;;;;;;;;;;;;score file sample;;;;;;;;;;;;;;;;;;;<BR>
+f 3 0 8192 10 1<BR>
+f 10 0 1024 -19 1 .5 270 .5<BR>
+;i1 pch.i-f rand.i-f rate.i-f amp.i-f env wave amp<BR>
+i1 0 20 8.00 10.00 100 7 30 400 3000 3000 10 3 .5<BR>
+i1 0 20 9.00 9.01 10 7 3 400 3000 3000 10 3 .5<BR>
+i1 0 20 7.00 8.02 500 7 30 400 3000 3000 10 3 .5<BR>
+i1 0 20 6.00 7.03 50 7 3 400 3000 3000 10 3 .5<BR>
+i1 0 20 10.00 6.04 100 7 30 400 3000 3000 10 3 .5<BR>
+i1 0 20 8.06 11.05 10 7 3 400 3000 3000 10 3 .5<BR>
+i1 0 20 8.03 10.11 500 7 30 400 3000 3000 10 3 .5<BR>
+i1 0 20 8.09 5.06 50 7 3 400 3000 3000 10 3 .5<BR>
+i1 0 20 7.09 10.10 100 7 30 400 3000 3000 10 3 .5<BR>
+i1 0 20 7.06 10.09 10 7 3 400 3000 3000 10 3 .5<BR>
+e<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">;p4-5=center pitch (initial and final)<BR>
+;p6-7=random pitch deviation range (initial and final)<BR>
+;p8-9=notes/grains per second (initial and final)<BR>
+;should be at least 2<BR>
+;p10-11=note amplitudes (initial and final)<BR>
+;p12=envelope function table number<BR>
+;p13=wavetable function table number<BR>
+;p14=channel 1 amplitude multiplier<BR>
+</FONT><FONT FACE="Times New Roman">&nbsp;</FONT></P>
+
+<P><FONT FACE="Times New Roman">With the addition of a few lines
+of code, this instrument can randomly pan each grain or dynamically
+adjust the random element of the grain rate. Similarly, the audio
+generating <I>oscili</I> can be replaced by other sound generating
+opcodes, including <I>gbuzz</I>, <I>foscil</I>, or even <I>soundin</I>
+and <I>loscil</I>. This provides a simple means of granulating
+soundfiles by imposing a quasi-synchronous granular stream of
+envelopes on the sample.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Although I enjoy synthesizing
+sound using granular techniques, I am even more interested in
+processing soundfiles with granular techniques. Consequently,
+I created a granular comb filter instrument to use in my 1996
+electro-clip composition entitled <I>A Chris Mann Mambo</I>. This
+instrument (see flowcharts in figures 2 and 3 as well as the code
+for instr 2 below) is similar to instr 1 above in that it creates
+a quasi-synchronous stream of grains. However, each grain generated
+by this instrument is a randomly tuned comb filter imposed on
+a monophonic soundfile. Since the <I>comb</I> opcode requires
+an init value for its loop time argument, this instrument utilizes
+<I>timout</I>, <I>reinit</I>, and <I>rireturn</I> to generate
+different loop times for each grain. In this instrument, each
+comb filter grain is randomly placed in the stereo plane. Using
+multiple copies of instr 2 can generate a dense granular comb
+filter bank. This instrument must be used in conjunction with
+a global output instrument. Instr 3 below provides an example
+of a global output soundin instrument that provides the required
+ga1 audio signal to be filtered by instr 2. In this case, instr
+3 does not actually generate sound itself.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/2.gif" HEIGHT="223"
+WIDTH="281" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">Figure 2 </FONT></B><FONT FACE="Times New Roman">Basic
+Program Flow for Random Comb Generator.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/3.gif" HEIGHT="576"
+WIDTH="324" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+3 </FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Random
+Comb Generator Flowchart.<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">instr 2 ;random stream of comb filter
+notes/grains<BR>
+doagain:?<BR>
+krrate randh p5,p4,-1 ;set rate deviation<BR>
+krate=p4+krrate ;set rate<BR>
+ktime=1/krate ;grain duration<BR>
+krevtime=ktime/5 ;set reverb time<BR>
+kplace randh .5,krate,-1 ;values -.5 to +.5 for pan placement<BR>
+kchnl1=kplace+.5 ;chnl 1 amp. mult.<BR>
+krcps randh p6,krate,-1 ;rand pch deviation<BR>
+krcps=abs(krcps)+p7 ;pch dev. + base<BR>
+ioct=i(krcps) ;krate to irate<BR>
+ilpt=1/cpsoct(ioct) ;calculate looptime<BR>
+timout 0,i(ktime),comb ;start &quot;comb:&quot; loop<BR>
+reinit doagain ;back to &quot;doagain:&quot;<BR>
+;to reset values<BR>
+comb:<BR>
+kenv oscil1 i(ktime)/4,1,i(ktime)/2,1 ;envelope function<BR>
+kenv2 oscil1 0,1,i(ktime),1 ;smoothing env.<BR>
+a1=ga1*kenv ;ga1 to be filtered<BR>
+acomb comb a1,krevtime,ilpt,0 ;filter it<BR>
+acomb=acomb*kenv2 ;smooth it<BR>
+rireturn ;back to reinit<BR>
+ablnc balance acomb,a1 ;balance it<BR>
+ablnc=ablnc*p8 ;amp multiplier p8<BR>
+afinal1=ablnc*kchnl1 ;chnl 1 amp<BR>
+afinal2=ablnc*(1-kchnl1) ;chnl 2 amp<BR>
+outs afinal1,afinal2 ;make the sound<BR>
+endin<BR>
+instr 3 ;global out soundin<BR>
+kenv linseg 0,.1,1,p3-.2,1,.1,0 ;amp env smooths ends<BR>
+a1 soundin p4,p5<BR>
+kenv1=kenv*p6<BR>
+ga1=kenv1*a1<BR>
+endin<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">;;;;;;;;;;;;;;;;;;;;score file sample;;;;;;;;;;;;;;;;;;;<BR>
+f 1 0 513 8 0 150 .5 50 1 113 1 50 .5 150 0<BR>
+;i3 start dur sndin# skiptime amp<BR>
+i3 0.425 45 1 0 .2<BR>
+;i2 start dur rate dev roct octbase amp<BR>
+i2 0 45 4 2.1 3 7 .25<BR>
+e<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">;p4=base notes/grains per second<BR>
+;p5=random deviation in notes/grains per second<BR>
+;p6=random pitch range above base (expressed in oct)<BR>
+;p7=base pitch (expressed in oct)<BR>
+;p8=amplitude factor</FONT><FONT FACE="Times New Roman">&nbsp;</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instr 2 assumes that an envelope
+function is stored in function table 1. With several small modifications,
+the envelope function table number can also be determined randomly
+for each grain. The global audio signal input can include several
+soundfiles or soundfile exerpts mixed together with instr 3. In
+addition, a <I>loscil</I> could easily replace the <I>soundin</I>
+opcode in instr 3 to allow the transposition of the original soundfile.</FONT></P>
+
+<P><FONT FACE="Times New Roman">While the <I>fof</I> and <I>grain</I>
+opcodes provide asynchronous granular synthesis generators, they
+do not provide soundfile granulation capabilities. Soundfiles
+can only be granulated in Csound by using the <I>granule</I> opcode
+or by imposing granular envelopes on samples played with <I>soundin</I>,
+<I>loscil</I>, or <I>table</I> opcodes. Each of these opcodes
+have limitations that prevent their utilization in my ideal soundfile
+granulation instrument, which should provide a means for independently
+transposing and/or time stretching a sound, reading the soundfile
+with random skip times, imposing random panning and amplitude
+functions on each grain, and dynamically changing various grain
+attributes including density and duration. For example, <I>soundin</I>
+allows a skip time into a soundfile but cannot transpose while
+<I>loscil</I> transposes but always starts at the first sample.
+In both <I>soundin</I> and <I>loscil</I>, the progression through
+the soundfile is linear from the starting point to the end of
+the file. In contrast, the <I>table</I> opcode, which can be used
+if the soundfile is read into a function table with a power of
+two size, allows both transposition and skip time. Although transposition
+levels and skip times can be calculated on each reinitialization
+pass of an instrument similar to instr 2 above, this will still
+only provide a quasi-synchronous stream of grains. Furthermore,
+a complex instrument based upon this model will generate sound
+slowly as a result of the numerous grain attribute computations
+required. As a result, asynchronous soundfile granulation in Csound
+is best achieved by using a simple instrument that accesses a
+tabled soundfile to generate a single grain in conjunction with
+a score generating program that stochastically generates grain
+data. <B>(4)</B></FONT></P>
+
+<P><FONT FACE="Times New Roman">GrainMaker 2.0 is a program I
+developed in MAX that generates Csound soundfile granulation score
+files. While generating a scorefile, the user can change a number
+of grain parameters by either moving faders with a mouse or depressing
+computer keyboard fader automation keys. In this respect, this
+program provides a means of &quot;drawing&quot; a score file while
+it is being created. The grain parameters controlled by GrainMaker
+2.0 are as follows:</FONT></P>
+
+<P><FONT FACE="Courier New">base grain rate<BR>
+grain rate random deviation (added to base)<BR>
+base grain duration<BR>
+grain duration random deviation (added to base)<BR>
+soundfile progression factor (positive, zero, or negative values)<BR>
+base sinitial skip time into the soundfile<BR>
+skiptime random deviation (around the base)<BR>
+base left-right grain location in stereo plane<BR>
+left-right grain location random deviation (around the base)<BR>
+base grain amplitude<BR>
+grain amplitude random deviation (added to base)<BR>
+base envelope function table number (from 1-50)<BR>
+envelope function table random deviation (added to base)<BR>
+base soundfile transposition (expressed in semitones)<BR>
+soundfile transposition random deviation (around the base)</FONT></P>
+
+<P><FONT FACE="Times New Roman">In addition to these parameters,
+GrainMaker 2.0 includes a RandMaster gate that generates clusters
+of grains with random durations when selected. The minimum and
+maximum time limits for both the on and off (open and closed)
+gate durations are adjustable. The following figure shows the
+GrainMaker 2.0 main control panel. <B>(5)</B><BR>
+&nbsp;&nbsp;</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/4.gif" HEIGHT="388"
+WIDTH="600" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+<BR>
+</FONT><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4 </FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">GrainMaker
+2.0 Main Control Panel.</FONT></P>
+
+<P><FONT FACE="Times New Roman">GrainMaker 2.0 generates a Csound
+score file that can be used with the GrainMaker2.0.orc file to
+granulate any soundfile entitled &quot;soundin.1&quot;. By using
+a relatively simple instrument that generates a single grain,
+Csound efficiently and asynchronously granulates soundfiles. The
+following flowchart (see figure 5) and instrument code provides
+the entire GrainMaker2.0.orc:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/5.gif" HEIGHT="342"
+WIDTH="256" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+5 </FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">GrainMaker
+Orchestra Instrument Flowchart.</FONT></P>
+
+<P><FONT FACE="Courier New">instr 1 ;granulates soundfile entitled
+&quot;soundin.1&quot; p4=sfskip<BR>
+ileft=p5<BR>
+iright=1-p5<BR>
+iskip=int(p4*sr) ;calculates first sample #<BR>
+iamp=p6*30000<BR>
+ilast=int(p3*sr*p8)+iskip ;calculates last sample #<BR>
+kenv oscil1i 0,iamp,p3,p7 ;envelope function<BR>
+aread line iskip,p3,ilast ;arate index to the table<BR>
+asnd tablei aread,101 ;reads tabled sf (f 101)<BR>
+afinal=asnd*kenv<BR>
+outs afinal*ileft,afinal*iright<BR>
+endin</FONT></P>
+
+<P><FONT FACE="Courier New">;;;;;;;;;;;;;;;;;;;;score file sample;;;;;;;;;;;;;;;;;;;<BR>
+f6 0 513 8 0 150 0.500000 50 1 113 1 50 0.500000 150 0<BR>
+f101 0 131072 1 1 0 4 1<BR>
+;i4 start dur sfskip chnl1amp %amp env T factor<BR>
+i4 10.442250 0.028000 1.261519 0.430000 0.310000 6 1.0<BR>
+i4 10.439750 0.032000 1.251819 0.090000 0.410000 6 1.0<BR>
+i4 10.444249 0.033000 1.251119 0.860000 0.390000 6 1.0<BR>
+i4 10.447749 0.025000 1.252419 0.990000 0.650000 6 1.0<BR>
+i4 10.448249 0.033000 1.256719 0.900000 0.510000 6 1.0<BR>
+i4 10.449748 0.029000 1.256019 0.520000 0.930000 6 1.0<BR>
+i4 10.456247 0.025000 1.250319 0.420000 0.410000 6 1.0<BR>
+i4 10.454747 0.025000 1.262619 0.530000 0.940000 6 1.0<BR>
+i4 10.460247 0.026000 1.249919 0.720000 0.420000 6 1.0<BR>
+i4 10.459746 0.033000 1.260219 0.030000 0.580000 6 1.0<BR>
+i4 10.465246 0.030000 1.247519 0.580000 0.610000 6 1.0<BR>
+i4 10.467746 0.026000 1.252820 0.330000 0.470000 6 1.0<BR>
+i4 10.471245 0.030000 1.259120 0.880000 0.880000 6 1.0<BR>
+e</FONT></P>
+
+<P><FONT FACE="Times New Roman">My compositions <I>They Wash Their
+Ambassadors in Citrus and Fennel</I> (1994) for voice and tape
+and <I>the rain has a slap and a curve </I>(1997) for tape extensively
+utilize GrainMaker to granulate soundfiles. <B>(6)</B> In fact,
+the sonic foundation of the entire third movement of <I>the rain
+has a slap and a curve,</I> entitled <I>a whisper of rain,</I>
+is a granulation of an original 1.572 second sample time-stretched
+to 210 seconds. This particular asynchronous granulation contains
+approximately 2000 grains per second with randomly calculated
+grain amplitudes, envelopes, transpositions (spanning nearly two
+octaves around the original frequency), durations (between 40-60
+milliseconds) and spatial locations in the stereo plane. Similarly,
+lengthy sections of <I>They Wash Their Ambassadors in Citrus and
+Fennel</I> contain granulations of sampled material.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The instruments covered in this
+chapter provide a glimpse not only into my fascination with granular
+synthesis and soundfile granulation, but also into programming
+techniques for granular applications. Although asynchronous soundfile
+granulation presents a particular Csound programming challenge,
+my GrainMaker score generator provides one possible solution.
+As is evidenced above, Csound continues to provide a fruitful
+environment in which to explore a variety of granular techniques.&nbsp;&nbsp;</FONT></P>
+
+<H2><FONT FACE="Times New Roman">Notes</FONT></H2>
+
+<P><B><FONT FACE="Times New Roman">(1)</FONT></B><FONT FACE="Times New Roman">
+For a detailed discussion of pitch-synchronous, quasi-synchronous,
+and asynchronous granular synthesis, see the following:</FONT></P>
+
+<DIR>
+  <P><FONT FACE="Times New Roman">DePoli, Giovanni and Aldo Piccialli.
+  1991. &quot;Pitch-Synchronous Granular Synthesis&quot; in <I>Representations
+  of Musical Signals, </I>G. DePoli, A. Piccialli, and C. Roads,
+  eds. Cambridge Massachusetts: MIT Press.</FONT>
+  <P><FONT FACE="Times New Roman">MacKay, J. 1984. &quot;On the
+  Perception of Density and Stratification in Granular Sonic Textures:
+  An Exploratory Study.&quot; <I>Interface</I> 13: 171-186.</FONT>
+  <P><FONT FACE="Times New Roman">Roads, Curtis. 1985. &quot;Granular
+  Synthesis of Sound&quot; in <I>Foundations of Computer Music,
+  </I>C. Roads and J. Strawn, eds. Cambridge, Massachusetts: MIT
+  Press.</FONT>
+  <P><FONT FACE="Times New Roman">Roads, Curtis. 1991. &quot;Asynchronous
+  Granular Synthesis&quot; in <I>Representations of Musical Signals,
+  </I>G. DePoli, A. Piccialli, and C. Roads, eds. Cambridge Massachusetts:
+  MIT Press.</FONT>
+  <P><FONT FACE="Times New Roman">Roads, Curtis. 1996. <I>The Computer
+  Music Tutorial.</I> Cambridge, Massachusetts: MIT Press.</FONT>
+  <P><FONT FACE="Times New Roman">Roads, Curtis. 1997. &quot;Granular
+  Synthesis.&quot; <I>Keyboard </I>Magazine 23(6), June 1997: 42-52.</FONT>
+  <P><FONT FACE="Times New Roman">Truax, Barry. 1986. &quot;Real-Time
+  Granular Synthesis with the DMX-1000.&quot; <I>Proceedings of
+  the 1986 International Computer Music Conference.</I> San Francisco,:
+  International Computer Music Association, 231-235.</FONT>
+  <P><FONT FACE="Times New Roman">Truax, Barry. 1988. &quot;Real-time
+  granular synthesis with a digital signal processor.&quot; <I>Computer
+  Music Journal </I>12(2): 14-26.</FONT>
+  <P><FONT FACE="Times New Roman">Truax, Barry. 1994. &quot;Discovering
+  Inner Complexity: Time Shifting and Transposition with a Real-time
+  Granulation Technique.&quot; <I>Computer Music Journal</I> 18(2):
+  38-48.</FONT>
+</DIR>
+
+<P><B><FONT FACE="Times New Roman">(2)</FONT></B><FONT FACE="Times New Roman">
+GrainMaker 2.0 is a Macintosh application that generates Csound
+score files that granulate soundfiles. This application is included
+on the CD-ROM that accompanies this book.</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">(3)</FONT></B><FONT FACE="Times New Roman">
+<I>Waves of Refraction </I>for guitar and tape is recorded with
+William Buonocore performing on NEUMA Records &quot;Electro Acoustic
+Music III&quot;, NEUMA 450-87, 1994.</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">(4)</FONT></B><FONT FACE="Times New Roman">
+To randomly select from among 50 envelopes, do the following:</FONT></P>
+
+<DIR>
+  <P><FONT FACE="Times New Roman">a) insert these lines in the
+  doagain section beneath the krate statement</FONT>
+  <P><FONT FACE="Courier New">kenvfn randh 49,krate,-1 ;random
+  number -49 to +49<BR>
+  kenvfn=int(abs(kenvfn)) ;integer-absolute value to get 0-49<BR>
+  </FONT>
+  <P><FONT FACE="Times New Roman">b) replace the existing kenv
+  statement with the following</FONT>
+  <P><FONT FACE="Courier New">kenv oscil1 i(ktime)/4,1,i(ktime)/2,i(kenvfn)+1</FONT>
+</DIR>
+
+<P><B><FONT FACE="Times New Roman">(5)</FONT></B><FONT FACE="Times New Roman">
+The enhanced version of this program, entitled GrainMaker 2.0
+with picts, draws the envelope function tables while scrolling
+through the base envelope function table number fader. This version
+requires 8MB of free RAM.</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">(6)</FONT></B><FONT FACE="Times New Roman">
+<I>They Wash Their Ambassadors in Citrus and Fennel </I>for voice
+and tape is recorded with Joan La Barbara performing on the International
+Computer Music Association's ICMC 95 &quot;Digital Playgrounds&quot;,
+the XVII&deg; Concorso Int. L. Russolo Di Musica Elettroacustica,
+1995, and the Bourges Grands Prix et Prix Quintivium 23e Concours
+Bourges 1996 compact discs.</FONT>
+
+</BODY>
+</HTML>

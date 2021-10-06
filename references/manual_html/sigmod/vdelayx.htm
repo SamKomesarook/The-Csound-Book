@@ -1,0 +1,87 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>vdelayx, vdelayxs, vdelayxq, vdelayxw, vdelayxws, vdelayxwq</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="vdelay.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="deltapx.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#delay" class="toqr">
+Signal Modifiers: Delay</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>vdelayx, vdelayxs, vdelayxq, vdelayxw, vdelayxws, vdelayxwq</h2>
+
+<pre>
+  ar         <strong>vdelayx</strong>    asig, adel, imaxdel, isize[,iskip]
+  ar1, ar2   <strong>vdelayxs</strong>   asig1, asig2, adel, imaxdel, isize[,iskip]
+  ar1, ar2,  <strong>vdelayxq</strong>   asig1, asig2, asig3, asig4, adel, imaxdel, isize[,iskip]
+  ar3, ar4
+  ar         <strong>vdelayxw</strong>	  asig, adel, imaxdel, isize[,iskip]
+  ar1, ar2   <strong>vdelayxws</strong>  asig1, asig2, adel, imaxdel, isize[,iskip]
+  ar1, ar2,  <strong>vdelayxwq</strong>  asig1, asig2, asig3, asig4, adel, imaxdel, isize[,iskip]
+  ar3, ar4
+
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>These opcodes implement delay using high quality, therefore slower, interpolation, which is more accurate than linear and cubic interpolation. The delay time is variable at a-rate.</p>
+
+<p>The <strong>vdelayxw</strong> family of opcodes change the position of the write tap in the delay line. This is unlike other delay opcodes, which change the position of the read tap. This approach is useful for implementing Doppler effects, where the position of the listener is fixed, but the source is moving.</p>
+
+<p>The multichannel opcodes allow delaying two or four channels at once.  This approach is computationally more efficient than using multiple, single channel opcodes.</p>
+
+<h3>Initialization</h3>
+<p><em>imaxdel</em> &#8211 maximum delay time, in seconds</p>
+<p><em>isize</em> &#8211 interpolation window size in samples</p>
+<p><em>iskip</em> &#8211 skip initialization if present and non-zero</p>
+
+
+<h3>Performance</h3>
+<p><em>asig, asig1,</em> etc. &#8211 input signal(s) to be delayed. Inputs and outputs may be the same.</p>
+
+<p><em>adel</em> &#8211 delay time in seconds. Minimum delay time allowed is <em>isize</em>/2 samples.</p>
+
+<p>With the <strong>vdelayxw</strong> family of opcodes, changing the delay time has some effects on output level according to the formula:</p>
+<pre>   a = 1 / (1 + dt)</pre>
+<p>where <em>a</em> is the output level and <em>dt</em> is the change in delay time.</p>
+<p>All these opcodes are best used with the double-precision version of Csound.</p>
+<p>New in Csound 4.12.</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="vdelay.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="deltapx.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#delay" class="toqr">
+Signal Modifiers: Delay</font></a>
+</body>
+
+</html>

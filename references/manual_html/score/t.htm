@@ -1,0 +1,79 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>t Statement (Tempo Statement)</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="a.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="b.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#statements" class="toqr">
+Score Syntax: Statements</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>t Statement (Tempo Statement)</h2>
+
+<pre>
+  <strong>t</strong>  p1  p2  p3  p4 ... (unlimited)</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This statement sets the tempo and specifies the accelerations and decelerations for the current section. This is done by converting beats into seconds.
+</p>
+<h3>P Fields </h3>
+
+<pre>
+  p1        Must be zero.
+  p2        Initial tempo on beats per minute.
+  p3, p5, p7,...    Times in beats per minute (in non-decreasing order).
+  p4, p6, p8,...    Tempi for the referenced beat times.
+</pre>
+
+<h3>Special Considerations </h3>
+<p>Time and Tempo-for-that-time are given as ordered couples that define points on a &quot;tempo vs. time&quot; graph. (The time-axis here is in beats so is not necessarily linear.) The beat-rate of a Section can be thought of as a movement from point to point on that graph: motion between two points of equal height signifies constant tempo, while motion between two points of unequal height will cause an accelarando or ritardando accordingly. The graph can contain discontinuities: two points given equal times but different tempi will cause an immediate tempo change.
+</p>
+<p>Motion between different tempos over non-zero time is inverse linear. That is, an accelerando between two tempos M1 and M2 proceeds by linear interpolation of the single-beat durations from 60/M1 to 60/M2.
+</p>
+<p>The first tempo given must be for beat 0.
+</p>
+<p>A tempo, once assigned, will remain in effect from that time-point unless influenced by a succeeding tempo, i.e. the last specified tempo will be held to the end of the section.
+</p>
+<p>A <strong>t statement</strong> applies only to the score section in which it appears. Only one <strong>t statement</strong> is meaningful in a section; it can be placed anywhere within that section. If a score section contains no <strong>t statement</strong>, then beats are interpreted as seconds (i.e. with an implicit <strong>t 0 60</strong> statement).
+</p>
+<p>N.B. If the CSound command includes a <a href="../command/desc.htm"><strong>-t flag</strong></a>, the interpreted tempo of all score <strong>t statements</strong> will be overridden by the command-line tempo.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="a.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="b.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#statements" class="toqr">
+Score Syntax: Statements</font></a>
+</body>
+
+</html>

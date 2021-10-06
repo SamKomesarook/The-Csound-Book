@@ -1,0 +1,101 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>reinit, rigoto, rireturn</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="igoto.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../syntax/math.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#reinit" class="toqr">
+Instrument Control: Reinitialization</font></a>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>reinit, rigoto, rireturn</h2>
+
+<pre>
+           <strong>reinit</strong>     label
+           <strong>rigoto</strong>     label
+           <strong>rireturn</strong>
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>These statements permit an instrument to reinitialize itself during performance.
+</p>
+<p><strong>reinit</strong> &#8211; whenever this statement is encountered during a p-time pass, performance is temporarily suspended while a special Initialization pass, beginning at <em>label</em> and continuing to <strong>rireturn</strong> or <strong>endin</strong>, is executed. Performance will then be resumed from where it left off.
+</p>
+<p><strong>rigoto</strong> &#8211; similar to <strong>igoto</strong>, but effective only during a <strong>reinit</strong> pass (i.e., no-op at standard i-time). This statement is useful for bypassing units that are not to be reinitialized.
+</p>
+<p><strong>rireturn</strong> &#8211; terminates a <strong>reinit</strong> pass (i.e., no-op at standard i-time). This statement, or an <strong>endin</strong>, will cause normal performance to be resumed.
+</p>
+<h3>Example</h3>
+<p>The following statements will generate an exponential control signal whose value moves from 440 to 880 exactly ten times over the duration p3.
+</p>
+<pre>  
+; reinit example by Brian Willkie (12 March 2002)
+
+; start reinit_example.orc ------------------
+
+  <strong>sr</strong>       = 44100
+  <strong>kr</strong>       = 44100
+  <strong>ksmps</strong>    = 1
+  <strong>nchnls</strong>   = 1
+
+           <strong>instr</strong> 1
+
+reset:
+           <strong>timout</strong>    0, p3/10, contin
+           <strong>reinit</strong>    reset
+
+contin:
+  kLine    <strong>expon</strong>     440, p3/10, 880
+  aSig     <strong>oscil</strong>     10000, kLine, 1
+           <strong>out</strong>       aSig
+           <strong>rireturn</strong> 
+
+           <strong>endin</strong>
+					 
+; end reinit_example.orc --------------------
+
+; start reinit_example.sco ------------------
+  f1 0 4096 10 1
+
+  i1 0 10
+  e
+; end reinit_example.sco --------------------
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="igoto.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../syntax/math.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#reinit" class="toqr">
+Instrument Control: Reinitialization</font></a>
+</body>
+</html>

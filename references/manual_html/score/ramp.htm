@@ -1,0 +1,94 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+<TITLE>Ramping</TITLE>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="nextp.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="macros.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#pfield" class="toqr">
+Score Syntax: P-field Substitution</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>Ramping</h2>
+<P><hr size="2" color="#A9A9A9" noshade><BR>
+<BR>
+<strong>i statement</strong> pfields containing the symbol <strong>&lt;</strong> will be replaced by values derived from linear interpolation of a time-based ramp. Ramps are anchored at each end by the first real number found in the same pfield of a preceding and following note played by the same instrument. E.g.: the statements</P>
+
+
+
+
+
+
+
+
+<PRE>i1   0    1    100
+i1   1    1    &lt;
+i1   2    1    &lt;
+i1   3    1    400
+i1   4    1    &lt;
+i1   5    1    0</PRE>
+
+
+
+
+
+
+
+
+<P>will result in</P>
+
+
+
+
+
+
+
+
+<PRE>i1   0    1    100 
+i1   1    1    200
+i1   2    1    300
+i1   3    1    400
+i1   4    1    200
+i1   5    1    0</PRE>
+
+
+<P>Ramps cannot cross a Section boundary. Ramps cannot be anchored by an <strong>np</strong> or <strong>pp</strong> symbol (although they may be referenced by these). Ramp symbols are illegal in p1, p2 and p3. Ramp symbols may be Carried. Note, however, that while the Carry feature will propagate ramp symbols through unsorted statements, the operation that interprets these symbols is acting on a time-warped and fully sorted version of the score. In fact, time-based linear interpolation is based on warped score-time, so that a ramp which spans a group of accelerating notes will remain linear with respect to strict chronological time.</P>
+<P>Starting with Csound version 3.52, using the symbols ( or ) will result in an exponential interpolation ramp, similar to <strong>expon</strong>. The symbols { and } to define an exponential ramp have been deprecated. Using the symbol ~ will result in uniform, random distribution between the first and last values of the ramp. Use of these functions must follow the same rules as the linear ramp function.</P>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="nextp.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="macros.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#pfield" class="toqr">
+Score Syntax: P-field Substitution</font></a>
+</body>
+
+</HTML>

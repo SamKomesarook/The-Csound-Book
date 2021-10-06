@@ -1,0 +1,85 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>b Statement</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="t.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="v.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#statements" class="toqr">
+Score Syntax: Statements</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>b Statement</h2>
+
+
+<pre>  
+  <strong>b</strong>  p1
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This statement resets the clock.
+</p>
+<h3>P Fields</h3>
+
+<pre>
+  p1    Specifies how the clock is to be set.
+</pre>
+
+<h3>Special Considerations</h3>
+<p>p1 is the number of beats by which p2 values of subsequent <strong>i statements</strong> are modified. If p1 is positive, the clock is reset forward, and subsequent notes appear later, the number of beats specified by p1 being added to the note's p2. If p1 is negative, the clock is reset backward, and subsequent notes appear earlier, the number of beats specified by p1 being subtracted from the note's p2. There is no cumulative affect. The clock is reset with each <strong>b statement</strong>. If p1 = 0, the clock is returned to its original position, and subsequent notes appear at their specified p2.</p>
+
+<h3>Example</h3>
+<pre>
+  i1     0      2
+  i1     10     888		
+
+  b 5                           ; set the clock &quot;forward&quot;
+  i2     1      1     440       ; start time = 6
+  i2     2      1     480       ; start time = 7
+
+  b -1                          ; set the clock back
+  i3     3      2     3.1415    ; start time = 2
+  i3     5.5    1     1.1111    ; start time = 4.5
+
+  b 0                           ; reset clock to normal
+  i4     10     200   7         ; start time = 10
+</pre>
+<p>Explanation suggested and example provided by Paul Winkler. (Csound Version 4.16)</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="t.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="v.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#statements" class="toqr">
+Score Syntax: Statements</font></a>
+</body>
+
+</html>

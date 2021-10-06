@@ -1,0 +1,107 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>midic7, midic14, midic21, ctrl7, ctrl14, ctrl21</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="initc7.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="chanctrl.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#input" class="toqr">
+MIDI Support: Controller Input</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>midic7, midic14, midic21, ctrl7, ctrl14, ctrl21</h2>
+
+<pre>
+  idest     <strong>midic7</strong>     ictlno, imin, imax[, ifn]
+  kdest     <strong>midic7</strong>     ictlno, kmin, kmax[, ifn]
+  idest     <strong>midic14</strong>    ictlno1, ictlno2, imin, imax[, ifn]
+  kdest     <strong>midic14</strong>    ictlno1, ictlno2, kmin, kmax[, ifn]
+  idest     <strong>midic21</strong>    ictlno1, ictlno2, ictlno3, imin, imax[, ifn]
+  kdest     <strong>midic21</strong>    ictlno1, ictlno2, ictlno3, kmin, kmax[, ifn]
+  idest     <strong>ctrl7</strong>      ichan, ictlno, imin, imax[, ifn]
+  kdest     <strong>ctrl7</strong>      ichan, ictlno, kmin, kmax[, ifn]
+  idest     <strong>ctrl14</strong>     ichan, ictlno1, ictlno2, imin, imax[, ifn]
+  kdest     <strong>ctrl14</strong>     ichan, ictlno1, ictlno2, kmin, kmax[, ifn]
+  idest     <strong>ctrl21</strong>     ichan, ictlno1, ictlno2, ictlno3, imin, imax[, ifn]
+  kdest     <strong>ctrl21</strong>     ichan, ictlno1, ictlno2, ictlno3, kmin, kmax[, ifn]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Allow precise MIDI input controller signal.
+</p>
+<h3>Initialization</h3>
+<p><em>idest</em> &#8211; output signal
+</p>
+<p><em>ictlno</em> &#8211; MIDI controller number (1-127)
+</p>
+<p><em>ictln1o</em> &#8211; most-significant byte controller number (1-127)
+</p>
+<p><em>ictlno2</em> &#8211; in <strong>midic14</strong>: least-significant byte controller number (1-127); in <strong>midic21</strong>: mid-significant byte controller number (1-127)
+</p>
+<p><em>ictlno3</em> &#8211; least-significant byte controller number (1-127)
+</p>
+<p><em>imin</em> &#8211; user-defined minimum floating-point value of output
+</p>
+<p><em>imax</em> &#8211; user-defined maximum floating-point value of output
+</p>
+<p><em>ifn</em> (optional) &#8211; table to be read when indexing is required. Table must be normalized. Output is scaled according to <em>imax</em> and <em>imin</em> val.
+</p>
+<h3>Performance</h3>
+<p><em>kdest</em> &#8211; output signal
+</p>
+<p><em>kmin</em> &#8211; user-defined minimum floating-point value of output
+</p>
+<p><em>kmax</em> &#8211; user-defined maximum floating-point value of output
+</p>
+<p><strong>midic7</strong> (i- and k-rate 7 bit MIDI control) allows floating point 7 bit MIDI signal scaled with a minimum and a maximum range. It also allows optional non-interpolated table indexing. In <strong>midic7</strong> minimum and maximum values can be varied at k-rate. <strong>midic14</strong> (i- and k-rate 14 bit MIDI control) do the same as the above with 14 bit precision. <strong>midic21</strong> (i- and k-rate 21 bit MIDI control) do the same as the above with 21 bit precision. <strong>midic14</strong> and <strong>midic21</strong> can use optional interpolated table indexing. They require two or three MIDI controllers as input.
+</p>
+<p><strong>ctrl7, ctrl14, ctrl21</strong> are very similar to midicXX opcodes the only differences are:
+</p>
+<ul>
+	<li><strong>ctrl</strong>XX UGs can be included in score oriented instruments without Csound crashes.</li>
+	<li>They need the additional parameter <em>ichan</em> containing the MIDI channel of the controller. MIDI channel is the same for all the controller used in a single <strong>ctrl14</strong> or <strong>ctrl21</strong> opcode.</li>
+</ul>
+<h3>Deprecated Names</h3>
+<p>The opcode names <strong>imidic7</strong>, <strong>imidic14</strong>, <strong>imidic21</strong>, <strong>ictrl7</strong>, <strong>ictrl14</strong>, and <strong>ictrl21</strong> have been deprecated in Csound version 3.52. Instead use <strong>imidic7</strong>, <strong>imidic14</strong>, <strong>imidic21</strong>, <strong>ictrl7</strong>, <strong>ictrl14</strong>, and <strong>ictrl21</strong>, respectively, with i-rate outputs.
+</p>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+New in Csound version 3.47
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="initc7.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="chanctrl.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#input" class="toqr">
+MIDI Support: Controller Input</font></a>
+</body>
+</html>

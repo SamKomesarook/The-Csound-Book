@@ -1,0 +1,82 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>moscil, midion</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="noteon.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="midion2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#note" class="toqr">
+MIDI Support: Note-on/Note-off</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>moscil, midion</h2>
+
+<pre>
+          <strong>moscil</strong>     kchn, knum, kvel, kdur, kpause
+          <strong>midion</strong>     kchn, knum, kvel
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Send a stream of noteon and noteoff messages to the MIDI OUT port.
+</p>
+<h3>Performance</h3>
+<p><em>kchn</em> &#8211; MIDI channel number (0-15)
+</p>
+<p><em>knum</em> &#8211; note number (0-127)
+</p>
+<p><em>kvel</em> &#8211; velocity (0-127)
+</p>
+<p><em>kdur</em> &#8211; note duration in seconds
+</p>
+<p><em>kpause</em> &#8211; pause duration after each noteoff and before new note in seconds
+</p>
+<p><strong>moscil</strong> and <strong>midion</strong> are the most powerful MIDI OUT opcodes. <strong>moscil</strong> (MIDI oscil) plays a stream of notes of <em>kdur</em> duration. Channel, pitch, velocity, duration and pause can be controlled at k-rate, allowing very complex algorithmically generated melodic lines. When current instrument is deactivated, the note played by current instance of <strong>moscil</strong> is forcedly truncated.
+</p>
+<p><strong>midion</strong> (k-rate note on) plays MIDI notes with current <em>kchn</em>, <em>knum</em> and <em>kvel</em>. These arguments can be varied at k-rate. Each time the MIDI converted value of any of these arguments changes, last MIDI note played by current instance of <strong>midion</strong> is immediately turned off and a new note with the new argument values is activated. This opcode, as well as <strong>moscil</strong>, can generate very complex melodic textures if controlled by complex k-rate signals.
+</p>
+<p>Any number of <strong>moscil</strong> or <strong>midion</strong> opcodes can appear in the same Csound instrument, allowing a counterpoint-style polyphony within a single instrument.
+</p>
+<h3>Deprecated Names</h3>
+<p><strong>midion</strong> was originally called <strong>kon</strong>. As of Csound version 3.493, that name is deprecated. <strong>midion</strong> should be used instead of <strong>kon</strong>.
+</p>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+May 1997 (<strong>moscil</strong> new in Csound version 3.47)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="noteon.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="midion2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#note" class="toqr">
+MIDI Support: Note-on/Note-off</font></a>
+</body>
+</html>

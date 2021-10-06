@@ -1,0 +1,167 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>i Statement (Instrument or Note Statement)</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="f.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="a.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#statements" class="toqr">
+Score Syntax: Statements</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>i Statement (Instrument or Note Statement)</h2>
+
+<pre>
+  <strong>i</strong>  p1  p2  p3  p4  ...</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This statement calls for an instrument to be made active at a specific time and for a certain duration. The parameter field values are passed to that instrument prior to its initialization, and remain valid throughout its Performance.
+</p>
+<h3>P Fields</h3>
+
+<pre>
+  p1    Instrument number (from 1 to 200), usually a non-negative integer. An optional fractional part can provide an additional tag for specifying ties between particular notes of consecutive clusters. A negative p1 (including tag) can be used to turn off a particular `held' note.
+  p2    Starting time in arbitrary units called beats.
+  p3    Duration time in beats (usually positive). A negative value will initiate a  held note (see also ihold). A zero value will invoke an initialization pass without performance (see also instr).
+  p4    | 
+  p5    | Parameters whose significance is determined by the instrument.      
+  .     |     
+  .     |    
+</pre>
+
+
+
+<h3>Special Considerations</h3>
+<p>Beats are evaluated as seconds, unless there is a <a href="t.htm"><strong>t statement</strong></a> in this score section or a <strong>-t flag</strong> in the command line.
+</p>
+<p>Starting or action times are relative to the beginning of a section ( see <a href="s.htm"><strong>s statement</strong></a>), which is assigned time 0.
+</p>
+<p>Note statements within a section may be placed in any order. Before being sent to an orchestra, unordered score statements must first be processed by Sorter, which will reorder them by ascending p2 value. Notes with the same p2 value will be ordered by ascending p1; if the same p1, then by ascending p3.
+</p>
+<p>Notes may be stacked, i.e., a single instrument can perform any number of notes simultaneously. (The necessary copies of the instrument's data space will be allocated dynamically by the orchestra loader.) Each note will normally turn off when its p3 duration has expired, or on receipt of a MIDI noteoff signal. An instrument can modify its own duration either by changing its p3 value during note initialization, or by prolonging itself through the action of a <a href="../sigmod/linen.htm"><strong>linenr</strong></a> unit.
+</p>
+<p>An instrument may be turned on and left to perform indefinitely either by giving it a negative p3 or by including an <strong>ihold</strong> in its i-time code. If a held note is active, an <strong>i statement</strong> <em>with matching p1</em> will not cause a new allocation but will take over the data space of the held note. The new pfields (including p3) will now be in effect, and an i-time pass will be executed in which the units can either be newly initialized or allowed to continue as required for a tied note (see <a href="../pgmctl/igoto.htm"><strong>tigoto</strong></a>). A held note may be succeeded either by another held note or by a note of finite duration. A held note will continue to perform across section endings (see <a href="s.htm"><strong>s statement</strong></a>). It is halted only by <a href="../durctl/ihold.htm"><strong>turnoff</strong></a> or by an <strong>i statement</strong> with negative matching p1 or by an <a href="e.htm"><strong>e statement</strong></a>.
+</p>
+<p>It is possible to have multiple instances (usually, but not necessarily, notes of different pitches) of the same instrument, held simultaneously, via negative p3 values. The instrument can then be fed new parameters from the score. This is useful for avoiding long hard-coded <strong>linseg</strong>s, and can be accomplished by adding a decimal part to the instrument number.
+</p>
+<p>For example, to hold three copies of instrument 10 in a simple chord:
+<pre>
+  i10.1    0    -1    7.00
+  i10.2    0    -1    7.04
+  i10.3    0    -1    7.07
+</pre>
+</p>
+<p>Subsequent <strong>i</strong> statements can refer to the same sounding note instances, and if the instrument definition is done properly, the new p-fields can be used to alter the character of the notes in progress.  For example, to bend the previous chord up an octave and release it:
+<pre>
+  i10.1    1    1    8.00
+  i10.2    1    1    8.04
+  i10.3    1    1    8.07
+</pre>
+</p>
+<p>The instrument definition has to take this into account, however, especially if clicks are to be avoided (see the example below).
+</p>
+<p>Note that the decimal instrument number notation cannot be used in conjunction with real-time MIDI. In this case, the instrument would be monophonic while a note was held.
+</p>
+<p>Notes being tied to previous instances of the same instrument, should skip most initialization by means of <a href="../pgmctl/igoto.htm"><strong>tigoto</strong></a>, except for the values entered in score. For example, all table reading opcodes in the instrument, should usually be skipped, as they store their phase internally. If this is suddenly changed, there will be audible clicks in the output. 
+</p>
+<p>Note that many opcodes (such as <strong>delay</strong> and <strong>reverb</strong>) are prepared for optional initialization. To use this feature, the <a href="../syntax/assign.htm"><strong>tival</strong></a> flag is suitable. Therefore, they need not be hidden by a <strong>tigoto</strong> jump.
+</p>
+<p>Beginning with Csound version 3.53, strings are recognized in  p- fields for opcodes that accept them (<strong>convolve, adsyn, diskin,</strong> etc.).  There may be only one string per score line.</p>
+<h3>Example</h3>
+<p>Here is an instrument which can find out whether it is tied to a previous note (<strong>tival</strong> returns 1), and whether it is held (negative p3). Attack and release are handled accordingly:
+</p>
+<pre>
+<strong>instr</strong> 10
+        
+  icps     <strong>init</strong>      <strong>cpspch</strong>(p4)                  ;Get target pitch from score event
+  iportime <strong>init</strong>      <strong>abs</strong>(p3)/7                   ; Portamento time dep on note length
+  iamp0    <strong>init</strong>      p5                          ; Set default amps
+  iamp1    <strong>init</strong>      p5
+  iamp2    <strong>init</strong>      p5
+      
+  itie     <strong>tival</strong>                                 ; Check if this note is tied,
+  <strong>if</strong> itie  ==  1     <strong>igoto</strong> nofadein              ; if not fade in
+  iamp0    <strong>init</strong>      0
+
+ nofadein:
+  <strong>if</strong> p3    &lt; 0       <strong>igoto</strong> nofadeout             ; Check if this note is held, if not fade out
+  iamp2    <strong>init</strong>      0    
+
+ nofadeout:
+  ; Now do amp from the set values:
+  kamp     <strong>linseg</strong>    iamp0, .03, iamp1, abs(p3)-.03, iamp2
+        
+  ; Skip rest of initialization on tied note:
+           <strong>tigoto</strong>    tieskip
+
+  kcps     <strong>init</strong>      icps                        ; Init pitch for untied note
+  kcps     <strong>port</strong>      icps, iportime, icps        ; Drift towards target pitch
+
+  kpw      <strong>oscil</strong>     .4, rnd(1), 1, rnd(.7)      ; A simple triangle-saw oscil
+  ar       <strong>vco</strong>       kamp, kcps, 3, kpw+.5, 1, 1/icps
+        
+  ; (Used in testing - one may set ipch to cpspch(p4+2)
+  ;       and view output spectrum)
+  ;       ar oscil kamp, kcps, 1
+
+          out        ar
+
+ tieskip:                                       ; Skip some initialization on tied note
+
+<strong>endin</strong>
+
+</pre>
+<p>A simple score using three instances of the above instrument:</p>
+<pre>
+  f1   0 8192 10 1            ; Sine
+
+  i10.1    0    -1    7.00    10000
+  i10.2    0    -1    7.04
+  i10.3    0    -1    7.07
+  i10.1    1    -1    8.00  
+  i10.2    1    -1    8.04
+  i10.3    1    -1    8.07
+  i10.1    2     1    7.11  
+  i10.2    2     1    8.04  
+  i10.3    2     1    8.07
+  e
+</pre>
+<p>Additional text (Csound Version 4.16) explaining tied notes, edited by Rasmus Ekman from a note by David Kirsh, posted to the Csound mailing list. Example instrument by Rasmus Ekman.</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="f.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="a.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#statements" class="toqr">
+Score Syntax: Statements</font></a>
+</body>
+
+</html>

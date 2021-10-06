@@ -1,0 +1,108 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>xtratim, release</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="mclock.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../siggen/line.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#event" class="toqr">
+MIDI Support: Event Extenders</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>xtratim, release</h2>
+
+<pre>
+          <strong>xtratim</strong>    iextradur
+  kflag   <strong>release</strong>
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Extend the duration of real-time generated events and handle their extra life (see also <a href="../sigmod/linen.htm"><strong>linenr</strong></a>).
+</p>
+<h3>Initialization</h3>
+<p><em>iextradur</em> &#8211; additional duration of current instrument instance
+</p>
+<h3>Performance</h3>
+<p><strong>xtratim</strong> extends current MIDI-activated note duration of <em>iextradur</em> seconds after the corresponding noteoff message has deactivated current note itself. This opcode has no output arguments.
+</p>
+<p><strong>release</strong> outputs current note state. If current note is in the <strong>release</strong> stage (i.e. if its duration has been extended with <strong>xtratim</strong> opcode and if it has only just deactivated), <em>kflag</em> output argument is set to 1, else (in sustain stage of current note) is set to 0. These two opcodes are useful for implementing complex release-oriented envelopes.
+</p>
+<h3>Example</h3>
+
+<pre>
+ <strong>instr</strong> 1 ;allows complex ADSR envelope with MIDI events
+  inum <strong>notnum</strong>
+  icps <strong>cpsmidi</strong>
+  iamp <strong>ampmid</strong>i 4000
+ ;
+ ;------- complex envelope block ------
+  <strong>xtratim</strong> 1 ;extra-time, i.e. release dur
+  krel <strong>init</strong> 0
+  krel <strong>release</strong> ;outputs release-stage flag (0 or 1 values)
+  if (krel  .5) <strong>kgoto</strong> rel ;if in release-stage goto release section
+ ;
+ ;************ attack and sustain section ***********
+  kmp1 <strong>linseg</strong> 0, .03, 1, .05, 1, .07, 0, .08, .5, 4, 1, 50, 1
+  kmp = kmp1*iamp
+   <strong>kgoto</strong> done
+ ;
+ ;--------- release section --------
+   rel:
+  kmp2 <strong>linseg</strong> 1, .3, .2, .7, 0
+  kmp = kmp1*kmp2*iamp
+  done:
+ ;------
+  a1 <strong>oscili</strong> kmp, icps, 1
+  <strong>out</strong> a1
+ <strong>endin</strong>
+
+</pre>
+
+
+
+
+
+
+
+
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+New in Csound version 3.47
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="mclock.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../siggen/line.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#event" class="toqr">
+MIDI Support: Event Extenders</font></a>
+</body>
+</html>

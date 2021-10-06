@@ -1,0 +1,207 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>space, spsend, spdist</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="locsig.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="hrtfer.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#panning" class="toqr">
+Signal Modifiers: Panning and Spatialization</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>space, spsend, spdist</h2>
+
+<pre>
+  a1, a2, a3, a4  <strong>space</strong>     asig, ifn, ktime, kreverbsend[, kx, ky]
+  a1, a2, a3, a4  <strong>spsend</strong>
+  k1              <strong>spdist</strong>    ifn, ktime[, kx, ky]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p><strong>space</strong> takes an input signal and distributes it among 4 channels using Cartesian xy coordinates to calculate the balance of the outputs. The xy coordinates can be defined in a separate text file and accessed through a Function statement in the score using <a href="../gen/GEN28.htm"><strong>Gen28</strong></a>, or they can be specified using the optional <em>kx, ky</em> arguments. The advantages to the former are:
+</p>
+<ol>
+	<li>A graphic user interface can be used to draw and edit the trajectory through the Cartesian plane</li>
+	<li>The file format is in the form time1 X1 Y1 time2 X2 Y2 time3 X3 Y3 allowing the user to define a time-tagged trajectory</li>
+</ol>
+<p><strong>space</strong> then allows the user to specify a time pointer (much as is used for <a href="../siggen/adsyn.htm"><strong>pvoc</strong></a>, <a href="../sigmod/lpread.htm"><strong>lpread</strong></a> and some other units) to have detailed control over the final speed of movement.
+</p>
+<p><strong>spsend</strong> depends upon the existence of a previously defined <strong>space</strong>. The output signals from <strong>spsend</strong> are derived from the values given for xy and reverb in the <strong>space</strong> and are ready to be sent to local or global reverb units (see example below).
+</p>
+<p><strong>spdist</strong> uses the same xy data as <strong>space</strong>, also either from a text file using <a href="../gen/GEN28.htm"><strong>Gen28</strong></a> or from x and y arguments given to the unit directly. The purpose of this unit is to make available the values for distance that are calculated from the xy coordinates. In the case of <strong>space</strong>, the xy values are used to determine a distance which is used to attenuate the signal and prepare it for use in <strong>spsend</strong>. But it is also useful to have these values for distance available to scale the frequency of the signal before it is sent to the <strong>space</strong> unit.
+</p>
+<h3>Performance</h3>
+<p>The configuration of the xy coordinates in space places the signal in the following way:
+</p>
+<ul>
+	<li>a1 is -1, 1</li>
+	<li>a2 is 1, 1</li>
+	<li>a3 is -1, -1</li>
+	<li>a4 is 1, -1</li>
+</ul>
+<p>This assumes a loudspeaker set up as a1 is left front, a2 is right front, a3 is left back, a4 is right back. Values greater than 1 will result in sounds being attenuated, as if in the distance. <strong>space</strong> considers the speakers to be at a distance of 1; smaller values of xy can be used, but <strong>space</strong> will not amplify the signal in this case. It will, however balance the signal so that it can sound as if it were within the 4 speaker <strong>space</strong>.  x=0, y=1, will place the signal equally balanced between left and right front channels, x=y=0 will place the signal equally in all 4 channels, and so on. Although there must be 4 output signals from <strong>space</strong>, it can be used in a 2 channel orchestra. If the xy's are kept so that Y&gt;=1, it should work well to do panning and fixed localization in a stereo field.
+</p>
+<p><em>ifn</em> &#8211; number of the stored function created using <a href="../gen/GEN28.htm"><strong>Gen28</strong></a>. This function generator reads a text file which contains sets of three values representing the xy coordinates and a time-tag for when the signal should be placed at that location. The file should look like:
+</p>
+<pre>
+  0       -1       1
+  1        1       1
+  2        4       4
+  2.1     -4      -4
+  3       10      -10
+  5       -40      0
+</pre>
+<p>If that file were named &quot;move&quot; then the <strong>Gen28</strong> call in the score would like:
+</p>
+<pre> 
+  f1 0 0 28 &quot;move&quot;
+</pre>
+<p><strong>Gen28</strong> takes 0 as the size and automatically allocates memory. It creates values to 10 milliseconds of resolution. So in this case there will be 500 values created by interpolating X1 to X2 to X3 and so on, and Y1 to Y2 to Y3 and so on, over the appropriate number of values that are stored in the function table. In the above example, the sound will begin in the left front, over 1 second it will move to the right front, over another second it move further into the distance but still in the left front, then in just 1/10th of a second it moves to the left rear, a bit distant. Finally over the last .9 seconds the sound will move to the right rear, moderately distant, and it comes to rest between the two left channels (due west!), quite distant. Since the values in the table are accessed through the use of a time-pointer in the <strong>space</strong> unit, the actual timing can be made to follow the file's timing exactly or it can be made to go faster or slower through the same trajectory. If you have access to the GUI that allows one to draw and edit the files, there is no need to create the text files manually. But as long as the file is ASCII and in the format shown above, it doesn't matter how it is made!
+</p>
+<p>IMPORTANT: If <em>ifn</em> is 0 then <strong>space</strong> will take its values for the xy coordinates from <em>kx</em> and <em>ky</em>.
+</p>
+<p><em>ktime</em> &#8211; index into the table containing the xy coordinates. If used like:
+</p>
+<pre>
+  ktime           <strong>line</strong>  0, 5, 5
+  a1, a2, a3, a4  <strong>space</strong> asig, 1, ktime, ...
+</pre>
+<p>with the file &quot;move&quot; described above, the speed of the signal's movement will be exactly as described in that file. However:
+</p>
+<pre>
+  ktime           <strong>line</strong>  0, 10, 5
+</pre>
+<p>the signal will move at half the speed specified. Or in the case of:
+</p>
+<pre>
+  ktime           <strong>line</strong>  5, 15, 0
+</pre>
+<p>the signal will move in the reverse direction as specified and 3 times slower! Finally:
+</p>
+<pre>
+  ktime           <strong>line</strong>  2, 10, 3
+</pre>
+<p>will cause the signal to move only from the place specified in line 3 of the text file to the place specified in line 5 of the text file, and it will take 10 seconds to do it.
+</p>
+<p><em>kreverbsend</em> &#8211; the percentage of the direct signal that will be factored along with the distance as derived from the XY coordinates to calculate signal amounts that can be sent to reverb units such as reverb, or reverb2.
+</p>
+<p><em>kx, ky</em> &#8211; when <em>ifn</em> is 0, <strong>space</strong> and <strong>spdist</strong> will use these values as the XY coordinates to localize the signal. They are optional and both default to 0.
+</p>
+<h3></h3>
+
+<h3>Example</h3>
+
+<pre>
+<strong>instr</strong> 1
+  asig    ;some audio signal
+  ktime              <strong>line</strong>  0, p3, p10
+  a1, a2, a3, a4     <strong>space</strong> asig,1, ktime, .1
+  ar1, ar2, ar3, ar4 <strong>spsend</strong>        
+  
+  ga1 = ga1+ar1
+  ga2 = ga2+ar2
+  ga3 = ga3+ar3
+  ga4 = ga4+ar4
+  
+                     <strong>outq</strong> a1, a2, a3, a4
+<strong>endin</strong>
+
+<strong>instr</strong> 99 ; reverb instrument
+          
+  a1 <strong>reverb2</strong> ga1, 2.5, .5
+  a2 <strong>reverb2</strong> ga2, 2.5, .5
+  a3 <strong>reverb2</strong> ga3, 2.5, .5
+  a4 <strong>reverb2</strong> ga4, 2.5, .5
+  
+     <strong>outq</strong> a1, a2, a3, a4
+  ga1=0
+  ga2=0
+  ga3=0
+  ga4=0
+</pre>
+<p>In the above example, the signal, <em>asig</em>, is moved according to the data in Function #1 indexed by <em>ktime</em>. <strong>space</strong> sends the appropriate amount of the signal internally to <strong>spsend</strong>. The outputs of the <strong>spsend</strong> are added to global accumulators in a common Csound style and the global signals are used as inputs to the reverb units in a separate instrument.
+</p>
+<p><strong>space</strong> can useful for quad and stereo panning as well as fixed placed of sounds anywhere between two loudspeakers. Below is an example of the fixed placement of sounds in a stereo field using xy values from the score instead of a function table.
+</p>
+<pre>
+<strong>instr</strong> 1
+  ...
+  a1, a2, a3, a4     <strong>space</strong> asig, 0, 0, .1, p4, p5
+  ar1, ar2, ar3, ar4 <strong>spsend
+  </strong>
+  ga1=ga1+ar1
+  ga2=ga2+ar2
+                     <strong>outs</strong>  a1, a2
+<strong>endin</strong>
+
+<strong>instr</strong> 99 ; reverb....
+  ....
+<strong>endin</strong>
+</pre>
+<p>A few notes: p4 and p5 are the X and Y values
+</p>
+<pre>
+  ;place the sound in the left speaker and near
+    i1 0 1 -1 1
+  ;place the sound in the right speaker and far
+    i1 1 1 45 45
+  ;place the sound equally between left and right and in the middle ground distance
+    i1 2 1 0 12
+e
+</pre>
+<p>The next example shows a simple intuitive use of the distance values returned by <strong>spdist</strong> to simulate Doppler shift.
+</p>
+<pre>
+  ktime              <strong>line</strong>   0, p3, 10
+  kdist              <strong>spdist</strong> 1, ktime
+  kfreq = (ifreq * 340) / (340 + kdist)
+  asig               <strong>oscili</strong> iamp, kfreq, 1
+  
+  a1, a2, a3, a4     <strong>space</strong>  asig, 1, ktime, .1
+  ar1, ar2, ar3, ar4 <strong>spsend</strong>
+</pre>
+<p>The same function and time values are used for both <strong>spdist</strong> and <strong>space</strong>. This insures that the distance values used internally in the <strong>space</strong> unit will be the same as those returned by <strong>spdist</strong> to give the impression of a Doppler shift!
+</p>
+<h3>Author</h3>
+<p>Richard Karpen<br>
+Seattle, Wash<br>
+1998  (New in Csound version 3.48)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="locsig.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="hrtfer.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#panning" class="toqr">
+Signal Modifiers: Panning and Spatialization</font></a>
+</body>
+
+</html>

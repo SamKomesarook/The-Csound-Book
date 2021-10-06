@@ -1,0 +1,158 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.10.-->
+<html>
+<head>
+   <title>biquad, biquada, rezzy, moogvcf</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="lowpass2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="svfilter.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>biquad, biquada, rezzy, moogvcf</h2>
+
+<pre>
+  ar      <strong>biquad</strong>     asig, kb0, kb1, kb2, ka0, ka1, ka2[, iskip]
+  ar      <strong>biquada</strong>    asig, ab0, ab1, ab2, aa0, aa1, aa2[, iskip]
+  ar      <strong>rezzy</strong>      asig, xfco, xres[, imode]
+  ar      <strong>moogvcf</strong>    asig, xfco, xres[, iscale]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Implementation of a sweepable general purpose filter and two sweepable, resonant low-pass filters.
+</p>
+<h3>Initialization</h3>
+<p><em>iskip</em> (optional) &#8211; if non-zero, itialization will be skipped. Default value 0. (New in Csound version 3.50)
+</p>
+<p><em>imode</em> (optional) &#8211; if zero <strong>rezzy</strong> is low-pass, if nonzero, high-pass. Default value is 0. (New in Csound version 3.50)
+</p>
+<p><em>iscale</em> (optional) &#8211; internal scaling factor. Use if <em>asig</em> is not in the range +/-1. Input is first divided by <em>iscale</em>, then output is mutliplied <em>iscale</em>. Default value is 1. (New in Csound version 3.50)
+</p>
+<h3>Performance</h3>
+<p><em>asig</em> &#8211; input signal
+</p>
+<p><em>xfco</em> &#8211; filter cut-off frequency in Hz. As of version 3.50, may i-,k-, or a-rate.
+</p>
+<p><em>xres</em> &#8211; amount of resonance. For <strong>rezzy</strong>, values of 1 to 100 are typical. Resonance should be one or greater. For <strong>moogvcf</strong>, self-oscillation occurs when <em>xres </em>is approximately one. As of version 3.50, may i-,k-, or a-rate.
+</p>
+<p><strong>biquad</strong> is a general purpose biquadratic digital filter of the form:
+</p>
+<pre>
+  a0*y(n) + a1*y[n-1] + a2*y[n-2] = b0*x[n] + b1*x[n-1] + b2*x[n-2]
+</pre>
+<p>This filter has the following frequency response:
+</p>
+<pre>
+         B(Z)   b0 + b1*Z<small><sup>-1</sup></small>  + b2*ZM<span class="exp">-2</span> 
+  H(Z) = ---- = ------------------
+         A(Z)   a0 + a1*Z<small><sup>-1</sup></small>  + a2*Z<span class="exp">-2</span>
+</pre>
+
+<p>This type of filter is often encountered in digital signal processing literature. It allows six user-defined k-rate coefficients. <strong>biquada</strong> is identical to <strong>biquad</strong>, with the exception that all its parameters can vary at a-rate. (New in Csound 4.15.)
+</p>
+<p><strong>rezzy</strong> is a resonant low-pass filter created empirically by Hans Mikelson.
+</p>
+<p><strong>moogvcf</strong> is a digital emulation of the Moog diode ladder filter configuration. This emulation is based loosely on the paper &quot;Analyzing the Moog VCF with Considerations for Digital Implemnetation&quot; by Stilson and Smith (CCRMA). This version was originally coded in Csound by Josep Comajuncosas. Some modifications and conversion to C were done by Hans Mikelson.
+</p>
+
+<p><em>Note</em>: This filter requires that the input signal be normalized to one.
+</p>
+<h3>Examples</h3>
+
+<pre>
+;<strong>biquad</strong> example
+  kfcon   =       *3.14159265*kfco/sr
+  kalpha  =       -2*krez*cos(kfcon)*cos(kfcon)+krez*krez*cos(2*kfcon)
+  kbeta   =       *krez*sin(2*kfcon)-2*krez*cos(kfcon)*sin(kfcon)
+  kgama   =       +cos(kfcon)
+  km1     =       *kgama+kbeta*sin(kfcon)
+  km2     =       *kgama-kbeta*sin(kfcon)
+  kden    =       (km1*km1+km2*km2)
+  kb0     =       .5*(kalpha*kalpha+kbeta*kbeta)/kden
+  kb1     =       kb0
+  kb2     =       0
+  ka0     =       1
+  ka1     =       -2*krez*cos(kfcon)
+  ka2     =       krez*krez
+  ayn     <strong>biquad</strong>  axn, kb0, kb1, kb2, ka0, ka1, ka2
+          <strong>outs</strong>    ayn*iamp/2, ayn*iamp/2
+  
+  ;   Sta  Dur  Amp    Pitch Fco   Rez
+  i14 8.0  1.0  20000  6.00  1000  .8
+  i14 +    1.0  20000  6.03  2000  .95
+  
+  
+;<strong>rezzy</strong> example
+  kfco     <strong>expseg</strong>  100+.01*ifco, .2*idur, ifco+100, .5*idur, ifco*.1+100, .3*idur, .001*ifco+100
+  apulse1  <strong>buzz</strong>    1,ifqc, sr/2/ifqc, 1 ; Avoid aliasing
+  asaw     <strong>integ</strong>   apulse1
+  axn      <strong>=</strong>       asaw-.5
+  ayn      <strong>rezzy</strong>   axn, kfco, krez
+           <strong>outs</strong>    ayn*iamp, ayn*iamp
+  
+  ;    Sta  Dur  Amp    Pitch  Fco   Rez
+  i10  0.0  1.0  20000  6.00   1000  2
+  i10  +    1.0  20000  6.03   2000  10
+  
+  
+;<strong>moogvcf</strong> example
+  apulse1  <strong>buzz</strong>     1,ifqc, sr/2/ifqc, 1 ; Avoid aliasing
+  asaw     <strong>integ</strong>    apulse1
+  ax       =        asaw-.5
+  ayn      <strong>moogvcf</strong>  ax, kfco, krez
+           <strong>outs</strong>     ayn*iamp, ayn*iamp
+  
+  ;     Sta  Dur  Amp    Pitch  Fco   Rez
+  i11   4.0  1.0  20000  6.00   1000  .4
+  i11   +    1.0  20000  6.03   2000  .7
+</pre>
+
+
+
+
+
+
+
+
+<h3>Author</h3>
+<p>Hans Mikelson<br>
+October 1998<br>
+New in Csound version 3.49
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="lowpass2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="svfilter.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</font></a>
+</body>
+
+</html>

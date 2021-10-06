@@ -1,0 +1,1190 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Real-time Synthesis in Csound with MIDI Control</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">2. Real-time Synthesis in Csound
+with MIDI Control<BR>
+</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Michael Berry<BR>
+</FONT></H2>
+
+<P><FONT FACE="Times New Roman">Csound was not originally designed
+to produce audio in real-time. At the time it was written, only
+large mainframes were fast enough to use for Csound and often
+sound files had to be taken to another machine with a digital-to-analog
+converter (DAC) just to hear the sound at all. Computers are much
+faster now and most come with a built in DAC. In fact, in the
+last 2 years, desktop computers capable of running Csound in real-time
+have become the standard.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Obviously, speed is the criterion
+for determining real-time performance. Csound must continually
+provide the next output sample before the previous sample has
+finished playing. If it ever falls behind, you will hear an audible
+dropout. Even if the gap is only a single sample in duration it
+will be heard as a full frequency click. In order to effectively
+use Csound in real-time, you need to understand more about how
+Csound generates audio.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Csound executes as a series of
+loops. For example, each time a note begins there is an i-time
+loop, and each k-period there is a k-time loop. We are concerned
+with the output buffer loop. As Csound runs, output samples are
+accumulated in internal memory, in what is called a buffer. When
+the number of samples in the buffer is equal to the software buffer
+size, designated in the command line (<I>&#151;b</I>), Csound
+dumps these samples. Ordinarily this happens when sound is written
+to the hard-disk, but in real-time the samples are sent to the
+DAC. Then Csound starts to fill the buffer again and the process
+repeats itself.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Once the samples are sent to the
+DAC, the DAC converts them into an analog signal for amplifiers,
+headphones, etc. We can calculate exactly how long it will take
+to play a buffer, if we know the sample rate. For instance, if
+the buffer is 1024 mono samples and the sampling rate is 44100,
+the buffer is 23.2 milliseconds long. With these settings Csound
+would have 23.2 ms. to generate the next buffer of samples and
+pass it to the DAC in order to avoid a gap.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The DAC also has a buffer built
+in which is used for its internal processing. Csound allows us
+to designate the size of this buffer using the <I>&#151;B</I>
+flag on the command line. This buffer is usually set smaller than,
+or equal to, the software buffer <I>&#151;b</I>.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">We can avoid having dropouts,
+simply by setting the buffers to be enormously big. Unfortunately,
+there is a trade-off. Csound is constantly working to stay ahead
+of the sound that we are hearing. There is a delay between when
+Csound generates a sound and when we hear it. This delay is called
+<I>latency</I>. When we are controlling Csound in real-time, this
+is the delay between the time that we change a control and the
+time that we hear the change. We can calculate the maximum amount
+of latency based upon our software and hardware buffer settings.
+The equation is as follows:<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">maximum latency(ms.) = 1000*(software
+buffer + hardware buffer)*nchnls/sr<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">If we were to use settings of
+<I>&#151;b</I> 1024 and <I>&#151;B</I> 256 in stereo and at sr
+= 44100, our maximum latency would be 58 ms. When sounds have
+a short attack time, most keyboard players notice latency when
+it is larger than 20 ms. In order to stay below 20 ms., our buffers
+would have to be less than 441 samples in total. Since many systems
+impose power of 2 limits on the sizes of buffers, this would mean<I>
+&#151;b</I> 256 and<I> &#151;B</I> 128.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Each computer system will have
+different limitations for using Csound in real-time. You can only
+find effective buffer sizes through trial and error. However,
+no matter what system you use, you will reach a point where Csound
+will not be able to produce sound fast enough. In that case, you
+will have to make the instrument simpler and faster, make the
+buffers larger (thus increasing the latency,) or use fewer notes.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">There are some simple guidelines
+to optimizing Csound orchestras for speed. The first is to make
+the maximum use of RAM. Lets take the example of creating a sine
+wave. The standard practice is to use an interpolating oscillator
+(<B>oscili</B>) on a function table (<I>f-table</I>) with 1025
+points. When used on the same table, the interpolating function
+sounds better than its non-interpolating sibling (<B>oscil</B>).
+However, it also takes twice as long to process. If we use a table
+with 16536 points with <B>oscil</B>, it will sound better than
+<B>oscili</B> on 1025 points and run twice as fast. Thus. whenever
+possible, gain quality by using bigger tables instead of interpolating
+opcodes.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The math in an orchestra can also
+be streamlined. Never use a division when it is possible to multiply
+by the inverse. Division can take 4 to 8 times as long to process
+a multiplication.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instead of:<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="477">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">asig</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="80%"><FONT FACE="Courier New">kamp/8,
+      200, 1</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">use:</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="477">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">asig</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="80%"><FONT FACE="Courier New">kamp*.125,
+      200, 1</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">Sometimes division is unavoidable,
+such as when you are dividing by a variable:<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="477">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">asig</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="80%"><FONT FACE="Courier New">kamp/kenv,
+      200, 1</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">However, division using an i-rate
+variable can always be replaced by multiplication. Instead of:<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="477">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT FACE="Courier New">midictrl</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="73%"><FONT FACE="Courier New">16</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">asig</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT FACE="Courier New">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="73%"><FONT FACE="Courier New">kamp, 200/ifreq,
+      1</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">use:</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="477">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">midictrl</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="76%"><FONT FACE="Courier New">16</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="76%"><FONT FACE="Courier New">200/ifreq</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">asig</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="76%"><FONT FACE="Courier New">kamp, ifreq,
+      1</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">Now the division is only performed
+when the instrument is initialized, instead of at every k-period.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Another small speed increase can
+be realized by &quot;in-lining&quot; math functions. Instead of:<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="482">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">kfilt</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="83%"><FONT FACE="Courier New">kfreq*kamp</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">aout</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">tone</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="83%"><FONT FACE="Courier New">asig, kfilt</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">use:</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="185">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">aout</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT FACE="Courier New">tone</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="61%"><FONT FACE="Courier New">asig, kfreq*kamp</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">Try to avoid conditional statements
+and instruments that require excessive initialization. Conditional
+statements can be quite slow in Csound. Lengthy initializations
+can mean that there will be too much processing at the beginning
+of a note, leading to dropouts whenever a new note begins, even
+though the note plays without gaps after it is initialized.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Finally, you can change to mono
+or decrease the sampling rate. These choices are primarily aesthetic,
+but be careful not to choose stereo and high sampling rates simply
+because that is the way you always work. If you are on stage playing
+through a keyboard amp, stereo is meaningless and 22050 kHz may
+sound just good as 44100 kHz. By changing these settings you can
+play 4 times as many notes at one time, or cut the latency by
+75%!<BR>
+&nbsp;</FONT></P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">Using
+<I>xyin<BR>
+</I></FONT></B></P>
+
+<P><FONT FACE="Times New Roman">Standard Csound instruments can
+only be adjusted through a tedious process of trial and error.
+The <B>xyin</B> opcode is an excellent option for speeding up
+the process of tweaking an existing instrument because <B>xyin</B>
+returns the coordinates of the mouse at preset intervals. Clearly,
+you can then use these coordinates to control values in an instrument.
+You can insert <B>xyin</B> into an existing orchestra without
+having to make changes in the score. Whenever the instrument which
+has the <B>xyin</B> is active, it will respond to the mouse.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The manual defines <B>xyin</B>
+as follows:<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="455">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">kx, ky</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><B><FONT FACE="Courier New">xyin</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="78%"><FONT FACE="Courier New">iprd, ixmin,
+      ixmax, iymin, iymax[, ixinit, iyinit]</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">The minimum and maximum arguments
+set the size of the <B>xyin</B> window. The <I>iprd</I> argument
+determines how often (in seconds) a new coordinate is sensed.
+And the result, <I>kx</I> and <I>ky</I>, are the current mouse
+coordinates. If the mouse leaves the sensing window, the last
+coordinates are held until the mouse re-enters the window. The
+optional <I>ixinit</I> and <I>iyinit </I>arguments allow you to
+set a beginning coordinate for the mouse.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The file <I>ch3_1.orc</I> has
+two instruments. They are identical except that <I>instr 302</I>
+has an <B>xyin</B> added to control two of the parameters of the
+<B>fof </B>opcode. As you might know, <B>fof</B> is a complex
+opcode and it is often hard to predict exactly what will happen
+aurally when you alter a parameter. In <I>instr 301</I>, only
+the base frequency and the formant frequency of the <B>fof </B>opcode
+are set in the score (<I>p4</I> and <I>p5</I>) and the other parameters
+are set to reasonable values. The score plays a single note for
+10 seconds.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="699">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">instr</FONT></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="5"><FONT FACE="Courier New">301</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">asig</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">fof</FONT></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="5"><FONT FACE="Courier New">20000,
+      p4, p5, 0, 40, .003, .02, .007, 200, 1, 2, p3</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">out</FONT></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="5"><FONT FACE="Courier New">asig</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">endin</FONT></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="5"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="8"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">instr</FONT></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="5"><FONT FACE="Courier New">302</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">kx,ky</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">xyin</FONT></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="5"><FONT FACE="Courier New">.01, 0,
+      500, 0, 300</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">asig</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">fof</FONT></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="5"><FONT FACE="Courier New">20000,
+      p4, p5+kx, 0+(ky*.02),40, .003, .02, .007, 200, 1, 2, p3</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">out</FONT></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="5"><FONT FACE="Courier New">asig</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">endin</FONT></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="5"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="8"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">f 1</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">4097</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">10</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="3"><FONT FACE="Courier New">1</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">f 2</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">1025</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">5</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">0.0001</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">1025</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">; in</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">st</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">dur</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">freq</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="3"><FONT FACE="Courier New">form</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">i 301</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">30</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">300</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="3"><FONT FACE="Courier New">650</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">i 302</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">31</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">30</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">300</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="3"><FONT FACE="Courier New">650</FONT></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">Figure
+3.1</FONT></B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">
+Orchestra and score code for <I>instr 301 </I>and <I>302</I>,
+here a simple <B>fof </B>instrument (<I>301</I>) is enhanced with
+real-time <B>xyin </B>control (<I>302</I>).<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">In <I>instr 302</I> we have added
+the <B>xyin</B> opcode. This creates a sensing window 500 pixels
+wide and 300 pixels tall. The coordinates are updated every 1/100th
+of a second. With these settings, <I>kx</I> is returned as a number
+from 0 to 500 and <I>ky</I> will be from 0 to 300.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">In the <B>fof</B> opcode, <I>kx</I>
+is used unaltered to set the formant frequency. The <I>p4</I>
+value from the score is added to the current horizontal coordinate
+of the mouse. With our score, the formant frequency will be 650
+(<I>p5</I> + 0) when the mouse pointer is at the far left of the
+sensing window, and move up to 1150 (<I>p5</I> + 500) when the
+mouse pointer is at the right side of the window. The <I>ky </I>value
+is scaled before it is used to affect the octaviation index. The
+range will be from 0 at the top to 6 (300 * .02) at the bottom.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">When we run the score in real-time,
+the mouse will control two of the parameters. You can quickly
+find intriguing settings by simply moving the mouse into different
+regions of the sensing window. You can even simulate the effect
+of envelopes on the particular parameters by moving the mouse
+over a range of the window.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">You can insert <B>xyin</B> into
+standard Csound instruments that are under development. Once you
+have an idea of the range of values you may want to use for a
+particular parameter, simply use the coordinates to move over
+that range. This allows you to pinpoint the exact values you would
+like to use in the final instrument. You can also use <B>xyin</B>
+as a performance tool, but you are limited to only two controls
+at a time. Additionally, you cannot alter the score during the
+performance.<BR>
+</FONT></P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">Using
+MIDI<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">Csound also has a full suite of
+opcodes to interpret incoming MIDI messages. However, MIDI cannot
+be mixed into a conventional orchestra and score. An instrument
+must be completely controlled either by MIDI or from a score file.
+You cannot simply add a MIDI controller to an orchestra as we
+added <B>xyin</B>. You must design the instrument with MIDI in
+mind.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Before covering the MIDI opcodes,
+you should understand how Csound deals with incoming MIDI messages.
+Csound assigns the sixteen MIDI channels to instruments 1 through
+16. Messages on channel 1 are received by instrument 1, channel
+2 goes to instrument 2, and so on. Instruments beyond 16 cannot
+receive MIDI.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">When Csound receives a note-on
+message on a particular channel, it creates a note for that instrument
+just as if it were reading from a score. When it receives a matching
+note-off, it terminates the note for that instrument. Your instruments
+must be triggered by note-ons and note-offs For example, an instrument
+which only reacts to controllers still needs to be triggered by
+a note-on at the beginning of the note, even if that note-on is
+not used for anything else in the instrument.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Because notes are triggered by
+note-ons and not by the score, the notes cannot have any parameter
+fields. In particular, since there is no <I>p3</I> field, Csound
+does not know how long a note is going to last until it ends.
+This means that envelopes cannot be dependent on the length of
+a note. It also means that the release portion of an envelope
+must be calculated differently, as I will show later.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Csound looks to see if there are
+any new MIDI messages once per <B>k</B>-period. If any are present,
+Csound processes the oldest one. Csound handles only one MIDI
+message per <B>k</B>-period. This means that a six-note chord
+will be triggered one note at a time, and each attack will be
+separated by the length of a single <I>ksmps</I>. Csound does
+not react well to huge streams of MIDI data. For example, since
+only one controller message can be handled per <B>k</B>-period,
+sending messages more often will only cause Csound to lag behind
+and create a larger latency than normal. You can increase responsiveness
+by making the<B> k</B>-periods shorter, though this has the side
+effect of slowing down the overall processing speed.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Midi.orc contains five tutorial
+MIDI instruments which I will describe in detail. I have designed
+them in mono, using very simple sound generators, to make them
+runable on as many systems as possible. Of course, you can substitute
+any Csound sound generation opcodes that your system can support
+in real-time. These instruments require a MIDI controller which
+can sense velocity and which has two assignable continuous controllers.
+I have used controllers 7 and 16, but you can change these as
+needed.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/01.gif" HEIGHT="230"
+WIDTH="248" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">Figure
+3.2</FONT></B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">
+Block diagram of <I>instr 303</I>, MIDI control of a table-lookup
+oscillator.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="477">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="73%"><FONT FACE="Courier New">303</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">inote</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">cpsmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="73%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">iveloc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">ampmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="73%"><FONT FACE="Courier New">10000</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">aout</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="73%"><FONT FACE="Courier New">iveloc,
+      inote, 1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="73%"><FONT FACE="Courier New">aout</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="73%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">Figure
+3.3</FONT></B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">
+Orchestra code for <I>instr 303</I>, a simple MIDI instrument.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 303 is almost the simplest
+possible MIDI instrument. When a note-on is received on channel
+1, <B>cpsmidi</B> converts the note number to cycles per second,
+using a standard tempered scale. <B>ampmidi</B> reads the velocity
+of the note-on and automatically scales it from 0 to the value
+given in <I>iscal</I> (in this case, 10000). These values are
+used to control an <I>oscil</I>, where the velocity becomes the
+amplitude and the note number becomes the frequency.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Since a MIDI instrument does not
+read notes from a score, there are no <B>i</B>-card entries in
+Midi.sco. The score is still used to store the definitions of
+the <I>f-table</I>s. In addition, Midi.sco contains the following
+line:<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="477">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">f 0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="90%"><FONT FACE="Courier New">120</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">An f0 command instructs Csound
+to run for a specified amount of time, in this case 120 seconds.
+These instruments will be playable for 120 seconds, at which time
+Csound will stop executing. The instruments can be run without
+an f0 statement, but Csound will not stop executing unless you
+force it to abort.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 301 operates just like
+a standard synthesizer, with one exception: there is no preset
+limit on the number of notes that may sound at the same time.
+Instead, this number will be determined by how many notes your
+system can generate in real-time. This means there is no automatic
+protection from clipping. With instrument 301, if you have 4 or
+more full velocity notes, notes will begin to clip.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/2.gif" HEIGHT="288"
+WIDTH="462" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">Figure
+3.4</FONT></B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">
+Block diagram for <I>instr 304</I>, a MIDI instrument with mapped
+controller messages.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="477">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT FACE="Courier New">instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="69%"><FONT FACE="Courier New">304</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">inote</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT FACE="Courier New">cpsmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="69%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">iveloc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT FACE="Courier New">ampmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="69%"><FONT FACE="Courier New">10000</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">kctl7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT FACE="Courier New">midictrl</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="69%"><FONT FACE="Courier New">7</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">ictl16</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT FACE="Courier New">midictrl</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="69%"><FONT FACE="Courier New">16</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">itab</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT FACE="Courier New">table</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="69%"><FONT FACE="Courier New">ictl16+1,
+      6</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">aout</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT FACE="Courier New">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="69%"><FONT FACE="Courier New">iveloc,
+      inote, itab</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="69%"><FONT FACE="Courier New">aout*kctl7*0.0078125</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="69%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">Figure
+3.5</FONT></B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">
+Orchestra code for <I>instr 304</I>, midi instrument with mapped
+and scaled controllers.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 304 addresses this
+concern by adding a volume control. In MIDI, controller 7 is customarily
+used for volume control, though with Csound any controller can
+be used for any purpose. <I>midictrl</I> 7 reads the current value
+of controller 7 and stores it in the variable <I>kctl7</I>, which
+is then used in the <I>out</I> command to scale the output signal.
+The value 0.0078125 is used in place of division by 128. The line
+kctl7 * 0078125 turns the controller value (0 -127) into a value
+between 0 and just less than 1. Csound only reads controllers
+as 7-bit values (0 - 127). It will not interpret a 14-bit controller
+value, which some MIDI systems form by combining two 7-bit controller
+messages.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 304 also contains a
+line to read controller 16, which is used to switch between <I>f-table</I>s
+1 through 4 for the <B>oscil</B> command. The <I>f-table</I> field
+in <B>oscil</B> is an <B>i</B> variable and has to be an integer.
+After we read the controller value into the variable <I>ictl16</I>,
+we use a table command to look up the integer.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="293">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">f6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">128</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><FONT FACE="Courier New">-17</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="58%"><FONT FACE="Courier New">0 1 32
+      2 64 3 96 4</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT FACE="Times New Roman">GEN17 </FONT></B><FONT FACE="Times New Roman">was
+designed specifically for making stepped translation tables. The
+table is 128 points long so that we can use the controller values
+directly. -17 inhibits rescaling so that the values remain between
+1 and 4. The controller value is 0 - 127, but <B>table</B> requires
+an index of 1 - 128, so we add one.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">In Csound, <B>i</B> variables
+can only be determined before a note begins and cannot be changed
+during the note. If you play instrument 302, you will notice that
+when you change controller 16, nothing will happen until the next
+note you play. Also, when you first start instrument 302, no sound
+will come out until you move controller 7. Csound assumes that
+all controllers are at 0 when you start. If you want a different
+starting value you need to move each controller before you begin
+to play. This will load the current value into Csound. In the
+case of controller 16, this means that you can choose which table
+to use before you play any notes.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/3.gif" HEIGHT="306"
+WIDTH="433" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">Figure
+3.6</FONT></B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">
+Block diagram of <I>instr 305</I>, a MIDI instrument with linear
+MIDI envelope and a &quot;velocity switch&quot; algorithim.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="365">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="64%"><FONT FACE="Courier New">305</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">knote</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">cpsmidib</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="64%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">iveloc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">ampmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="64%"><FONT FACE="Courier New">10000</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">kctl7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">midictrl</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="64%"><FONT FACE="Courier New">7, 100</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">ivel</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">veloc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="64%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">itab</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">table</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="64%"><FONT FACE="Courier New">ivel+1,
+      6</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">kenv</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">linenr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="64%"><FONT FACE="Courier New">1, 1, 2,
+      .01</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">aout</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="64%"><FONT FACE="Courier New">iveloc*kenv,
+      knote, itab</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="64%"><FONT FACE="Courier New">aout*kctl7*0.0078125</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="64%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">Figure
+3.7</FONT></B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">
+Orchestra code for <I>instr 305</I>, a midi instrument with scaled
+controllers and velocity switching.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 305 shows how a MIDI
+controller can be initialized to a starting value. The value of
+100 in the optional field of midictrl means that Csound will assume
+that the initial position of the controller is 100, not 0. You
+will not need to move controller 7 in order to hear sound with
+this instrument.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 303 uses note velocity
+instead of controller 16 to switch between <I>f-table</I>s. Csound
+frees you to use a single piece of data in multiple ways. Because
+we have already designed a table to translate a 7-bit value into
+the integer we need, we use the <I>veloc</I> command instead of
+the <I>ampmidi</I> command. This returns the velocity of the note
+as a value between 0 -127, just as controller 16 did in instrument
+302, which we can then use in the same table command as in instrument
+302.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">We have also added an envelope
+to the note using the <B>linenr</B> opcode, which is a special
+envelope for use with MIDI instruments. It automatically extends
+the note to allow for a release after the note-off is received.
+This is the only way to create a release envelope in Csound. In
+this case, there is a 1 second attack and a 2 second release.
+The .01 determines how steep the release is. Smaller numbers make
+a sharper cutoff.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Finally, we have changed the <B>cpsmidi</B>
+command to <B>cpsmidib</B>. <B>cpsmidib</B> automatically combines
+the current pitch bend and the note number in Hertz. It is expressed
+as a <B>k</B> value so that we can use the pitch wheel continuously
+while a note is playing. <B>cpsmidib</B> always sets the pitch
+bend range to +/- 1 semitone.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/4.gif" HEIGHT="332"
+WIDTH="475" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">Figure
+3.8</FONT></B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">
+Block diagram of <I>instr 306</I>, a MIDI instrument with pitch
+bend and smoothing via the <B>interp</B> opcode.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="437">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="70%"><FONT FACE="Courier New">306</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">knote</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">cpsmidib</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="70%"><FONT FACE="Courier New">12</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">inote</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">cpsmidib</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="70%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">iveloc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">ampmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="70%"><FONT FACE="Courier New">10000</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">kctl7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">midictrl</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="70%"><FONT FACE="Courier New">7, 100</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">ivel</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">veloc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="70%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">itab</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">table</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="70%"><FONT FACE="Courier New">ivel+1,
+      6</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">anote</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">interp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="70%"><FONT FACE="Courier New">knote,
+      inote</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">kenv</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">linenr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="70%"><FONT FACE="Courier New">1, 1, 2,
+      .01</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">aout</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="70%"><FONT FACE="Courier New">iveloc*kenv,
+      anote, itab</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="70%"><FONT FACE="Courier New">aout*kctl7*0.0078125</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="70%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">Figure
+3.9</FONT></B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">
+Orchestra code for <I>instr306</I>, a MIDI instrument with controllers,
+velocity switching, and pitch bend.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">In instrument 306 we use the pitch
+bend information to create bends of +/- one octave. We use the
+optional field of cpsmidib to set the range to 12, which gives
+us +/- 12 semitones.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Many MIDI synthesizers and controllers
+do not send full, 14-bit, pitch change messages. Instead, the
+manufacturers save money by sending 7-bit messages, even if they
+use the full 14 bits for internal synthesis. 7-bit values often
+result in audible steps when used to control changes in pitch.
+If you run instrument 4 without the <B>interp</B> command you
+will hear the steps clearly. <B>interp</B> smoothes the corners
+on the steps. <B>interp </B>requires an initial value to begin
+interpolation. <I>inote</I> is assigned to be the initial value
+of the note-on message.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">There are still only 128 possible
+locations for the pitch wheel, though we are smoothing the transition
+between steps. This is a common problem when you use MIDI with
+Csound: 128 values often do not give an adequate resolution for
+many Csound parameters, so some smoothing scheme is needed.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/5.gif" HEIGHT="564"
+WIDTH="556" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">Figure
+3.10</FONT></B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">
+A block diagram of <I>instr 307</I>, a midi instrument with a
+sub-oscillator and velocity controller attack time and a continous
+cnotrolled low pass filter for EQ.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="472">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">307</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">knote</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">cpsmidib</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">iveloc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">ampmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">10000</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">kctl7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">midictrl</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">7</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">ivel</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">veloc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">itab</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">table</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">ivel+1,
+      6</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">kenv</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">linenr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">1, 1, 2,
+      .01</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">kctl16</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">midictrlsc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">16, 2000,
+      200</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">kfilt</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">table</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">kctl16,
+      10</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">aout</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">iveloc*kenv,
+      knote, itab</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">kenv2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">linenr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">1, (128-iveloc)*.03125,
+      .5, .01</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">aout2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">iveloc*kenv2*.5,
+      knote*.5, itab</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">afilt</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">tone</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">aout+aout2,
+      kfilt</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">afilt*kctl7*0.0078125</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">Figure
+3.12</FONT></B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">
+Orchestra code for <I>instr 307</I>, a midi instrument with a
+controllers, velocity, mapping, pitch bend, and a sub-oscillator.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 307 shows how a MIDI
+instrument can grow to be more responsive and more interesting.
+We have added a second oscillator one octave below the first one,
+at half volume. This oscillator has its own envelope. The velocity
+of the note is used to determine the attack time. .03125 = 4 /
+128. A velocity of 0 will result in a 4 second attack. A velocity
+of 127 will cause the attack to be .03125 seconds.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">We have also added a low pass
+filter to the combined output of the two oscillators. The cutoff
+frequency is set by controller 16. We use a new opcode, <I>midictrlsc</I>,
+which has a scaling function built in. The range is 2000 and the
+offset is 200, so kfilt will vary between 200 and 2200 Hz. We
+use <I>kfilt</I> as the cutoff frequency for the filter.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">These instruments show the first
+steps in designing a MIDI controlled Csound instrument. Csound
+also has opcodes for reading aftertouch (<B>aftouch</B>) and channel
+pressure (<B>chpress</B>). These commands are similar to <B>pchbend</B>
+which we used in instrument 4. Note numbers can also be read as
+0 -128 using <B>notenum</B>, or in <B>pch</B> units using <B>pchmidi</B>.<BR>
+&nbsp;</FONT></P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">The
+<I>in</I> Opcode<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">Real-time synthesis holds the
+promise of real-time signal processing. In Csound, it is a standard
+practice to use sound files as input to instruments, either using
+soundin or by loading the file into a <B>GEN01</B> table. The
+<B>in</B> commands (<B>in</B>, <B>ins</B>, <B>inq</B>) allow you
+to retrieve real-time audio input from your computer's analog-to-digital
+(ADC) converters. Unfortunately, standard desktop systems usually
+have a large (~300 ms.) latency when using audio from the audio
+input connections.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The <B>in</B> commands are very
+similar to <B>soundin</B>, except that no file is specified. They
+return the current sample values from the analog-to-digital-converter
+(ADC) in either mono (<B>in</B>), stereo (<B>ins</B>), or quad
+(<B>inq</B>). There is however, another stage of buffering involved.
+The ADC hardware buffers the audio and Csound buffers it again.
+There is no standard way to set the size of these buffers. These
+buffers increase the amount of latency already present in the
+output stage.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">&nbsp;<IMG SRC="figures/6.gif"
+HEIGHT="93" WIDTH="85" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">Figure
+3.11</FONT></B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">
+Block diagram of <I>instr 308</I>, a simple audio input instrument.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="477">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="80%"><FONT FACE="Courier New">308</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">asig</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">in</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="80%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="80%"><FONT FACE="Courier New">asig</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="80%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">Figure
+3.12</FONT></B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times">
+Orchestra code of <I>instr 308</I>, passing audio direct from
+input to output.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 308 in In.orc is the
+simplest possible instrument using real-time input. The input
+signal is read in mono into <I>asig</I> and then it is immediately
+sent to the audio outputs. When you run this with In.sco, you
+will hear the audio input to your computer reflected through the
+audio output for 30 seconds. It will be delayed by the latency
+of your system.<BR>
+&nbsp;</FONT></P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">Conclusion<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">R</FONT><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">eal-tim</FONT><FONT
+ FACE="Times New Roman">e software synthesis and processing is
+the future of audio production. We are just beginning to see affordable
+systems which can perform audio manipulation in</FONT><FONT SIZE="-1"
+ FACE="Times New Roman,Georgia,Times"> </FONT><FONT FACE="Times New Roman">r</FONT><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times">eal-tim</FONT><FONT
+ FACE="Times New Roman">e. All of the Csound</FONT><FONT SIZE="-1"
+ FACE="Times New Roman,Georgia,Times"> </FONT><FONT FACE="Times New Roman">r</FONT><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times">eal-tim</FONT><FONT
+ FACE="Times New Roman">e opcodes have been added to a pre-existing
+structure, which places distinct limitations on their use. Current
+Csound developers however, are paying more attention to</FONT><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> </FONT><FONT
+ FACE="Times New Roman">r</FONT><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">eal-tim</FONT><FONT
+ FACE="Times New Roman">e possibilities and, slowly, Csound will
+get faster and more flexible. As computers get faster and manufacturers
+improve their sound hardware,</FONT><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+</FONT><FONT FACE="Times New Roman">r</FONT><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">eal-tim</FONT><FONT
+ FACE="Times New Roman">e Csound will seem less like an esoteric
+option and more like an essential feature.</FONT>
+
+</BODY>
+</HTML>

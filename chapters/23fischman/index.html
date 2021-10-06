@@ -1,0 +1,1259 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Multi-band Processing with Time-varying Filters</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">22. Multi-band Processing with
+Time-varying Filters<BR>
+</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Rajmil Fischman<BR>
+</FONT></H2>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">Introduction<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">The present chapter discusses
+processing techniques for the dynamic shaping of spectral components
+using a bank of time-varying band-pass filters. This is the result
+of the combination and subsequent formal development of two processes
+originally devised by J. C. Risset. The first type of process
+consists of the addition of signals with fundamentals which are
+slightly detuned in relation to each other, which results in pulsating
+harmonics originating from difference tones (Dodge and Jerse,
+1985:101-2). This technique was used to generate some of the sound
+material of <I>Inharmonique</I> (Risset, 1977). The second type
+consists of a subtractive method which uses resonant filters tuned
+to specific pitches to filter natural sounds (Risset, 1991: 32).
+These were used in <I>Sud</I> (Risset, 1985).</FONT></P>
+
+<P><FONT FACE="Times New Roman">At first sight, the relationship
+between the processes above may appear to be purely phenomenological,
+based on the fact that in both cases one hears pulsating harmonics.
+However, it will be shown below that both are realizations of
+the same mathematical principle. This relationship will prove
+useful as a basis from which a generalized process - derived from
+the subtractive approach in order to obtain independent control
+of the various parameters of each pulsating stream - may be devised.
+Subtractive synthesis offers an additional advantage which contributes
+to spectral sophistication and variety: the pulsating streams
+may retain the gestural characteristics of the sound source, thus
+creating a &#145;shadow&#146; or &#145;ghost&#146; of the original
+input. Because of this fact, a relatively simple Csound implementation
+is used to produce articulated morphologies resulting from the
+input source with spectral characteristics shaped by a filter
+bank. The number of filters is determined by the requirements
+of a particular process. Finally, the modular nature of this technique
+makes it ideal for use in real time, in view of the possibilities
+opened by the development of Extended Csound.<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Additive Case</FONT></H3>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Theoretical Background</FONT></H3>
+
+<P><FONT FACE="Times New Roman">We will begin by establishing
+the mathematical premises for the additive case, based on the
+difference tones which result from adding of two sinusoidals.</FONT></P>
+
+<P><FONT FACE="Times New Roman">If <I>f<sub>1</sub></I> and <I>f<sub>2</sub></I>
+are the frequencies of two sinewaves, addition will produce the
+following signal<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/01.gif" HEIGHT="20"
+WIDTH="148" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (1)</FONT></P>
+
+<P><FONT FACE="Times New Roman">Applying the trigonometric identity
+for the sum of two sines, we obtain<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/02.gif" HEIGHT="32"
+WIDTH="209" NATURALSIZEFLAG="3" ALIGN="BOTTOM">(2)</FONT></P>
+
+<P><FONT FACE="Times New Roman">If the (<I>f<sub>1</sub></I> -
+<I>f<sub>2</sub></I>)/2 is below the auditory range (&lt; ca.
+20 Hz) , equation (2) will describe a sine of frequency (<I>f<sub>1</sub></I>
++ <I>f<sub>2</sub></I>)/2 pulsating at a rate determined by half
+the difference of these frequencies. The shape of each pulsation
+is that of a cosine. Its period is inversely proportional to its
+frequency, therefore, since a cosine period contains two peaks,
+a pulsation will last<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/03.gif" HEIGHT="38"
+WIDTH="244" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (3)</FONT></P>
+
+<P><FONT FACE="Times New Roman">Figure 1 shows a waveform resulting
+from adding sinewaves of 100 Hz and 108 Hz. This produces a 104
+Hz cosine pulsating 8 times in one second (8 Hz). Each pulsation
+lasts 0.125 seconds.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/04.gif" HEIGHT="92"
+WIDTH="331" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+<B>Figure 1</B> Pulsations produced by addition of 100 Hz and
+108 Hz sinewaves<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Careful choice of frequencies
+allows control over the duration of the envelope. If the difference
+<I>f<sub>1</sub></I> - <I>f<sub>2</sub></I> is very small, a pulsation
+will last several seconds and the detuning of the audible frequency
+will be negligible. For example. 100 Hz and 100.04 Hz will produce
+an envelope with pulsations lasting 20 seconds each and an audible
+sinewave of 100.02 Hz; therefore, the latter is only detuned by
+0.02%. This is well below the just noticeable difference (jnd)
+for human hearing, which ranges from 3% at 100 Hz to 0.5% at 2000
+Hz (Dodge and Jerse, 1985: 36).<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The case of two sinusoidals may
+now be extended to more complex signals by addition of harmonics.
+If we add a second harmonic to each of the sinusoidals above (2<I>f<sub>1</sub></I>
+and 2<I>f<sub>2</sub></I>), we will obtain the following difference
+tones:<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">(<I>f<sub>1</sub></I> + <I>f<sub>2</sub></I>)/2
+and (<I>f<sub>1</sub></I> - <I>f<sub>2</sub></I>)/2 from the interaction
+of <I>f<sub>1</sub></I> and <I>f<sub>2</sub></I>.<BR>
+(2<I>f<sub>1</sub></I> + 2<I>f<sub>2</sub></I>)/2 and (2<I>f<sub>1</sub></I>
+- 2<I>f<sub>2</sub></I>)/2 = <I>f<sub>1</sub></I> - <I>f<sub>2
+</sub></I>from the interaction of 2<I>f<sub>1</sub></I> and 2<I>f<sub>2</sub></I>.<BR>
+(<I>f<sub>1</sub></I> + 2<I>f<sub>2</sub></I>)/2 and (<I>f<sub>1</sub></I>
+- 2<I>f<sub>2</sub></I>)/2 from the interaction of <I>f<sub>1</sub></I>
+and 2<I>f<sub>2</sub></I>.<BR>
+(2<I>f<sub>1</sub></I> + <I>f<sub>2</sub></I>)/2 and (2<I>f<sub>1</sub></I>
+- <I>f<sub>2</sub></I>)/2 from the interaction of 2<I>f<sub>1</sub></I>
+and <I>f<sub>2</sub></I>.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Assuming that <I>f<sub>1</sub></I>
+and <I>f<sub>2</sub></I> are in the auditory range and that <I>f<sub>1</sub></I>
+- <I>f<sub>2</sub></I> is very small, the last two combinations
+will produce two frequencies which are both in the auditory range
+- roughly <I>f<sub>1</sub></I> (~ <I>f<sub>2</sub></I>) and 1.5<I>f<sub>1</sub></I>
+(~ 1.5<I>f<sub>2</sub></I>)<sup>1</sup>. This will be perceived
+as a modulated signal of constant amplitude. On the other hand,
+the first two terms will produce pulsating patterns. Furthermore,
+the second harmonic combination will pulsate at a rate <I>f<sub>1</sub></I>
+- <I>f<sub>2</sub></I> which is twice as fast than that of the
+combination of fundamentals, given by (<I>f<sub>1</sub></I> -
+<I>f<sub>2</sub></I>)/2. This means that peak amplitudes will
+be reached at different moments: when the fundamentals are loud,
+the pulsations of the second harmonics will not be heard and vice
+versa. This is illustrated in figure 2.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The overall result of the combination
+above will be a drone - resulting from the interaction of first
+and second harmonics - and pulsations of pure sinusoidals resulting
+from the interaction of harmonics of the same order (first with
+first and second with second). For example, the interactions of
+signals with fundamentals of 100 Hz and 100.04 Hz and two harmonics
+will produce the following:<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">100.02 Hz sinusoidal with a 20
+second envelope (pulsation).<BR>
+200.04 Hz sinusoidal with a 10 second envelope (pulsation).<BR>
+150.02 Hz modulated by 50.02 Hz (drone).<BR>
+150.01 Hz modulated by 49.98 Hz (drone).<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/05.gif" HEIGHT="122"
+WIDTH="257" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">Figure 2</FONT></B><FONT FACE="Times New Roman">
+Pulsations produced by harmonics of the same order. (A) <I>f<sub>1</sub></I>
+and <I>f<sub>2</sub></I>. (B) 2<I>f<sub>1</sub></I> and 2<I>f<sub>2</sub></I>.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">It is now possible to generalize
+this process to <I>m</I> signals with <I>n</I> harmonics and fundamentals
+which are very close to each other:<BR>
+</FONT></P>
+
+<OL>
+  <LI><FONT FACE="Times New Roman">For every pair of signals, the
+  interactions of harmonics of different order will contribute
+  to the drone.<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">For every pair of signals, the
+  interactions of harmonics of the same order will produce pulsations
+  of sinusoidals. If the signals have <I>n</I> harmonics, the number
+  of pulsations of different rate will be <I>n</I>. The period
+  of each pulsation may be obtained by replacing the appropriate
+  frequencies in equation (3).<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">If <I>m</I> signals with different
+  fundamentals are mixed the total number of pulsations will be
+  given by the product of the total number of combined pairs multiplied
+  by the number of pulsations for each combination.</FONT>
+</OL>
+
+<P><FONT FACE="Times New Roman">The total number of possible pairs
+given a total of <I>m</I> signals is<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/06.gif" HEIGHT="45"
+WIDTH="95" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">therefore, the total number of
+different pulsations for <I>m</I> signals with <I>n harmonics
+</I>is<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/07.gif" HEIGHT="45"
+WIDTH="136" NATURALSIZEFLAG="3" ALIGN="BOTTOM">(4)<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Csound Implementation</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Implementation of the additive
+case requires a simple oscillator with an envelope. The oscillator
+is invoked in the score using an instrument statement. The complexity
+of the waveform is determined by a score function table generated
+with GEN10, which produces harmonic spectra. The orchestra MB1.ORC
+consists of the following instrument and is similar to the realization
+of Risset&#146;s original instrument.<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">instr 1<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">;-----------------------------------;BLOCK
+INITIALIZATION<BR>
+idur = p3 ;duration<BR>
+iamp = p4 ;amplitude<BR>
+ifreq = p5 ;frequency<BR>
+iatt = p6 ;attack<BR>
+idec = p7 ;decay<BR>
+ifunc = p8 ;function table<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">;--------------------------------------------------<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">kenv linen iamp,iatt,idur,idec ; envelope<BR>
+aout oscili kenv,ifreq,ifunc ; oscillator<BR>
+out aout<BR>
+endin</FONT></P>
+
+<P><FONT FACE="Times New Roman">The duration, amplitude, fundamental,
+attack, decay and function table of the generated signal are given
+by parameters <I>p3</I> to <I>p8</I>, stored respectively in variables
+<I>idur</I>, <I>iamp</I>, <I>ifreq</I>, <I>iatt</I>, <I>idec</I>
+and <I>ifunc</I>. The envelope is generated with a linen statement
+and the oscillator is realized using OSCILI.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The score MB1.SCO performs addition
+of 11 signals with 20 harmonics each. The fundamentals are spaced
+in steps of 0.025 Hz above and below 70 Hz, resulting in the following
+frequencies: 69.875, 69.9, 69.925, 69.95, 69.975, 70, 70.025,
+70.05, 70.075, 70.1 and 70.125 Hz. Replacing 0.025 Hz (= <I>f<sub>1
+</sub></I>- <I>f<sub>2</sub></I>) in equation 3, it is possible
+to obtain the longest pulsation period, which is 40 seconds. The
+generating function for a waveform with 20 harmonics is<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">f1 0 8192 10 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">A single oscillator requires an
+<I>i1</I> statement. For example, the 70 Hz oscillator is realized
+as follows:<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">; p3 p4 p5 p6 p7 p8<BR>
+;instr start dur amp fund attack decay function<BR>
+i1 0 25 3000 70 0.1 3.5 1<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">It should be noted that the function
+table f1 consists of harmonics of equal amplitudes. Using different
+function tables one may emphasize harmonic regions, creating formants.
+For example, MB2.ORC and MB2.SCO employ an instrument identical
+to <I>instr1</I> in order to synthesize the same number of signals
+with the same fundamentals used in example 1; however, in this
+case, higher harmonics are emphasized by means of the following
+function table.<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">f1 0 8192 10 .05 .1 .15 .2 .25 .3
+.35 .4 .45 .5 .55 .6 .65 .7 .75 .8 .85 .9 .95 1<BR>
+</FONT><FONT FACE="Times New Roman">&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Subtractive Realization</FONT></H3>
+
+<P><FONT FACE="Times New Roman">We will now proceed to model the
+same type of pulsating harmonics using a subtractive synthesis
+representation<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Theoretical Background</FONT></H3>
+
+<P><FONT FACE="Times New Roman">In order to deduce the subtractive
+model, it may be useful to examine the sound produced with MB1.SCO.
+The signals may be arranged according to their fundamentals as
+follows:</FONT></P>
+
+<P><FONT FACE="Courier New">70.125 Hz = 70 + 0.125 = 70 + 5 x
+0.025<BR>
+70.1 Hz = 70 + 0.1 = 70 + 4 x 0.025<BR>
+70.075 Hz = 70 + 0.075 = 70 + 3 x 0.025<BR>
+70.05 Hz = 70 + 0.05 = 70 + 2 x 0.025<BR>
+70.025 Hz = 70 + 0.025 = 70 + 1 x 0.025<BR>
+<B>70</B> Hz<BR>
+69.975 Hz = 70 - 0.025 = 70 - 1 x 0.025<BR>
+69.95 Hz = 70 - 0.05 = 70 - 2 x 0.025<BR>
+69.925 Hz = 70 - 0.075 = 70 - 3 x 0.025<BR>
+69.9 Hz = 70 - 0.1 = 70 - 4 x 0.025<BR>
+69.875 Hz = 70 - 0.125 = 70 - 5 x 0.025<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">This may now be generalized for
+any number of signals with fundamentals above and below a frequency
+<I>f</I> with differences which are multiples of a step&nbsp;<IMG 
+SRC="figures/a.gif" HEIGHT="11" WIDTH="8" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM"><I>f</I>.<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">f + n x&nbsp;<IMG SRC="figures/a.gif"
+HEIGHT="11" WIDTH="8" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> f, ...
+f + 2 x&nbsp;<IMG SRC="figures/a.gif" HEIGHT="11" WIDTH="8" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM"> f, f + 1 x&nbsp;<IMG SRC="figures/a.gif" HEIGHT="11"
+WIDTH="8" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> f, <B>f</B>, f -
+1 x&nbsp;<IMG SRC="figures/a.gif" HEIGHT="11" WIDTH="8" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM"> f, f - 2 x&nbsp;<IMG SRC="figures/a.gif" HEIGHT="11"
+WIDTH="8" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> f, ... f - n x<IMG 
+SRC="figures/a.gif" HEIGHT="11" WIDTH="8" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM"> f</FONT></P>
+
+<P><FONT FACE="Times New Roman">Adding only the fundamentals of
+the signals produces an output described by the following equation<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/08.gif" HEIGHT="37"
+WIDTH="305" NATURALSIZEFLAG="3" ALIGN="BOTTOM">(5)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Applying the trigonometric identity
+for the sum of two sines to every term in (5) we obtain<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/09.gif" HEIGHT="80"
+WIDTH="233" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (6)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Equation (6) represents a sinewave
+of frequency <I>f</I> which is modulated by a sum of cosines with
+frequencies&nbsp;<IMG SRC="figures/a.gif" HEIGHT="11" WIDTH="8"
+NATURALSIZEFLAG="3" ALIGN="BOTTOM"><I>f</I>, 2<IMG SRC="figures/a.gif"
+HEIGHT="11" WIDTH="8" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> <I>f</I>,
+... <I>n<IMG SRC="figures/a.gif" HEIGHT="11" WIDTH="8" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM"> f</I>Hz - indicated by the expression in square
+brackets - and a constant. If&nbsp;<IMG SRC="figures/a.gif" HEIGHT="11"
+WIDTH="8" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><I>f</I> is very
+small so that <I>n<IMG SRC="figures/a.gif" HEIGHT="11" WIDTH="8"
+NATURALSIZEFLAG="3" ALIGN="BOTTOM"> f</I>is below the auditory
+range - (e.g. 0.025 Hz in the example above) the effect of the
+cosine sum is that of an envelope.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">In a similar fashion, adding second
+harmonics will produce the expression<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/10.gif" HEIGHT="54"
+WIDTH="235" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (7)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">which represents the second harmonic
+of <I>f</I> multiplied by an envelope of the same shape and a
+period which is half of the duration of the period resulting from
+addition of the fundamentals.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Finally, generalizing for the
+addition of harmonics of order <I>j</I>, we obtain<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/11.gif" HEIGHT="46"
+WIDTH="235" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (8)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">which represents the <I>j</I>th
+harmonic of <I>f</I> , multiplied an envelope which has the same
+shape and 1/<I>j</I>th of the fundamental period.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The overall output consists of
+the sum of terms <I>o<sub>j</sub>(t)<BR>
+</I></FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/12.gif" HEIGHT="46"
+WIDTH="295" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (9)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Equation (9) represents a set
+of sinewaves, each with an envelope given by the expression in
+square brackets. The sum of cosines contributes to the pulsations
+while the constant contributes to the drone.<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Csound Implementation</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The waveform in equation (9) may
+be realized by means of a filter bank in which the gain of each
+filter is a function of time. The source for this process must
+be rich in harmonics; therefore, the present implementation uses
+a train of pulses which contains harmonics within the band-pass
+of the filters. Since the fundamental of a train of pulses determines
+the spectral spacing of the harmonics, this requisite may be met
+using a fundamental frequency which is equal or less than the
+desired spacing between harmonics.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The envelope of each filter may
+be generated in the score using GEN9, which represents a sum of
+sinusoidals with any harmonic ratio, amplitude and phase. Setting
+the phase to 90<sup>o</sup> produces cosines; setting the frequency
+ratio to 0 produces a constant. For example, the following function
+will produce an envelope resulting from adding 3 harmonics:<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">;# start size GEN9 1 +cos(2_<IMG 
+SRC="figures/a.gif" HEIGHT="11" WIDTH="8" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM"> ft)+cos(2_ 2<IMG SRC="figures/a.gif" HEIGHT="11"
+WIDTH="8" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> f t)+cos(2_ 3<IMG 
+SRC="figures/a.gif" HEIGHT="11" WIDTH="8" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM"> f t)<BR>
+f1 0 2048 9 0 1 90 1 2 90 2 2 90 3 2 90<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The following instrument, included
+in MB3.ORC, implements a single time-varying filter with a train
+of pulses as input.<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">instr 3<BR>
+;-----------------------------;INITIALIZATION BLOCK<BR>
+idur = p3 ;duration iampf = p4 ;scaling amplitude factor<BR>
+iatt = p5 ;overall attack<BR>
+idec = p6 ;overall decay<BR>
+itpamp = 20000 ;pulse amplitude<BR>
+itpfreq = p7 ;pulse fundamental<BR>
+itpharm = p8 ;pulse number of harmonics<BR>
+itpfunc = p9 ;pulse function table<BR>
+ipeamp = 1.00 ;pulsation normalized amplitude<BR>
+ipefreq = p10 ;pulsation frequency<BR>
+ipefunc = p11 ;pulsation envelope function table<BR>
+icfreq = p12 ;filter center frequency<BR>
+ibw = p13 ;filter bandwidth<BR>
+iampbal = 1 ;filter power balancing<BR>
+;----------------------------------------------------<BR>
+kpenv oscil ipeamp,ipefreq,ipefunc ;pulsation envelope<BR>
+kenv linen iampf,iatt,idur,idec ;overall envelope<BR>
+kenv = kenv*kpenv ;multiply envelopes<BR>
+ain buzz itpamp,itpfreq,itpharm,itpfunc ;train of pulses<BR>
+afilt reson ain,icfreq,ibw,iampbal ;filter<BR>
+out kenv*afilt ;output<BR>
+endin</FONT></P>
+
+<P><FONT FACE="Times New Roman">The center frequency and bandwidth
+are given by <I>p12</I> and <I>p13</I> and stored in <I>icfreq</I>
+and <I>ibw</I>. The variable <I>iampbal</I> indicates the type
+of scaling used in the filter: a value of 1 scales the peak amplitude
+of the output so that it matches the peak amplitude of the input.
+This is not always enough, because RESON assumes that all frequencies
+are physically present, which is only true in the case of white
+noise. Therefore, the orchestra contains an additional scaling
+factor controlled by <I>p4</I> and stored in <I>iampf</I>. The
+actual value of <I>iampf</I> depends on the spectral content of
+the input and the filter frequency and bandwidth, requiring some
+experimentation and fine tuning. The overall duration, attack
+and decay of the output are given by <I>p3</I>, <I>p5</I> and
+<I>p6</I>, and stored respectively in variables <I>idur</I>, <I>iatt</I>
+and <I>idec</I>. These produce a LINEN envelope with amplitude
+determined by <I>iampf</I>. The filter envelope is produced with
+OSCIL, creating the control signal <I>kpenv</I>, which is subsequently
+multiplied by the output of the LINEN statement (<I>kenv</I>)
+in order to avoid clicks. Its amplitude is normalized to 1.00
+and given by <I>ipeamp</I>. The pulsation frequency (number of
+pulsations per second) and function table number are stored in
+<I>ipefreq</I> and <I>ipefunc</I>. The former is given by <I>p10</I>;
+the latter by <I>p11</I>.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The train of pulses is generated
+using a BUZZ statement with <I>itpamp</I>, <I>itpfreq</I>, <I>itpharm</I>
+and <I>itpfunc</I> storing the pulse amplitude (set arbitrarily
+to an amplitude of 20000), fundamental frequency (<I>p7</I>),
+number of harmonics (<I>p8</I>) and the function table (<I>p9</I>).
+Finally, the output of BUZZ, <I>ain</I>, is fed to a RESON band-pass
+filter, with center frequency given by <I>p12</I> and stored in
+<I>icfreq</I>, and bandwidth given by <I>p13</I> and stored in
+<I>ibw</I>. The output of the filter is multiplied by the overall
+envelope.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The score MB3.SCO implements a
+bank of 15 filters (each filter is represented by an instrument
+statement) with center frequencies ranging from 100 Hz to 1500
+Hz in steps of 100 Hz. The bandwidth is always 1 Hz. The envelope
+of each filter is implemented in function 4, which is generated
+with GEN9 and corresponds to equation (8), when <I>n</I>=15.</FONT></P>
+
+<P><FONT FACE="Courier New">f4 0 2048 9 0 1 90 1 2 90 2 2 90 3
+2 90 4 2 90 5 2 90 6 2 90 7 2 90 8 2 90 9 2 90 10 2 90 11 2 90
+12 2 90 13 2 90 14 2 90 15 2 90<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">It should be noticed that the
+number of pulsations per second, determined by the frequency of
+the filter envelope, becomes faster for higher frequencies - ranging
+from 0.03 Hz (<I>T<sub>p</sub></I> = 33.33 sec.) to 0.45 Hz (<I>T<sub>p</sub></I>
+= 2.22 sec.)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The generating function for the
+train of pulses is a sinewave, implemented in function 3.<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">f3 0 8192 10 1<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Each filter in the bank is invoked
+by means of an <I>i3</I> statement. For example, the statement
+below invokes a filter which starts processing a train of pulses
+at time 0 and lasts 25 beats. Its center frequency (<I>p12</I>)
+is 100 Hz and the bandwidth (<I>p13</I>) is 1 Hz. Its output is
+shaped with an envelope produced at a rate (<I>p10</I>) of 0.03
+Hz with its shape determined by function 4 (<I>p11</I>).<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">; p3 p4 p5 p6 p7 p8 p9 p10 p11 p12
+p13<BR>
+;----------------------------------------------------------------<BR>
+i3 0 25 25 0.1 3.5 10 250 3 0.03 4 100 1<BR>
+</FONT><FONT FACE="Times New Roman">&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Generalization
+of Subtractive Case</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The subtractive method offers
+possibilities which would otherwise be restricted by an additive
+procedure. While the latter depends on manipulation of sinewaves
+with specific relations between their frequencies, the former
+only requires the existence of the desired output components in
+the source. The actual spectrum of the output and characteristics
+of the pulsations may be determined at will by setting the appropriate
+filter and envelope parameters. We will now proceed to generalize
+the instrument described in the previous section in order to achieve
+more versatile and sophisticated processes.<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Filtering of a
+Sampled Sound</FONT></H3>
+
+<P><FONT FACE="Times New Roman">In the first place, it is possible
+to take advantage of the morphologies of sounds derived from natural
+sources. In order to implement an instrument which filters an
+existing set of samples, it is possible to replace the BUZZ generator
+in MB3.ORC with the Csound statement SOUNDIN. The latter requires
+a soundfile code, which is either the name of the soundfile containing
+samples or, alternatively, a three digit number <I>nnn</I>, as
+long as the name of the soundfile is <I>soundin.nnn</I>. SOUNDIN
+also allows an optional parameter which indicates how many seconds
+to skip from the beginning of the soundfile. Therefore, the following
+line may be used to replace the buzz generator<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">ain soundin isfcode,isfskip<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">where <I>isfcode</I> is the soundfile
+<I>nnn</I> code and <I>isfskip</I> is the number of seconds skipped.<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Time-Varying Center
+Frequency and Bandwidth</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The center frequency and bandwidth
+of the filters may become a function of time. Filters with time-varying
+center frequency may be implemented specifying its maximum and
+minimum values, as well as a function table which describes the
+time dependency of the fluctuations between maximum and minimum.
+For example, if the parameters <I>p13</I>, <I>p14</I> represent
+respectively the minimum and maximum frequencies, the maximum
+frequency fluctuation will be given by<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">icffluc = p14-p13<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Assuming that the function table
+number is stored in <I>icffunc</I>, the time-varying fluctuation
+may be realized with an OSCIL1 statement, which sweeps through
+<I>icffunc</I> exactly one time throughout the duration of the
+sound.<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">kcf oscil1 0,icffluc,idur,icffunc<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Also, if the minimum frequency
+is stored in <I>icfmin</I>, we may add the fluctuation to this
+variable to obtain the time-varying center frequency.<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">kcf = icfmin+kcf<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The bandwidth may be expressed
+as a percentage of the center frequency, which allows a simpler
+implementation of filter banks with constant Q (<IMG SRC="figures/a.gif"
+HEIGHT="11" WIDTH="8" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> f/f
+= constant). The following set of statements is similar to the
+set used in the case of the center frequency, and produces a time-varying
+bandwidth.<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">ibwmin = p16 ;minimum bandwidth as
+% of center frequency<BR>
+ibwfluc = p17-p16 ;filter bandwidth fluctuation (% of center freq)<BR>
+ibwfunc= p18 ;filter bandwidth function<BR>
+:<BR>
+:<BR>
+kbw oscil1 0,ibwfluc,idur,ibwfunc ;filter bandwidth<BR>
+kbw = (ibwmin+kbw)*kcf/100.0<BR>
+</FONT><FONT FACE="Times New Roman">&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Pulsation Envelope
+and Frequency<BR>
+</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Since the envelope of the pulsation
+is generated independently from the filter, it is possible to
+substitute the function in equation (8) by any other shape, specified
+by a function table in the score. Also, in contrast to the additive
+case, the frequency of the pulsations (number of pulsations per
+second) is not dependent on other parameters and may become a
+function of time. The following lines are used to produce pulsations
+with any envelope and time-varying frequency.<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">ipfmin = p9 ;minimum pulsation frequency<BR>
+ipffluc = p10-p9 ;pulsation frequency fluctuation<BR>
+ipffunc = p11 ;pulsation frequency fluctuation function<BR>
+ipefunc = p12 ;pulsation envelope function<BR>
+:<BR>
+:<BR>
+kpfreq oscil1 0,ipffluc,idur,ipffunc ;pulsation frequency variation<BR>
+kpfreq = ipfmin+kpfreq<BR>
+kpenv oscil ipeamp,kpfreq,ipefunc ;pulsation envelope<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">MB4.ORC consists of an instrument
+which filters a soundfile, implementing a filter with time-varying
+frequency and bandwidth. It also allows configuration of the pulsation
+envelope and frequency. The score MB4.SCO uses this orchestra
+in order to process a sampled sound stored in soundfile <I>soundin.1</I>
+with a bank comprising 11 filters. The center frequency and bandwidth
+of each filter are time-varying, fluctuating according to functions
+7 and 8.</FONT></P>
+
+<P><FONT FACE="Courier New">f7 0 4096 7 0 1024 1 1024 0.3 1024
+0.8 1024 0.4<BR>
+f8 0 4096 7 1 1024 0 1024 0.3 1024 0.4 1024 0<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The pulsation envelope frequency
+fluctuates according to function 5 and its envelope is defined
+by function 6.</FONT></P>
+
+<P><FONT FACE="Courier New">f5 0 4096 7 1 4096 0<BR>
+f6 0 4096 19 1 1 270 1<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The frequencies of the filters
+in the score have inharmonic ratios. Each of the filters is invoked
+using an instrument statement. For example, the following is a
+filter with center frequency between 2000 Hz (<I>p13</I>) and
+2020 Hz (<I>p14</I>), bandwidth is between 0.1% (<I>p16</I>) and
+0.3% (<I>p17</I>) of the instantaneous center frequency and pulsations
+which oscillate with a minimum frequency (<I>p9</I>) of 0.11 Hz
+and a maximum (<I>p10</I>) of 0.12 Hz.</FONT></P>
+
+<P><FONT FACE="Courier New">; p3 p4 p5 p6 p7 p8 p9 p10 p11 p12
+p13 p14 p15 p16 p17 p18<BR>
+;----------------------------------------------------------------------<BR>
+i4 0 8.547 70 .001 .005 1 0 .11 .12 5 6 2000 2020 7 .1 .3 8<BR>
+</FONT><FONT FACE="Times New Roman">&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Balanced Output</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The cases above used an amplitude
+factor to compensate for power loss due to filtering. It is possible
+to use an alternative method provided by BALANCE. This statement
+compares the root mean square (RMS)<sup>2</sup> of the output
+with that of a reference signal; usually the input source. The
+amplitude factor may still be kept in order to fine-tune the final
+gain. MB5.ORC contains an instrument which is a modified version
+of MB4.ORC carried out by replacing the output statement with
+the following lines<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">aout balance afilt,ain ;balance<BR>
+out kenv*aout ;output<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Although BALANCE does not affect
+the frequency content of the output, in some cases, the temporal
+characteristics of the latter may be affected so drastically that
+it begins to resemble the source. This is particularly noticeable
+in sources with fast transients or quick changing spectra. The
+effects of balancing an input with fast transients may be appreciated
+by comparing the sounds generated with MB4.ORC/MB4.SCO with those
+obtained with MB5.ORC/MB5.SCO (both use <I>soundin.1</I> as their
+input). The only difference between the scores consists of the
+use of faster pulsation frequencies in MB5.SCO: these are in the
+region of 5 Hz to 7.6 Hz, whereas MB4.SCO uses frequencies ranging
+from 0.11 Hz to 1.32 Hz.<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Spatial Articulation</FONT></H3>
+
+<P><FONT FACE="Times New Roman">A further enhancement of the process
+consists of spatialization of the output of each individual filter.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The panning algorithm employed
+here has been used in various pieces of software, notably in the
+PAN program from the <I>Composers&#146; Desktop Project</I> <I>Groucho
+Sound Processing Programs</I> - originally produced by Bentley
+(Atkins, Bentley, Endrich, Fischman, Malham, Orton and Wishart
+1987; Dobson and Endrich 1994). It assumes a stereo image and
+uses normalized values to represent panning positions. A value
+of 1 represents the position of the right speaker, -1 that of
+the left speaker and 0 is the center. Panning values which are
+larger than 1 or smaller than -1 are respectively besides the
+right and left speakers. As a result, the speaker distance is
+normalized to a value of 2. The listener is located along a line
+perpendicular to the center and at a distance which is half of
+the speakers&#146; separation, equivalent to a normalized value
+of 1. Figure 3 shows a diagram representing the various parameters.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Lets assume that the amplitude
+of a signal in the center (pan = 0) is <I>A<sub>0</sub></I>. At
+this point, the distance from the listener is 1. When the position
+is displaced by <I>x</I> the distance from the listener becomes&nbsp;<IMG 
+SRC="figures/13.gif" HEIGHT="18" WIDTH="34" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM">, and the amplitude, <I>A<sub>x</sub></I>, is given
+by the inverse square law<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/14.gif" HEIGHT="25"
+WIDTH="97" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">therefore<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/15.gif" HEIGHT="32"
+WIDTH="75" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (10)<BR>
+<B>Figure 3</B></FONT></P>
+
+<H3><FONT FACE="Times New Roman">Panning Algorithm Setup</FONT></H3>
+
+</h3>
+
+<P><FONT FACE="Times New Roman"></FONT><A NAME="now"></A>In order
+to normalize the maximum value of the amplitude to 1, we may remember
+that the energy of a signal is proportional to the square of the
+amplitude<BR>
+</P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/16.gif" HEIGHT="18"
+WIDTH="46" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Assuming no losses, the law of
+conservation states that the total energy remains constant. Therefore,
+the sum of energies produced by each speaker must remain constant.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/17.gif" HEIGHT="35"
+WIDTH="101" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (11)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">When the signal is in the middle,
+both speakers produce the same amount of energy, due to the amplitude
+<I>A<sub>0</sub></I>. Making <I>A<sub>TOTAL</sub></I>=1 and replacing
+in equation (11), we have<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/18.gif" HEIGHT="22"
+WIDTH="101" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">therefore<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/19.gif" HEIGHT="30"
+WIDTH="50" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (12)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The distribution between the speakers
+depends on the position with respect to the center. If the pan
+value is positive, the signal will be situated at a distance <I>x</I>
+to the right of the center, otherwise, the position will be to
+the left of the center. Therefore, if <I>x</I> is the pan value,
+the relative weight of each speaker will be<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/20.gif" HEIGHT="40"
+WIDTH="77" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">where <I>A<sub>xL</sub></I> and
+<I>A<sub>xR</sub></I> are, respectively, the left and right speaker
+amplitudes. As expected, hen <I>x</I> is positive we have <I>A<sub>xR</sub></I>
+&gt; <I>A<sub>xL</sub></I> and when it is negative <I>A<sub>xL</sub></I>
+&gt; <I>A<sub>xR</sub></I>. Using this relation and equations
+(10) and (12), we obtain<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/21.gif" HEIGHT="69"
+WIDTH="87" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (13)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Similar calculations provide the
+formulas for positions beside the left speaker<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/22.gif" HEIGHT="53"
+WIDTH="81" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (<I>x</I>&lt;-1)
+(14)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">and besides the right speaker<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/23.gif" HEIGHT="53"
+WIDTH="81" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (<I>x</I>&gt;1)
+(15)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Equations (13) to (15) may be
+implemented in a Csound orchestra as follows:<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">imaxpan = p19 ;maximum pan ipfreq
+= p20 ;pan frequency<BR>
+ipanfunc= p21 ;pan function table<BR>
+isr2 = sqrt(2.0) ;square root of 2<BR>
+isr2b2 = isr2/2.0 ;half of square root of 2<BR>
+kpan oscili imaxpan,ipfreq,ipanfunc ;panning trajectory<BR>
+if kpan&lt;-1 kgoto beyondl ;pan beyond left speaker?<BR>
+if kpan&gt;1 kgoto beyondr ;pan beyond right speaker?<BR>
+;-------------------------------------;pan between speakers, eqs.
+(13)<BR>
+ktemp = sqrt(1+kpan*kpan)<BR>
+kpleft = isr2b2*(1-kpan)/ktemp<BR>
+kpright = isr2b2*(1+kpan)/ktemp<BR>
+kgoto donepan<BR>
+beyondl: ;pan beyond left speaker, eqs. (14)<BR>
+kpleft = 2.0/(1+kpan*kpan)<BR>
+kpright = 0<BR>
+kgoto donepan<BR>
+beyondr: ;pan beyond right speaker, eqs. (15)<BR>
+kpleft = 0<BR>
+kpright = 2.0/(1+kpan*kpan)<BR>
+donepan:<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The spatial trajectory is implemented
+using an oscillator with output <I>kpan</I>, which is driven by
+a function indicating its shape (<I>ipanfunc</I>=<I>p21</I>).
+The oscillator has a maximum amplitude given by <I>p19</I> and
+stored in <I>imaxpan</I>, corresponding to the maximum panning
+value. The panning trajectory may be repeated several times throughout
+the duration of the event depending on the value of the panning
+frequency, given by <I>p20</I> and stored in <I>ipanfreq</I> (in
+order to obtain only one trajectory throughout the event, <I>ipanfreq</I>
+must be 1/<I>idur</I>, where <I>idur</I> is the duration of the
+event). The IF ... KGOTO statements test the value of <I>kpan</I>
+and determine which set of equations should be applied. The variables
+<I>isr2</I> and <I>isr2b2</I> respectively store the square root
+of two and half of this value for use with equation (13) to (15).<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">In order to output stereo, the
+header variable <I>nchnls</I> must be set to 2. In addition, the
+output line should use OUTS instead of OUT.<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">outs kenv*kpleft*aout,kenv*kpright*aout<BR>
+</FONT><FONT FACE="Times New Roman">&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Doppler Effect</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The algorithm used here is based
+on that shown in the Csound manual (Vercoe, 1986), which employs
+a delay line in order to implement Doppler shift according to
+the following principle: if the signal is at a distance <I>d</I>
+from the listener, the time it takes a sample to reach the listener
+is<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/24.gif" HEIGHT="30"
+WIDTH="81" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">where <I>isndsp</I> is the speed
+of sound in air. Now, if the period of the signal is <I>T</I>
+(the frequency is <I>f</I> = 1/<I>T</I>) and the first sample
+of a cycle occurs at time &#153; , the last sample will occur
+at time &#153; +<I>T</I>. If the signal is stationary, the first
+and last samples will respectively reach the listener at times<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/25.gif" HEIGHT="41"
+WIDTH="233" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">and the frequency the listener
+perceives is<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/26.gif" HEIGHT="41"
+WIDTH="140" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">However, if the source moves at
+a speed <I>v</I>, the distance from the listener when the last
+sample in the cycle occurs will be <I>d</I>+<I>vT</I>, which means
+that the last sample will arrive at time<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/27.gif" HEIGHT="41"
+WIDTH="140" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">therefore, the frequency perceived
+by the listener will be<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/28.gif" HEIGHT="59"
+WIDTH="257" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (16)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">If the signal approaches the listener,
+<I>v</I> will be negative and, from equation (16), the resulting
+frequency will be higher than <I>f</I>. Similarly, if the signal
+departs from the listener, <I>v</I> will be positive and the resulting
+frequency will be lower than <I>f</I>.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The time it takes a sample to
+reach the listener may be simulated using a delay line. Also,
+since the distance from the listener to the line of the speakers
+is constant, it is only necessary to account for movement along
+the latter, which is determined by <I>x</I>. If the signal is
+in the middle position (<I>x</I>=0), the delay should be 0; any
+other position should generate a delay which is proportional to
+the absolute value of <I>x</I>. When the signal moves, <I>x</I>
+changes and, as a result, the delay changes in proportion to the
+absolute value of <I>x</I>, producing a smooth change in frequency.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The relationship between the delay
+value and panning may be found as follows: if <I>ihspeakd</I>
+is the distance between the speakers and the center (half of the
+speaker distance), and <I>isndsp</I> the speed of sound in air,
+the time it takes a sample to travel from one speaker to the center
+is<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/29.gif" HEIGHT="43"
+WIDTH="113" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">This happens when the absolute
+value of <I>x</I> is 1. Any other value of <I>x</I> represents
+a scaling of the distance from the speaker to the center, therefore,
+the delay is also scaled by <I>x</I> and we have<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/30.gif" HEIGHT="43"
+WIDTH="113" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (17)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Finally, if <I>x</I> changes according
+to a control signal such as <I>kpan</I>, the delay time <I>kpdel</I>
+will change in according to<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/31.gif" HEIGHT="43"
+WIDTH="113" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (18)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">A Csound implementation of the
+Doppler delay line is listed below.<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">ihspeakd= 5.0 ;half of the distance
+between speakers (m)<BR>
+isndsp = 331.45 ;sound speed in air (m/sec)<BR>
+impandel= imaxpan*ihspeakd/isndsp ;maximum pan delay<BR>
+kpdel = kpan*ihspeakd/isndsp ;find pan delay<BR>
+adump delayr impandel ;set maximum<BR>
+aout deltapi abs(kpdel) ;tap delay according to pan<BR>
+delayw afilt ;delay signal<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The maximum delay is directly
+proportional to the maximum panning value; therefore, <I>impandel</I>
+is calculated by direct replacement of <I>imaxpan</I> in equation
+(17). The time-varying delay is calculated using equation (18).
+Next, a delay line with a maximum delay time equal to <I>impandel</I>
+is opened using DELAYR. This line is connected to <I>aout</I>
+using the statement DELTAPI, which sends each sample after a duration
+equal to the absolute value of <I>kpdel</I>. Finally, the output
+of the filter, <I>afilt</I> is fed to the delay line.</FONT></P>
+
+<P><FONT FACE="Times New Roman">MB6.ORC consists of an instrument
+which implements spatial articulation and Doppler shift using
+the techniques discussed above. MB6.SCO, processes the soundfile
+<I>soundin.1</I> with the same filters and envelope parameters
+used in MB4.SCO. In addition parameters <I>p19</I>, <I>p20</I>
+and <I>p21</I> determine respectively the maximum pan value, pan
+frequency (number of repetitions of the panning trajectory) and
+panning function. All the filter outputs are panned with function
+table 9; however, the frequency of the panning oscillator is different
+for each filter.<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Processing of Stereo
+Soundfiles</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Instruments 4 and 5 may be extended
+so that they process stereo files. In the first place, <I>nchnls</I>
+must be set to 2 in the header. Next, the SOUNDIN statement must
+have two outputs<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">al,ar soundin isfcode,isfskip<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Each of these inputs must be filtered
+and, if required, balanced<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">afiltl reson al,kcf,kbw,iampbal ;filter
+left channel<BR>
+afiltr reson ar,kcf,kbw,iampbal ;filter right channel<BR>
+aball balance afiltl,al ;balance left channel<BR>
+abalr balance afiltr,ar ;balance right channel<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Finally, the output must use OUTS.</FONT></P>
+
+<P><FONT FACE="Courier New">outs kenv*aoutl,kenv*aoutr<BR>
+</FONT><FONT FACE="Times New Roman">&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Cross-Fade of Balanced
+and Unbalanced Filter Outputs</FONT></H3>
+
+<P><FONT FACE="Times New Roman">We saw above that carrying out
+an RMS balance of the output may alter its morphology. It is therefore
+possible to produce several cross-fades between balanced and the
+unbalanced versions, achieving more timbral variety. A time-varying
+cross-fade may be implemented using a function table which drives
+a single cycle oscillator such as OSCIL1. A high value of the
+function table may favor one of the states - for instance, the
+balanced output - whereas a low value may favor the other. The
+following lines assume that <I>p19</I> determines the function
+table number, which is subsequently stored in <I>ixfunc</I>. The
+variable <I>inenv</I> is a normalized amplitude.<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">inenv = 1.00<BR>
+ixfunc = p19<BR>
+kxf oscil1 0,inenv,idur,ixfunc<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Assuming that <I>aball</I> and
+<I>abalr</I> are the stereo outputs of BALANCE and that <I>afiltl</I>
+and <I>afiltr</I> are the unbalanced outputs of the filters, the
+cross-fade will be generated multiplying the balanced pair by
+<I>kxf</I> and the unbalanced pair by (1-<I>kxf</I>).<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">aoutl = kxf*aball+(1-kxf)*afiltl*iampf<BR>
+aoutr = kxf*abalr+(1-kxf)*afiltr*iampf<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">MB7.ORC and MB7.SCO demonstrate
+a cross-fade process applied to stereo input <I>soundin.2</I>.
+Because of the nature of the input, the balanced process will
+generate signals with more prominent attacks, while the unbalanced
+process will resemble more the &#145;thinner&#146; harmonics.<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">A Final Example</FONT></H3>
+
+<P><FONT FACE="Times New Roman">As a final example, a process
+used in the tape part of the piece <I>The Day After...</I>, for
+string quartet and tape (Fischman, 1995) will be examined. The
+input is the sound of a recorded airplane flying past the listener.
+This sound is followed by the output of a stereo process using
+15 filters with center frequencies ranging from 100 Hz to 4731
+Hz and bandwidth from 0.5 Hz to 3 Hz. The frequency of the pulsations
+is in the range of 0.1 Hz to 6.9 Hz, with a frequency fluctuation
+function which favors the upper range when the airplane approaches
+the listener. The pulsation envelope is a raised cosine bell.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The next example is the output
+of a process using similar parameters, except for the shape of
+the pulsation envelope, which is a short exponential trapezoid.
+The resulting pulsations tend towards discrete percussive beats.
+The final example consists of a passage of <I>The Day After...</I>,
+which uses the sounds above and their transpositions.<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Conclusion and
+Further Possibilities</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The use of multiple time-varying
+filters which shape synthesized and sampled signals has been discussed
+in detail. The point of departure consisted of models developed
+by J. C. Risset for use in his compositional work. Initially,
+an additive model was simulated using a set of filters with constant
+center frequency and bandwidth. This was then realized using a
+subtractive model, which was extended to include time-varying
+center frequency and bandwidth, time-varying pulsation frequency,
+balanced output, spatial articulation, Doppler effect, treatment
+of stereo soundfiles and cross-fades between balanced and unbalanced
+versions.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The techniques above offer a great
+range of possibilities which are greatly enhanced by the fact
+that they take full advantage of the characteristics of the input
+source; different sounds fed to the same bank of filters will
+produce different results. Therefore, proper manipulation of the
+filter parameters may allow the composer to take keep interesting
+properties of the original source and employ these for the creation
+of new sonorities.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The processes described in this
+chapter may be developed further. For example, the panning algorithms
+may be extended to cope with more than one dimension. In a quadraphonic
+system, it is possible to use Csound&#146;s PAN statement. If
+three-dimensional spatialization is required, equations (13) to
+(15) may also be applied to the movement between rear and front
+and top and bottom set of speakers using different variables to
+represent each dimension. It is also possible to generate depth
+information using two speakers: if <I>y</I> is the normalized
+distance from a sound behind the speakers to the line of the speakers,
+equations (13) to (15) may be modified as follows:</FONT></P>
+
+<P><FONT FACE="Times New Roman">equations (13) become<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/32.gif" HEIGHT="49"
+WIDTH="259" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (20)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">equations (14) and (15) become<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/33.gif" HEIGHT="85"
+WIDTH="290" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Other processes may include the
+use of non-linear filters, manipulation of spectral regions using
+Csound&#146;s phase vocoder (PVOC) and associated statements and
+the application of temporal procedures using the Csound module
+sndwarp.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Finally, the modularity and relative
+simplicity of the filter bank technique makes it ideal for real
+time implementation, especially in view of the possibilities offered
+by Extended Csound. It is therefore feasible to envisage the application
+of a set of filters to the output of a microphone (or any other
+signal) during a live performance. The parameters may be controlled
+using faders, mice, joysticks, etc. via MIDI or any other protocol.
+The number of filters used in real-time is directly dependent
+on the processing power of the hardware and may therefore be reduced
+or increased in a modular way, making the process easily adaptable
+to the capabilities of a particular system.<BR>
+&nbsp;</FONT></P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">Notes</FONT></B></P>
+
+<OL>
+  <LI><FONT FACE="Times New Roman">From the trigonometric identity
+  cos(a)=cos(-a), one may conclude that negative frequencies reflect
+  as positive frequencies with no change of phase.<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">RMS is the square root of the
+  average of samples raised to the square.<BR>
+  </FONT>
+</OL>
+
+<H3><FONT FACE="Times New Roman">References</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Atkins, M., Bentley, A., Endrich,
+T., Fischman, R., Malham, D., Orton, R. and Wishart, T. 1987.
+The Composers&#146; Desktop Project. In S. Tipei and J. Beauchamp
+(eds.) <I>Proc. Int. Computer Music Conf</I>. San Francisco: Computer
+Music Association, pp. 146-50</FONT></P>
+
+<P><FONT FACE="Times New Roman">Dobson, R. and Endrich, T. J.
+1994. CDP &#145;Groucho&#146; Sound Processing Programs. In T.
+J. Endrich (ed.) <I>Composers&#146; Desktop Project (CDP). Professional
+Computer Music System User Guide</I>, <I>Release 2</I>. York:
+CDP Ltd.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Dodge, C., Jerse, T. A. 1985.
+<I>Computer Music. Synthesis, Composition and Performance</I>.
+New York: Schirmer Books.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Fischman, R. 1991. <I>Musical
+Applications of Digital Synthesis and Processing Techniques. Realisation
+using Csound and the Phase Vocoder</I>. Unpublished addendum to
+DPhil composition folio. York University. UK.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Fischman, R. 1994. Sound Processing
+in Los Dados Eternos. In N. Osborne, P. Nelson, S. Emmerson (eds.)
+<I>Contemporary Music Review. Timbre Composition in Electroacoustic
+Music</I>. 10(2): 181-9. Switzerland: Harwood.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Fischman, R. 1995. <I>The Day
+After</I>. Piece for string quartet and tape.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Risset J. C. 1969. <I>Introductory
+Catalogue of Computer-Synthesized Sounds</I>. Murray Hill, N.
+J.: Bell Telephone Laboratories.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Risset J. C. 1977. <I>Inharmonique</I>.
+In compact disc INA C003.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Risset J. C. 1985. <I>Sud</I>.
+In compact disc INA C003.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Risset J. C. 1991. Timbre analysis
+by Synthesis. Representations, Imitations, and Variants for Musical
+Composition. In G. De Poli, A. Picciali and C. Roads (eds.) <I>Representations
+of Musical Signals</I>, pp. 7-43. Cambridge, MA: MIT Press.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Vercoe, B. 1986. <I>Csound. A
+Manual for the Audio Processing System and Supporting Programs
+with Tutorials</I>. Cambridge, MA: MIT Media Lab.</FONT>
+
+</BODY>
+</HTML>

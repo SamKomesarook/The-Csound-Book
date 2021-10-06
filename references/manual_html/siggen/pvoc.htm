@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>pvoc, vpvoc, tableseg, tablexseg</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="guiro.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvread.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#vocoding" class="toqr">
+Signal Generators: STFT Resynthesis (Vocoding)</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>pvoc, vpvoc, tableseg, tablexseg</h2>
+<pre>
+  ar      <strong>pvoc</strong>       ktimpnt, kfmod, ifilcod[, ispecwp, iextractmode, ifreqlim, igatefn]
+  ar      <strong>vpvoc</strong>      ktimpnt, kfmod, ifile[, ispecwp[, ifn]]
+          <strong>tableseg</strong>   ifn1, idur1, ifn2[, idur2, ifn3[...]]
+          <strong>tablexseg</strong>  ifn1, idur1, ifn2[, idur2, ifn3[...]]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+
+<p>Output of <strong>pvoc</strong> and <strong>vpvoc</strong> is an additive set of individually controlled sinusoids, using phase vocoder resynthesis.</p>
+<p><strong>tableseg</strong> and <strong>tablexseg</strong> are like <strong>linseg </strong>and <strong>expseg</strong> but interpolate between values in a stored function tables. The result is a new function table passed internally to any following <strong>vpvoc</strong> which occurs before a subsequent <strong>tableseg</strong> or <strong>tablexseg</strong> (much like <strong>lpread</strong>/<strong>lpreson</strong> pairs work). The uses of these are described below under <strong>vpvoc</strong>.
+</p>
+
+<h3>Initialization</h3>
+
+<p><em>ifilcod</em> &#8211; integer or character-string denoting a control-file derived from analysis of an audio signal. An integer denotes the suffix of a file <em>pvoc.m</em>; a character-string (in double quotes) gives a filename, optionally a full pathname. If not fullpath, the file is sought first in the current directory, then in the one given by the environment variable <a href="../syntax/dirfiles.htm"><strong>SADIR</strong></a> (if defined).  <strong>pvoc</strong> control contains breakpoint amplitude and frequency envelope values organized for fft resynthesis. Memory usage depends on the size of the files involved, which are read and held entirely in memory during computation but are shared by multiple calls (see also <a href="../sigmod/lpread.htm"><strong>lpread</strong></a>).
+</p>
+<p><em>ifn1</em>, <em>ifn2</em>, <em>ifn3</em>, etc. &#8211; function table numbers for <strong>tableseg</strong> and <strong>tablexseg</strong>. <em>ifn1</em>, <em>ifn2</em>, and so on, must be the same size.
+</p>
+<p><em>idur1</em>, <em>idur2</em>, etc. &#8211; durations for <strong>tableseg</strong> and <strong>tablexseg</strong>, during which interpolation from one table to the next will take place.
+</p>
+<p><em>ispecwp</em> (optional) &#8211; if non-zero, attempts to preserve the spectral envelope while its frequency content is varied by <em>kfmod</em>. The default value is zero.
+</p>
+<p><em>iextractmode</em> (optional) &#8211; determines if spectral extraction will be carried out and if so whether components that have changes in frequency below <em>ifreqlim</em> or above <em>ifreqlim</em> will be discarded. A value for <em>iextractmode</em> of 1 will cause <strong>pvadd</strong> to synthesize only those components where the frequency difference between analysis frames is greater than <em>ifreqlim</em>. A value of 2 for <em>iextractmode</em> will cause <strong>pvadd</strong> to synthesize only those components where the frequency difference between frames is less than <em>ifreqlim</em>. The default values for <em>iextractmode</em> and <em>ifreqlim</em> are 0, in which case a simple resynthesis will be done. See examples under <a href="pvadd.htm"><b>pvadd</b></a> for how to use spectral extraction. 
+</p>
+<p><em>igatefn</em> (optional) &#8211; the number of a stored function which will be applied to the amplitudes of the analysis bins before resynthesis takes place. If <em>igatefn</em> is greater than 0 the amplitudes of each bin will be scaled by <em>igatefn</em> through a simple mapping process. First, the  amplitudes of all of the bins in all of the frames in the entire analysis file are compared to determine the maximum amplitude value. This value is then used create normalized amplitudes as indeces into the stored function <em>igatefn</em>. The maximum amplitude will map to the last point in the function. An amplitude of 0 will map to the first point in the function. Values between 0 and 1 will map accordingly to points along the function table. See examples under <a href="pvadd.htm"><b>pvadd</b></a> for how to use amplitude gating.
+</p>
+<p><em>ifn</em> (optional) &#8211; optional function table containing control information for vpvoc. If <em>ifn</em> = 0, control is derived internally from a previous <strong>tableseg</strong> or <strong>tablexseg</strong> unit. Default is 0. (New in Csound version 3.59)</p>
+
+<h3>Performance</h3>
+<p><strong>pvoc</strong> implements signal reconstruction using an fft-based phase vocoder. The control data stems from a precomputed analysis file with a known frame rate. The passage of time through this file is specified by <em>ktimpnt</em>, which represents the time in seconds. <em>ktimpnt</em> must always be positive, but can move forwards or backwards in time, be stationary or discontinuous, as a pointer into the analysis file. <em>kfmod</em> is a control-rate transposition factor: a value of 1 incurs no transposition, 1.5 transposes up a perfect fifth, and .5 down an octave. <em>kfmod</em> is a control-rate transposition factor: a value of 1 incurs no transposition, 1.5 transposes up a perfect fifth, and .5 down an octave.</p>
+
+<p>This implementation of <strong>pvoc</strong> was orignally written by Dan Ellis. It is based in part on the system of Mark Dolson, but the pre-analysis concept is new. The  spectral extraction and amplitude gating (new in Csound version 3.56) were added by Richard Karpen based on functions in SoundHack by Tom Erbe.
+</p>
+<p><strong>vpvoc</strong> is identical to <strong>pvoc </strong>except that it takes the result of a previous <strong>tableseg</strong> or <strong>tablexseg</strong> and uses the resulting function table (passed internally to the <strong>vpvoc</strong>), as an envelope over the magnitudes of the analysis data channels. Optionally, a table specified by <em>ifn</em> may be used. The result is spectral enveloping. The function size used in the t<strong>ableseg</strong> should be <em>framesize/2,</em> where framesize is the number of bins in the phase vocoder analysis file that is being used by the <strong>vpvoc</strong>. Each location in the table will be used to scale a single analysis bin. By using different functions for <em>ifn1</em>, <em>ifn2</em>, etc.. in the<strong> tableseg</strong>, the spectral envelope becomes a dynamically changing one. See also <a href="pvread.htm"><strong>tableseg</strong></a> and <a href="pvread.htm"><strong>tablexseg</strong></a>.
+</p>
+<h3>Example</h3>
+<p>The following example, using <strong>vpvoc</strong>, shows the use of functions such as
+</p>
+<pre>
+  <strong>f</strong> 1 0 256 5 .001 128 1 128 .001
+  <strong>f</strong> 2 0 256  5 1 128 .001 128 1
+  <strong>f</strong> 3 0 256  7 1 256 1</pre>
+<p>to scale the amplitudes of the separate analysis bins.
+</p>
+<pre>
+  ktime   <strong>line</strong>            0, p3,3 ; time pointer, in seconds, into file
+          <strong>tablexseg</strong>       1, p3*.5, 2, p3*.5, 3
+  apv     <strong>vpvoc</strong>           ktime,1, &quot;pvoc.file&quot;
+</pre>
+<p>The result would be a time-varying &quot;spectral envelope&quot; applied to the phase vocoder analysis data. Since this amplifies or attenuates the amount of signal at the frequencies that are paired with the amplitudes which are scaled by these functions, it has the effect of applying very accurate filters to the signal. In this example the first table would have the effect of a band-pass filter, gradually be band-rejected over half the note's duration, and then go towards no modification of the magnitudes over the second half.
+</p>
+
+<h3>Author</h3>
+<p>Dan Ellis</p>
+
+<p>Richard Karpen<br>
+Seattle, Wash<br>
+1997</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="guiro.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvread.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#vocoding" class="toqr">
+Signal Generators: STFT Resynthesis (Vocoding)</font></a>
+</body>
+
+</html>

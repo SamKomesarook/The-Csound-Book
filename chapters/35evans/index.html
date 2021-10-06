@@ -1,0 +1,102 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Composing Fractal Music with Csound</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">33. Composing Fractal Music with
+Csound</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Brian Evans</FONT></H2>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+CELLPADDING="0" WIDTH="600">
+  <TR>
+    <TD ALIGN="RIGHT" WIDTH="175"><B><FONT SIZE="+2">Contents</FONT></B></TD> 
+    <TD WIDTH="20"><IMG SRC="figures/space.gif" WIDTH="1" HEIGHT="1"
+      NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+    <TD WIDTH="405"></TD>
+  </TR>
+</TABLE><TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0" WIDTH="600">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="195"><TABLE ALIGN="LEFT" BORDER="0" 
+      CELLSPACING="0" CELLPADDING="0" WIDTH="175">
+        <TR ALIGN="RIGHT">
+          <TD><B><FONT SIZE="+1">Introduction</FONT></B></TD> 
+        </TR>
+        <TR ALIGN="RIGHT">
+          <TD><A HREF="algo.html">The Basic Algorithm</A></TD> 
+        </TR>
+        <TR ALIGN="RIGHT">
+          <TD><A HREF="calcscore.html">Calculating a Score</A></TD> 
+        </TR>
+        <TR ALIGN="RIGHT">
+          <TD><FONT SIZE="-1">(sonic line vs image plane)</FONT><IMG SRC="figures/space.gif"
+            hspace="5" WIDTH="1" HEIGHT="1" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+        </TR>
+        <TR ALIGN="RIGHT">
+          <TD><A HREF="mapping.html">Simple Mapping with Csound</A></TD> 
+        </TR>
+        <TR ALIGN="RIGHT">
+          <TD><A HREF="range.html">Pitch Range and Event Length</A></TD> 
+        </TR>
+        <TR ALIGN="RIGHT">
+          <TD><A HREF="thoughts.html">Final Thoughts</A></TD> 
+        </TR>
+        <TR ALIGN="RIGHT">
+          <TD><A HREF="refs.html">References</A></TD> 
+        </TR>
+        <TR ALIGN="RIGHT">
+          <TD><IMG SRC="figures/space.gif" vspace="5" WIDTH="1" HEIGHT="1"
+            NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+        </TR>
+        <TR ALIGN="RIGHT">
+          <TD><A HREF="instruments.html">Code/Sound Examples</A></TD> 
+        </TR>
+        <TR ALIGN="RIGHT">
+          <TD><A HREF="calcscript.html">Create a Score!</A></TD> 
+        </TR>
+        <TR ALIGN="RIGHT">
+          <TD><IMG SRC="figures/space.gif" vspace="5" WIDTH="1" HEIGHT="1"
+            NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+        </TR>
+        <TR ALIGN="RIGHT">
+          <TD><A HREF="images.html">Misc. Images</A></TD> 
+        </TR>
+      </TABLE></TD>
+    <TD WIDTH="405"><TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0"
+      WIDTH="405">
+        <TR>
+          <TD VALIGN="TOP" WIDTH="405">
+            <P>The Mandelbrot set is a mathematical object that has gained
+            celebrity status through the many startling images created from
+            the set's visualization. The fractal mathematics of the set is
+            easy to understand in its basic form. It is also easy to write
+            a computer program to visualize the set. The usual approach is
+            to calculate a plane of points, each point being evaluated to
+            an integer and then mapped into a color.&nbsp;</P>
+
+            <P>By selecting a line of points, instead of a plane, an array
+            of values can be calculated from the set. Using Csound these
+            values can be mapped into sonic dimensions such as frequency
+            or amplitude. A mapping is realized as a collection of I-statements
+            for a predefined Csound instrument. The Csound orchestra and
+            score compile to make a sonic representation of the set. Creating
+            sonic maps from multiple lines can build a multi-voice composition.</P>
+
+            <P>This method of generating sonic maps of a mathematical model
+            is straightforward, derived from earlier MIDI-based efforts to
+            generate fractal music as an accompanient to fractal visualization.[<A
+            HREF="refs.html#ref1">1</A>] The specific example using the Mandelbrot
+            set can be generalized to the sonification of a variety of abstract
+            or scientific data. [<A HREF="refs.html#ref2">2</A>] [<A HREF="refs.html#ref3">3</A>]
+          </TD> 
+        </TR>
+      </TABLE></TD>
+  </TR>
+</TABLE>
+
+</BODY>
+</HTML>

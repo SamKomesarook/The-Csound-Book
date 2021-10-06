@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+	<title>vbaplsinit, vbap4, vbap8, vbap16, vbap4move, vbap8move, vbap16move, vbapz, vbapzmove</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigio/hrtfer.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="spat.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#panning" class="toqr">
+Signal Modifiers: Panning and Spatialization</font></a>
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>vbaplsinit, vbap4, vbap8, vbap16, vbap4move, vbap8move, vbap16move, vbapz, vbapzmove</h2>
+<pre>
+                                                 <strong>vbaplsinit</strong>    idim, ilsnum, idir1, idir2,... 
+
+ar1, ar2, ar3, ar4                               <strong>vbap4</strong>         asig, iazim, ielev, ispread
+ 
+ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8           <strong>vbap8</strong>         asig, iazim, ielev, ispread
+ 
+ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8,          <strong>vbap16</strong>        asig, iazim, ielev, ispread
+ar9, ar10, ar11, ar12, ar13, ar14, ar15, ar16
+                   
+ar1, ar2, ar3, ar4                               <strong>vbap4move</strong>     asig, ispread, ifldnum, ifld1, ifld2, ...
+ 
+ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8           <strong>vbap8move</strong>     asig, ispread, ifldnum, ifld1, ifld2, ...
+ 
+ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8,          <strong>vbap16move</strong>    asig, ispread, ifldnum, ifld1, ifld2, ...
+ar9, ar10, ar11, ar12, ar13, ar14, ar15, ar16
+ 
+                                                 <strong>vbapz</strong>         inumchnls, istartndx, asig, iazim, ielev, ispread
+                                                 <strong>vbapzmove</strong>     inumchnls, istartndx, ispread, ifldnum, ifld1, ifld2,...
+
+
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Distribute an audio signal among 2 to 16 channels or write it to a ZAK array, all with localization control.</p>
+
+<h3>Initialization</h3>
+
+<p><em>idim</em> &#8211; dimensionality of loudspeaker array. Either 2 or 3.</p>
+ 
+<p><em>ilsnum</em> &#8211; number of loudspeakers. In two dimensions, the number can vary from 2 to 16. In three dimensions, the number can vary from 3 and 16.</p>
+ 
+<p><em>idir1, idir2</em>, etc. &#8211; directions of loudspeakers. Number of directions must be less than or equal to 16. In two-dimensional loudspeaker positioning, <em>idir</em>n is the azimuth angle respective to <em>n</em>th channel.  In three-dimensional loudspeaker positioning, fields are the azimuth and elevation angles of each loudspeaker consequently (<em>azi1</em>, <em>ele1</em>, <em>azi2</em>, <em>ele2</em>, etc.).</p>
+ 
+<p><em>iazim</em> &#8211; azimuth angle of the virtual source</p>
+ 
+<p><em>ielev</em> &#8211; elevation angle of the virtual source</p>
+ 
+<p><em>ispread</em> &#8211; spreading of the virtual source (range 0 - 100).  If value is zero, conventional amplitude panning is used. When <em>ispread</em> is increased, the number of loudspeakers used in panning increases. If value is 100, the sound is applied to all loudspeakers.</p>
+  
+<p><em>ifldnum</em> &#8211; number of fields (absolute value must be 2 or larger). If <em>ifldnum</em> is positive, the virtual source movement is a polyline specified by given directions. Each transition is performed in an equal time interval. If <em>ifldnum</em> is negative, specified angular velocities are applied to the virtual source during specified relative time intervals (see below).</p>
+
+<p><em>ifld1, ifld2</em>, etc. &#8211; azimuth angles or angular velocities, and relative durations of movement phases (see below).</p>
+
+<p><em>inumchnls</em> &#8211; number of channels to write to the ZA array. Must be in the range 2 - 256.</p>
+
+<p><em>istartndx</em> &#8211; first index or position in the ZA array to use</p>
+
+<h3>Performance</h3>
+
+<p><em>asig</em> &#8211; audio signal to be panned</p>
+
+<p><strong>vbap4</strong>, <strong>vbap8</strong>, and <strong>vbap16</strong> take an input signal, <em>asig</em>, and distribute it among 2 to 32 outputs, according to the controls <em>iazim</em> and <em>ielev</em>, and the configured loudspeaker placement.  If <em>idim</em> = 2, <em>ielev</em> is set to zero. The distribution is performed using Vector Base Amplitude Panning (VBAP - See reference).  VBAP distributes the signal using loudspeaker data configured with <strong>vbaplsinit</strong>. The signal is applied to, at most, two loudspeakers in 2-D loudspeaker configurations, and three loudspeakers in 3-D loudspeaker configurations. If the virtual source is panned outside the region spanned by loudspeakers, the nearest loudspeakers are used in panning.</p>
+
+<p><strong>vbap4move</strong>, <strong>vbap8move</strong>, and <strong>vbap16move</strong> allow the use of moving virtual sources. If <em>ifldnum</em> is positive, the fields represent directions of virtual sources and equal times, <em>iazi1</em>, [<em>iele1</em>,] <em>iazi2</em>, [<em>iele2</em>,], etc.  The position of the virtual source is interpolated between directions starting from the first direction and ending at the last. Each interval is interpolated in time that is fraction total_time / number_of_intervals of the duration of the sound event.</p>
+
+<p>If <em>ifldnum</em> is negative, the fields represent angular velocities and equal times. The first field is, however, the starting direction, <em>iazi1</em>, [<em>iele1</em>,] <em>iazi_vel1</em>, [<em>iele_vel1</em>,] <em>iazi_vel2</em>, [<em>iele_vel2</em>,] .... Each velocity is applied to the note that is fraction total_time / number_of_velocities of the duration of the sound event.  If the elevation of the virtual source becomes greater than 90 degrees or less than 0 degrees, the polarity of angular velocity is changed. Thus the elevational angular velocity produces a virtual source that moves up and down between 0 and 90 degrees.</p>
+
+<p>The opcodes <strong>vbapz</strong> and <strong>vbapzmove</strong> are the multiple channel analogs of the above opcodes, working on <em>inumchnls</em> and using a ZAK array for output.</p>
+
+<h3>Example</h3>
+
+<p>2-D panning example with stationary virtual sources:</p>
+<pre>
+  <strong>sr</strong>      =          4100
+  <strong>kr</strong>      =           441
+  <strong>ksmps</strong>   =           100
+  <strong>nchnls</strong>  =             4
+  <strong>vbaplsinit</strong>         2, 6,  0, 45, 90, 135, 200, 245, 290, 315 
+
+          <strong>instr</strong> 1	           
+  asig    <strong>oscil</strong>      20000, 440, 1                    
+  a1,a2,a3,a4,a5,a6,a7,a8   <strong>vbap8</strong>  asig, p4, 0, 20 ;p4 = azimuth
+	
+  ;render twice with alternate <strong>outq</strong> statements
+  ;  to obtain two 4 channel .wav files:
+
+          <strong>outq</strong>       a1,a2,a3,a4
+  ;       <strong>outq</strong>       a5,a6,a7,a8
+          <strong>endin</strong>
+</pre>
+
+<h3>Reference</h3>
+<p>Ville Pulkki: &quot;Virtual Sound Source Positioning Using Vector Base Amplitude Panning&quot;<br>
+<em>Journal of the Audio Engineering Society</em>,<br>
+1997 June, Vol. 45/6, p. 456.</p>
+
+<h3>Authors</h3>
+<p>Ville Pulkki<br>
+Sibelius Academy Computer Music Studio<br>
+Laboratory of Acoustics and Audio Signal Processing<br>
+Helsinki University of Technology<br>
+Helsinki, Finland<br>
+May, 2000 (New in Csound Version 4.16)</p>
+
+<p>John ffitch (<b>vbapz</b>, <b>vbabzmove</b>)<br>
+University of Bath/Codemist Ltd.<br>
+Bath, UK<br>
+May, 2000 (New in Csound Version 4.16)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigio/hrtfer.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="spat.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table><a href="../qr/sigmod.htm#panning" class="toqr">
+Signal Modifiers: Panning and Spatialization</font></a>
+</body>
+
+</html>

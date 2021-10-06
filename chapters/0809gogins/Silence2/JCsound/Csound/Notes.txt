@@ -1,0 +1,5 @@
+1998-Nov-19
+
+Winsound is missing CSliders.h.
+
+

@@ -1,0 +1,111 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>clip</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="dam.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="limit.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#amp" class="toqr">
+Signal Modifiers: Amplitude Modifiers</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>clip</h2>
+
+<pre>
+  ar      <strong>clip</strong>       asig, imeth, ilimit[, iarg]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Clips an a-rate signal to a predefined limit, in a &quot;soft&quot; manner, using one of three methods.</p>
+
+<h3>Initialization</h3>
+
+<p>
+<em>imeth</em> - selects the clipping method. The default is 0. The methods are:
+	<ul>
+		<li>0 = Bram de Jong method (default)
+		<li>1 = sine clipping
+		<li>2 = tanh clipping
+	</ul>
+</p>
+<p><em>ilimit</em> - limiting value</p>
+<p><em>iarg</em> (optional) - when <em>imeth</em> = 0, indicates the point at which clipping starts, in the range 0 - 1. Not used when <em>imeth</em> = 1 or <em>imeth</em> = 2. Default is 0.5.</p>
+
+<h3>Performance</h3>
+
+<p><em>asig</em> - a-rate input signal</p>
+<p>The Bram de Jong method (<em>imeth</em> = 0) applies the algorithm:</p>
+<p>
+  |<em>x</em>| &gt; <em>a</em>:     f(<em>x</em>) = sin(<em>x</em>) * (a+(<em>x-a</em>)/(1+((<em>x-a</em>)/(1-<em>a</em>))<sup><small>2</small></sup>
+  |<em>x</em>| &gt; 1:     f(<em>x</em>) = sin(<em>x</em>) * (<em>a</em>+1)/2
+</p>
+<p>This method requires that <em>asig</em> be normalized to 1.</p>
+<p>The second method (<em>imeth</em> = 1) is the sine clip:</p>
+<p>
+  |<em>x</em>| &lt; <em>limit</em>: f(<em>x</em>) = <em>limit</em> * sin(&#960;*<em>x</em>/(2*<em>limit</em>))
+               f(<em>x</em>) = <em>limit</em> * sin(<em>x</em>)
+</p>
+<p>The third method (imeth = 0) is the tanh clip: </p>
+<p>
+  |<em>x</em>| &lt; <em>limit</em>: f(<em>x</em>) = <em>limit</em> * tanh(<em>x/limit</em>)/tanh(1)
+               f(<em>x</em>) = <em>limit</em> * sin(<em>x</em>)
+</p>
+<p><strong>Note</strong>: Method 1 appears to be non-functional at release of Csound version 4.07.</p>
+
+
+<h3>Examples</h3>
+<pre>
+  a1      <strong>soundin</strong>
+  a2      <strong>oscil</strong>      25000, 1
+  asig    <strong>clip</strong>       a1+a2, 0, 30000, .75
+          <strong>out</strong>        asig
+</pre>
+
+
+<h3>Author</h3>
+<p>
+John ffitch<br>
+University of Bath, Codemist Ltd.<br>
+Bath, UK<br>
+August, 2000<br>
+New in Csound version 4.07
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="dam.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="limit.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#amp" class="toqr">
+Signal Modifiers: Amplitude Modifiers</font></a>
+</body>
+
+</html>

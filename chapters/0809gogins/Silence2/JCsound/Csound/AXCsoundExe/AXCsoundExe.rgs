@@ -1,0 +1,11 @@
+HKCR
+{
+	NoRemove AppID
+	{
+		{0FF27561-3E66-11D2-8F6B-006008028B07} = s 'AXCsoundExe'
+		'AXCsound.EXE'
+		{
+			val AppID = s {0FF27561-3E66-11D2-8F6B-006008028B07}
+		}
+	}
+}

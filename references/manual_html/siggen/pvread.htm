@@ -1,0 +1,117 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>pvread, pvbufread, pvinterp, pvcross</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvoc.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvadd.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#vocoding" class="toqr">
+Signal Generators: STFT Resynthesis (Vocoding)</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>pvread, pvbufread, pvinterp, pvcross</h2>
+
+
+<pre>
+  kfr,    <strong>pvread</strong>     ktimpnt, ifile, ibin
+  kap
+          <strong>pvbufread</strong>  ktimpnt, ifile
+  ar      <strong>pvinterp</strong>   ktimpnt, kfmod, ifile, kfreqscale1, kfreqscale2, kampscale1, kampscale2, kfreqinterp, kampinterp
+  ar      <strong>pvcross</strong>    ktimpnt, kfmod, ifile, kamp1, kamp2[, ispecwp]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+
+<p><strong>pvread</strong> reads from a <strong>pvoc</strong> file and returns the frequency and amplitude from a single analysis channel or bin. The returned values can be used anywhere else in the Csound instrument. For example, one can use them as arguments to an oscillator to synthesize a single component from an analyzed signal or a bank of pvreads can be used to resynthesize the analyzed sound using additive synthesis by passing the frequency and magnitude values to a bank of oscillators.
+</p>
+<p><strong>pvbufread</strong> reads from a <strong>pvoc</strong> file and makes the retrieved data available to any following <strong>pvinterp</strong> and <strong>pvcross</strong> units that appear in an instrument before a subsequent <strong>pvbufread</strong> (just as <strong>lpread</strong> and <strong>lpreson</strong> work together). The data is passed internally and the unit has no output of its own. <strong>pvinterp</strong> and<strong> pvcross</strong> allow the interprocessing of two phase vocoder analysis files prior to the resynthesis which these units do also. Both of these units receive data from one of the files from a previously called <strong>pvbufread</strong> unit. The other file is read by the <strong>pvinterp</strong> and/or <strong>pvcross</strong> units. Since each of these units has its own time-pointer the analysis files can be read at different speeds and directions from one another. <strong>pvinterp</strong> does not allow for the use of the <em>ispecwp</em> process as with the<strong> pvoc</strong> and <strong>vpvoc</strong> units.
+</p>
+<p><strong>pvinterp</strong> interpolates between the amplitudes and frequencies, on a bin by bin basis, of two phase vocoder analysis files (one from a previously called <strong>pvbufread</strong> unit and the other from within its own argument list), allowing for user defined transitions between analyzed sounds. It also allows for general scaling of the amplitudes and frequencies of each file separately before the interpolated values are calculated and sent to the resynthesis routines. The <em>kfmod</em> argument in <strong>pvinterp</strong> performs its frequency scaling on the frequency values after their derivation from the separate scaling and subsequent interpolation is performed so that this acts as an overall scaling value of the new frequency components.
+</p>
+<p><strong>pvcross</strong> applies the amplitudes from one phase vocoder analysis file to the data from a second file and then performs the resynthesis. The data is passed, as described above, from a previously called <strong>pvbufread</strong> unit. The two k-rate amplitude arguments are used to scale the amplitudes of each files separately before they are added together and used in the resynthesis (see below for further explanation). The frequencies of the first file are not used at all in this process. This unit simply allows for cross-synthesis through the application of the amplitudes of the spectra of one signal to the frequencies of a second signal. Unlike <strong>pvinterp</strong>, <strong>pvcross</strong> does allow for the use of the <em>ispecwp</em> as in<strong> pvoc</strong> and <strong>vpvoc</strong>.
+</p>
+
+<h3>Initialization</h3>
+<p><em>ifile</em> &#8211; the <strong>pvoc</strong> number (n in pvoc.n) or the name in quotes of the analysis file made using pvanal. (See <a href="adsyn.htm"><strong>pvoc</strong></a>.)</p>
+<p><em>ibin</em> &#8211; the number of the analysis channel from which to return frequency in Hz and magnitude.
+</p>
+
+<h3>Performance</h3>
+
+<p><em>kfreq</em>, <em>kamp</em> &#8211; outputs of the <strong>pvread</strong> unit. These values, retrieved from a phase vocoder analysis file, represent the values of frequency and amplitude from a single analysis channel specified in the<em> ibin</em> argument. Interpolation between analysis frames is performed at k-rate resolution and dependent of course upon the rate and direction of <em>ktimpnt</em>.
+</p>
+<p><em>ktimpnt</em>, <em>kfmod</em>, <em>ispecwp</em> &#8211; used for <strong>pvread</strong> exactly the same as for <strong>pvoc</strong> (see above description of <strong>pvinterp</strong> for its special use of <em>kfmod</em>).
+</p>
+<p><em>kfreqscale1</em>, <em>kfreqscale2</em>, <em>kampscale1</em>, <em>kampscale2</em> &#8211; used in<strong> pvinterp</strong> to scale the frequencies and amplitudes stored in each frame of the phase vocoder analysis file.<em> kfreqscale1</em> and <em>kampscale1</em> scale the frequencies and amplitudes of the data from the file read by the previously called <strong>pvbufread</strong> (this data is passed internally to the pvinterp unit). <em>kfreqscale2</em> and <em>kampscale2</em> scale the frequencies and amplitudes of the file named by ifile in the <strong>pvinterp</strong> argument list and read within the<strong> pvinterp </strong>unit. By using these arguments it is possible to adjust these values before applying the interpolation. For example, if file1 is much louder than file2, it might be desirable to scale down the amplitudes of file1 or scale up those of file2 before interpolating. Likewise one can adjust the frequencies of each to bring them more in accord with one another (or just the opposite, of course!) before the interpolation is performed.
+</p>
+<p><em>kfreqinterp</em>, <em>kampinterp</em> &#8211; used in <strong>pvinterp</strong>, determine the interpolation distance between the values of one phase vocoder file and the values of a second file. When the value of <em>kfreqinterp</em> is 0, the frequency values will be entirely those from the first file (read by the <strong>pvbufread</strong>), post scaling by the <em>kfreqscale1</em> argument. When the value of <em>kfreqinterp</em> is 1 the frequency values will be those of the second file (read by the <strong>pvinterp</strong> unit itself), post scaling by kfreqscale2. When <em>kfreqinterp</em> is between 0 and 1 the frequency values will be calculated, on a bin, by bin basis, as the percentage between each pair of frequencies (in other words, <em>kfreqinterp</em>=.5 will cause the frequencies values to be half way between the values in the set of data from the first file and the set of data from the second file).<em> kampinterp1</em> and <em>kampinterp2</em> work in the same way upon the amplitudes of the two files. Since these are k-rate arguments, the percentages can change over time making it possible to create many kinds of transitions between sounds.
+</p>
+<h3>Example</h3>
+<p>The example below shows the use <strong>pvread</strong> to synthesize a single component from a phase vocoder analysis file. It should be noted that the <em>kfreq</em> and <em>kamp</em> outputs can be used for any kind of synthesis, filtering, processing, and so on.
+</p>
+<pre>
+  ktime         <strong>line</strong>    0, p3, 3 
+  kfreq, kamp   <strong>pvread</strong>  ktime, &quot;pvoc.file&quot;, 7 ; read
+                                        ;data from 7th analysis bin.  
+  asig          <strong>oscili</strong>  kamp, kfreq, 1  ; function 1
+                                        ;is a stored sine
+</pre>
+<p>The example below shows an example using <strong>pvbufread</strong> with <strong>pvinterp</strong> to interpolate between the sound of an oboe and the sound of a clarinet. The value of <em>kinterp</em> returned by a linseg is used to determine the timing of the transitions between the two sounds. The interpolation of frequencies and amplitudes are controlled by the same factor in this example, but for other effects it might be interesting to not have them synchronized in this way. In this example the sound will begin as a clarinet, transform into the oboe and then return again to the clarinet sound. The value of <em>kfreqscale2</em> is 1.065 because the oboe in this case is a semitone higher in pitch than the clarinet and this brings them approximately to the same pitch. The value of <em>kampscale2</em> is .75 because the analyzed clarinet was somewhat louder than the analyzed oboe. The setting of these two parameters make the transition quite smooth in this case, but such adjustments are by no means necessary or even advocated.
+</p>
+<pre>
+  ktime1  <strong>line</strong>      0, p3, 3.5 ; used as index in the &quot;oboe.pvoc&quot; file
+  ktime2  <strong>line</strong>      0, p3, 4.5 ; used as index in the  &quot;clar.pvoc&quot; file
+  kinterp <strong>linseg</strong>    1, p3*.15, 1, p3*.35, 0, p3*.25, 0, p3*.15, 1, p3*.1, 1
+          <strong>pvbufread</strong> ktime1, &quot;oboe.pvoc&quot;
+  apv     <strong>pvinterp</strong>  ktime2,1,&quot;clar.pvoc&quot;,1,1.065,1,.75,1-kinterp,1-kinterp
+</pre>
+<p>Below is an example using<strong> pvbufread</strong> with <strong>pvcross</strong>. In this example the amplitudes used in the resynthesis gradually change from those of the oboe to those of the clarinet. The frequencies, of course, remain those of the clarinet throughout the process since<strong> pvcross</strong> does not use the frequency data from the file read by <strong>pvbufread</strong>.
+</p>
+<pre>
+  ktime1  <strong>line</strong>    0, p3, 3.5 ; used as index in the &quot;oboe.pvoc&quot; file
+  ktime2  <strong>line</strong>    0, p3, 4.5 ; used as index in the &quot;clar.pvoc&quot; file
+  kcross  <strong>expon</strong>     .001, p3, 1
+          <strong>pvbufread</strong> ktime1, &quot;oboe.pvoc&quot;
+  apv     <strong>pvcross</strong>   ktime2, 1, &quot;clar.pvoc&quot;, 1-kcross, kcross</pre>
+<h3>Author </h3>
+<p>Richard Karpen<br>
+Seattle, Wash<br>
+1997<br>
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvoc.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvadd.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#vocoding" class="toqr">
+Signal Generators: STFT Resynthesis (Vocoding)</font></a>
+</body>
+
+</html>

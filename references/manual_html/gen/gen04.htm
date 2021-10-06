@@ -1,0 +1,77 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN04</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen03.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen05.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#amp" class="toqr">
+<strong>GEN</strong> Routines: Amplitude Scaling</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN04</h2>
+
+<pre>
+  <strong>f</strong>  #  time  size  4  source#  sourcemode   </pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This subroutine generates a normalizing function by examining the contents of an existing table.
+</p>
+<h3>Initialization</h3>
+<p><em>size </em> &#8211; number of points in the table. Should be power-of-2 plus 1. Must not exceed (except by 1) the size of the source table being examined; limited to just half that size if the sourcemode is of type offset (see below).
+</p>
+<p><em>source #</em> &#8211; table number of stored function to be examined.
+</p>
+<p><em>sourcemode</em> &#8211; a coded value, specifying how the source table is to be scanned to obtain the normalizing function. Zero indicates that the source is to be scanned from left to right. Non-zero indicates that the source has a bipolar structure; scanning will begin at the mid-point and progress outwards, looking at pairs of points equidistant from the center.
+</p>
+<h3>Note </h3>
+<p>The normalizing function derives from the progressive absolute maxima of the source table being scanned. The new table is created left-to-right, with stored values equal to 1/(absolute maximum so far scanned). Stored values will thus begin with 1/(first value scanned), then get progressively smaller as new maxima are encountered. For a source table which is normalized (values &lt;= 1), the derived values will range from 1/(first value scanned) down to 1. If the first value scanned is zero, that inverse will be set to 1.
+</p>
+<p>The normalizing function from <strong>GEN04</strong> is not itself normalized.
+</p>
+<p><strong>GEN04</strong> is useful for scaling a table-derived signal so that it has a consistent peak amplitude. A particular application occurs in waveshaping when the carrier (or indexing) signal is less than full amplitude.
+</p>
+<h3>Example</h3>
+
+<pre>
+  <strong>f</strong>   2   0   512   4    1   1   
+</pre>
+<p>This creates a normalizing function for use in connection with the <a href="GEN03.htm"><strong>GEN03</strong></a> table 1 example. Midpoint bipolar offset is specified.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen03.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen05.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#amp" class="toqr">
+<strong>GEN</strong> Routines: Amplitude Scaling</font></a>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>The Cybil compositional language</title>
+	</head>
+
+	<body>
+		&nbsp;
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="gensyn.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="sq.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<h2>Cybil commands</h2>
+		</center>
+		<center>
+			<a href="cybil.html">The Cybil composition language</a></center>
+		<center>
+			<a href="gensyn.html">Cybil general syntax</a></center>
+		<center>
+			<a href="cybsco.html">Cybil example</a></center>
+		<center>
+			<a href="funcs.html">Cybil functions</a></center>
+		<center>
+			<a href="oper.html">Operations</a></center>
+		<center>
+			<a href="examp.html">Examples of Cybil command lines</a>&nbsp;<br>
+			<br>
+			<br>
+		</center>
+		<center>
+			<hr>
+		</center>
+		<h4>Cybil commands</h4>
+		A Cybil command generates data over a given number of events or a given period of time, according to a specific algorithm. The general syntax is:
+		<pre>{algorithm duration} [ operator {function} ]</pre>
+		Each algorithm must be given between the &quot;<b>{ }</b>&quot; brackets. The operator and function are part of the command but are optional. If present, the results of the command will be operated on by the given function.
+		<p>&nbsp;Duration can be specified in two ways:
+		<ol>
+			<li>A single <b>number</b> indicates the command will be in function for a <b>number</b> of events.
+			<li>A single <b>number</b> followed immediately with a <b>s</b> indicates the command will be in function for a <b>number</b> <b>of seconds</b>.
+		</ol>
+		The legal Cybil algorithms are:
+		<pre><b>description&nbsp;&nbsp; algo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; syntax
+</b>___________&nbsp;&nbsp; __&nbsp;&nbsp;&nbsp;&nbsp; _________________________________
+
+sequence&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b><a href="sq.html">sq</a></b>&nbsp;&nbsp;&nbsp;&nbsp; {sq val1 val2 val3....duration(s)}
+line&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b><a href="li.html">li</a></b>&nbsp;&nbsp;&nbsp;&nbsp; {li min max duration(s)}
+exponential&nbsp;&nbsp; <b><a href="lo.html">lo</a></b>&nbsp;&nbsp;&nbsp;&nbsp; {lo min max duration(s)}&nbsp;
+tendency mask <b><a href="ma.html">ma</a></b>&nbsp;&nbsp;&nbsp;&nbsp; {ma f/i min1 min2 max1 max2 duration(s)}
+graph&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b><a href="gr.html">gr</a></b>&nbsp;&nbsp;&nbsp;&nbsp; {gr name_of_graph duration(s)}</pre>
+		<hr>
+		<h4><b><a href="index.html"></a></b></h4>
+		&nbsp;
+	</body>
+
+</html>

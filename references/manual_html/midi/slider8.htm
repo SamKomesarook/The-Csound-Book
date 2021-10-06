@@ -1,0 +1,135 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>slider8, slider16, slider32, slider64, slider8f, slider16f, slider32f, slider64f, s16b14, s32b14</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="chanctrl.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="midiin.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#sliders" class="toqr">
+MIDI Support: Slider Banks</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>slider8, slider16, slider32, slider64, slider8f, slider16f, slider32f, slider64f, s16b14, s32b14</h2>
+
+<pre>
+  i1,...,   <strong>slider8</strong>    ichan, ictlnum1, imin1, imax1, init1, ifn1,..., ictlnum8, imin8, imax8, init8, ifn8
+  i8
+  k1,...,   <strong>slider8</strong>    ichan, ictlnum1, imin1, imax1, init1, ifn1,..., ictlnum8, imin8, imax8, init8, ifn8
+  k8
+  i1,...,   <strong>slider16</strong>   ichan, ictlnum1, imin1, imax1, init1, ifn1,..., ictlnum16, imin16, imax16, init16, ifn16
+  i16
+  k1,...,   <strong>slider16</strong>   ichan, ictlnum1, imin1, imax1, init1, ifn1,..., ictlnum16, imin16, imax16, init16, ifn16
+  k16
+  i1,...,   <strong>slider32</strong>   ichan, ictlnum1, imin1, imax1, init1, ifn1,..., ictlnum32, imin32, imax32, init32, ifn32
+  i32
+  k1,...,   <strong>slider32</strong>   ichan, ictlnum1, imin1, imax1, init1, ifn1,..., ictlnum32, imin32, imax32, init32, ifn32
+  k32
+  i1,...,   <strong>slider64</strong>   ichan, ictlnum1, imin1, imax1, init1, ifn1,..., ictlnum64, imin64, imax64, init64, ifn64
+  i64
+  k1,...,   <strong>slider64</strong>   ichan, ictlnum1, imin1, imax1, init1, ifn1,..., ictlnum64, imin64, imax64, init64, ifn64
+  k64
+  k1,...,   <strong>slider8f</strong>   ichan, ictlnum1, imin1, imax1, init1, ifn1, icutoff1,..., ictlnum8, imin8, imax8, init8, ifn8, icutoff8
+  k8
+  k1,...,   <strong>slider16f</strong>  ichan, ictlnum1, imin1, imax1, init1, ifn1, icutoff1,..., ictlnum16, imin16, imax16, init16, ifn16, icutoff16
+  k16
+  k1,...,   <strong>slider32f</strong>  ichan, ictlnum1, imin1, imax1, init1, ifn1, icutoff1,..., ictlnum32, imin32, imax32, init32, ifn32, icutoff32
+  k32
+  k1,...,   <strong>slider64f</strong>  ichan, ictlnum1, imin1, imax1, init1, ifn1, icutoff1,..., ictlnum64, imin64, imax64, init64, ifn64, icutoff64
+  k64
+  i1,...,   <strong>s16b14</strong>     ichan, ictlno_msb1, ictlno_lsb1, imin1, imax1, initvalue1, ifn1,..., ictlno_msb16, ictlno_lsb16, imin16, imax16, initvalue16, ifn16
+  i16
+  k1,...,   <strong>s16b14</strong>     ichan, ictlno_msb1, ictlno_lsb1, imin1, imax1, initvalue1, ifn1,..., ictlno_msb16, ictlno_lsb16, imin16, imax16, initvalue16, ifn16
+  k16
+  i1,...,   <strong>s32b14</strong>     ichan, ictlno_msb1, ictlno_lsb1, imin1, imax1, initvalue1, ifn1,..., ictlno_msb32, ictlno_lsb32, imin32, imax32, initvalue32, ifn32
+  i32
+  k1,...,   <strong>s32b14</strong>     ichan, ictlno_msb1, ictlno_lsb1, imin1, imax1, initvalue1, ifn1,..., ictlno_msb32, ictlno_lsb32, imin32, imax32, initvalue32, ifn32
+  k32
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>MIDI slider control banks
+</p>
+<h3>Initialization</h3>
+<p><em>i1 ... i64</em> &#8211; output values
+</p>
+<p><em>ichan</em> &#8211; MIDI channel (1-16)
+</p>
+<p><em>ictlnum1 ... ictlnum64</em> &#8211; MIDI control number
+</p>
+<p><em>ictlno_msb1 .... ictlno_msb32</em> &#8211; MIDI control number (most significant byte)
+</p>
+<p><em>ictlno_lsb1 .... ictlno_lsb32</em> &#8211; MIDI control number (least significant byte)
+</p>
+<p><em>imin1 ... imin64</em> &#8211; minimum values for each controller
+</p>
+<p><em>imax1 ... imax64</em> &#8211; maximum values for each controller
+</p>
+<p><em>init1 ... init64</em> &#8211; initial value for each controller
+</p>
+<p><em>ifn1 ... ifn64</em> &#8211; function table for conversion for each controller
+</p>
+<p><em>icutoff1 ... icutoff64</em> &#8211; low-pass filter cutoff frequency for each controller
+</p>
+<h3>Performance</h3>
+<p><em>k1 ... k64</em> &#8211; output values
+</p>
+<p><strong>sliderN</strong> and <strong>sliderNf</strong> are banks of MIDI controllers, useful when using MIDI mixer such as Kawai MM-16 or others for changing whatever sound parameter in real-time. The raw MIDI control messages at the input port are converted to agree with <em>iminN</em> and <em>imaxN</em>,  and an initial value can be set. Also, an optional non-interpolated function table with a custom translation curve is allowed, useful for enabling exponential response curves.
+</p>
+<p>When no function table translation is required, set the <em>ifnN</em> value to 0, else set <em>ifnN</em> to a valid function table number.  When table translation is enabled (i.e. setting <em>ifnN</em> value to a non-zero number referring to an already allocated function table), <em>initN</em> value should be set equal to <em>iminN</em> or <em>imaxN</em> value, else the initial output value will not be the same as specified in <em>initN</em> argument.
+</p>
+<p><strong>slider8</strong> allows a bank of 8 different MIDI control message numbers, <strong>slider16</strong> does the same with a bank of 16 controls, and so on.
+</p>
+<p><strong>sliderNf</strong> filter the signal before output, for eliminating discontinuities due to the low resolution of the MIDI (7 bit); the cutoff frequency can be set separately for each controller (suggested range: .1 to 5 Hz).
+</p>
+<p>As the input and output arguments are many, you can split the line using '\' (backslash) character (new in 3.47 version) to improve the readability. Using these opcodes is considerably more efficient than using the separate ones (<a href="midic7.htm"><strong>ctrl7</strong></a> and <a href="../sigmod/port.htm"><strong>tonek</strong></a>) when more controllers are required.
+</p>
+<p>In the i-rate version of <strong>sliderN</strong>, there is not an initial value input argument, because the output is gotten directly from current status of internal controller array of Csound.
+</p>
+<p><strong>sNb14</strong> opcode is the 14-bit version of this bank of controllers.
+</p>
+<p><strong>Warning</strong>! <strong>sliderNf</strong> opcodes do not output the required initial value immediately, but only after some k-cycles because the filter slightly delays the output.
+</p>
+<h3>Deprecated Names</h3>
+<p>The opcode names <strong>islider8</strong>, <strong>islider16</strong>, <strong>islider32</strong>, <strong>islider64</strong>, <strong>is16b14</strong>, and <strong>is32b14</strong> have been deprecated as of Csound version 3.52. Use <strong>slider8</strong>, <strong>slider16</strong>, <strong>slider32</strong>, <strong>slider64</strong>, <strong>s16b14</strong>, and <strong>s32b14</strong>, respectively, for i-rate output.
+</p>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+December 1998 (New in Csound version 3.50)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="chanctrl.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="midiin.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#sliders" class="toqr">
+MIDI Support: Slider Banks</font></a>
+</body>
+</html>

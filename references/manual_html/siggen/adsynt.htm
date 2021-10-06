@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>adsynt</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="adsyn.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="hsboscil.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#additive" class="toqr">
+Signal Generators: Additive Synthesis/Resynthesis</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+<h2>adsynt</h2>
+<pre>
+  ar      <strong>adsynt</strong>    kamp, kcps, iwfn, ifreqfn, iampfn, icnt[, iphs]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Performs additive synthesis with an arbitrary number of partials, not necessarily harmonic.
+</p>
+
+<h3>Initialization</h3>
+<p><em>iwfn</em> &#8211; table containing a waveform, usually a sine. Table values are not interpolated for performance reasons, so larger tables provide better quality.</p>
+<p><em>ifreqfn</em> &#8211; table containing frequency values for each partial. <em>ifreqfn</em> may contain beginning frequency values for each partial, but is usually used for generating parameters at runtime with <strong>tablew</strong>. Frequencies must be relative to <em>kcps</em>. Size must be at least <em>icnt</em>.</p>
+<p><em>iampfn</em> &#8211; table containing amplitude values for each partial. <em>iampfn</em> may contain beginning amplitude values for each partial, but is usually used for generating parameters at runtime with <strong>tablew</strong>. Amplitudes must be relative to <em>kamp</em>. Size must be at least <em>icnt</em>.</p>
+<p><em>icnt</em> &#8211; number of partials to be generated</p>
+<p><em>iphs</em> &#8211; initial phase of each oscillator, if <em>iphs</em> = -1, initialization is skipped. If <em>iphs</em> &gt; 1, all phases will be initialized with a random value.</p>
+
+<h3>Performance</h3>
+<p><em>kamp</em> &#8211; amplitude of note</p>
+<p><em>kcps</em> &#8211; base frequency of note. Partial frequencies will be relative to <em>kcps</em>.</p>
+
+<p>Frequency and amplitude of each partial is given in the two tables provided. The purpose of this opcode is to have an instrument generate synthesis parameters at k-rate and write them to global parameter tables with the <strong>tablew</strong> opcode.
+</p>
+
+<h3>Examples</h3>
+<p>These two instruments perform additive synthesis. The output of each sounds like a Tibetan bowl. The first one is static, as parameters are only generated at init-time. In the second one, parameters are continuously changed.</p>
+
+<pre>
+
+  gifrqs  <strong>ftgen</strong>  2, 0, 32, 7, 0, 32, 0              ; generate two emty tables for adsynt
+  giamps  <strong>ftgen</strong>  3, 0, 32, 7, 0, 32, 0              ; for freqency and amp parameters
+  
+ <strong>instr</strong> 1                                             ; generates paramaters at init time
+  icnt    =          10                             ; generate 10 voices
+  index   =          0                              ; init loop index
+  
+  loop:                                             ; loop only executed at init time
+  
+  ifreq   <strong>pow</strong>       index + 1, 1.5                  ; define non-harmonic partials
+  iamp    =         1 / (index+1)                   ; define amplitudes
+          <strong>tableiw</strong>   ifreq, index, gifrqs            ; write to tables
+          <strong>tableiw</strong>   iamp, index, giamps             ; used by adsynt
+  
+  index   =         index + 1
+  <strong>if</strong> (index &lt; icnt) <strong>igoto</strong> loop                      ; do loop
+  
+  asig    <strong>adsynt</strong>    5000, 150, giwave, gifrqs, giamps, icnt
+          <strong>out</strong>       asig
+ <strong>endin</strong>
+  
+    
+ <strong>instr</strong> 2                                            ; generates paramaters every k-cycle
+  icnt    =          10                             ; generate 10 voices
+  kindex  =          0                              ; reset loop index
+  loop:                                             ; loop executed every k-cycle
+  
+  kspeed  <strong>pow</strong>        kindex + 1, 1.6                ; generate lfo for frequencies
+  kphas   <strong>phasorbnk</strong>  kspeed * 0.7, kindex, icnt     ; individual phase for each voice
+  klfo    <strong>table</strong>      kphas, giwave, 1
+  kdepth  <strong>pow</strong>        1.4, kindex                    ; arbitrary parameter twiddling...
+  kfreq   <strong>pow</strong>        kindex + 1, 1.5
+  kfreq   =          kfreq + klfo*0.006*kdepth
+          <strong>tablew</strong>     kfreq, kindex, gifrqs          ; write freqs to table for adsynt
+  
+  kspeed  <strong>pow</strong>        kindex + 1, 0.8                ; generate lfo for amplitudes
+  kphas   <strong>phasorbnk</strong>  kspeed*0.13, kindex, icnt, 2   ; individual phase for each voice
+  klfo    <strong>table</strong>      kphas, giwave, 1
+  kamp    <strong>pow</strong>        1 / (kindex + 1), 0.4          ; arbitrary parameter twiddling...
+  kamp    =          kamp * (0.3+0.35*(klfo+1))
+          <strong>tablew</strong>     kamp, kindex, giamps           ; write amps to table for adsynt
+  
+  kindex  =          kindex + 1
+  <strong>if</strong> (kindex &lt; icnt) <strong>kgoto</strong> loop                     ; do loop
+  giwave  <strong>ftgen</strong>  1, 0, 1024, 10, 1                  ; generate a sinewave table
+  asig    <strong>adsynt</strong>     5000, 150, giwave, gifrqs, giamps, icnt
+          <strong>out</strong>        asig
+ <strong>endin</strong>
+  
+</pre>
+
+
+<h3>Author</h3>
+<p>Peter Neub&auml;cker<br>
+Munich, Germany<br>
+August, 1999<br>
+New in Csound version 3.58</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="adsyn.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="hsboscil.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+
+
+<a href="../qr/siggen.htm#additive" class="toqr">
+Signal Generators: Additive Synthesis/Resynthesis</font></a>
+</body>
+</html>

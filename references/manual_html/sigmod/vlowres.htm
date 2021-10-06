@@ -1,0 +1,75 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>vlowres</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="lowres.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="lowpass2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>vlowres</h2>
+
+<pre>
+  ar      <strong>vlowres</strong>    asig, kfco, kres, iord, ksep
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>A bank of filters in which the cutoff frequency can be separated under user control
+</p>
+<h3>Initialization</h3>
+<p><em>iord</em> &#8211; total number of filters (1 to 10)
+</p>
+<h3>Performance</h3>
+<p><em>asig</em> &#8211; input signal
+</p>
+<p><em>kfco</em> &#8211; frequency cutoff (not in Hz 
+)
+</p>
+<p><em>ksep</em> &#8211; frequency cutoff separation for each filter
+</p>
+<p><strong>vlowres</strong> (variable resonant lowpass filter) allows a variable response curve in resonant filters. It can be thought of as a bank of lowpass resonant filters, each with the same resonance, serially connected. The frequency cutoff of each filter can vary with the <em>kcfo</em> and <em>ksep</em> parameters.
+</p>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+New in Csound version 3.49
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="lowres.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="lowpass2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</font></a>
+</body>
+
+</html>

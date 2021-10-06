@@ -1,0 +1,88 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>butterhp, butterlp, butterbp, butterbr</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="hilbert.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="filter2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>butterhp, butterlp, butterbp, butterbr</h2>
+
+<pre>
+  ar      <strong>butterhp</strong>   asig, kfreq[, iskip]
+  ar      <strong>butterlp</strong>   asig, kfreq[, iskip]
+  ar      <strong>butterbp</strong>   asig, kfreq, kband[, iskip]
+  ar      <strong>butterbr</strong>   asig, kfreq, kband[, iskip]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Implementations of second-order high-pass, low-pass, band-pass and band-reject Butterworth filters. Note: these opcodes can also be written <strong>butlp, buthp, butbp, butbr.</strong>
+</p>
+<h3>Performance</h3>
+<p>These filters are Butterworth second-order IIR filters. They are slightly slower than the original filters in Csound, but they offer an almost flat passband and very good precision and stopband attenuation.
+</p>
+<p><em>asig</em> &#8211; Input signal to be filtered.
+</p>
+<p><em>kfreq</em> &#8211; Cutoff or center frequency for each of the filters. In the case of <strong>butterbp</strong> and <strong>butterbr</strong>, the center <em>kfreq</em> is the intervalic, not mathematical, center.
+</p>
+<p><em>kband</em> &#8211; Bandwidth of the bandpass and bandreject filters.
+</p>
+<p><em>iskip</em> &#8211; Skip initialization if present and non zero
+</p>
+<h3>Example</h3>
+
+
+<pre>
+  asig    <strong>rand</strong>      10000            ; White noise signal
+  alpf    <strong>butterlp</strong>  asig, 1000       ; cutting frequencies above1K
+  ahpf    <strong>butterhp</strong>  asig, 500        ; passing frequencies above 500Hz
+  abpf    <strong>butterbp</strong>  asig, 1000, 1500 ; passing 2 octaves: 500 to 2000 Hz
+  abrf    <strong>butterbr</strong>  asig, 100, 150   ; cutting 2 octaves: 50 to 200 Hz
+</pre>
+
+
+<h3>Author </h3>
+<p>Paris Smaragdis<br>
+MIT, Cambridge<br>
+1995
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="hilbert.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="filter2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</font></a>
+</body>
+
+</html>

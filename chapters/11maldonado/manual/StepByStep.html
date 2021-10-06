@@ -1,0 +1,90 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>VMCI Plus - Getting Started Step by Step</title>
+		<!-- Created with AOLpress/2.0 -->
+	</head>
+
+	<body bgcolor="white">
+		<div align="left">
+			<h2><font size="5" color="maroon">VMCI Plus: Getting Started Step by Step</font><br>
+			<font color="maroon">(With the DirectCsound Examples Included)</font></h2>
+		</div>
+		<p>In order to start using VMCI Plus together with DirectCsound, a certain degree of knowledge of Csound can be useful, especially if you will get some errors, in order to correct it.</p>
+		<p>Notice that (for copyright reasons) DirectCsound is not included in the VMCI distribution. However you can get it separately for free (see register.txt file).</p>
+		<center>
+			<p><a href="Start.html">Goto Main manual</a></p>
+		</center>
+		<h3>Testing VMCI Plus</h3>
+		<p>The first steps to play with the first example provided in the VMCI Plus program archive are the following:</p>
+		<ol>
+			<li>After <a href="Start.html">installing</a> <b>VMCI Plus</b>, <b>DirectCsound</b> and the <b>Hubi's loopback </b>virtual device, you have to start VMCI by double clicking the corresponding shortcut you just created.<br>
+			Probably you are using an unregistered version, so a dialog box will appear:<br>
+			<img src="register.jpg" width="260" height="288"><br>
+			You can close this dialog-box after waiting some seconds. This dialog box appears only in unregistered versions (<a href="../register.txt">register please!</a>).<br>
+			Then click the OK button and the <a href="Start.html#the activation bar">activation bar</a> will appear:<br>
+			<img src="bar.jpg" width="533" height="271"><br>
+			<li>Be sure that the MIDI out port is set to <b>LB1</b> by clicking to the <img src="MidiSetup.jpg" width="69" height="42"> button and selecting it:<br>
+			<img src="pict6.jpg" align="Bottom" alt="[Image]" width="333" height="126"><br>
+			Then click OK. (Notice that LB1 cannot be available if you didn't install Hubi's loopback virtual device first. In this case VMCI cannot control DirectCsound).<br>
+			<li>Click the load button &nbsp;(<img src="LoadSave.jpg">) and select the &quot;0_miditest.stp2&quot; file. <img src="pict3.jpg" align="Bottom" alt="[Image]" width="426" height="261"><br>
+			Open it.<br>
+			<br>
+			The <a href="Start.html#7bitS">7-bit slider panel</a> will appear:<br>
+			<img src="pict4.jpg" align="Bottom" alt="[Image]" width="651" height="165"><br>
+			<li>Set the focus to the 7-bit slider panel and click the &quot;Run Csound Button&quot;. If the DirectCsound executable has been placed in the correct directory (C:\csound\csound.exe) and the orchestra and score are in the correct directory too (C:\csound\examples\miditest.ORC &nbsp; C:\csound\examples\miditest.SCO), the csound console window will appear:<br>
+			<img src="pict7.jpg" align="Bottom" alt="[Image]" width="654" height="358"><br>
+			Then type the MIDI in port number corresponding to LB1 port (1, in the case of this picture) and to press Return. Then, if more than an audio OUT port are installed in your computer, a list of DirectX devices will appear in the DirectCsound console:<br>
+			<img src="pict8.jpg" align="Bottom" alt="[Image]" width="654" height="358"><br>
+			Type the device number and presse RETURN. DirectCsound should be now active.
+			<li>press the <img src="activateNote.jpg" width="63" height="67"> button &nbsp;in the slider panel. You should hear a note playing. If you don't hear anything, check the mixer volume and the connection of your amplifer. If you still don't hear nothing, probably DirectCsound detected an error. As all console messages are suppressed by the -+O &nbsp;and -m0 flags, you have no way to see what error happened. So close the DirectCsound window by selecting it and typing CTRL-C; click the <img src="pict9.jpg" align="Bottom" alt="[Image]" width="93" height="45">button, the following dialog box will appear:<br>
+			<img src="pict11.jpg" align="Bottom" alt="[Image]" width="559" height="382"><br>
+			Edit the &quot;Flags&quot; text field removing the +Om0 string. The string should is the following:<br>
+			<br>
+			-d+K+Xb200P99<br>
+			<br>
+			Press the &quot;Update strings&quot; button and close the dialog box. Then press the &quot;Run Csound Button&quot; again. Now you should see what kind of error happened in the DirectCsound console window. Correct the error and press the &quot;Run Csound Button&quot; again. If the error was corrected, restore original flag settings in the &quot;Flags&quot; text field of the &quot;Csound settings&quot; dialog-box.
+			<li>Open the <a href="Start.html#the keyboard panel">virtual keyboard panel</a> by clicking the <img src="pict1.jpg" align="Bottom" alt="[Image]" width="140" height="23"> check-box in the activation bar. The following window will appear:<br>
+			<img src="keyboard.jpg" width="500" height="366"><br>
+			You can click anyone of the piano-like buttons, starting from the bottom row (the more bass notes). You notice that they will trigger Csound instrument notes in realtime. While virtual keyboard panel having got the focus, you can also press the alphanumeric keyboard keys to play notes. You can reconfigure each key by changing MIDI channel and note number configuration of each button. See <a href="Start.html#the keyboard panel">virtual keyboard panel</a> &nbsp;for more information.<br>
+			<li>If you have an external MIDI keyboard connected to the MIDI IN port of your computer, you can control DirectCsound orchestra both with the virtual keyboard and with the external MIDI keyboard. To do this, you have to run the &quot;Hubi's MIDI cable&quot; by double clicking the Hwmdcabl.exe icon :<br>
+			<img src="pict2.jpg" align="Bottom" alt="[Image]" width="124" height="58">(or a shortcut you created in the desktop or start menu). Notice that this utility program doesn't show a window when it starts. In order to configure it you have to look at the Windows task-bar and<i><b> right-click </b></i>the corresponding button. A pop-up menu will open and you have to set both the hardware MIDI input port to which the MIDI keyboard is connected and the <b>LB1</b> virtual MIDI output port. When all this is done, you shoul be able to play current instance of DirectCsound both with VMCI and the external MIDI keyboard at the same time.
+			<li>When you intend to finish your performance session, set the focus to the DirectCsound console window and type CTRL-C to close it.
+		</ol>
+		<center>
+			<h3>
+			<p><a href="Start.html">Goto Main manual</a></p>
+			</h3>
+		</center>
+		<h3><br>
+		Using the Hyper Vectorial Synthesis panel&nbsp;</h3>
+		<p>Steps to play with the Hyper Vectorial Synthesis panel:<br>
+		</p>
+		<ol>
+			<li>Open VMCI Plus program.
+			<li>Be sure that VMCI MIDI output port is set to LB1.
+			<li>Load the &quot;4_GranSynthesis.stp2&quot; file, placed in c:\csound\examples directory. The 7-bit slider panel will appear:<br>
+			<img src="pict12.jpg" align="Bottom" alt="[Image]" width="500" height="312">
+			<li>Start DirectCsound by clicking the &quot;Run Csound Button&quot; .
+			<li>Set the focus to the 7-bit slider panel and click the <img src="sendCC.jpg" width="128" height="41">button in order to update the parameters (see <a href="Start.html#7bitS">7-bit slider panel</a> section of manual for more details).
+			<li>Click the <img src="activateNote.jpg" width="63" height="67"> button to activate a sound. Then click one of the snapshot buttons. You will see the sliders will change &nbsp;their positions when you click differents snapshot buttons; the audible sound configuration should change too.
+			<li>Click the <img src="HVSbutt.jpg" width="84" height="67">button in order to open the <a href="Start.html#HVS">Hyper Vectorial Synthesis control panel</a>. The HVS panel will appear:<br>
+			<img src="pict13.jpg" align="Bottom" alt="[Image]" width="500" height="375">
+			<li>While the DirectCsound note is still playing, drag the mouse in the sensitive area, you will notice the sound changing continuously. Notice that you don't have to click in the buttons contained in each area (otherwise a dialog box will appear). It is possible to hide the buttons placed in the mouse-sensitive areas; to do this, click the <img src="hvsConfig.jpg" width="50" height="54">button. The following dialog-box will appear:<br>
+			<img src="hvsConfigPanel.jpg" width="250" height="340"><br>
+			... set the &quot;<b>view buttons</b>&quot; check-box unchecked and close this dialog-box.<br>
+		</ol>
+		<center>
+			<h3>
+			<p><a href="Start.html">Goto Main manual</a></p>
+			</h3>
+		</center>
+		<h3>How to become a VMCI master</h3>
+		<p>VMCI Plus, and, all the more reason,&nbsp;Csound, are not easy-to-learn programs. But they are extremely powerful tools to make new kind of music. In order to become a VMCI virtuoso, you have to learn Csound DirectCsound and to study all the VMCI manual accurately. Even after years of use you will discovered that only a little part of the VMCI/Csound field have been expolored. But your efforts will be hugely rewarded. You will discover infinite amount of possibilities, never explored ways to mould sonic matter. I will give VMCI/Csound courses. Contact <a href="Start.html#address">me</a> to stay in touch with the latest VMCI news about developement and seminars.</p>
+		<center>
+			<p><a href="Start.html">Goto Main manual</a></center>
+	</body>
+
+</html>

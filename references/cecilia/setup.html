@@ -1,0 +1,108 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>CECILIA Set-up</title>
+	</head>
+
+	<body>
+		&nbsp;
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="intro.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="main.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			<h2><b>SET-UP</b></h2>
+		</center>
+		<center>
+			<a href="#step1">Step 1</a></center>
+		<center>
+			<a href="#step2">Step 2</a></center>
+		<center>
+			<hr>
+		</center>
+		<p>To install and run CECILIA, you need to carry out these two simple steps:
+		<p>
+		<hr width="100%">
+		<h3><a name="step1"></a>Step 1: Installing CECILIA on your platform:&nbsp; <b><font size="-2"><a href="#">top</a></font></b></h3>
+		&nbsp;
+		<h4>Linux</h4>
+		<ul>
+			<li>You should have <b>csound </b>version3.47 installed and running on your machine. If not, the installation will check and use the default csound distribution that comes with CECILIA in the <i>files</i> directory.
+			<li>Gunzip and detar the CECILIA package in your home directory.
+			<li>If you have root priviledges, you can run the <b>install.sh</b> program. This will install CECILIA in the standard places (/usr/local/bin &amp; usr/local/lib). This is the best solution for a multi-user network installation.
+			<li>If not, the installation will take place in the current CECILIA directory.
+			<li>If you choose or need to install the program somewhere else, you must indicate so by declaring a CEC_LIBRARY environmental variable. You can do this by adding the following line to the <b>.cshrc</b> file in your home directory:
+			<p><tt>&nbsp;&nbsp;&nbsp; setenv CEC_LIBRARY &lt;where the cecilia directory will be found&gt;</tt><br>
+			&nbsp;
+			<li>Start up&nbsp; CECILIA by typing cecilia in a shell or double-clicking on its icon.
+			<li>Properly installed and configured audio hardware is essential.
+			<li>minimum recommended configuration: P166, 32 Mb RAM
+		</ul>
+		&nbsp;
+		<h4>SGI - IRIX</h4>
+		<ul>
+			<li>You should have <b>csound </b>version3.47 installed and running on your machine. If not, the installation will check and use the default csound distribution that comes with CECILIA in the <i>files</i> directory.
+			<li>Make sure you have the correct version of CECILIA for your operating system (IRIX 5.x or IRIX 6.x).
+			<li>Gunzip and detar the CECILIA package in your home directory.
+			<li>If you have root priviledges, you can run the <b>install.sh</b> program. This will install CECILIA in the standard places (/usr/local/bin &amp; usr/local/lib). This is the best solution for a multi-user network installation.
+			<li>If not, the installation will take place in the current CECILIA directory.
+			<li>If you choose to install the program somewhere else, you must indicate so by declaring a CEC_LIBRARY evironmental variable. You can do this by adding the following line to the <b>.cshrc</b> file in your home directory:
+			<p><tt>&nbsp;&nbsp;&nbsp; setenv CEC_LIBRARY &lt;where the cecilia directory will be found&gt;</tt><br>
+			&nbsp;
+			<li>Start up&nbsp; CECILIA by typing cecilia in a shell or double-clicking on its icon.
+			<li>minimum recommended configuration: IRIX 5.3, 32Mb RAM, r4000sc CPU.
+		</ul>
+		&nbsp;
+		<h4>Macintosh</h4>
+		<ul>
+			<li>You should have <b>perf 3.1.1</b> the csound engine part of Mill's <a href="http://www.mills.edu/PEOPLE/guest.pages/mikeb.public.html/csound.html">Mac port</a>, installed and running on your machine. Just to make sure, a copy of perf3.1.1 is included.
+			<li>the Mills Perf is identified by creator code, so make sure you don't have mutliple versions of it lying around, else the system will arbitrarily use one of them (you may either edit the codes for each version or simply compress unused versions).
+			<li>Start up&nbsp; CECILIA by double-clicking on its icon.
+			<li>minimum recommended configuration: 32Mb RAM, 604 CPU.<br>
+			&nbsp;
+		</ul>
+		<b>Windows95</b><br>
+		&nbsp;
+		<ul>
+			<li>Sorry folks, but to run CECILIA on the Windows95 platform, you must (for the time being) have the Extended-Csound SHARC card...
+		</ul>
+		<b>Other Unix flavors</b><br>
+		&nbsp;
+		<ul>
+			<li>There are no good reasons why CECILIA should not run under other Unix platforms. We just have not tested and/or adapted&nbsp; them. Directions for the <b>Linux</b> install should be followed. If you do succeed in installing and running CECILIA on other Unix hardware, we would love to hear about it!
+		</ul>
+		<b>CECILIA v2.0 was <u>tested</u> by the authors on the following platforms:</b>
+		<ul>
+			<li>IRIX 6.2, 6.3 (if there is enough demand, we may support 5.3)
+			<li>Linux 2.0.33
+			<li>MacOS 7.6.1, 8.0, 8.1
+		</ul>
+		<hr>
+		<h3><a name="step2"></a>Step 2: The CECILIA Preferences: <b><font size="-2"><a href="#">top</a></font></b></h3>
+		<ol>
+			Once CECILIA is installed properly, launch CECILIA by double-clicking its icon.
+			<p>Under the <b>File</b> menu in the Main CECILIA window, choose <b>Preferences...</b>
+			<p>A great many features of CECILIA can be customized to your liking in the Preferences window. QuickKeys, colors, and all your service applications are chosen there.&nbsp; Some assumptions/defaults are made for you. <b><i>Choosing the correct sound player is very important!</i></b>
+			<p>For the help mechanism to work, <b><i>you will need to have Netscape installed and running</i></b>. We are planning on supporting other browsers but for the time being this is the one we have chosen.
+			<p>CECILIA uses three of the standard Csound environment variables directories in its operations:
+			<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $SFDIR - where Csound writes soundfiles.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $SADIR - where you keep your sound analysis files.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $SSDIR - where you keep your library of sounds.</pre>
+			For Unix, these are normally defined in your <b>.cshrc</b> file. If these environment variables are not present, the directories will default to your home directory. On Macintosh, these variables will be set to the CECILIA folder.<br>
+			&nbsp;
+		</ol>
+		&nbsp;
+		<hr width="100%">
+		<ol>
+			&nbsp;
+		</ol>
+	</body>
+
+</html>

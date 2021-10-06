@@ -1,0 +1,78 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>ftgen</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../syntax/seed.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../midi/massign.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm#header" class="toqr">
+Orchestra Syntax: Orchestra Header Statements</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>ftgen</h2>
+
+<pre>
+  gir     <strong>ftgen</strong>      ifn, itime, isize, igen, iarga[, iargb, ...iargz]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Generate a score function table from within the orchestra.
+</p>
+<h3>Initialization</h3>
+<p><em>gir</em> &#8211; either a requested or automatically assigned table number above 100.
+</p>
+<p><em>ifn</em> &#8211; requested table number If <em>ifn</em> is zero, the number is assigned automatically and the value placed in <em>gir</em>. Any other value is used as the table number
+</p>
+<p><em>itime</em> &#8211; is ignored, but otherwise corresponds to p2 in the score <strong>f statement</strong>.
+</p>
+<p><em>isize</em> &#8211; table size. Corresponds to p3 of the score <strong>f statement</strong>.
+</p>
+<p><em>igen</em> &#8211; function table <strong>GEN</strong> routine. Corresponds to p4 of the score <strong>f statement</strong>.
+</p>
+<p><em>iarga-iargz </em>-<em> </em>function table arguments. Correspond to p5 through p<em>n</em> of the score <strong>f statement</strong>.
+</p>
+<h3>Performance</h3>
+<p>This is equivalent to table generation in the score with the <strong>f statement</strong>.
+</p>
+<h3>Author</h3>
+<p>Barry Vercoe<br>
+M.I.T., Cambridge, Mass<br>
+1997<br>
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../syntax/seed.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../midi/massign.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm#header" class="toqr">
+Orchestra Syntax: Orchestra Header Statements</font></a>
+</body>
+
+</html>

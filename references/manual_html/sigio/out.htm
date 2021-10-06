@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>soundout, soundouts, out, outs1, outs2, outs, outq1, outq2, outq3, outq4, outq, outh, outo</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="in.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="outx.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#output" class="toqr">
+Signal Input and Output: Output</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>soundout, soundouts, out, outs1, outs2, outs, outq1, outq2, outq3, outq4, outq, outh, outo</h2>
+<pre>
+                                  <strong>soundout</strong>  asig1, ifilcod[, iformat]
+                                  <strong>soundouts</strong> asig1, asig2, ifilcod[, iformat] (***Not implemented***)
+                                  <strong>out</strong>       asig
+                                  <strong>outs1</strong>     asig
+                                  <strong>outs2</strong>     asig
+                                  <strong>outs</strong>      asig1, asig2
+                                  <strong>outq1</strong>     asig
+                                  <strong>outq2</strong>     asig
+                                  <strong>outq3</strong>     asig
+                                  <strong>outq4</strong>     asig
+                                  <strong>outq</strong>      asig1, asig2, asig3, asig4
+                                  <strong>outh</strong>      asig1, asig2, asig3, asig4, asig5, asig6
+                                  <strong>outo</strong>      asig1, asig2, asig3, asig4, asig5, asig6, asig7, asig8
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>These units write audio data to an external device or stream.</p>
+<h3>Initialization</h3>
+<p><em>ifilcod</em> &#8211; integer or character-string denoting the destination soundfile name. An integer denotes the file soundin.filcod; a character-string (in double quotes, spaces permitted) gives the filename itself, optionally a full pathname. If not a full path, the named file is sought first in the current directory, then in that given by the environment variable SSDIR (if defined) then by SFDIR. See also <a href="../gen/GEN01.htm"><strong>GEN01</strong></a>.</p>
+<p><em>iskptim</em> (optional) &#8211; time in seconds of input sound to be skipped. The default value is 0.</p>
+
+<h3>Performance</h3>
+<p><strong>out</strong>, <strong>outs</strong>, <strong>outq, outh, outo</strong> &#8211;  send audio samples to an accumulating output buffer (created at the beginning of performance) which serves to collect the output of all active instruments before the sound is written to disk. There can be any number of these output units in an instrument. The type (mono, stereo, quad, hex, or oct) should agree with <strong>nchnls</strong>, but as of version 3.50, will attempt to change and incorrect opcode, to argree with <strong>nchnls</strong> statement. Units can be chosen to direct sound to any particular channel: <strong>outs1</strong> sends to stereo channel 1, <strong>outq3</strong> to quad channel 3, etc.
+</p>
+<p><strong>soundout</strong> and <strong>soundouts</strong> write audio output to a disk file. <strong>soundouts</strong> is currently not implemented.
+</p>
+
+<h3>Author</h3>
+<p>Barry Vercoe<br>
+MIT<br>
+<!-- 1993-1997 -->
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="in.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="outx.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#output" class="toqr">
+Signal Input and Output: Output</font></a>
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>follow2</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="xyin.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="setctrl.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</font></a>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>follow2</h2>
+
+<pre>
+  ar      <strong>follow2</strong>    asig, katt, krel
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>A controllable envelope extractor using the algorithm attributed to Jean-Marc Jot.</p>
+
+<h3>Performance</h3>
+<p><em>asig</em> &#8211; the input signal whose envelope is followed</p>
+<p><em>katt</em> &#8211; the attack rate (60dB attack time in seconds)</p>
+<p><em>krel</em> &#8211; the decay rate (60dB decay time in seconds)</p>
+<p>The output tracks the amplitude envelope of the input signal. The rate at which the output grows to follow the signal is controlled by the <em>katt</em>, and the rate at which it decreases in response to a lower amplitude, is controlled by the <em>krel</em>. This gives a smoother envelope than <strong>follow</strong>.</p>
+
+<h3>Example</h3>
+<pre>
+  a1      <strong>follow2</strong>    ain, 0.01, .1
+</pre>
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath, Codemist Ltd.<br>
+Bath, UK<br>
+February, 2000<br>
+New in Csound version 4.03</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="xyin.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="setctrl.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</font></a>
+</body>
+</html>

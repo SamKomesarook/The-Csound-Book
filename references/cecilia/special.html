@@ -1,0 +1,61 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>SPECIAL SOUND INFO FUNCTIONS</title>
+	</head>
+
+	<body>
+		&nbsp;
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="score.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="cybil.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<h2>Special functions for sound information</h2>
+		</center>
+		<center>
+			<a href="#sinfo">sinfo</a></center>
+		<center>
+			<a href="#findgenSize">findgenSize</a><br>
+			<br>
+		</center>
+		<center>
+			<hr>
+		</center>
+		<p>CECILIA offers some special sound information functions that are very useful for the development of modules that require to know beforehand the duration or size of a sound to be processed.
+		<ul>
+			<li><a name="sinfo"></a><b>sinfo</b>
+			<ul>
+				<pre><b>[sinfo</b> &lt;name of sound&gt; info<b>]</b></pre>
+				where &lt;name of sound&gt; is the name given for the <b>cfilein</b> object
+				<p>where info can be:
+				<p><b>frames</b> : the number of sample frames in the sound<br>
+				<b>dur</b> : the duration of the sound in samples<br>
+				<b>sr</b> : the sampling rate of the sound<br>
+				<b>chn</b> : the number of channels in the sound
+				<p><b>sinfo</b> would be typically used in an orchestra to obtain information about the selected sound without having to &quot;type&quot; in the values specifically. The following statement encountered in the orchestra::
+				<p>gilen = [sinfo source frames]
+				<p>would be substituted at compile time by the number of frames in the sound chosen with the <b>cfilein</b> object named <i>source</i>.<br>
+				&nbsp;
+			</ul>
+			<li><a name="findgenSize"></a><b>findgenSize</b>
+			<ul>
+				<pre><b>[findgenSize</b> number<b>]</b></pre>
+				<b>findgenSize</b> is useful in the score for finding the power-of-2 size greater than the frame number of a given sound. If the <b>cfilein</b> object named <i>source</i> was used to select a sound of 456818 sample frames, the following statement encountered in the score:
+				<pre>f12 0 [findgenSize [sinfo source frames]] -1 &quot;[source]&quot; 0 0 0</pre>
+				would return:
+				<pre>f12 0 524288 -1 &quot;[source]&quot; 0 0 0</pre>
+			</ul>
+		</ul>
+	</body>
+
+</html>

@@ -1,0 +1,248 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Composing with Chaos</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">34. Composing with Chaos</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">John ffitch<BR>
+</FONT></H2>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">The Initial Spark<BR>
+</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The genesis of a piece of music
+is always problematical. The initial impulse to create <I>that</I>
+piece rather than another can come from many sources, and also
+from simultaneous sources. For me what starts my thoughts is usually
+a timbre, or a philosophical idea, or possibly even a melodic
+fragment. In a real sense <B>Drums and Different Canons</B> has
+all these elements -- a marimba sound, a chaotic melody, and a
+philosophical view of what makes music music.</FONT></P>
+
+<P><FONT FACE="Times New Roman">At a more mundane level the first
+step was reading the paper [Bidlack 1992] and I programmed part
+of it to produce output to Csound, and borrowing a timbre from
+Risset, showed the results to a student. We were both taken with
+a short sequence of notes taken from this demonstration. It was
+a mapping of the H&eacute;non difference equation simply onto
+pitch and duration. As I listened a number of times I became aware
+that the theme which had first caught my attention could be heard
+at other moments in this simple mapping, and from that a whole
+train of thoughts have arisen. The main one can be summarised
+as an interest in patterns that almost repeat, but never quite
+manage the same sequence. It was this which had struck me, and
+I started thinking why this should be. It would be over simplistic
+to trace these thoughts to the PhD thesis of Jeremy Leach [Leach,
+1999], but we independently came to similar conclusions. Music
+is about repetitions, but if that was all we would get bored very
+soon. But if the repetition did not follow exactly the same pattern
+we would have our interest regained.</FONT></P>
+
+<P><FONT FACE="Times New Roman">As to why this should be, this
+is not the place, but the reader is referred to the Leach thesis,
+and his other papers [Leach &amp; Fitch 1995a, Leach 1995, Leach
+&amp; Fitch 1995b, Leach 1996a, Leach 1996b], but the clue is
+in evolutionary theory.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Rather that follow that line of
+enquiry I return to the piece of music. To follow what I heard
+I needed to think about the general idea of non-exact repetitions.
+In mathematics one can model these by a cyclic motion, where each
+orbit does not join up exactly, or <I>ergodic</I> systems. As
+a young mathematician quite by chance I had worked on differential
+equations with similar features. A fellow student, now better
+known for his work on Unix, was developing solutions to the orbit
+of the Moon using the Hill&#151;Brown formulation [Bourne 1972],
+and from him I learnt about the Hill equation;</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/01.gif" HEIGHT="52"
+WIDTH="227" NATURALSIZEFLAG="0" ALIGN="BOTTOM"></FONT></P>
+
+<P><FONT FACE="Times New Roman">As it was difficult to explain
+to undergraduates when I came to lecture on the solution of such
+equations my concentration changed to the Duffing equation:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/02.gif" HEIGHT="33"
+WIDTH="76" NATURALSIZEFLAG="0" ALIGN="BOTTOM"></FONT></P>
+
+<P><FONT FACE="Times New Roman">a solution of which as a power
+series in e and a Fourier series in time was required (see [Barton
+&amp; Fitch 1972] for example).</FONT></P>
+
+<P><FONT FACE="Times New Roman">In the case of <B>Drums and Different
+Canons</B> <B>#1</B> the equation used is the H&eacute;non equation
+[H&eacute;non 1976 ] which is cast as a phase equation, in x and
+y with time as the independent variable:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/03.gif" HEIGHT="36"
+WIDTH="99" NATURALSIZEFLAG="0" ALIGN="BOTTOM"></FONT></P>
+
+<P><FONT FACE="Times New Roman">and it is this form which I used.<BR>
+&nbsp;&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Turning an Equation
+Into a Score</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Of course the mathematical discussion
+above is not about music. The task of an algorithmic composer
+is to create algorithms, in my case based on beautiful mathematics,
+into sonic realisations. In the case of <B>Drums and Different
+Canons #1</B> will describe in detail the composition of the first
+movement. This is the longest, and is subtitled Henon after the
+equation on which it is based. I had already decided on a marimba-like
+sound, because it is a timbre I admire, and the speed was basically
+slow, but was adjusted as my thoughts developed.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The H&eacute;non map gives value
+of <I>x</I> and <I>y</I> for each iteration, so I mapped <I>x</I>
+onto pitch and<I> |y|</I> onto initiation time. The actual map
+was</FONT></P>
+
+<P><FONT FACE="Times New Roman">pitch <I>= 7.7 + 2.4 x</I></FONT></P>
+
+<P><FONT FACE="Times New Roman">to give an octave and fraction.
+I worked to a hundredth of an octave in equal steps, but the intention
+was to avoid any particular scale. The duration was set arbitrarily
+at 500 events, a number which fortuitously ended at the 'right'
+place in the cycles.</FONT></P>
+
+<P><FONT FACE="Times New Roman">This gives the backbone of the
+movement, but it was a little characterless to my ear. Two different
+methods were used to embroider this. The first was to add a rhythmic
+element, and the second was to add a second sound.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In a simple way I wanted the piece
+to be in&nbsp;<IMG SRC="figures/04.gif" HEIGHT="17" WIDTH="8"
+NATURALSIZEFLAG="0" ALIGN="BOTTOM"> time, but of course the chaotic
+nature of the note onsets meant that this could not be achieved
+simply. The answer taken was to use amplitude increases for the
+first note after or on the beat, with increases of 1000, 200,
+700 or 200 units for the four beats. This seems to create a hesitating
+beat.</FONT></P>
+
+<P><FONT FACE="Times New Roman">A second timbral element was then
+added driven by the H&eacute;non map. Whenever the pitch fell
+below a pitch of 5.0 in Csound's octave scheme, a sequence of
+events is triggered. Initially I conceived of this as a hi-hat
+sound, but during the composition this changed somewhat, although
+in the programs it is still referred to as a cymbal. The sequence
+was to take 7 events from the Torus map</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/05.gif" HEIGHT="35"
+WIDTH="108" NATURALSIZEFLAG="0" ALIGN="BOTTOM"></FONT></P>
+
+<P><FONT FACE="Times New Roman">which both variables taken mod
+<I>2p ,</I> and <I>K</I> a constant. Again we have to map these
+two variables to musical parameters. To ensure greater variation,
+the value of <I>K</I> was taken as <I>1 + t/10000</I> where <I>t</I>
+is the time of the trigger. The pitch was&nbsp;<IMG SRC="figures/06.gif"
+HEIGHT="13" WIDTH="52" NATURALSIZEFLAG="0" ALIGN="BOTTOM"> for
+the nth note and the speed of the gesture is controlled by Q with
+onsets of&nbsp;<IMG SRC="figures/07.gif" HEIGHT="13" WIDTH="56"
+NATURALSIZEFLAG="0" ALIGN="BOTTOM">. Additional digits from Q
+_nare used for timbral parameters. The instrument is Risset's
+finger cymbals.&nbsp;</FONT></P>
+
+<P><FONT FACE="Times New Roman">All that remains in the design
+is to ensure that the program triggers the gesture at the start,
+and that the last event is marked by another timbre, again from
+Risset.</FONT></P>
+
+<P><FONT FACE="Times New Roman">It should be emphasised that the
+mappings above are all empirical, and represent the composer's
+input to the piece. The original program which generated the Csound
+score is given below.<BR>
+&nbsp;&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">The Second and
+Third Sections</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The piece stopped at just the
+Henon movement for a long time. This changed after I attended
+a computing conference at the Austrian town of Gmunden. On a free
+rainy September afternoon I walked up the small mountain of Gr&uuml;nberg,
+while listening to some Xenakis on a walkman, and returned via
+the settlement of Mitterberg. There was something about the air,
+the view, the smells, but most of all the sound which started
+me thinking again about the single movement I had all but completed.</FONT></P>
+
+<P><FONT FACE="Times New Roman">On my return home I started working
+on what became the second movement. Due to laziness I decided
+to use the same events as the first movement, but the instruments
+were to be drums, and it was to be played at about twice the speed.
+Where in the first movement the stereo image was used just to
+position the bars of the marimba, now the &#145;spare&#146; digits
+were used to move the sounds in the stereo image. Rarely for me,
+this section was completed in only a few weeks. It has been described
+as pretty, but to me it is an echo of Henon.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Similarly the same score is used
+for the last movement, but two events were merged so there were
+glissandi between two pitches. My intent here was to change the
+mood to a distant memory of the Gr&uuml;nberg. The section was
+written with a distant view of hills from my computer chair, and
+this became for me a distant view of Austria.</FONT></P>
+
+<P><FONT FACE="Times New Roman">I do not reproduce the C program
+for these two sections, but they follow the program I have given
+in many details, including the triggers and rhythm.<BR>
+&nbsp;&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">The Final Assembly</FONT></H3>
+
+<P><FONT FACE="Times New Roman">While tempted to write a fourth
+movement, external forces drove me to conceive of the piece as
+complete. But I was concerned about why it existed, and how it
+could be heard with no human performers. In the event I created
+a short introductory fanfare, which is actually a strict canon,
+taken from another part of the H&eacute;non map, and using the
+instruments which are used elsewhere. I hope by the device to
+prime the ear to the sound world I wished to evoke. Somehow it
+seemed essential to repeat the prelude as a closing statement.</FONT></P>
+
+<P><FONT FACE="Times New Roman">As I was finishing the piece I
+needed a title, other than &quot;my current piece&quot;. The repetitive
+or near repetitive structures, and my chosen instruments led me
+to the title, an echo of the well known quotation from Thoreau.
+I retained the titles of the now-five sections, but due to my
+(minor) problem with dyslexia I omitted the accent from H&eacute;non,
+and got the mountain's name wrong. But such a fracturing of reality
+is totally in keeping with the underlying concept. Similarly I
+have never really decided if it is about <B>Cannons</B> or <B>Canons</B>.
+But does it matter?</FONT></P>
+
+<P><FONT FACE="Times New Roman">You might wonder why the <B>#1</B>;
+well I have <B>#2</B> under way, based on the Lorentz map, and
+new sounds. Again the mechanism is an ANSI C program to generate
+the score, and a great deal of experimentation to discover the
+mappings.</FONT></P>
+
+<P><FONT FACE="Times New Roman">If you like the piece <B>Drums
+and Different Canons</B> <B>#1</B> then I have managed to convey
+something of the amazing excitement and passion that mathematics
+has always had for me.<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">References</FONT></H3>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="code/ref.gif" HEIGHT="488"
+WIDTH="441" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="code/code1.gif" HEIGHT="633"
+WIDTH="425" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="code/code2.gif" HEIGHT="550"
+WIDTH="422" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="code/code3.gif" HEIGHT="466"
+WIDTH="347" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="code/code4.gif" HEIGHT="398"
+WIDTH="437" NATURALSIZEFLAG="0" ALIGN="BOTTOM"></FONT>
+
+</BODY>
+</HTML>

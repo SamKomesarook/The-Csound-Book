@@ -1,0 +1,835 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Tools for Heterodyne Data Manipulation</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">17. Tools for Heterodyne Data
+Manipulation</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Fabio P. Bertolotti</FONT></H2>
+
+<H3><FONT FACE="Times New Roman"></FONT><A NAME="S1"></A>Introduction</H3>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> Heterodyne
+analysis is used to decompose a sampled sound into partials with
+time varying amplitude and frequency. This information is then
+used by the Csound object <B>adsyn</B> to reconstruct the signal
+via additive synthesis. More precisely, given a sound signal <B>s(t)</B>
+heterodyne analysis produces the approximation,</FONT></P>
+
+<P><CENTER><FONT FACE="Times New Roman"></FONT><A NAME="eq_(1)"></A><IMG 
+SRC="figures/symbol_equation1.gif" ALIGN="BOTTOM" WIDTH="322"
+HEIGHT="40" NATURALSIZEFLAG="3"></CENTER></P>
+
+<P><FONT FACE="Times New Roman">where&nbsp;<IMG SRC="figures/symbol_alphan.gif"
+ALIGN="BOTTOM" WIDTH="13" HEIGHT="8" NATURALSIZEFLAG="3"> and&nbsp;<IMG 
+SRC="figures/symbol_thetan.gif" ALIGN="BOTTOM" WIDTH="16" HEIGHT="12"
+NATURALSIZEFLAG="3"> are the time-varying amplitude and phase,
+respectively, of partial <B>n </B>The instantaneous frequency
+is given by the rate of change of the phase,</FONT></P>
+
+<P><CENTER><FONT FACE="Times New Roman"></FONT><A NAME="eq_(b)"></A><IMG 
+SRC="figures/symbol_equation2.gif" ALIGN="BOTTOM" WIDTH="322"
+HEIGHT="29" NATURALSIZEFLAG="3"></CENTER></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+maximum number of partials, <B>N</B> is specified by the user,
+as well as the number of linear segments that describe&nbsp;<IMG 
+SRC="figures/symbol_alphant.gif" ALIGN="BOTTOM" WIDTH="29" HEIGHT="15"
+NATURALSIZEFLAG="3"> and&nbsp;<IMG SRC="figures/symbol_omegant.gif"
+ALIGN="BOTTOM" WIDTH="30" HEIGHT="15" NATURALSIZEFLAG="3"> over
+the duration of the sampled sound. When the signal <B>s(t)</B>
+is quasi-periodic, such as the sound produced by instruments with
+a definite pitch, the amplitudes&nbsp;<IMG SRC="figures/symbol_alphant.gif"
+ALIGN="BOTTOM" WIDTH="29" HEIGHT="15" NATURALSIZEFLAG="3"> and
+frequencies&nbsp;<IMG SRC="figures/symbol_omegant.gif" ALIGN="BOTTOM"
+WIDTH="30" HEIGHT="15" NATURALSIZEFLAG="3"> vary much more slowly
+in time than the original signal (see figure <A HREF="#Trumpet_orig">1</A>),
+and approximation (<A HREF="#eq_(1)">1</A>) becomes an efficient
+form of data compression. There are, however, other advantages.
+The values of&nbsp;<IMG SRC="figures/symbol_alphant.gif" ALIGN="BOTTOM"
+WIDTH="29" HEIGHT="15" NATURALSIZEFLAG="3"> and&nbsp;<IMG SRC="figures/symbol_omegant.gif"
+ALIGN="BOTTOM" WIDTH="30" HEIGHT="15" NATURALSIZEFLAG="3"> can
+be varied to obtain musically interesting effects. In this presentation,
+I will describe some tools for the manipulation of the heterodyne
+data. These tools are simple, but offer a lot of possibilities
+to the patient Csound user. There are other more sophisticated
+tools for spectral data analysis, such as Beauchamps sound analyzer
+package <A HREF="http://cmp-rs.music.uiuc.edu/people/beauchamp/">sndan</A>
+and Serra's spectral modelling synthesis package for NeXT computers
+<I>sms</I> available through the internet. Formulation (1-2) can
+also be found in quantum-mechanics and geometrical optics under
+the name of WKBJ approximation (e.g. [1]), and can even be used
+to solve nonlinear wave propagation problems [2].</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+timbre of many natural instruments changes with pitch and amplitude,
+and possibly with the note duration. The change with pitch is
+usually the most noticeable, and additive synthesis of sampled
+sounds requires timbral data to be stored every minor third, or
+so. In this respect, the data-compression characteristic of heterodyne
+analysis is quite beneficial.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> Another
+beneficial quality of <B>adsyn</B>-based sound synthesis is the
+ease with which the sound can be extended beyond the original
+length. The complex looping techniques [3] used with direct sampled
+data to create a sustained sound are not usually needed in hetro+adsyn
+synthesis because the amplitudes&nbsp;<IMG SRC="figures/symbol_alphant.gif"
+ALIGN="BOTTOM" WIDTH="29" HEIGHT="15" NATURALSIZEFLAG="3"> and
+frequencies&nbsp;<IMG SRC="figures/symbol_omegant.gif" ALIGN="BOTTOM"
+WIDTH="30" HEIGHT="15" NATURALSIZEFLAG="3"> vary slowly in time.
+Indeed, in some cases the look-up index ``ksmod'' in <B>adsyn</B>
+may be held constant at a preselected ``stick-point'' in the sustain
+region of the original sound to extend the synthesized sound indefinitely.
+However, the sound usually contains some vibrato in amplitude
+and frequency, and one must then maintain the vibrato while extending
+the length of the sound in order to avoid an unpleasant change
+in the timbre.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+contents of this presentation are presented in three main parts.</FONT></P>
+
+<OL>
+  <LI><FONT FACE="Times New Roman">In the first part we present
+  tools for visualizing (hetroPlot), editing (hetroEdit) and mixing
+  (hetroMix) heterodyne data. One makes frequent use of these tools
+  in the process of building new sounds, but these tools do not
+  provide much of a possibility to change the heterodyne data in
+  a systematic way.</FONT>
+  <LI><FONT FACE="Times New Roman">In the second part we describe
+  the program ``hetroReduce''. This program performs the systematic
+  data manipulation. The name ``hetroReduce'' reflects the author's
+  wish to create a program to help the composer <I>parametrize</I>
+  the spectral data with only a few variables whose value may be
+  specified at performance time to change the timbre of the sound.
+  By parametrization we mean the association of one or a few parameters
+  to a particular aspect of the sound. For example, the attack-release-sustain-decay
+  description of the amplitude envelop of a sound is a parametrization
+  most of us are already familiar with. The spectral parametrization
+  is based on a rather simple idea: divide the given evolution
+  of the spectral data in time into a ``base'' spectra and a ``supplemental''
+  spectra. The base spectra is smoother in time than the original
+  and contains most of the energy, but has a sound somewhat ``muted''
+  in respect to the original. The ``supplementary'' spectra is
+  created by subtracting the ``base'' from the original, and contains
+  the ``brilliance'' of the sound. At performance time the ``base''
+  and ``supplemental'' spectra are combined with independently
+  controlled amplitude to alter the quality of the sound.</FONT>
+  <LI><FONT FACE="Times New Roman">Lastly we speak briefly about
+  the code installation and give some command-line examples.</FONT>
+</OL>
+
+<H3><FONT FACE="Times New Roman"></FONT><A NAME="SECTION2"></A>hetroPlot,
+hetroEdit, and hetroMix</H3>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> It
+is often advantageous to inspect the heterodyne data visually.
+The program <B>hetroPlot</B> provides a plot of the heterodyne
+data in the form of two ``three-dimensional'' graphs, one displaying
+the amplitude&nbsp;<IMG SRC="figures/symbol_alphan.gif" ALIGN="BOTTOM"
+WIDTH="13" HEIGHT="8" NATURALSIZEFLAG="3"> as function of the
+partial number <B>n</B> and the time <B>t</B>, the other displaying
+the frequency&nbsp;<IMG SRC="figures/symbol_omegan.gif" ALIGN="BOTTOM"
+WIDTH="14" HEIGHT="8" NATURALSIZEFLAG="3">, also as function of
+<B>n</B> and <B>t</B>. Figure <A HREF="#Trumpet_orig">1</A> shows
+such a visualization for a trumpet tone at pitch d4. In order
+to clearly show the small variations in frequency usually present
+during the attack portion of the sound, the frequency factor&nbsp;<IMG 
+SRC="figures/symbol_omegan.gif" ALIGN="BOTTOM" WIDTH="14" HEIGHT="8"
+NATURALSIZEFLAG="3"><B>/(n+1)</B> is plotted, rather than&nbsp;<IMG 
+SRC="figures/symbol_omegan.gif" ALIGN="BOTTOM" WIDTH="14" HEIGHT="8"
+NATURALSIZEFLAG="3"> (see the <TT>-nodivide</TT> option, below).
+The average frequency of the fundamental (partial=0) is calculated
+by averaging the frequency over time, excluding the attack and
+release portions of the sound. The average frequency is also shown
+in the frequency plot. The averaged frequency may be considered
+to be the ``pitch'' of the sampled sound, and this value must
+be known in order to correctly set the ``kfmod'' control parameter
+in <TT>adsyn</TT> when producing sound with another pitch.</FONT></P>
+
+<P><CENTER><FONT FACE="Times New Roman"></FONT><A NAME="Trumpet_orig"></A><IMG 
+SRC="figures/figure_trumpet.gif" vspace="15" ALIGN="BOTTOM" WIDTH="600"
+HEIGHT="231" NATURALSIZEFLAG="3"></CENTER></P>
+
+<P><FONT FACE="Times New Roman">The command syntax is <B><TT>hetroPlot
+mydata.het </TT></B>with options,</FONT></P>
+
+<PRE><CENTER><FONT FACE="Courier New">-o&nbsp; filename&nbsp;&nbsp; , Output file name-stem&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (default, ``hetro_plot.eps'')</FONT>
+<FONT FACE="Courier New">-fill&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; , Fill amplitude curves ... cosmetic (default,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; none&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</FONT>
+<FONT FACE="Courier New">-nodivide&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; , Do not divide frequency by <I>n+1</I>&nbsp;&nbsp;&nbsp;&nbsp; (default,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; none&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</FONT>
+<FONT FACE="Courier New">-2d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; , Produce 2-D plots, one per page&nbsp;&nbsp;&nbsp; (default,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3-D plot&nbsp;&nbsp;&nbsp;&nbsp; )</FONT></CENTER></PRE>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+input file extension does not have to be ``.het'' - that is the
+convention used in this book. The output is in the form of a Postscript
+file, hence is independent of the operating system. Use your favorite
+Postscript viewer to render the file on the screen, or send it
+to the printer. The output file name will be given the extension
+``.eps'' if not present. The ``fill'' option fills-in the amplitude
+curves, making the plot prettier, but the filling process may
+hide data (in figure <A HREF="#Trumpet_orig">1</A> the option
+is not used). The ``2d'' option draws regular two-dimensional
+plots of the amplitude and frequency data for each partial, one
+partial per Postscript page.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> <B>hetroEdit</B>
+is used to translate the hetro data from binary form to ascii,
+and <I>vice-versa</I>. The program does not perform any editing
+per se, but once the data is in ascii form, the data may be viewed,
+and changed, using a standard text editor.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The command syntax is <B><TT>hetroEdit
+mydata.het </TT></B>with options,</FONT></P>
+
+<PRE><CENTER><FONT FACE="Courier New">-o&nbsp; filename&nbsp;&nbsp;&nbsp;&nbsp; , output file name name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (default, ``hetro_edit.asc'')</FONT>
+<FONT FACE="Courier New">-r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; , translate .asc into .het&nbsp;&nbsp;&nbsp; (default, hetro -&gt; ascii&nbsp;&nbsp;&nbsp; )</FONT></CENTER></PRE>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> <B>hetroMix</B>
+is used to mix two binary .het files. The mixing process basically
+consist of averaging the data of partial ``n'' of the first file
+with the data of partial ``n'' of the second file, for all partials
+present. No check is made whether the two hetro data files describe
+sounds of equal pitch. The user may set the mixing weights by
+writing the weights to a text file prior to the running of ``hetroMix'',
+as described below.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> A little
+thought will show that the mixing process is not quite so simple
+as that used in mixing sound. The following is a concise description
+of the logic used in ``hetroMix'': Let <B>N</B> and <B>M</B> denote
+the total number of partials, respectively, for each file, and
+<B>T1</B> and <B>T2</B> the duration of the sound contained in
+each file. Assume, without loss of generality, that <B>N &gt;
+M</B> and <B>T1 &gt; T2 </B>. The following steps are performed:</FONT></P>
+
+<OL>
+  <LI><FONT FACE="Times New Roman">Partials with <B>n &gt; N </B>are
+  neglected.</FONT>
+  <LI><FONT FACE="Times New Roman">The time-support of each partial
+  is stretched to <B>T1 </B>, with the stretching starting after
+  ``attackTime'' milliseconds.</FONT>
+  <LI><FONT FACE="Times New Roman">A default mixing weight of 0.5
+  is globally set. A third user-specified input file is then read
+  to obtain specific weights for amplitude and frequency.</FONT>
+  <LI><FONT FACE="Times New Roman">The union of time-break points
+  for amplitude and frequency from each of the corresponding partials
+  in the two files is made.</FONT>
+  <LI><FONT FACE="Times New Roman">The data is linearly interpolated
+  onto the union of time-breakpoints, and mixed using the given
+  weights.</FONT>
+</OL>
+
+<P><FONT FACE="Times New Roman">The command syntax is <B><TT>hetroMix
+mydata_1.het mydata_2.het</TT> </B>with options,</FONT></P>
+
+<PRE><CENTER><FONT FACE="Courier New">-o&nbsp; filename&nbsp;&nbsp;&nbsp;&nbsp; , output file name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (default, ``hetro_mix.het'')</FONT>
+<FONT FACE="Courier New">-w&nbsp; filename&nbsp;&nbsp;&nbsp;&nbsp; , file containing mixing weights&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (default,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; none&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</FONT>
+<FONT FACE="Courier New">-a&nbsp; attackTime&nbsp;&nbsp; , delay (millsec) before time stretch (default,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</FONT></CENTER></PRE>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+mixing weights for the amplitude and frequency of partial <B>n</B>
+are given in the text file specified after the ``-w'' option.
+The text file has the following syntax,<BR>
+..<BR>
+.... <TT>comments may be placed here</TT><BR>
+..<BR>
+<TT>amplitude: n weight_1 weight_2 comments may follow here<BR>
+frequency: n weight_1 weight_2 and here</TT><BR>
+...<BR>
+<TT>amplitude: default weight_1 weight_2 comments may follow here<BR>
+frequency: default weight_1 weight_2 and here</TT></FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> If
+the number ``n'' of a particular partial does not appear in the
+listing, the default value of 1/2 will be used for this partial.
+If you wish to set another default value, then include a statement
+with the integer ``<TT>n</TT>'' substituted by the string ``<TT>default</TT>''
+as shown above. Lines not starting with the key words ``amplitude:''
+or ``frequency:'' are treated as comments and skipped.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+<B>hetroMix</B> program generates a second output file, called
+``hetro_mix.info''. This file contains the actual mixing weights
+used, and you may look at it to confirm the mixing occurred as
+you planned.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+two input files can be the same file. In this case, partials will
+be amplified or attenuated depending on whether the sum <TT>weight_1+
+weight_2</TT> for amplitude is greater or less than 1. Naturally,
+if only a change in amplitude is desired, the weights for the
+frequency must add up to one.</FONT></P>
+
+<H3><FONT FACE="Times New Roman"></FONT><A NAME="SECTION3"></A>hetroReduce</H3>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> One
+of the objects of the instrument designer is to regulate the tone
+timbre, and tone ``expression'' with some small number of parameters,
+and then specify their values in the score file, or during a performance.
+The program <B>hetroReduce</B> is designed to help the musician
+to build, modify, or parametrize heterodyne data.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+basic idea is similar to that used in ``spectral modeling synthesis''
+[4]. In that technique, the sound is represented by a ``deterministic'',
+or smooth component, and a ``noisy'' or random part. Only the
+``deterministic'' part plus a characterization of the noise is
+stored, and the noise is added at the time of re-synthesis.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> <B>hetroReduce</B>
+also separates data into components, but works only with the given
+heterodyne data (i.e. the noise is not present). The original
+amplitude and frequency functions,&nbsp;<IMG SRC="figures/symbol_alphant.gif"
+ALIGN="BOTTOM" WIDTH="29" HEIGHT="15" NATURALSIZEFLAG="3"> and&nbsp;<IMG 
+SRC="figures/symbol_omegant.gif" ALIGN="BOTTOM" WIDTH="30" HEIGHT="15"
+NATURALSIZEFLAG="3">, are averaged to yield smoother functions&nbsp;<IMG 
+SRC="figures/symbol_alphanBt.gif" ALIGN="BOTTOM" WIDTH="31" HEIGHT="16"
+NATURALSIZEFLAG="3"> and&nbsp;<IMG SRC="figures/symbol_omeganBt.gif"
+ALIGN="BOTTOM" WIDTH="33" HEIGHT="16" NATURALSIZEFLAG="3">, called
+the ``base'' amplitude and frequency. The ``base'' data alone
+carries most of the energy, but yields a duller sound than the
+original. The difference&nbsp;<IMG SRC="figures/symbol_difference.gif"
+ALIGN="BOTTOM" WIDTH="78" HEIGHT="16" NATURALSIZEFLAG="3"> is
+called the ``supplementary'' data, and when the ``base'' and ``supplementary''
+data are added together, the sound regains its original brightness.
+The basic idea behind the data separation is, thus, to mix the
+``base'' and ``supplementary'' data with different weights at
+performance time to change the timbre of the sound.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> Figures
+<A HREF="#Analysis">2</A>a-d show the process of data separation
+for the second partial of figure <A HREF="#Trumpet_orig">1</A>.
+Figure <A HREF="#Analysis">2</A>a displays the original amplitude
+data as a dashed line, and the smoothed, or averaged, data as
+a solid line. The averaging is done over the interval <B>[ t -
+R , t + R ]</B>, where <I>R</I> is the user-defined averaging
+time in milliseconds, using the weighted integral</FONT></P>
+
+<P><CENTER><FONT FACE="Times New Roman"></FONT><A NAME="average"></A><IMG 
+SRC="figures/symbol_equation3.gif" ALIGN="BOTTOM" WIDTH="451"
+HEIGHT="36" NATURALSIZEFLAG="3"></CENTER></P>
+
+<P><FONT FACE="Times New Roman">with a similar expression for
+frequency. When <I>R=0</I> the averaged signal is defined to be
+zero. In order to apply (<A HREF="#average">3</A>) near the start
+and end of the sound, the amplitude data is extended anti-symmetrically
+outside the duration of the sound, while frequency data is extended
+symmetrically. To conserve memory, the smoothed data is stored
+at the time intervals given by 50 Chebyshev collocation points,</FONT></P>
+
+<P><CENTER><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_equation4.gif"
+ALIGN="BOTTOM" WIDTH="318" HEIGHT="30" NATURALSIZEFLAG="3"></FONT></CENTER></P>
+
+<P><FONT FACE="Times New Roman">where <B>T</B> is the duration
+of the sound. Every third collocation point is shown as a circle
+in Figure <A HREF="#Analysis">2</A>a. The Chebyshev collocation
+points play a special role in the theory of polynomial approximations,
+but in our context is sufficient to note that the points are more
+densely spaced at the beginning and ending portions of the sound,
+where the signal varies most strongly.</FONT></P>
+
+<P><CENTER><FONT FACE="Times New Roman"></FONT><A NAME="Analysis"></A><IMG 
+SRC="figures/figure_expand.gif" hspace="15" vspace="15" ALIGN="BOTTOM"
+WIDTH="541" HEIGHT="347" NATURALSIZEFLAG="3"></CENTER></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+supplementary data is the difference&nbsp;<IMG SRC="figures/symbol_difference.gif"
+ALIGN="BOTTOM" WIDTH="78" HEIGHT="16" NATURALSIZEFLAG="3">, and
+it is divided into three parts, namely the attack portion, the
+sustain portion, and the release portion, through the use of the
+window function <B>f(t)</B>, which is displayed as a dashed-dotted
+line in figure <A HREF="#Analysis">2</A>c (the amplitude was increased
+from 1 to 300 in the plot). The complementary window function
+<B>g(t) = 1 - f(t)</B> is shown as a dashed line. The attack,
+sustain and release signals are defined as,</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_equation5a.gif"
+ALIGN="BOTTOM" WIDTH="295" HEIGHT="17" NATURALSIZEFLAG="3"><BR>
+<IMG SRC="figures/symbol_equation5b.gif" ALIGN="BOTTOM" WIDTH="166"
+HEIGHT="17" NATURALSIZEFLAG="3"><BR>
+<IMG SRC="figures/symbol_equation5c.gif" ALIGN="BOTTOM" WIDTH="299"
+HEIGHT="17" NATURALSIZEFLAG="3"></FONT></P>
+
+<P><FONT FACE="Times New Roman">The corresponding frequencies&nbsp;<IMG 
+SRC="figures/symbol_omeganSt.gif" ALIGN="BOTTOM" WIDTH="71" HEIGHT="16"
+NATURALSIZEFLAG="3"> and&nbsp;<IMG SRC="figures/symbol_omeganRt.gif"
+ALIGN="BOTTOM" WIDTH="32" HEIGHT="16" NATURALSIZEFLAG="3"> are
+set equal to the original frequency&nbsp;<IMG SRC="figures/symbol_omegant.gif"
+ALIGN="BOTTOM" WIDTH="30" HEIGHT="15" NATURALSIZEFLAG="3">.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+user can control the width of the window function by specifying
+the time in milliseconds between the start of the sound and the
+start of the window, and the time between the end of the window
+and the end of the sound. These two values are called <TT>attackTime</TT>
+and <TT>releaseTime</TT> respectively. The rise and fall portions
+of the window each occupy 1/3 of the window's duration, so&nbsp;<IMG 
+SRC="figures/symbol_alphanAt.gif" ALIGN="BOTTOM" WIDTH="15" HEIGHT="15"
+NATURALSIZEFLAG="3"> and&nbsp;<IMG SRC="figures/symbol_alphanRt.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> will
+be non-zero even when <TT>attackTime</TT> and <TT>releaseTime</TT>
+are set to zero.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> Note
+in figures <A HREF="#Analysis">2</A>b, c and d that the supplementary
+data is always positive, even though it should have a zero mean.
+Unfortunately, the data-format specifier for <B>adsyn</B> does
+not allow negative values (phase information is not used during
+re-synthesis), so <B>hetroReduce</B> uses a build-in algorithm
+to make the supplementary data positive definite. Both this step
+and multiplication by the window function distorts the original
+signal, and one may low-pass filter the <B>adsyn</B> output of
+the supplementary data to alleviate the distortion, when audible.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The command syntax is <B><TT>hetroReduce
+mydata.het </TT></B>with options,</FONT></P>
+
+<PRE><CENTER><FONT FACE="Courier New">-o&nbsp; fileStem&nbsp;&nbsp;&nbsp;&nbsp; , Output file name-stem&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (default, ``reduce'')</FONT>
+<FONT FACE="Courier New">-s&nbsp; R&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; , Smoothing factor, in milliseconds&nbsp; (default,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp; )</FONT>
+<FONT FACE="Courier New">-a&nbsp; attackTime&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; , in milliseconds&nbsp; (default,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp; )</FONT>
+<FONT FACE="Courier New">-r&nbsp; releaseTime&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; , in milliseconds&nbsp; (default,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp; )</FONT></CENTER></PRE>
+
+<P><FONT FACE="Times New Roman"><BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+``file stem'' is a sequence of characters that forms the beginning
+of the name of each of the output files generated by <B>hetroPlot</B>.
+The common file stem allows easy identification and grouping of
+these related files. For example, given the fileStem ``trumpet'',
+the program outputs the following files:</FONT></P>
+
+<PRE><CENTER><FONT FACE="Courier New">trumpet_base.het&nbsp;&nbsp;&nbsp; (base-data information&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</FONT>
+<FONT FACE="Courier New">trumpet_sup_a.het&nbsp;&nbsp; (Supplementary-data: attack )</FONT>
+<FONT FACE="Courier New">trumpet_sup_s.het&nbsp;&nbsp; (Supplementary-data: sustain)</FONT>
+<FONT FACE="Courier New">trumpet_sup_r.het&nbsp;&nbsp; (Supplementary-data: release)</FONT></CENTER></PRE>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+smoothing factor ``R'' sets the time, in milliseconds, used in
+the averaging process. The precise role of ``R'' is displayed
+in equation (<A HREF="#average">3</A>). A large value of R, say
+200 milliseconds, will yield a smooth base spectra, while a small
+value of R, say 10 milliseconds, will yield a base spectra that
+resembles the original. I often check the quality of the smoothing
+using <B>hetroPlot</B>. The role of ``attackTime'' and ``decayTime''
+has been already described.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+re-synthesis of the complete sound is made with the Csound commands,</FONT></P>
+
+<PRE><CENTER><FONT FACE="Courier New">ab&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp; kbamp, kfreq, ksmod, &quot;trumpet_base.het &quot;</FONT>
+<FONT FACE="Courier New">aa&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp; kaamp, kfreq, ksmod, &quot;trumpet_sup_a.het&quot;</FONT>
+<FONT FACE="Courier New">as&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp; ksamp, kfreq, ksmod, &quot;trumpet_sup_s.het&quot;</FONT>
+<FONT FACE="Courier New">ar&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp; kramp, kfreq, ksmod, &quot;trumpet_sup_r.het&quot;</FONT>
+<FONT FACE="Courier New">atot&nbsp; <B>=</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ab + aa + as + ar</FONT></CENTER></PRE>
+
+<P><FONT FACE="Times New Roman">where the control variables <TT>kbamp,
+kaamp, ksamp</TT> and <TT>kramp</TT> may be computed from ``p-field''
+parameters. For example, increasing ``kaamp'' beyond 1 will produce
+a stronger attack in the trumpet sound used in the figures. One
+may wish to have stronger attack to obtain more of a ``staccato''
+sound when playing notes of short durations, and a weaker attack
+for longer, softer notes. The sustain amplitude ``ksamp'' may
+be made proportional to total amplitude to (partially) imitate
+the increase in sound ``brightness'' with loudness.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> Here
+we list some possible ways to use the above mentioned programs.</FONT></P>
+
+<OL>
+  <LI><FONT FACE="Times New Roman">As a first example, we run <B>hetroReduce</B>
+  on two hetro files, one containing a trumpet sound, the other
+  containing a violin sound, both at pitch f4. We use the file
+  stems ``trumpet'' and ``violin'' respectively. With regard to
+  the value of <I>R</I>, we note that the larger <I>R</I> is, the
+  smoother the base data will be, hence the larger the amplitude
+  the supplementary data will be. The best value needs to be selected
+  by trial and error.</FONT>
+  <P><FONT FACE="Times New Roman"><BR>
+  For re-synthesis, we can build a hybrid instrument having the
+  base data of the trumpet and the supplementary data of the violin,</FONT>
+  <P><CENTER><pre><FONT FACE="Courier New">ab&nbsp;&nbsp;&nbsp;
+  <B>adsyn</B>&nbsp;&nbsp;&nbsp; kbamp, kfreq, ksmod, &quot;trumpet_base.het&quot;</FONT>
+  <FONT FACE="Courier New">aa&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp;
+  kaamp, kfreq, ksmod, &quot;violin_sup_a.het&quot;</FONT> <FONT
+   FACE="Courier New">as&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp;
+  ksamp, kfreq, ksmod, &quot;violin_sup_s.het&quot;</FONT> <FONT
+   FACE="Courier New">ar&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp;
+  kramp, kfreq, ksmod, &quot;violin_sup_r.het&quot;</FONT> <FONT
+   FACE="Courier New">atot&nbsp; <B>=</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  ab + aa + as + ar</FONT></pre></CENTER>
+  <P><FONT FACE="Times New Roman">We can mix the supplementary
+  data itself, so in this particular example we have at least 16
+  different mixing choices. The amplitudes <TT>kbamp, kaamp,...</TT>
+  can be set through specifically defined p-fields, or can be computed
+  based on the frequency, amplitude, or duration of the sound.
+  For example, increasing the amplitude ``kaamp'' of the attack-supplementary
+  data for short notes increases the sensation of a staccato sound,
+  while decreasing this amplitude leaves more of the softer attack
+  of the base data.</FONT>
+  <P><FONT FACE="Times New Roman">To build a complete instrument,
+  a single sampled sound is usually not sufficient. It is preferable
+  to sample the original instrument every minor third, or so. During
+  re-synthesis, the Csound instrument contains a first section
+  in which the frequency is checked against the list of frequencies
+  of the sampled sounds, and a <I>goto</I> statement is used to
+  jump into a second section wherein the sound is synthesized using
+  heterodyne data having the nearest frequency to the selected
+  frequency. If you have two sampled sounds that are too far apart
+  in frequency, you may use <B>hetroMix</B> to obtained a hetro
+  file at a selected intermediary frequency.</FONT>
+  <LI><FONT FACE="Times New Roman">As a second example, you may
+  use a smaller value of <I>R</I>, say 10 to 50 milliseconds, just
+  to smooth and compress the size of a given hetro file. (The other
+  output files may be neglected). Use <B>hetroPlot</B> to inspect
+  the quality of the smoothing.</FONT>
+  <LI><FONT FACE="Times New Roman">You may also select <I>R=0</I>
+  to generate a null ``base'' data, and take advantage of the property
+  <B>f(t)+g(t)=1</B> to divide the original data into attack, sustain
+  and decay portions having amplitude envelops that sum to 1, then
+  build new instruments mixing data from other instruments. (For
+  this step, you must first use <B>hetroEdit</B> or <B>hetroMix</B>
+  to equalize the duration of the contributing instruments).</FONT>
+</OL>
+
+<P><FONT FACE="Times New Roman">Last, but not least, for true
+inspiration, one can turn to the vast amount of literature available
+to learn about the many instruments musicians have build using
+additive synthesis.</FONT></P>
+
+<H3><FONT FACE="Times New Roman"></FONT><A NAME="SECTION4"></A>Installation
+and Examples</H3>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+source code for the heterodyne data analysis tools is found in
+the subdirectory ``Source''. The code is written in standard C,
+and I have used the ``classical'' declaration for function parameters,
+rather than the ``modern'' in-line declaration, for compatibility
+with older compilers. Thus, the code should compile on most machines
+without any trouble. The codes will not run correctly, however,
+under DOS and Windows 3.11 due to the usage of filenames longer
+than the 8.3 format. I have included executables for NeXT, Sun,
+and Linux for those that do not have a C compiler.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> As
+an example session, lets assume we have a sound file called ``mysound_Cs4.snd''
+containing a C sharp 4th octave (midi) note sampled at 22050 samples
+per second (the actual sound format is not important as long as
+Csound can work with it). The corresponding frequency in cycles
+per second is about 277 Hz (note that 4th octave MIDI corresponds
+to 8th octave Csound). We use the <B>hetro</B> filter analysis
+module from Csound to get the heterodyne description of the sound
+file,</FONT></P>
+
+<PRE><FONT FACE="Times New Roman">&nbsp;</FONT>
+<FONT FACE="Courier New">prompt&gt; hetro -s 22050 -f 277 -h 40&nbsp; mysound_Cs4.snd&nbsp; mysound_Cs4.het</FONT></PRE>
+
+<P><FONT FACE="Times New Roman">where the {\em -s} option specifies
+the sample rate, the {\em -f} option specifies a guess for the
+fundamental frequency in Hz, and the {\em -h} option specifies
+the number of harmonics (partials) sought in the input file. The
+output is stored in ``mysound_Cs4.het.'' By default the output
+file will have 256 breakpoints.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> The
+first step we should do is to visualize ``mysound_Cs4.het'' to
+inspect for errors, and to see if the number of partials computed
+is sufficient to resolve the original sound,</FONT></P>
+
+<PRE><FONT FACE="Courier New">prompt&gt; hetroPlot -o mysound_3d.eps&nbsp; mysound_Cs4.het</FONT></PRE>
+
+<P><FONT FACE="Times New Roman">Here, we use the {\em -o} option
+to redirect the output to ``mysound_3d.eps'' rather than the default
+``hetro_plot.eps.'' We then use the programs Ghostscript or Ghostview
+to render the Postscript file on screen (the Postscript viewer
+on your system may be different). Roughly speaking, the number
+of partials is ``sufficient'' when the amplitude of the higher
+partials is much smaller than the amplitude of the lower partials.
+(Of course, you could choose not to have a resolved expansion
+for musical reasons). If a particular detail is too hard to see
+in the three-dimensional plot, we can plot the data for each partial
+on a separate graph, using</FONT></P>
+
+<PRE><FONT FACE="Courier New">prompt&gt; hetroPlot -2d -o mysound_2d.eps&nbsp; mysound_Cs4.het</FONT></PRE>
+
+<P><FONT FACE="Times New Roman">The file ``mysound_2d.eps'' contains
+as many pages as there are partials.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> Next,
+assume we have an additional heterodyne data file named ``mysound_F5.het''
+containing a note at F in the fifth octave (698.4 Hz). We would
+like to average the two .het files to get one at A4 (440 Hz).
+Moreover, the sample at f5 is, say, 2 seconds long, while the
+sample at c\#4 is 3 seconds long. Since the default weight in
+hetroMix are 0.5, a straight forward invocation,</FONT></P>
+
+<PRE><FONT FACE="Courier New">prompt&gt; hetroMix&nbsp; mysound_Cs4.het mysound_F4.het</FONT></PRE>
+
+<P><FONT FACE="Times New Roman">would produce an output file (here
+we have chosen to write the output to the default file ``hetro_mix.het.'')
+with a sound at 487.8 Hz. To use the correct weights, we write
+a short text file, say ``weights.txt'' with the following line</FONT></P>
+
+<PRE><FONT FACE="Courier New">frequency:&nbsp; default&nbsp; 0.6136&nbsp;&nbsp; 0.3864</FONT></PRE>
+
+<P><FONT FACE="Times New Roman">wherein the first and second weights
+are associated with the first and second file in the command line,
+respectively. Now we invoke hetroMix with,</FONT></P>
+
+<PRE><FONT FACE="Courier New">prompt&gt; hetroMix&nbsp; -w weights.txt&nbsp; mysound_Cs4.het&nbsp; mysound_F4.het</FONT></PRE>
+
+<P><FONT FACE="Times New Roman">and obtain our desired sound at
+440 Hz. Since the sound at f4 is shorter in duration, hetroMix
+will stretch the f4 sound to 3 seconds (the length of the cs4
+sound) before mixing. The stretching should usually be done during
+the ``sustain'' section of the sound, and if you feel that hetroMix
+is beginning the time-stretch too early, you can specify a time,
+say 300 milliseconds, between the start of the sound and the start
+of the stretch as follows</FONT></P>
+
+<PRE><FONT FACE="Courier New">prompt&gt; hetroMix&nbsp; -w weights.txt&nbsp; -a 300&nbsp; mysound_Cs4.het&nbsp; mysound_F4.het</FONT></PRE>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> Staying
+with hetroMix, lets assume now that you have a heterodyne data
+file called violins_C5.het, containing a violin sound, and another
+file called horn_C5.het, containing a French-horn sound. We would
+like to produce a new sound whose even number partials have amplitudes
+equal to those of the violin and frequencies equal to those of
+the French-horn, and whose odd numbered partials have amplitudes
+of the French-horn and frequency of the violin. To achieve this,
+we write the following text file, which we call, say, ``some_weights.asc'',</FONT></P>
+
+<PRE><FONT FACE="Times New Roman">&nbsp;&nbsp;&nbsp; Here we mix odd partials from file 1 and even partials from file 2</FONT>
+
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Par. File1&nbsp; File2</FONT>
+<FONT FACE="Courier New">amplitude:&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ..&nbsp; partial 0 is the fundamental</FONT>
+<FONT FACE="Courier New">frequency:&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+<FONT FACE="Courier New">amplitude:&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">frequency:&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+<FONT FACE="Courier New">amplitude:&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">frequency:&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp; 1</FONT></PRE>
+
+<P><FONT FACE="Times New Roman">and so on until partial 49, or
+how many partials are in the input files. File 1 and 2 refers
+to the order the files are given in the hetroMix command. To save
+typing, you could define the default values</FONT></P>
+
+<PRE><FONT FACE="Courier New">amplitude:&nbsp; default&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">frequency:&nbsp; default&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp; 1</FONT></PRE>
+
+<P><FONT FACE="Times New Roman">and define only the odd partials.
+To mix the files we would then type</FONT></P>
+
+<PRE><FONT FACE="Courier New">prompt&gt; hetroMix&nbsp; -w some_weights.asc&nbsp; mysound_Cs4.het mysound_F4.het</FONT></PRE>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> Lastly,
+we turn to hetroReduce. The simplest use of this program is to
+smooth and reduce the data contained in the original ``mysound_Cs4.het''
+file into a smaller file, which, hopefully, should yield the same
+sound upon re-synthesis (here I use ``same'' in a musical sense).
+By typing</FONT></P>
+
+<PRE><FONT FACE="Courier New">prompt&gt; hetroReduce -o smaller&nbsp; mysound_Cs4.het</FONT></PRE>
+
+<P><FONT FACE="Times New Roman">one obtains four files, one of
+which is called ``smaller_base.het.'' This file contains 50 breakpoints,
+as opposed to 256 breakpoints in ``mysound_Cs4.het''. The 50 breakpoints
+are (in some mathematical sense) optimally positioned in time.
+The number 50 is hardwired into the code. To change it you need
+to redefine the variable ``NumCOL'' in hetroReduce.c and recompile
+the code. (Note that Moorer and Grey's well known line segment
+approximations to the oboe and clarinet tones in Volume II number
+2 page 29 issue of the Computer Music Journal contained at most
+15 break points).</FONT></P>
+
+<P><FONT FACE="Times New Roman">If you wish to also smooth the
+data, type</FONT></P>
+
+<PRE><FONT FACE="Courier New">prompt&gt; hetroReduce -r 50 -o smaller&nbsp; mysound_Cs4.het</FONT></PRE>
+
+<P><FONT FACE="Times New Roman">A value to the -r option of 0
+does not produce smoothing, a value of 300 (milliseconds) produces
+strong smoothing. Use hetroPlot to see the difference.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/symbol_null.gif"
+ALIGN="BOTTOM" WIDTH="15" HEIGHT="15" NATURALSIZEFLAG="3"> For
+the more interesting uses of hetroReduce, please consult the examples
+in <A HREF="#SECTION3">the section</A> above. Here we give an
+example of an orchestra-file. Following with the above examples,
+we have two .het sets of files produced by hetroReduce, one set
+corresponding to ``mysound_Cs4'' (277 Hz, 3 seconds long), the
+other to ``mysound_F4'' (311 Hz, 2 seconds long). For notes below
+Ds4 we use first set, and for notes above Ds4 we use the second
+set. In practice, one needs to extend the number of sampled frequencies
+so that any desired note lies no more than about a minor third
+away from a sampled frequency.</FONT></P>
+
+<PRE><FONT FACE="Courier New">sr&nbsp;&nbsp;&nbsp;&nbsp; = 22050&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; samples per second&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">kr&nbsp;&nbsp;&nbsp;&nbsp; = 2205&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; control signals update, per second&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">ksmps&nbsp; = 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; sr/kr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">nchnls = 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; mono output channel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>instr</B> 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+<FONT FACE="Courier New">;</FONT>
+<FONT FACE="Courier New">;&nbsp; p-Fields</FONT>
+<FONT FACE="Courier New">;</FONT>
+
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; idur&nbsp; <B>=</B>&nbsp; (p3 &gt; 0.10 ? p3 : 0.10)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; duration&nbsp; (sec), 0.1 sec. minimum&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ifreq <B>=</B>&nbsp;&nbsp; cpspch(p4)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; frequency in pitch form&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; iamp&nbsp; <B>=</B>&nbsp;&nbsp; p5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; amplitude, linear, in range&nbsp; 0 to 1</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; irise <B>=</B>&nbsp;&nbsp; p6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; start value for amplitude envelope</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; (non-zero for legato effect)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp; Duration of sampled sound:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp; ``mysound_Cs4''&nbsp;&nbsp; freq = 277.2 Hz,&nbsp; duration = 3 seconds&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp; ``mysound_F5''&nbsp;&nbsp;&nbsp; freq = 698.4 Hz,&nbsp; duration = 2 seconds&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp; Here we choose which of the two sampled sounds we use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp; and set the variable ``iper'' equal to the sampled sound duration&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; iper&nbsp; <B>=</B>&nbsp;&nbsp;&nbsp; (ifreq &lt; 487 ?&nbsp; 3 : 2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;</FONT>
+
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp; Crescendo amplitude envelope&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kresc <B>linseg</B>&nbsp; p6, idur/3 , iamp, idur/3,&nbsp; iamp, idur/3, (1+p6)/2</FONT>
+
+
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp; Compute ksmod for adsyn such that there is a nice ``staccato''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp; at the beginning of short notes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ia0&nbsp;&nbsp;&nbsp; <B>=</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; iper/(4*idur)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ia1&nbsp;&nbsp;&nbsp; <B>=</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sqrt(idur/iper)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; iaa&nbsp;&nbsp;&nbsp; <B>=</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (ia0 &gt; ia1 ? ia0 : ia1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ikk&nbsp;&nbsp;&nbsp; <B>=</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (iaa*iper/idur)/(1 - exp(-iaa))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ksmod&nbsp; <B>expon</B>&nbsp; ikk, idur, ikk*exp(-iaa)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp; Now we have to chose the amplitude weights with which we mix the&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp; base + supplementary data.&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp; (Note that iamp is in the range of 0 to 1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kbamp <B>=</B>&nbsp;&nbsp;&nbsp; 1 - iamp/3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; base data from 1 to 0.66&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kaamp <B>=</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3*iamp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; supp data from 0 to 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ksamp <B>=</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2*iamp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; supp data from 0 to 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kramp <B>=</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2*iamp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;&nbsp; supp data from 0 to 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp; Here we choose which of the two sampled sounds to use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (ifreq &lt; 487 ) goto sound1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp; Use ``mysound_F5'' to synthesize the sound&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp; (Note: if the desired frequency is significantly above F5,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use a low-pass filter to subtract the higher partials)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kfreq <B>=</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ifreq/686.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ab&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp; kbamp, kfreq, ksmod, &quot;mysound_F5_base.het&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; aa&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp; kaamp, kfreq, ksmod, &quot;mysound_F5_sup_a.het&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; as&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp; ksamp, kfreq, ksmod, &quot;mysound_F5_sup_s.het&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ar&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp; kramp, kfreq, ksmod, &quot;mysound_F5_sup_r.het&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; atot&nbsp; <B>=</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ab + aa + as + ar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>goto</B>&nbsp; finish</FONT>
+
+
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp; Use ``mysound_Cs4'' to synthesize the sound&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+<FONT FACE="Courier New">sound1:&nbsp; kfreq <B>=</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ifreq/ 277.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ab&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp; kbamp, kfreq, ksmod, &quot;mysound_Cs4_base.het&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; aa&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp; kaamp, kfreq, ksmod, &quot;mysound_Cs4_sup_a.het&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; as&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp; ksamp, kfreq, ksmod, &quot;mysound_Cs4_sup_s.het&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ar&nbsp;&nbsp;&nbsp; <B>adsyn</B>&nbsp;&nbsp;&nbsp; kramp, kfreq, ksmod, &quot;mysound_Cs4_sup_r.het&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; atot&nbsp; <B>=</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ab + aa + as + ar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>goto</B>&nbsp;&nbsp;&nbsp;&nbsp; finish&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+<FONT FACE="Courier New">finish:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>out</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; atot * kresc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+<FONT FACE="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <B>endin</B></FONT></PRE>
+
+<P>&nbsp;</P>
+
+<P><FONT FACE="Times New Roman">This instrument is just a suggestion.
+You may want to add p-fields in the score file to dynamically
+control some parameters, such as the ``kbamp'', ``kaamp'' etc.
+mixing weights, or for ``morphing'' between one set of .het data
+and another during the length of the sound itself. Best wishes.</FONT></P>
+
+<P><FONT FACE="Courier New">fabio.bertolotti@dlr.de</FONT></P>
+
+<H3><FONT FACE="Times New Roman">References</FONT></H3>
+
+<DL>
+  <DT><FONT FACE="Times New Roman"></FONT><A NAME="BenderOrszag1978"></A><B><I>1</I></B>
+  <DD><I><FONT FACE="Times New Roman">Bender, C. M., and S. A.
+  Orszag. 1978. Advanced Mathematical Methods for Scientists and
+  Engineers. Macgraw-Hill.</FONT></I>
+  <DT><FONT FACE="Times New Roman"></FONT><A NAME="Bertolotti-Herbert-Spalart-1992"></A><B><I>2</I></B>
+  <DD><I><FONT FACE="Times New Roman">Bertolotti, F. P., Th. Herbert,
+  and P. R. Spalart. 1992. ``Linear and nonlinear stability of
+  the Blasius boundary layer.'' Journal of Fluid Mechanics 242:
+  441-474.</FONT></I>
+  <DT><FONT FACE="Times New Roman"></FONT><A NAME="Roads1995"></A><B><I>3</I></B>
+  <DD><I><FONT FACE="Times New Roman">Roads, C. 1995. The Computer
+  Music Tutorial. Cambridge, Massachusetts: The MIT Press.</FONT></I>
+  <DT><FONT FACE="Times New Roman"></FONT><A NAME="Serra-Smith-1990&lt;B"></A><I>4</I>
+  <DD><I><FONT FACE="Times New Roman">Serra, X., and J. Smith.
+  1990. ``Spectral modeling synthesis: A sound analysis/synthesis
+  system based on a deterministic plus stochastic decomposition.''
+  Computer Music Journal, 14(4): 12-24.</FONT></I>
+</DL>
+
+</BODY>
+</HTML>

@@ -1,0 +1,1746 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>Pitch Conversion</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="top.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="amp.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Appendix: Pitch Conversion</font>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2 align="center">Pitch Conversion</h2>
+<center>
+
+<table border cellspacing="1" cellpadding="4" width="372">
+	<tr>
+		<td align="center" width="35" valign="TOP" height="13">
+<strong>Note</strong>
+		</td>
+		<td align="center" width="18" valign="TOP" height="13">
+<strong>Hz</strong>
+		</td>
+		<td align="center" width="35" valign="TOP" height="13">
+<strong>cpspch</strong>
+		</td>
+		<td align="center" width="35" valign="TOP" height="13">
+<strong>MIDI</strong>
+		</td>
+		<td align="center" width="35" valign="TOP" height="13">
+<strong>Note</strong>
+		</td>
+		<td align="center" width="35" valign="TOP" height="13">
+<strong>Hz</strong>
+		</td>
+		<td align="center" width="35" valign="TOP" height="13">
+<strong>cpspch</strong>
+		</td>
+		<td align="center" width="35" valign="TOP" height="13">
+<strong>MIDI</strong>
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+C-1
+		</td>
+		<td align="center" width="18" valign="TOP">
+8.176
+		</td>
+		<td align="center" width="35" valign="TOP">
+3.00
+		</td>
+		<td align="center" width="35" valign="TOP">
+0
+		</td>
+		<td align="center" width="35" valign="TOP">
+E4
+		</td>
+		<td align="center" width="35" valign="TOP">
+329.628
+		</td>
+		<td align="center" width="35" valign="TOP">
+8.04
+		</td>
+		<td align="center" width="35" valign="TOP">
+64
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+C#-1
+		</td>
+		<td align="center" width="18" valign="TOP">
+8.662
+		</td>
+		<td align="center" width="35" valign="TOP">
+3.01
+		</td>
+		<td align="center" width="35" valign="TOP">
+1
+		</td>
+		<td align="center" width="35" valign="TOP">
+F4
+		</td>
+		<td align="center" width="35" valign="TOP">
+349.228
+		</td>
+		<td align="center" width="35" valign="TOP">
+8.05
+		</td>
+		<td align="center" width="35" valign="TOP">
+65
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+D-1
+		</td>
+		<td align="center" width="18" valign="TOP">
+9.177
+		</td>
+		<td align="center" width="35" valign="TOP">
+3.02
+		</td>
+		<td align="center" width="35" valign="TOP">
+2
+		</td>
+		<td align="center" width="35" valign="TOP">
+F#4
+		</td>
+		<td align="center" width="35" valign="TOP">
+369.994
+		</td>
+		<td align="center" width="35" valign="TOP">
+8.06
+		</td>
+		<td align="center" width="35" valign="TOP">
+66
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+D#-1
+		</td>
+		<td align="center" width="18" valign="TOP">
+9.723
+		</td>
+		<td align="center" width="35" valign="TOP">
+3.03
+		</td>
+		<td align="center" width="35" valign="TOP">
+3
+		</td>
+		<td align="center" width="35" valign="TOP">
+G4
+		</td>
+		<td align="center" width="35" valign="TOP">
+391.995
+		</td>
+		<td align="center" width="35" valign="TOP">
+8.07
+		</td>
+		<td align="center" width="35" valign="TOP">
+67
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+E-1
+		</td>
+		<td align="center" width="18" valign="TOP">
+10.301
+		</td>
+		<td align="center" width="35" valign="TOP">
+3.04
+		</td>
+		<td align="center" width="35" valign="TOP">
+4
+		</td>
+		<td align="center" width="35" valign="TOP">
+G#4
+		</td>
+		<td align="center" width="35" valign="TOP">
+415.305
+		</td>
+		<td align="center" width="35" valign="TOP">
+8.08
+		</td>
+		<td align="center" width="35" valign="TOP">
+68
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+F-1
+		</td>
+		<td align="center" width="18" valign="TOP">
+10.913
+		</td>
+		<td align="center" width="35" valign="TOP">
+3.05
+		</td>
+		<td align="center" width="35" valign="TOP">
+5
+		</td>
+		<td align="center" width="35" valign="TOP">
+A4
+		</td>
+		<td align="center" width="35" valign="TOP">
+440.000
+		</td>
+		<td align="center" width="35" valign="TOP">
+8.09
+		</td>
+		<td align="center" width="35" valign="TOP">
+69
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+F#-1
+		</td>
+		<td align="center" width="18" valign="TOP">
+11.562
+		</td>
+		<td align="center" width="35" valign="TOP">
+3.06
+		</td>
+		<td align="center" width="35" valign="TOP">
+6
+		</td>
+		<td align="center" width="35" valign="TOP">
+A#4
+		</td>
+		<td align="center" width="35" valign="TOP">
+466.164
+		</td>
+		<td align="center" width="35" valign="TOP">
+8.10
+		</td>
+		<td align="center" width="35" valign="TOP">
+70
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+G-1
+		</td>
+		<td align="center" width="18" valign="TOP">
+12.250
+		</td>
+		<td align="center" width="35" valign="TOP">
+3.07
+		</td>
+		<td align="center" width="35" valign="TOP">
+7
+		</td>
+		<td align="center" width="35" valign="TOP">
+B4
+		</td>
+		<td align="center" width="35" valign="TOP">
+493.883
+		</td>
+		<td align="center" width="35" valign="TOP">
+8.11
+		</td>
+		<td align="center" width="35" valign="TOP">
+71
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+G#-1
+		</td>
+		<td align="center" width="18" valign="TOP">
+12.978
+		</td>
+		<td align="center" width="35" valign="TOP">
+3.08
+		</td>
+		<td align="center" width="35" valign="TOP">
+8
+		</td>
+		<td align="center" width="35" valign="TOP">
+C5
+		</td>
+		<td align="center" width="35" valign="TOP">
+523.251
+		</td>
+		<td align="center" width="35" valign="TOP">
+9.00
+		</td>
+		<td align="center" width="35" valign="TOP">
+72
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+A-1
+		</td>
+		<td align="center" width="18" valign="TOP">
+13.750
+		</td>
+		<td align="center" width="35" valign="TOP">
+3.09
+		</td>
+		<td align="center" width="35" valign="TOP">
+9
+		</td>
+		<td align="center" width="35" valign="TOP">
+C#5
+		</td>
+		<td align="center" width="35" valign="TOP">
+554.365
+		</td>
+		<td align="center" width="35" valign="TOP">
+9.01
+		</td>
+		<td align="center" width="35" valign="TOP">
+73
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+A#-1
+		</td>
+		<td align="center" width="18" valign="TOP">
+14.568
+		</td>
+		<td align="center" width="35" valign="TOP">
+3.10
+		</td>
+		<td align="center" width="35" valign="TOP">
+10
+		</td>
+		<td align="center" width="35" valign="TOP">
+D5
+		</td>
+		<td align="center" width="35" valign="TOP">
+587.330
+		</td>
+		<td align="center" width="35" valign="TOP">
+9.02
+		</td>
+		<td align="center" width="35" valign="TOP">
+74
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+B-1
+		</td>
+		<td align="center" width="18" valign="TOP">
+15.434
+		</td>
+		<td align="center" width="35" valign="TOP">
+3.11
+		</td>
+		<td align="center" width="35" valign="TOP">
+11
+		</td>
+		<td align="center" width="35" valign="TOP">
+D#5
+		</td>
+		<td align="center" width="35" valign="TOP">
+622.254
+		</td>
+		<td align="center" width="35" valign="TOP">
+9.03
+		</td>
+		<td align="center" width="35" valign="TOP">
+75
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+C0
+		</td>
+		<td align="center" width="18" valign="TOP">
+16.352
+		</td>
+		<td align="center" width="35" valign="TOP">
+4.00
+		</td>
+		<td align="center" width="35" valign="TOP">
+12
+		</td>
+		<td align="center" width="35" valign="TOP">
+E5
+		</td>
+		<td align="center" width="35" valign="TOP">
+659.255
+		</td>
+		<td align="center" width="35" valign="TOP">
+9.04
+		</td>
+		<td align="center" width="35" valign="TOP">
+76
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+C#0
+		</td>
+		<td align="center" width="18" valign="TOP">
+17.324
+		</td>
+		<td align="center" width="35" valign="TOP">
+4.01
+		</td>
+		<td align="center" width="35" valign="TOP">
+13
+		</td>
+		<td align="center" width="35" valign="TOP">
+F5
+		</td>
+		<td align="center" width="35" valign="TOP">
+698.456
+		</td>
+		<td align="center" width="35" valign="TOP">
+9.05
+		</td>
+		<td align="center" width="35" valign="TOP">
+77
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+D0
+		</td>
+		<td align="center" width="18" valign="TOP">
+18.354
+		</td>
+		<td align="center" width="35" valign="TOP">
+4.02
+		</td>
+		<td align="center" width="35" valign="TOP">
+14
+		</td>
+		<td align="center" width="35" valign="TOP">
+F#5
+		</td>
+		<td align="center" width="35" valign="TOP">
+739.989
+		</td>
+		<td align="center" width="35" valign="TOP">
+9.06
+		</td>
+		<td align="center" width="35" valign="TOP">
+78
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+D#0
+		</td>
+		<td align="center" width="18" valign="TOP">
+19.445
+		</td>
+		<td align="center" width="35" valign="TOP">
+4.03
+		</td>
+		<td align="center" width="35" valign="TOP">
+15
+		</td>
+		<td align="center" width="35" valign="TOP">
+G5
+		</td>
+		<td align="center" width="35" valign="TOP">
+783.991
+		</td>
+		<td align="center" width="35" valign="TOP">
+9.07
+		</td>
+		<td align="center" width="35" valign="TOP">
+79
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+E0
+		</td>
+		<td align="center" width="18" valign="TOP">
+20.602
+		</td>
+		<td align="center" width="35" valign="TOP">
+4.04
+		</td>
+		<td align="center" width="35" valign="TOP">
+16
+		</td>
+		<td align="center" width="35" valign="TOP">
+G#5
+		</td>
+		<td align="center" width="35" valign="TOP">
+830.609
+		</td>
+		<td align="center" width="35" valign="TOP">
+9.08
+		</td>
+		<td align="center" width="35" valign="TOP">
+80
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+F0
+		</td>
+		<td align="center" width="18" valign="TOP">
+21.827
+		</td>
+		<td align="center" width="35" valign="TOP">
+4.05
+		</td>
+		<td align="center" width="35" valign="TOP">
+17
+		</td>
+		<td align="center" width="35" valign="TOP">
+A5
+		</td>
+		<td align="center" width="35" valign="TOP">
+880.000
+		</td>
+		<td align="center" width="35" valign="TOP">
+9.09
+		</td>
+		<td align="center" width="35" valign="TOP">
+81
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+F#0
+		</td>
+		<td align="center" width="18" valign="TOP">
+23.125
+		</td>
+		<td align="center" width="35" valign="TOP">
+4.06
+		</td>
+		<td align="center" width="35" valign="TOP">
+18
+		</td>
+		<td align="center" width="35" valign="TOP">
+A#5
+		</td>
+		<td align="center" width="35" valign="TOP">
+932.328
+		</td>
+		<td align="center" width="35" valign="TOP">
+9.10
+		</td>
+		<td align="center" width="35" valign="TOP">
+82
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+G0
+		</td>
+		<td align="center" width="18" valign="TOP">
+24.500
+		</td>
+		<td align="center" width="35" valign="TOP">
+4.07
+		</td>
+		<td align="center" width="35" valign="TOP">
+19
+		</td>
+		<td align="center" width="35" valign="TOP">
+B5
+		</td>
+		<td align="center" width="35" valign="TOP">
+987.767
+		</td>
+		<td align="center" width="35" valign="TOP">
+9.11
+		</td>
+		<td align="center" width="35" valign="TOP">
+83
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+G#0
+		</td>
+		<td align="center" width="18" valign="TOP">
+25.957
+		</td>
+		<td align="center" width="35" valign="TOP">
+4.08
+		</td>
+		<td align="center" width="35" valign="TOP">
+20
+		</td>
+		<td align="center" width="35" valign="TOP">
+C6
+		</td>
+		<td align="center" width="35" valign="TOP">
+1046.502
+		</td>
+		<td align="center" width="35" valign="TOP">
+10.00
+		</td>
+		<td align="center" width="35" valign="TOP">
+84
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+A0
+		</td>
+		<td align="center" width="18" valign="TOP">
+27.500
+		</td>
+		<td align="center" width="35" valign="TOP">
+4.09
+		</td>
+		<td align="center" width="35" valign="TOP">
+21
+		</td>
+		<td align="center" width="35" valign="TOP">
+C#6
+		</td>
+		<td align="center" width="35" valign="TOP">
+1108.731
+		</td>
+		<td align="center" width="35" valign="TOP">
+10.01
+		</td>
+		<td align="center" width="35" valign="TOP">
+85
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+A#0
+		</td>
+		<td align="center" width="18" valign="TOP">
+29.135
+		</td>
+		<td align="center" width="35" valign="TOP">
+4.10
+		</td>
+		<td align="center" width="35" valign="TOP">
+22
+		</td>
+		<td align="center" width="35" valign="TOP">
+D6
+		</td>
+		<td align="center" width="35" valign="TOP">
+1174.659
+		</td>
+		<td align="center" width="35" valign="TOP">
+10.02
+		</td>
+		<td align="center" width="35" valign="TOP">
+86
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+B0
+		</td>
+		<td align="center" width="18" valign="TOP">
+30.868
+		</td>
+		<td align="center" width="35" valign="TOP">
+4.11
+		</td>
+		<td align="center" width="35" valign="TOP">
+23
+		</td>
+		<td align="center" width="35" valign="TOP">
+D#6
+		</td>
+		<td align="center" width="35" valign="TOP">
+1244.508
+		</td>
+		<td align="center" width="35" valign="TOP">
+10.03
+		</td>
+		<td align="center" width="35" valign="TOP">
+87
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+C1
+		</td>
+		<td align="center" width="18" valign="TOP">
+32.703
+		</td>
+		<td align="center" width="35" valign="TOP">
+5.00
+		</td>
+		<td align="center" width="35" valign="TOP">
+24
+		</td>
+		<td align="center" width="35" valign="TOP">
+E6
+		</td>
+		<td align="center" width="35" valign="TOP">
+1318.510
+		</td>
+		<td align="center" width="35" valign="TOP">
+10.04
+		</td>
+		<td align="center" width="35" valign="TOP">
+88
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+C#1
+		</td>
+		<td align="center" width="18" valign="TOP">
+34.648
+		</td>
+		<td align="center" width="35" valign="TOP">
+5.01
+		</td>
+		<td align="center" width="35" valign="TOP">
+25
+		</td>
+		<td align="center" width="35" valign="TOP">
+F6
+		</td>
+		<td align="center" width="35" valign="TOP">
+1396.913
+		</td>
+		<td align="center" width="35" valign="TOP">
+10.05
+		</td>
+		<td align="center" width="35" valign="TOP">
+89
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+D1
+		</td>
+		<td align="center" width="18" valign="TOP">
+36.708
+		</td>
+		<td align="center" width="35" valign="TOP">
+5.02
+		</td>
+		<td align="center" width="35" valign="TOP">
+26
+		</td>
+		<td align="center" width="35" valign="TOP">
+F#6
+		</td>
+		<td align="center" width="35" valign="TOP">
+1479.978
+		</td>
+		<td align="center" width="35" valign="TOP">
+10.06
+		</td>
+		<td align="center" width="35" valign="TOP">
+90
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+D#1
+		</td>
+		<td align="center" width="18" valign="TOP">
+38.891
+		</td>
+		<td align="center" width="35" valign="TOP">
+5.03
+		</td>
+		<td align="center" width="35" valign="TOP">
+27
+		</td>
+		<td align="center" width="35" valign="TOP">
+G6
+		</td>
+		<td align="center" width="35" valign="TOP">
+1567.982
+		</td>
+		<td align="center" width="35" valign="TOP">
+10.07
+		</td>
+		<td align="center" width="35" valign="TOP">
+91
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+E1
+		</td>
+		<td align="center" width="18" valign="TOP">
+41.203
+		</td>
+		<td align="center" width="35" valign="TOP">
+5.04
+		</td>
+		<td align="center" width="35" valign="TOP">
+28
+		</td>
+		<td align="center" width="35" valign="TOP">
+G#6
+		</td>
+		<td align="center" width="35" valign="TOP">
+1661.219
+		</td>
+		<td align="center" width="35" valign="TOP">
+10.08
+		</td>
+		<td align="center" width="35" valign="TOP">
+92
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+F1
+		</td>
+		<td align="center" width="18" valign="TOP">
+43.654
+		</td>
+		<td align="center" width="35" valign="TOP">
+5.05
+		</td>
+		<td align="center" width="35" valign="TOP">
+29
+		</td>
+		<td align="center" width="35" valign="TOP">
+A6
+		</td>
+		<td align="center" width="35" valign="TOP">
+1760.000
+		</td>
+		<td align="center" width="35" valign="TOP">
+10.09
+		</td>
+		<td align="center" width="35" valign="TOP">
+93
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+F#1
+		</td>
+		<td align="center" width="18" valign="TOP">
+46.249
+		</td>
+		<td align="center" width="35" valign="TOP">
+5.06
+		</td>
+		<td align="center" width="35" valign="TOP">
+30
+		</td>
+		<td align="center" width="35" valign="TOP">
+A#6
+		</td>
+		<td align="center" width="35" valign="TOP">
+1864.655
+		</td>
+		<td align="center" width="35" valign="TOP">
+10.10
+		</td>
+		<td align="center" width="35" valign="TOP">
+94
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+G1
+		</td>
+		<td align="center" width="18" valign="TOP">
+48.999
+		</td>
+		<td align="center" width="35" valign="TOP">
+5.07
+		</td>
+		<td align="center" width="35" valign="TOP">
+31
+		</td>
+		<td align="center" width="35" valign="TOP">
+B6
+		</td>
+		<td align="center" width="35" valign="TOP">
+1975.533
+		</td>
+		<td align="center" width="35" valign="TOP">
+10.11
+		</td>
+		<td align="center" width="35" valign="TOP">
+95
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+G#1
+		</td>
+		<td align="center" width="18" valign="TOP">
+51.913
+		</td>
+		<td align="center" width="35" valign="TOP">
+5.08
+		</td>
+		<td align="center" width="35" valign="TOP">
+32
+		</td>
+		<td align="center" width="35" valign="TOP">
+C7
+		</td>
+		<td align="center" width="35" valign="TOP">
+2093.005
+		</td>
+		<td align="center" width="35" valign="TOP">
+11.00
+		</td>
+		<td align="center" width="35" valign="TOP">
+96
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+A1
+		</td>
+		<td align="center" width="18" valign="TOP">
+55.000
+		</td>
+		<td align="center" width="35" valign="TOP">
+5.09
+		</td>
+		<td align="center" width="35" valign="TOP">
+33
+		</td>
+		<td align="center" width="35" valign="TOP">
+C#7
+		</td>
+		<td align="center" width="35" valign="TOP">
+2217.461
+		</td>
+		<td align="center" width="35" valign="TOP">
+11.01
+		</td>
+		<td align="center" width="35" valign="TOP">
+97
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+A#1
+		</td>
+		<td align="center" width="18" valign="TOP">
+58.270
+		</td>
+		<td align="center" width="35" valign="TOP">
+5.10
+		</td>
+		<td align="center" width="35" valign="TOP">
+34
+		</td>
+		<td align="center" width="35" valign="TOP">
+D7
+		</td>
+		<td align="center" width="35" valign="TOP">
+2349.318
+		</td>
+		<td align="center" width="35" valign="TOP">
+11.02
+		</td>
+		<td align="center" width="35" valign="TOP">
+98
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+B1
+		</td>
+		<td align="center" width="18" valign="TOP">
+61.735
+		</td>
+		<td align="center" width="35" valign="TOP">
+5.11
+		</td>
+		<td align="center" width="35" valign="TOP">
+35
+		</td>
+		<td align="center" width="35" valign="TOP">
+D#7
+		</td>
+		<td align="center" width="35" valign="TOP">
+2489.016
+		</td>
+		<td align="center" width="35" valign="TOP">
+11.03
+		</td>
+		<td align="center" width="35" valign="TOP">
+99
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+C2
+		</td>
+		<td align="center" width="18" valign="TOP">
+65.406
+		</td>
+		<td align="center" width="35" valign="TOP">
+6.00
+		</td>
+		<td align="center" width="35" valign="TOP">
+36
+		</td>
+		<td align="center" width="35" valign="TOP">
+E7
+		</td>
+		<td align="center" width="35" valign="TOP">
+2637.020
+		</td>
+		<td align="center" width="35" valign="TOP">
+11.04
+		</td>
+		<td align="center" width="35" valign="TOP">
+100
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+C#2
+		</td>
+		<td align="center" width="18" valign="TOP">
+69.296
+		</td>
+		<td align="center" width="35" valign="TOP">
+6.01
+		</td>
+		<td align="center" width="35" valign="TOP">
+37
+		</td>
+		<td align="center" width="35" valign="TOP">
+F7
+		</td>
+		<td align="center" width="35" valign="TOP">
+2793.826
+		</td>
+		<td align="center" width="35" valign="TOP">
+11.05
+		</td>
+		<td align="center" width="35" valign="TOP">
+101
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+D2
+		</td>
+		<td align="center" width="18" valign="TOP">
+73.416
+		</td>
+		<td align="center" width="35" valign="TOP">
+6.02
+		</td>
+		<td align="center" width="35" valign="TOP">
+38
+		</td>
+		<td align="center" width="35" valign="TOP">
+F#7
+		</td>
+		<td align="center" width="35" valign="TOP">
+2959.955
+		</td>
+		<td align="center" width="35" valign="TOP">
+11.06
+		</td>
+		<td align="center" width="35" valign="TOP">
+102
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+D#2
+		</td>
+		<td align="center" width="18" valign="TOP">
+77.782
+		</td>
+		<td align="center" width="35" valign="TOP">
+6.03
+		</td>
+		<td align="center" width="35" valign="TOP">
+39
+		</td>
+		<td align="center" width="35" valign="TOP">
+G7
+		</td>
+		<td align="center" width="35" valign="TOP">
+3135.963
+		</td>
+		<td align="center" width="35" valign="TOP">
+11.07
+		</td>
+		<td align="center" width="35" valign="TOP">
+103
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+E2
+		</td>
+		<td align="center" width="18" valign="TOP">
+82.407
+		</td>
+		<td align="center" width="35" valign="TOP">
+6.04
+		</td>
+		<td align="center" width="35" valign="TOP">
+40
+		</td>
+		<td align="center" width="35" valign="TOP">
+G#7
+		</td>
+		<td align="center" width="35" valign="TOP">
+3322.438
+		</td>
+		<td align="center" width="35" valign="TOP">
+11.08
+		</td>
+		<td align="center" width="35" valign="TOP">
+104
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+F2
+		</td>
+		<td align="center" width="18" valign="TOP">
+87.307
+		</td>
+		<td align="center" width="35" valign="TOP">
+6.05
+		</td>
+		<td align="center" width="35" valign="TOP">
+41
+		</td>
+		<td align="center" width="35" valign="TOP">
+A7
+		</td>
+		<td align="center" width="35" valign="TOP">
+3520.000
+		</td>
+		<td align="center" width="35" valign="TOP">
+11.09
+		</td>
+		<td align="center" width="35" valign="TOP">
+105
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+F#2
+		</td>
+		<td align="center" width="18" valign="TOP">
+92.499
+		</td>
+		<td align="center" width="35" valign="TOP">
+6.06
+		</td>
+		<td align="center" width="35" valign="TOP">
+42
+		</td>
+		<td align="center" width="35" valign="TOP">
+A#7
+		</td>
+		<td align="center" width="35" valign="TOP">
+3729.310
+		</td>
+		<td align="center" width="35" valign="TOP">
+11.10
+		</td>
+		<td align="center" width="35" valign="TOP">
+106
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+G2
+		</td>
+		<td align="center" width="18" valign="TOP">
+97.999
+		</td>
+		<td align="center" width="35" valign="TOP">
+6.07
+		</td>
+		<td align="center" width="35" valign="TOP">
+43
+		</td>
+		<td align="center" width="35" valign="TOP">
+B7
+		</td>
+		<td align="center" width="35" valign="TOP">
+3951.066
+		</td>
+		<td align="center" width="35" valign="TOP">
+11.11
+		</td>
+		<td align="center" width="35" valign="TOP">
+107
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+G#2
+		</td>
+		<td align="center" width="18" valign="TOP">
+103.826
+		</td>
+		<td align="center" width="35" valign="TOP">
+6.08
+		</td>
+		<td align="center" width="35" valign="TOP">
+44
+		</td>
+		<td align="center" width="35" valign="TOP">
+C8
+		</td>
+		<td align="center" width="35" valign="TOP">
+4186.009
+		</td>
+		<td align="center" width="35" valign="TOP">
+12.00
+		</td>
+		<td align="center" width="35" valign="TOP">
+108
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+A2
+		</td>
+		<td align="center" width="18" valign="TOP">
+110.000
+		</td>
+		<td align="center" width="35" valign="TOP">
+6.09
+		</td>
+		<td align="center" width="35" valign="TOP">
+45
+		</td>
+		<td align="center" width="35" valign="TOP">
+C#8
+		</td>
+		<td align="center" width="35" valign="TOP">
+4434.922
+		</td>
+		<td align="center" width="35" valign="TOP">
+12.01
+		</td>
+		<td align="center" width="35" valign="TOP">
+109
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+A#2
+		</td>
+		<td align="center" width="18" valign="TOP">
+116.541
+		</td>
+		<td align="center" width="35" valign="TOP">
+6.10
+		</td>
+		<td align="center" width="35" valign="TOP">
+46
+		</td>
+		<td align="center" width="35" valign="TOP">
+D8
+		</td>
+		<td align="center" width="35" valign="TOP">
+4698.636
+		</td>
+		<td align="center" width="35" valign="TOP">
+12.02
+		</td>
+		<td align="center" width="35" valign="TOP">
+110
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+B2
+		</td>
+		<td align="center" width="18" valign="TOP">
+123.471
+		</td>
+		<td align="center" width="35" valign="TOP">
+6.11
+		</td>
+		<td align="center" width="35" valign="TOP">
+47
+		</td>
+		<td align="center" width="35" valign="TOP">
+D#8
+		</td>
+		<td align="center" width="35" valign="TOP">
+4978.032
+		</td>
+		<td align="center" width="35" valign="TOP">
+12.03
+		</td>
+		<td align="center" width="35" valign="TOP">
+111
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+C3
+		</td>
+		<td align="center" width="18" valign="TOP">
+130.813
+		</td>
+		<td align="center" width="35" valign="TOP">
+7.00
+		</td>
+		<td align="center" width="35" valign="TOP">
+48
+		</td>
+		<td align="center" width="35" valign="TOP">
+E8
+		</td>
+		<td align="center" width="35" valign="TOP">
+5274.041
+		</td>
+		<td align="center" width="35" valign="TOP">
+12.04
+		</td>
+		<td align="center" width="35" valign="TOP">
+112
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+C#3
+		</td>
+		<td align="center" width="18" valign="TOP">
+138.591
+		</td>
+		<td align="center" width="35" valign="TOP">
+7.01
+		</td>
+		<td align="center" width="35" valign="TOP">
+49
+		</td>
+		<td align="center" width="35" valign="TOP">
+F8
+		</td>
+		<td align="center" width="35" valign="TOP">
+5587.652
+		</td>
+		<td align="center" width="35" valign="TOP">
+12.05
+		</td>
+		<td align="center" width="35" valign="TOP">
+113
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+D3
+		</td>
+		<td align="center" width="18" valign="TOP">
+146.832
+		</td>
+		<td align="center" width="35" valign="TOP">
+7.02
+		</td>
+		<td align="center" width="35" valign="TOP">
+50
+		</td>
+		<td align="center" width="35" valign="TOP">
+F#8
+		</td>
+		<td align="center" width="35" valign="TOP">
+5919.911
+		</td>
+		<td align="center" width="35" valign="TOP">
+12.06
+		</td>
+		<td align="center" width="35" valign="TOP">
+114
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+D#3
+		</td>
+		<td align="center" width="18" valign="TOP">
+155.563
+		</td>
+		<td align="center" width="35" valign="TOP">
+7.03
+		</td>
+		<td align="center" width="35" valign="TOP">
+51
+		</td>
+		<td align="center" width="35" valign="TOP">
+G8
+		</td>
+		<td align="center" width="35" valign="TOP">
+6271.927
+		</td>
+		<td align="center" width="35" valign="TOP">
+12.07
+		</td>
+		<td align="center" width="35" valign="TOP">
+115
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+E3
+		</td>
+		<td align="center" width="18" valign="TOP">
+164.814
+		</td>
+		<td align="center" width="35" valign="TOP">
+7.04
+		</td>
+		<td align="center" width="35" valign="TOP">
+52
+		</td>
+		<td align="center" width="35" valign="TOP">
+G#8
+		</td>
+		<td align="center" width="35" valign="TOP">
+6644.875
+		</td>
+		<td align="center" width="35" valign="TOP">
+12.08
+		</td>
+		<td align="center" width="35" valign="TOP">
+116
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+F3
+		</td>
+		<td align="center" width="18" valign="TOP">
+174.614
+		</td>
+		<td align="center" width="35" valign="TOP">
+7.05
+		</td>
+		<td align="center" width="35" valign="TOP">
+53
+		</td>
+		<td align="center" width="35" valign="TOP">
+A8
+		</td>
+		<td align="center" width="35" valign="TOP">
+7040.000
+		</td>
+		<td align="center" width="35" valign="TOP">
+12.09
+		</td>
+		<td align="center" width="35" valign="TOP">
+117
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+F#3
+		</td>
+		<td align="center" width="18" valign="TOP">
+184.997
+		</td>
+		<td align="center" width="35" valign="TOP">
+7.06
+		</td>
+		<td align="center" width="35" valign="TOP">
+54
+		</td>
+		<td align="center" width="35" valign="TOP">
+A#8
+		</td>
+		<td align="center" width="35" valign="TOP">
+7458.620
+		</td>
+		<td align="center" width="35" valign="TOP">
+12.10
+		</td>
+		<td align="center" width="35" valign="TOP">
+118
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+G3
+		</td>
+		<td align="center" width="18" valign="TOP">
+195.998
+		</td>
+		<td align="center" width="35" valign="TOP">
+7.07
+		</td>
+		<td align="center" width="35" valign="TOP">
+55
+		</td>
+		<td align="center" width="35" valign="TOP">
+B8
+		</td>
+		<td align="center" width="35" valign="TOP">
+7902.133
+		</td>
+		<td align="center" width="35" valign="TOP">
+12.11
+		</td>
+		<td align="center" width="35" valign="TOP">
+119
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+G#3
+		</td>
+		<td align="center" width="18" valign="TOP">
+207.652
+		</td>
+		<td align="center" width="35" valign="TOP">
+7.08
+		</td>
+		<td align="center" width="35" valign="TOP">
+56
+		</td>
+		<td align="center" width="35" valign="TOP">
+C9
+		</td>
+		<td align="center" width="35" valign="TOP">
+8372.018
+		</td>
+		<td align="center" width="35" valign="TOP">
+13.00
+		</td>
+		<td align="center" width="35" valign="TOP">
+120
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+A3
+		</td>
+		<td align="center" width="18" valign="TOP">
+220.000
+		</td>
+		<td align="center" width="35" valign="TOP">
+7.09
+		</td>
+		<td align="center" width="35" valign="TOP">
+57
+		</td>
+		<td align="center" width="35" valign="TOP">
+C#9
+		</td>
+		<td align="center" width="35" valign="TOP">
+8869.844
+		</td>
+		<td align="center" width="35" valign="TOP">
+13.01
+		</td>
+		<td align="center" width="35" valign="TOP">
+121
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+A#3
+		</td>
+		<td align="center" width="18" valign="TOP">
+233.082
+		</td>
+		<td align="center" width="35" valign="TOP">
+7.10
+		</td>
+		<td align="center" width="35" valign="TOP">
+58
+		</td>
+		<td align="center" width="35" valign="TOP">
+D9
+		</td>
+		<td align="center" width="35" valign="TOP">
+9397.273
+		</td>
+		<td align="center" width="35" valign="TOP">
+13.02
+		</td>
+		<td align="center" width="35" valign="TOP">
+122
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+B3
+		</td>
+		<td align="center" width="18" valign="TOP">
+246.942
+		</td>
+		<td align="center" width="35" valign="TOP">
+7.11
+		</td>
+		<td align="center" width="35" valign="TOP">
+59
+		</td>
+		<td align="center" width="35" valign="TOP">
+D#9
+		</td>
+		<td align="center" width="35" valign="TOP">
+9956.063
+		</td>
+		<td align="center" width="35" valign="TOP">
+13.03
+		</td>
+		<td align="center" width="35" valign="TOP">
+123
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+C4
+		</td>
+		<td align="center" width="18" valign="TOP">
+261.626
+		</td>
+		<td align="center" width="35" valign="TOP">
+8.00
+		</td>
+		<td align="center" width="35" valign="TOP">
+60
+		</td>
+		<td align="center" width="35" valign="TOP">
+E9
+		</td>
+		<td align="center" width="35" valign="TOP">
+10548.08
+		</td>
+		<td align="center" width="35" valign="TOP">
+13.04
+		</td>
+		<td align="center" width="35" valign="TOP">
+124
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+C#4
+		</td>
+		<td align="center" width="18" valign="TOP">
+277.183
+		</td>
+		<td align="center" width="35" valign="TOP">
+8.01
+		</td>
+		<td align="center" width="35" valign="TOP">
+61
+		</td>
+		<td align="center" width="35" valign="TOP">
+F9
+		</td>
+		<td align="center" width="35" valign="TOP">
+11175.30
+		</td>
+		<td align="center" width="35" valign="TOP">
+13.05
+		</td>
+		<td align="center" width="35" valign="TOP">
+125
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+D4
+		</td>
+		<td align="center" width="18" valign="TOP">
+293.665
+		</td>
+		<td align="center" width="35" valign="TOP">
+8.02
+		</td>
+		<td align="center" width="35" valign="TOP">
+62
+		</td>
+		<td align="center" width="35" valign="TOP">
+F#9
+		</td>
+		<td align="center" width="35" valign="TOP">
+11839.82
+		</td>
+		<td align="center" width="35" valign="TOP">
+13.06
+		</td>
+		<td align="center" width="35" valign="TOP">
+126
+		</td>
+	</tr>
+	<tr>
+		<td align="center" width="35" valign="TOP">
+D#4
+		</td>
+		<td align="center" width="18" valign="TOP">
+311.127
+		</td>
+		<td align="center" width="35" valign="TOP">
+8.03
+		</td>
+		<td align="center" width="35" valign="TOP">
+63
+		</td>
+		<td align="center" width="35" valign="TOP">
+G9
+		</td>
+		<td align="center" width="35" valign="TOP">
+12543.85
+		</td>
+		<td align="center" width="35" valign="TOP">
+13.07
+		</td>
+		<td align="center" width="35" valign="TOP">
+127
+		</td>
+	</tr>
+</table>
+
+
+</center>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="top.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="amp.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Appendix: Pitch Conversion</font>
+</body>
+
+</html>

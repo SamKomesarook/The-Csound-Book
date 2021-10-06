@@ -1,0 +1,82 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>initc7, initc14, initc21</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="cpstmid.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="midic7.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#input" class="toqr">
+MIDI Support: Controller Input</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>initc7, initc14, initc21</h2>
+
+<pre>
+            <strong>initc7</strong>     ichan, ictlno, ivalue
+            <strong>initc14</strong>    ichan, ictlno1, ictlno2, ivalue
+            <strong>initc21</strong>    ichan, ictlno1, ictlno2, ictlno3, ivalue
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Initializes MIDI controller <em>ictlno</em> with <em>ivalue</em>
+</p>
+
+<h3>Initialization</h3>
+<p><em>ichan</em> &#8211; MIDI channel</p>
+
+<p><em>ictlno</em> &#8211; controller number (<strong>initc7</strong>)</p>
+
+<p><em>ictlno1</em> &#8211; most significant byte controller number</p>
+
+<p><em>ictlno2</em> &#8211; in <strong>initc14</strong> least significant byte controller number; in initc21 Medium Significant Byte controller number</p>
+
+<p><em>ictlno3</em> &#8211; least significant byte controller number</p>
+
+<p><em>ivalue</em> &#8211; floating point value (must be within 0 to 1)</p>
+
+<h3>Performance</h3>
+<p><strong>initc7</strong>, <strong>initc14</strong>, <strong>initc21</strong> can be used together with both <a href="midic7.htm"><strong>midicXX</strong></a> and <a href="midic7.htm"><strong>ctrlXX</strong></a> opcodes for initializing the first controller's value. <em>ivalue</em> argument must be set with a number within 0 to 1. An error occurs if it is not. Use the following formula to set <em>ivalue</em> according with <strong>midicXX</strong> and <strong>ctrlXX</strong> min and max range:</p>
+<pre>
+  ivalue = (initial_value - min) / (max - min)
+</pre>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+New in Csound version 3.47<br>
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="cpstmid.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="midic7.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#input" class="toqr">
+MIDI Support: Controller Input</font></a>
+</body>
+</html>

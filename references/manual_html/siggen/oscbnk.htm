@@ -1,0 +1,151 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- An HTML Edition of the Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>oscbnk</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="hsboscil.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="foscil.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#additive" class="toqr">
+Signal Generators: Additive Synthesis/Resynthesis</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>oscbnk</h2>
+
+<pre>
+  ar      <strong>oscbnk</strong>     kcps, kamd, kfmd, kpmd, iovrlap, iseed, kl1minf, kl1maxf, kl2minf, kl2maxf, ilfomode, keqminf, keqmaxf, keqminl, keqmaxl, keqminq, keqmaxq, ieqmode, kfn, il1fn, il2fn, ieqffn, ieqlfn, ieqqfn[, itabl[, ioutfn]]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Output is the sum of any number of oscillators, where frequency, phase, and amplitude of each oscillator can be  modulated by its own set of two independent LFOs.</p>
+
+<h3>Initialization</h3>
+
+<p><em>iovrlap</em> &#8211; number of oscillators</p>
+
+<p><em>iseed</em> &#8211; seed value for a random number generator. Value must be a positive integer in the range 1 to 2147483646 (2<span class="exp">31</span> - 2)). If <em>iseed</em> &lt;= 0, the current time is used.</p>
+
+<p><em>ilfomode</em> &#8211; LFO modulation mode. Value is sum of:</p>
+<ul>
+	<li>    128: LFO1 to frequency
+	<li>    64:  LFO1 to amplitude
+	<li>    32:  LFO1 to phase
+	<li>    16:  LFO1 to EQ
+	<li>    8:   LFO2 to frequency
+	<li>    4:   LFO2 to amplitude
+	<li>    2:   LFO2 to phase
+	<li>    1:   LFO2 to EQ
+</ul>
+<p>If an LFO does not modulate anything, it is not calculated, and the ftable number (<em>il1fn</em> or <em>il2fn</em>) can be omitted.</p>
+
+<p><em>ieqmode</em> &#8211; parametric equalizer mode:</p>
+<ul>
+	<li>     -1: disable EQ (faster)
+	<li>      0: peak
+	<li>      1: low shelf
+	<li>      2: high shelf
+	<li>      3: peak (filter interpolation disabled)
+	<li>      4: low shelf (interpolation disabled)
+	<li>      5: high shelf (interpolation disabled)
+</ul>
+<p>The non-interpolated modes are faster, and in some cases are more stable, such as a high shelf filter at low cutoff frequencies. However, interpolation may avoid &quot;zipper noise&quot; at low control rates.</p>
+
+<p><em>il1fn</em> &#8211; function table containing the waveform for LFO1. <em>il1fn</em> must be normalized, and is read with linear interpolation.</p>
+
+<p><em>il2fn</em> &#8211; function table containing the waveform for LFO2. <em>il2fn</em> must be normalized, and is read with linear interpolation.</p>
+
+<p><em>ieqffn</em>, <em>ieqlfn</em>, <em>ieqqfn</em> &#8211; lookup tables for EQ frequency, level, and Q, respectively. These tables are optional if EQ is disabled. The table read position is:</p>
+<ul>
+	<li>= 0 if the modulator signal is &lt;=-1
+	<li>= table length / 2 if the modulator signal is zero
+	<li>= guard point if the modulator signal is &gt;=1
+</ul>
+<p><em>ieqffn</em>, <em>ieqlfn</em>, and <em>ieqqfn</em> must be normalized, and have an extended guard point. All tables are read with linear interpolation.</p>
+
+<p><em>itabl</em> (Optional) &#8211; function table storing phase and frequency values for all oscillators. The values in this table are in the following order (5 for each oscillator unit):</p>
+<ol>
+	<li>Oscillator 1 phase
+	<li>Oscillator 1 LFO1 phase
+	<li>Oscillator 1 LFO1 frequency
+	<li>Oscillator 1 LFO2 phase
+	<li>Oscillator 1 LFO2 frequency
+	<li>Oscillator 2 phase<br>
+	<em>etc...</em>
+</ol>
+<p>All values are in the range 0 to 1. If the specified number is greater than 1, it is wrapped, in the case of phase, or limited, in the case of frequency, to the allowed range. A negative value (or end of table) will use the output of the random number generator. The random seed is always updated (even if no random number was used), so switching one value between random and fixed will not change the others.</p>
+
+<p><em>ioutfn</em> (Optional) &#8211; function table to which to write phase and frequency values. The format is the same as <em>itabl</em>. <em>ioutfn</em> is useful when experimenting with random numbers to record the best values.</p>
+
+
+<h3>Performance</h3>
+
+<p><em>kcps</em> &#8211; oscillator frequency in Hz</p>
+
+<p><em>kamd</em> &#8211; AM depth in the range 0 to 1.<br>
+<tt style="line-height: 1.5">&nbsp;&nbsp;(AM output) = (AM input) * ((1 - (AM depth)) + (AM depth) * (modulator))</tt><br>
+If amplitude modulation is not enabled by <em>ilfomode</em>, <em>kamd</em> will have no effect. Amplitude modulation is applied before the parametric equalizer.</p>
+
+<p><em>kfmd</em> &#8211; FM depth (in Hz)</p>
+
+<p><em>kpmd</em> &#8211; phase modulation depth</p>
+
+<p><em>kl1minf</em>, <em>kl1maxf</em> &#8211; LFO1 minimum and maximum frequencies, respectively, in Hz</p>
+
+<p><em>kl2minf</em>, <em>kl2maxf</em> &#8211; LFO2 minimum and maximum frequencies, respectively, in Hz. Oscillator and LFO frequencies are allowed to be zero or negative.</p>
+
+<p><em>keqminf</em>, <em>keqmaxf</em> &#8211; parametric equalizer minimum and maximum frequencies, respectively, in Hz</p>
+
+<p><em>keqminl</em>, <em>keqmaxl</em> &#8211; parametric equalizer minimum and maximum levels, repsectively</p>
+
+<p><em>keqminq</em>, <em>keqmaxq</em> &#8211; parametric equalizer minimum and maximum Q, respectively</p>
+
+<p><em>kfn</em> &#8211; oscillator waveform table. The table number can be changed at k-rate. This is useful in avoiding aliasing, by selecting from a set of band-limited tables generated by <strong>GEN30</strong>. <em>kfn</em> is read with linear interpolation.</p>
+
+<p><strong>oscbnk</strong> is useful for rendering ensembles of instruments, such as strings, choir, etc.</p>
+
+<p>The output of all oscillators specified in an <strong>oscbnk</strong> statement are mixed together. Any number of oscillators may be specified. The frequency, phase, and amplitude of each oscillator may be modulated by its own set of LFOs (referred to above as LFO1 and LFO2). In addition, the output of each oscillator can be filtered through an optional parametric equalizer, which is also controlled by the LFOs. Although the LFOs run at k-rate, amplitude, phase, and filter modulation are interpolated internally, so it is possible, and even recommended, to control <strong>oscbnk</strong> at low (~1000 Hz) control rates without audible degradation. The start phase and frequency of each oscillator and LFO can be set by the built-in, seedable, 31-bit random number generator. Refer to the documentation on <a href="rnd31.htm"><strong>rnd31</strong></a> for more information. Altenatively, these values may specified manually in a function table generated with <strong>GEN2</strong>.</p>
+
+
+<h3>Author</h3>
+<p>Istvan Varga<br>
+2001<br>
+New in Csound 4.15</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="hsboscil.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="foscil.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#additive" class="toqr">
+Signal Generators: Additive Synthesis/Resynthesis</a>
+</body>
+
+</html>

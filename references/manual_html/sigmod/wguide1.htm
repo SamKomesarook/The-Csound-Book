@@ -1,0 +1,86 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>wguide1, wguide2</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td width="45" align="right">
+      <a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td width="10">
+    </td>
+    <td width="45" align="right">
+      <a href="babo.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td width="45" align="right">
+      <a href="streson.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#waveguides">
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Signal Modifiers: Waveguides</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>wguide1, wguide2</h2>
+
+<pre>
+  ar      <strong>wguide1</strong>    asig, xfreq, xcutoff, kfeedback
+  ar      <strong>wguide2</strong>    asig, xfreq1, xfreq2, kcutoff1, kcutoff2, kfeedback1, kfeedback2
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Simple waveguide blocks
+</p>
+<h3>Performance</h3>
+<p><em>asig</em> &#8211; the input of excitation noise
+</p>
+<p><em>xfreq</em> &#8211; the frequency (i.e. the inverse of delay time) Changed to x-rate in Csound version 3.59.
+</p>
+<p><em>kcutoff</em> &#8211; the filter cutoff frequency in Hz
+</p>
+<p><em>xcutoff</em> &#8211; the filter cutoff frequency in Hz. Changed to x-rate for <strong>wguide1</strong> in Csound version 3.59.
+</p>
+<p><em>kfeedback</em> &#8211; the feedback factor
+</p>
+<p><strong>wguide1</strong> is the most elemental waveguide model, consisting of one delayline and one first-order lowpass filter.
+</p>
+<p><strong>wguide2</strong> is a model of beaten plate consisting of two parallel delaylines and two first-order lowpass filters. The two feedback lines are mixed and sent to the delay again each cycle.
+</p>
+<p>Implementing waveguide algoritms as opcodes, instead of as orc instr, allows the  user to set <strong>kr</strong> different than <strong>sr</strong>, allowing better performance particulary when using real-time.
+</p>
+<p align="center"><img src="wguide1.gif" width="369" height="148" border="0" alt="wguide1"><br><strong>wguide1</strong></p>
+<p align="center"><img src="wguide2.gif" width="414" height="316" border="0" alt="wguide2"><br><strong>wguide2</strong></p>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+October, 1998 (New in Csound version 3.49)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td width="45" align="right">
+      <a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td width="10">
+    </td>
+    <td width="45" align="right">
+      <a href="babo.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td width="45" align="right">
+      <a href="streson.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#waveguides">
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Signal Modifiers: Waveguides</font></a>
+</body>
+
+</html>

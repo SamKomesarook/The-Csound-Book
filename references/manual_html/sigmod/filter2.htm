@@ -1,0 +1,106 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>filter2, zfilter2</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="butterhp.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="lpf18.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>filter2, zfilter2</h2>
+
+<pre>
+  kr      <strong>filter2</strong>    ksig, iM, iN, ib0, ib1, ..., ibM, ia1, ia2, ..., iaN
+  ar      <strong>filter2</strong>    asig, iM, iN, ib0, ib1, ..., ibM, ia1, ia2, ..., iaN
+  ar      <strong>zfilter2</strong>   asig, kdamp, kfreq, iM, iN, ib0, ib1, ..., ibM, ia1,ia2, ..., iaN
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<p><br>
+</p>
+<h3>Description</h3>
+<p>General purpose custom filter with time-varying pole control. The filter coefficients implement the following difference equation:
+</p>
+<pre>
+  (1)*y(n) = b0*x[n] + b1*x[n-1] +...+ bM*x[n-M] - a1*y[n-1] -...- aN*y[n-N]
+</pre>
+<p>the system function for which is represented by:
+</p>
+<pre>
+           B(Z)      b0 + b1*Z<small><sup>-1</sup></small>  + ... + bM*Z<small><sup>-M+1</sup></small>
+  H(Z)  =  ----  =  --------------------------
+           A(Z)       1 + a1*Z<small><sup>-1</sup></small>  + ... + aN*Z<small><sup>-N</sup></small>
+</pre>
+
+<h3>Initialization </h3>
+<p>At initialization the number of zeros and poles of the filter are specified along with the corresponding zero and pole coefficients. The coefficients must be obtained by an external filter-design application such as Matlab and specified directly or loaded into a table via <a href="../gen/GEN01.htm"><strong>GEN01</strong></a>. With <strong>zfilter2,</strong> the roots of the characteristic polynomials are solved at initialization so that the pole-control operations can be implemented efficiently.<br>
+</p>
+<h3>Performance </h3>
+<p>The<strong> filter2</strong> opcodes perform filtering using a transposed form-II digital filter lattice with no time-varying control. <strong>zfilter2</strong> uses the additional operations of radial pole-shearing and angular pole-warping in the Z plane.
+</p>
+<p>Pole shearing increases the magnitude of poles along radial lines in the Z-plane. This has the affect of altering filter ring times. The k-rate variable <em>kdamp</em> is the damping parameter. Positive values (0.01 to 0.99) increase the ring-time of the filter (hi-Q), negative values (-0.01 to -0.99) decrease the ring-time of the filter, (lo-Q).
+</p>
+<p>Pole warping changes the frequency of poles by moving them along angular paths in the Z plane. This operation leaves the shape of the magnitude response unchanged but alters the frequencies by a constant factor (preserving 0 and p). The k-rate variable <em>kfreq</em> determines the frequency warp factor. Positive values (0.01 to 0.99) increase frequencies toward p and negative values (-0.01 to -0.99) decrease frequencies toward 0.
+</p>
+<p>Since <strong>filter2</strong> implements generalized recursive filters, it can be used to specify a large range of general DSP algorithms. For example, a digital waveguide can be implemented for musical instrument modeling using a pair of <a href="delayr.htm"><strong>delayr</strong></a> and <a href="delayr.htm"><strong>delayw</strong></a> opcodes in conjunction with the <strong>filter2</strong> opcode.
+</p>
+<h3>Examples</h3>
+<p>A first-order linear-phase lowpass linear-phase FIR filter operating on a k-rate signal:
+</p>
+<pre>
+  k1      <strong>filter2</strong>    ksig, 2, 0, 0.5, 0.5   ;; k-rate FIR filter
+</pre>
+<p>A controllable second-order IIR filter operating on an a-rate signal:
+</p>
+<pre>
+  a1      <strong>zfilter2</strong>   asig, kdamp, kfreq, 1, 2, 1, ia1, ia2 ; controllable a-rate   ; IIR filter
+</pre>
+
+
+<h3>Deprecated Names</h3>
+<p>The k-rate version of <strong>filter2</strong> was originally called <strong>kfilter2</strong>. As of Csound version 3.493, this name is deprecated. <strong>filter2</strong> should be used instead of <strong>kfilter2</strong>. The opcode determines its rate from the output argument.
+</p>
+<h3>Author</h3>
+<p>Michael A. Casey<br>
+M.I.T.<br>
+Cambridge, Mass.<br>
+1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="butterhp.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="lpf18.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</font></a>
+</body>
+
+</html>

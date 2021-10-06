@@ -1,0 +1,96 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>cross2</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="convolve.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="dconv.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#convolution" class="toqr">
+Signal Modifiers: Convolution and Morphing</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>cross2</h2>
+
+
+<pre>  
+  ar      <strong>cross2</strong>     ain1, ain2, isize, ioverlap, iwin, kbias
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This is an implementation of cross synthesis using FFT's.
+</p>
+<h3>Initialization</h3>
+<p><em>isize</em>        -  This is the size of the FFT to be performed.  The larger the size the better the frequency response but a sloppy time response.
+</p>
+<p><em>ioverlap</em>     -  This is the overlap factor of the FFT's, must be a power of two.  The best settings are 2 and 4.  A  big overlap takes a long time to compile.
+</p>
+<p><em>iwin</em>         -  This is the ftable that contains the window to be used in the analysis.
+</p>
+<h3>Performance</h3>
+<p><em>ain1</em>  -  The stimulus sound.  Must have high frequencies for best results.
+</p>
+<p><em>ain2</em>  -  The modulating sound.  Must have a moving frequency response (like speech) for best results.
+</p>
+<p><em>kbias</em> &#8211;  The amount of cross synthesis.  1 is the normal, 0 is no cross synthesis.
+</p>
+<h3>Examples</h3>
+
+
+
+
+
+
+
+
+<pre>
+  a1      <strong>oscil</strong>     10000, 1, 1        
+  a2      <strong>rand</strong>      10000
+  a3      <strong>cross2</strong>    a2, a1, 2048, 4, 2, 1
+          <strong>out</strong>       a3
+</pre>
+<p>If ftable one is a speech sound, this will result in speaking white noise.
+</p>
+<p>ftable 2 must be a window function (<a href="../gen/GEN20.htm"><strong>GEN20</strong></a>).
+</p>
+<h3>Author</h3>
+<p>Paris Smaragdis<br>
+MIT, Cambridge<br>
+1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="convolve.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="dconv.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#convolution" class="toqr">
+Signal Modifiers: Convolution and Morphing</font></a>
+</body>
+
+</html>

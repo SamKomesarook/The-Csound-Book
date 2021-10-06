@@ -1,0 +1,66 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>The Cybil compositional language</title>
+	</head>
+
+	<body>
+		<center>
+			&nbsp;</center>
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="lo.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="gr.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<h2>The ma algorithm</h2>
+		</center>
+		<center>
+			<a href="cybil.html">The Cybil composition language</a></center>
+		<center>
+			<a href="gensyn.html">Cybil general syntax</a></center>
+		<center>
+			<a href="commands.html">Algorithms</a><b><a href="sq.html"> sq</a> - <a href="li.html">li </a>-<a href="li.html"> </a><a href="lo.html">lo </a>- <a href="ma.html">ma</a> - <a href="gr.html">gr</a></b></center>
+		<center>
+			<a href="funcs.html">Functions</a> <b><a href="ran.html">ran </a>- <a href="pik.html">pik</a> - <a href="pa.html">pa</a> - <a href="co.html">co</a></b></center>
+		<center>
+			<a href="oper.html">Operations</a></center>
+		<center>
+			<a href="examp.html">Examples of Cybil command lines</a><br>
+			<br>
+		</center>
+		<center>
+			<hr>
+		</center>
+		&nbsp;
+		<h4>The ma algorithm</h4>
+		<pre>{ma f/i val1 val2 val3 val4 duration(s)}</pre>
+		The <b>ma</b> is for mask. The values given after <b>ma</b> will define whether floating point numbers (<b>f</b>) or integer numbers (<b>i</b>) will be generated, followed by a tendency mask. <b>val1</b> and<b> val3</b> define the departure and arrival points of the minimum line. <b>val2</b> and <b>val4</b> define the departure and arrival points of the maximum line. A random number between the time-varying minimum and maximum lines lines is generated. Last element in the list is the duration in number of events or seconds (s)
+		<p>Values can be:
+		<ol>
+			<li><b>a real number.</b>
+			<pre>{ma f 1.2 3 5 9&nbsp; 10s}&nbsp;
+{ma i 3 10 400 6000 30}</pre>
+			<li><b>a CECILIA irate variable.</b> Any irate variable from the CECILIA interface can be used (sliders, toggles, option) by including the name of the variable between <b>[]</b> brackets. The substitution is done before the score is pre-compiled.
+			<pre>{ma f [blue] [black] 6 6 30s}</pre>
+			where <b>blue</b> and <b>black</b> have been defined as irate variables in the CECILIA interface.&nbsp;<br>
+			<br>
+			<li><b>a Cybil function.</b>Any Cybil function can be used to generate a value for the sequencer. Each time the value is needed, the function is evaluated (see functions further).
+			<pre>{ma i {ran f .5 3.3} 4&nbsp; {ran i 9 100} 2000 30s}</pre>
+			At computation time, the departure value of the minimum line will be randomly selected between .5 and 3.3 and the departure point for the maximum line will be randomly selected between 9 and 100.
+		</ol>
+		<hr>
+		<br>
+		&nbsp;<br>
+		&nbsp;
+	</body>
+
+</html>

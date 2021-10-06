@@ -1,0 +1,76 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>buzz, gbuzz</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="lfo.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="vco.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#dynspecoscils" class="toqr">
+Signal Generators: Dynamic Spectrum Oscillators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>buzz, gbuzz</h2>
+
+<pre>
+  ar      <strong>buzz</strong>       xamp, xcps, knh, ifn[, iphs]
+  ar      <strong>gbuzz</strong>      xamp, xcps, knh, klh, kmul, ifn[, iphs]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Output is a set of harmonically related cosine partials.
+</p>
+<h3>Initialization</h3>
+<p><em>ifn</em> &#8211; table number of a stored function containing (for <strong>buzz</strong>) a sine wave, or (for <strong>gbuzz</strong>) a cosine wave. In either case a large table of at least 8192 points is recommended.
+</p>
+<p><em>iphs</em> (optional) &#8211; initial phase of the fundamental frequency, expressed as a fraction of a cycle (0 to 1). A negative value will cause phase initialization to be skipped. The default value is zero
+</p>
+<h3>Performance</h3>
+<p>The buzz units generate an additive set of harmonically related cosine partials of fundamental frequency <em>xcps</em>, and whose amplitudes are scaled so their summation peak equals <em>xamp</em>. The selection and strength of partials is determined by the following control parameters:
+</p>
+<p><em>knh</em> &#8211; total number of harmonics requested. New in Csound version 3.57, <em>knh</em> defaults to one. If <em>knh</em> is negative, the absolute value is used.
+</p>
+<p><em>klh</em> &#8211; lowest harmonic present. Can be positive, zero or negative. In <strong>gbuzz</strong> the set of partials can begin at any partial number and proceeds upwards; if <em>klh</em> is negative, all partials below zero will reflect as positive partials without phase change (since cosine is an even function), and will add constructively to any positive partials in the set.
+</p>
+<p><em>kmul</em> &#8211; specifies the multiplier in the series of amplitude coefficients. This is a power series: if the <em>klh</em>th partial has a strength coefficient of A, the (<em>klh</em> + n)th partial will have a coefficient of A * (<em>kmul</em> ** n), i.e. strength values trace an exponential curve. <em>kmul</em> may be positive, zero or negative, and is not restricted to integers.
+</p>
+<p><strong>buzz</strong> and <strong>gbuzz </strong>are useful as complex sound sources in subtractive synthesis. <strong>buzz</strong> is a special case of the more general <strong>gbuzz</strong> in which <em>klh</em> = <em>kmul</em>= 1; it thus produces a set of <em>knh</em> equal-strength harmonic partials, beginning with the fundamental. (This is a band-limited pulse train; if the partials extend to the Nyquist, i.e. <em>knh</em> = int (sr / 2 / fundamental freq.), the result is a real pulse train of amplitude <em>xamp</em>.) Although both <em>knh</em> and <em>klh</em> may be varied during performance, their internal values are necessarily integer and may cause &quot;pops&quot; due to discontinuities in the output; <em>kmul,</em> however, can be varied during performance to good effect. Both <strong>buzz</strong> and <strong>gbuzz</strong> can be amplitude- and/or frequency-modulated by either control or audio signals.
+</p>
+<p>N.B. These two units have their analogs in <a href="../gen/GEN11.htm"><strong>GEN11</strong></a>, in which the same set of cosines can be stored in a function table for sampling by an oscillator. Although computationally more efficient, the stored pulse train has a fixed spectral content, not a time-varying one as above.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="lfo.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="vco.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#dynspecoscils" class="toqr">
+Signal Generators: Dynamic Spectrum Oscillators</font></a>
+</body>
+
+</html>

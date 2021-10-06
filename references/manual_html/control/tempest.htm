@@ -1,0 +1,94 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>tempest</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigmod/pchamdf.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../sigmod/follow.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</font></a>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>tempest</h2>
+
+<pre>
+  ktemp   <strong>tempest</strong>   kin, iprd, imindur, imemdur, ihp, ithresh, ihtim, ixfdbak, istartempo, ifn[, idisprd, itweek]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Estimate the tempo of beat patterns in a control signal.
+</p>
+<h3>Initialization</h3>
+<p><em>iprd</em> &#8211; period between analyses (in seconds). Typically about .02 seconds.
+</p>
+<p><em>imindur</em> &#8211; minimum duration (in seconds) to serve as a unit of tempo. Typically about .2 seconds.
+</p>
+<p><em>imemdur</em> &#8211; duration (in seconds) of the <em>kin</em> short-term memory buffer which will be scanned for periodic patterns. Typically about 3 seconds.
+</p>
+<p><em>ihp</em> &#8211; half-power point (in Hz) of a low-pass filter used to smooth input <em>kin</em> prior to other processing. This will tend to suppress activity that moves much faster. Typically 2 Hz.
+</p>
+<p><em>ithresh</em> &#8211; loudness threshold by which the low-passed <em>kin</em> is center-clipped before being placed in the short-term buffer as tempo-relevant data. Typically at the noise floor of the incoming data.
+</p>
+<p><em>ihtim</em> &#8211; half-time (in seconds) of an internal forward-masking filter that masks new <em>kin</em> data in the presence of recent, louder data. Typically about .005 seconds.
+</p>
+<p><em>ixfdbak</em> &#8211; proportion of this unit's <em>anticipated value</em> to be mixed with the incoming <em>kin</em> prior to all processing. Typically about .3.
+</p>
+<p><em>istartempo</em> &#8211; initial tempo (in beats per minute). Typically 60.
+</p>
+<p><em>ifn</em> &#8211; table number of a stored function (drawn left-to-right) by which the short-term memory data is attenuated over time.
+</p>
+<p><em>idisprd</em> (optional) &#8211; if non-zero, display the short-term past and future buffers every <em>idisprd</em> seconds (normally a multiple of <em>iprd</em>). The default value is 0 (no display).
+</p>
+<p><em>itweek</em> (optional) &#8211; fine-tune adjust this unit so that it is stable when analyzing events controlled by its own output. The default value is 1 (no change).
+</p>
+<h3>Performance</h3>
+<p><strong>tempest</strong> examines <em>kin</em> for amplitude periodicity, and estimates a current tempo. The input is first low-pass filtered, then center-clipped, and the residue placed in a short-term memory buffer (attenuated over time) where it is analyzed for periodicity using a form of autocorrelation. The period, expressed as a <em>tempo</em> in beats per minute, is output as <em>ktemp</em>. The period is also used internally to make predictions about future amplitude patterns, and these are placed in a buffer adjacent to that of the input. The two adjacent buffers can be periodically displayed, and the predicted values optionally mixed with the incoming signal to simulate expectation.
+</p>
+<p>This unit is useful for sensing the metric implications of any k-signal (e.g.- the RMS of an audio signal, or the second derivative of a conducting gesture), before sending to a <a href="xyin.htm"><strong>tempo</strong></a> statement.
+</p>
+<h3>Example</h3>
+
+
+<pre>
+  ksum    <strong>specsum</strong>   wsignal, 1               ; sum the amps of a spectrum
+  ktemp   <strong>tempest</strong>   ksum, .02, .1, 3, 2, 800, .005, 0, 60, 4, .1, .995 
+                                             ; and look for beats
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigmod/pchamdf.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../sigmod/follow.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</font></a>
+</body>
+</html>

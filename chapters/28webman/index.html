@@ -1,0 +1,1192 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>The Design of Equalizers and Compressors for Studio Use</TITLE>
+  <META NAME="Template" CONTENT="C:\APPS\WORD6\TEMPLATE\EREZ1.DOT">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">27. The Design of Equalizers
+and Compressors for Studio Use</FONT></H1>
+
+<H2><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">Erez
+Webman</FONT></H2>
+
+<H3><FONT FACE="Times New Roman">Introduction</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Only ten years ago, high-quality
+music recording and production took place exclusively in big and
+expansive studios. The equipment used in these studios was usually
+analog, and the recording was made using a mechanical multitrack
+tape machine. Since then, this field has undergone a major revolution.
+The dramatic developments in digital technology gave rise to the
+appearance of moderately priced hard-disk recording systems. Nowadays,
+high-quality music production can take place in small studios
+and even at home. Throughout the recording and mixing stages,
+various types of signal processing are applied on the audio tracks,
+changing their sound characteristics either in a subtle or a drastic
+way. Several examples for such processors are: reverb, noise reduction,
+filters (equalizers), and dynamic-range processors such as the
+compressor. Signal processing is frequently used in order to improve
+the way the recorded signal sounds and to suit its sonic relationships
+with the other audio tracks in the context of a mix. In a hard-disk
+recording environment, Csound can be used as an accurate and highly
+personalized signal processing tool. In this chapter, the design
+and development of graphic equalizers and dynamics processors
+are discussed. These processors are amongst the most important
+units in a typical recording studio.</FONT></P>
+
+<H2><FONT FACE="Times New Roman">Filter-Banks and Graphic EQ</FONT></H2>
+
+<H3><FONT FACE="Times New Roman">Introduction</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Generally speaking, <I>Filters</I>
+can be used to shape sound by attenuating or amplifying some of
+its frequencies. The use of filters in the recording studio is
+common, and is usually called <I>Equalization (EQ)</I>. Equalization
+is used in the studio for both technical (corrective) and creative
+applications. The filtering opcodes provided by Csound are basic
+filters, such as the two-pole Butterworth implementation (<B><A
+HREF="../../references/manual_html/sigmod/butterhp.htm">butterlp</A></B>,
+<B><A HREF="../../references/manual_html/sigmod/butterhp.htm">butterhp</A></B>,
+<B><A HREF="../../references/manual_html/sigmod/butterhp.htm">butterbp</A>
+</B>and <B><A HREF="../../references/manual_html/sigmod/butterhp.htm">butterbr</A></B>).
+These opcodes allow us to perform drastic spectral attentions.
+For example, <I>aout butterlp ain,2000 </I>cuts the frequencies
+above 2KHz with a 12dB-per-octave slope. In the studio, a more
+delicate tone sculpturing is often required. Typically, one might
+want to attenuate 2 dB here and amplify by 3 dB there. Such a
+flexibility can be obtained by using the <I>Graphic Equalizer</I>,
+which is based on a specific BPF network configuration known as
+the <I>Filter-Bank</I>. The main goal of this section is the review
+of the design and development of a graphic EQ in Csound.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Frequency Response Curves and
+Filter-Networks</FONT></H3>
+
+<P><FONT FACE="Times New Roman">During the development or use
+of a filter-based signal processor, it is often useful to retrieve
+the frequency-response curve of the filter, or filter-network
+in use. A very informative curve can be obtained by scaling the
+amplitude (Y axis) in dB. It is quite simple to generate such
+a curve with Csound, by using a <I>sweep signal</I> as the source
+sound (a sweep signal is a sinus signal with a constant amplitude
+and a continuously increasing frequency that scans the whole hearing
+range.) The sweep signal is passed through the analyzed filter
+(or filter-network) and the filter&#146;s output is saved to a
+sound file. Then, browsing the output sound file with a commercial
+wave viewer will reveal the amount of attenuation or amplification
+applied for each frequency. first provides a Csound code for frequency
+response curve extraction, followed by an example curve for a
+LPF with a cut-off point set at 6kHz. Note that the output of
+this program should be considered as a &quot;pseudo&quot; sound
+file - it should be viewed only, since its audio information is
+meaningless.</FONT></P>
+
+<P><FONT FACE="Courier New">;============== FREQUENCY RESPONSE
+CURVE: ORC FILE ===================</FONT></P>
+
+<P><FONT FACE="Courier New">sr = 44100<BR>
+kr = 44100<BR>
+ksmps = 1<BR>
+nchnls = 1<BR>
+<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">instr</A>
+1<BR>
+;---------------------------------------------------------------------<BR>
+ksweep <A HREF="../../references/manual_html/siggen/line.htm">line</A>
+0, p3, 22000 ;Linear line from 0 to 22Khz.<BR>
+ain <A HREF="../../references/manual_html/siggen/oscil.htm">oscil</A>
+32000, ksweep, 1 ;Generate a sweep signal.<BR>
+;---------------------------------------------------------------------<BR>
+aflt <A HREF="../../references/manual_html/sigmod/butterhp.htm">butterlp</A></FONT>
+ain, 6000 ;Pass Sweep through the analyzed<BR>
+; filter (or filter-network.)<BR>
+;---------------------------------------------------------------------<BR>
+kflt <A HREF="../../references/manual_html/sigmod/samphold.htm">downsamp</A>
+aflt ;Transform amplitude to dB:<BR>
+kout = (kflt&gt;1 ? <A HREF="../../references/manual_html/valcnv/dbamp.htm">dbamp</A>(<A
+HREF="../../references/manual_html/valcnv/int.htm">abs</A>(kflt)+0.001)
+: 0)<BR>
+aout = kout*300 ;Make the results visible.<BR>
+;---------------------------------------------------------------------<BR>
+<A HREF="../../references/manual_html/sigio/in.htm">out</A> aout<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">endin</A><BR>
+<BR>
+;============================= SCO FILE ==============================<BR>
+f1 0 4096 10 1 ;Sinus ftable used to generate the sweep signal.<BR>
+i1 0 22 ;Means that each second represents a 1Khz band.<BR>
+e<BR>
+;=====================================================================</P>
+
+<P><I><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times"><IMG 
+SRC="figures/fig01.gif" HEIGHT="112" WIDTH="180" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM"></FONT></I></P>
+
+<P><B><FONT FACE="Times New Roman"></FONT></B><A NAME="_Ref385064031"></A><B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure 1:</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> A Csound code
+that extract the frequency response curve of a filter, or a filter-network.
+The graph shown is the frequency response curve of <I><A HREF="../../references/manual_html/sigmod/butterhp.htm">butterlp</A></I>
+set with a cut-off frequency of 6KHz.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In many cases, it is quite useful
+to apply a configuration of several filters to shape the sound&#146;s
+tone. There is obviously a major difference between parallel and
+serial connection of filters. second demonstrates some proper
+and improper filter configurations.</FONT></P>
+
+<P><I><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times"><IMG 
+SRC="figures/fig02.gif" HEIGHT="349" WIDTH="835" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM"></FONT></I></P>
+
+<P><B><FONT FACE="Times New Roman"></FONT></B><A NAME="_Ref385066449"></A><B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure 2:</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> <B>(a,b)</B>
+Connecting four identical BPFs in series gives much more isolated
+results than using a single BPF. <B>(c)</B> Serially connected
+HPF and BPF cuts both the high and low frequencies. <B>(d)</B>
+Connecting a HPF and a LPF in parallel is usually an improper
+configuration. <B>(e)</B> Serially connecting two different-band
+BPFs is probably a bad idea: for obvious reasons, the whole sound
+is drastically attenuated. <B>(f)</B> Two different-band BPFs
+should be connected in parallel to give the desired &quot;twin-peaks&quot;
+effect.</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">Filter-Banks</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">A <I>Filter-Bank</I> is a parallel
+filter-network configuration consists of band-pass filters which
+cover the whole hearing range, such as depicted in third. The
+filter-bank divides the original input sound into several audio
+signals, each containing a different frequency range of the sound.
+A summation of all the filter-bank outputs will reconstructs the
+original sound. When using a filter-bank, each frequency band
+can be separately manipulated. Various signal processes are based
+on filter-banks. In our case, flexible filtering can be achieved
+by separately attenuating or amplifying each of the bands, and
+then reconstructing the sound by summing up all the modified bands.
+This process is called <I>Graphic Equalization (EQ)</I> and is
+demonstrated in third.</FONT></P>
+
+<P><I><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times"><IMG 
+SRC="figures/fig03.gif" HEIGHT="293" WIDTH="347" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM"></FONT></I></P>
+
+<P><B><FONT FACE="Times New Roman"></FONT></B><A NAME="_Ref385413270"></A><B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure 3:</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> A schematic flow
+of a filter-bank and a graphic equalizer. A filter-bank is a parallel
+BPF network. Each filter covers a different frequency range, while
+all the filters cover the whole hearing spectrum. For musical
+applications, the distribution of the filter frequencies and width
+is logarithmic. In the above example, the distribution is of one
+octave.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Before getting deeper into graphic
+equalization, the filter-bank properties should be discussed.
+The following elements characterize a filter-bank:</FONT></P>
+
+<UL>
+  <LI><B><FONT FACE="Times New Roman">Number of Frequency Bands:</FONT></B><FONT
+   FACE="Times New Roman"> Generally, the more frequency bands
+  are, the narrower these bands will be. In some situations a large
+  number of bands is desired, while in others, a relatively small
+  number will do better.</FONT>
+  <LI><B><FONT FACE="Times New Roman">BPF Spacing and Width:</FONT></B><FONT
+   FACE="Times New Roman"> For musical applications, the natural
+  distribution of the BPF frequencies and width is logarithmic,
+  and is usually measured in octave units third is an example of
+  a one-octave filter-bank.)</FONT>
+  <LI><B><FONT FACE="Times New Roman">Integrity of the Re-constructed
+  Sound:</FONT></B><FONT FACE="Times New Roman"> When the outputs
+  of a filter-bank are summed without any further processing, a
+  successive decomposition and reconstruction of the original input
+  sound takes place. The degree of similarity between the input
+  and the output sounds is a good indication for the quality of
+  the filter-bank. This rule is especially relevant for graphic
+  EQ design.</FONT>
+  <LI><B><FONT FACE="Times New Roman">Overlapping Between Frequency
+  Bands:</FONT></B><FONT FACE="Times New Roman"> The amount and
+  nature of frequency overlapping between each two adjacent BPFs
+  are important characteristics of a filter-bank. In some situations,
+  obtaining less overlapping or even an ideal total isolation is
+  desired, while for other applications, overlapping is preferred.
+  Practically, a minimal overlapping is unavoidable. In addition,
+  trying to minimize the overlapping might degrade the integrity
+  of the re-constructed sound.</FONT>
+</UL>
+
+<H3><FONT FACE="Times New Roman">A Graphic Equalizer Implementation</FONT></H3>
+
+<P><FONT FACE="Courier New">;============== 1/3 OCTAVE GRAPHIC
+EQUALIZER: ORC FILE ===============<BR>
+sr = 44100<BR>
+kr = 4410<BR>
+ksmps = 10<BR>
+nchnls = 1<BR>
+<BR>
+;-------------------------------1. INSTRUMENT #1: SOUND-FILE READER--<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">instr</A>
+1<BR>
+gasig <A HREF="../../references/manual_html/sigio/in.htm">soundin</A>
+&quot;f:\kaza\egtr.wav&quot; ;Read globally for all modules.<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">endin</A><BR>
+<BR>
+;-------------------------------2. A SINGLE-BAND EQ MODULE-----------<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">instr</A>
+2<BR>
+iq = 4.318<BR>
+ifrq = p4 ;Center freq. of current band.<BR>
+iamp = <A HREF="../../references/manual_html/valcnv/dbamp.htm">ampdb</A>(p5)
+;Amplification of current band.<BR>
+icmpamp = <A HREF="../../references/manual_html/valcnv/dbamp.htm">ampdb</A>(-10)
+;Global amplification.<BR>
+asig = gasig ;Get sound from global reader.<BR>
+asig <A HREF="../../references/manual_html/sigmod/butterhp.htm">butterbp</A>
+asig,ifrq,ifrq/iq ;Apply BPF on the sound.<BR>
+<A HREF="../../references/manual_html/sigio/in.htm">out</A> asig*iamp*icmpamp
+;Send to output with proper amplification.<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">endin</A><BR>
+<BR>
+============================ SCO FILE ================================<BR>
+;-------------------------------1. INVOKE GLOBAL SOUND-FILE READER
+---<BR>
+i1 0 5<BR>
+;-------------------------------2. INVOKE SINGLE-BAND EQ MODULES
+-----<BR>
+;-------dur-freq--amp(db)<BR>
+i2 0 5 32 0 ;------ SOME NOTES ABOUT PROGRAMMING STYLE -----<BR>
+i2 . . 40 0 ; This Csound program is written in a &quot;parallel&quot;<BR>
+i2 . . 50 0 ; style. Each instance of instr 2 is responsible<BR>
+i2 . . 63 0 ; for a single band. The results of all the<BR>
+i2 . . 80 0 ; instances are sent to the output (and summed<BR>
+i2 . . 101 0 ; by Csound.) Due to performance considerations<BR>
+i2 . . 127 0 ; the input sound is read only once (instr 1.)i2
+. . 160 0 ;<BR>
+i2 . . 201 0 ; This program can also be written in a &quot;serial&quot;<BR>
+i2 . . 253 0 ; manner. Such a code looks like:<BR>
+i2 . . 320 0 ; ..............................................<BR>
+i2 . . 403 0 ; instr 1<BR>
+i2 . . 508 0 ; asig <A HREF="../../references/manual_html/sigio/in.htm">soundin</A>
+&quot;f:\kaza\egtr.wav&quot;<BR>
+i2 . . 640 0 ; aband1 <A HREF="../../references/manual_html/sigmod/butterhp.htm">butterbp</A>
+asig, 32, 32/iq<BR>
+i2 . . 806 0 ; aband2 <A HREF="../../references/manual_html/sigmod/butterhp.htm">butterbp</A>
+asig, 40, 40/iq<BR>
+i2 . . 1016 0 ; aband3 <A HREF="../../references/manual_html/sigmod/butterhp.htm">butterbp</A>
+asig, 50, 50/iq<BR>
+i2 . . 1280 0 ; ...<BR>
+i2 . . 1613 0 ; and so on<BR>
+i2 . . 2032 0 ; ..............................................<BR>
+i2 . . 2560 0 ;<BR>
+i2 . . 3225 +20 ; For the graphic EQ program, and in many other<BR>
+i2 . . 4064 0 ; cases, the parallel approach results in a more<BR>
+i2 . . 5120 0 ; modular and compact code.<BR>
+i2 . . 6451 0 ;<BR>
+i2 . . 8127 0 ;<BR>
+i2 . . 10240 0 ;<BR>
+i2 . . 12902 0 ;<BR>
+i2 . . 16255 0 ;<BR>
+i2 . . 20480 0 ;<BR>
+;=====================================================================</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/fig04.gif" 
+HEIGHT="320" WIDTH="463" NATURALSIZEFLAG="0" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT FACE="Times New Roman"></FONT></B><A NAME="_Ref385419038"></A><B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure 4:</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> A Csound implementation
+of a Graphic Equalizer.</FONT></P>
+
+<P><FONT FACE="Times New Roman">fourth presents a Csound implementation
+of a 1/3 octave graphic EQ (Some notes regarding the programming
+style used can be found in the body of the score file.) The amount
+of band attenuation or amplification should be specified in the
+score file, as demonstrated. For convenience, these settings are
+specified in dB, so a value of 0 means no change, a positive value
+specifies an amplification, and a negative value indicates attenuation.
+In a 1/3 octave filter-bank the frequency ratio between every
+two adjacent BPFs is 2<sup>1/3</sup> (approximately 1.26). The
+width of each BPF is assigned by the expression <I>ifrq/iq</I>
+where <I>ifrq</I> is the center-frequency of the filter, and <I>iq</I>
+is a constant identical to all the BPFs. The larger <I>iq</I>
+is, the narrower the filters will be. On one hand, if <I>iq</I>
+is too high, the frequency response of the filter-bank will contain
+&quot;drops&quot; where frequencies are not covered by any BPF.
+On the other hand, if <I>iq</I> is relatively low, overlapping
+among adjacent BPFs will be introduced (which is not always a
+bad idea, as discussed before). The &quot;natural&quot; <I>iq</I>
+for a filter-bank with a distribution of <I>x </I>octaves can
+be calculated according to the following formula:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/01.gif" WIDTH="67"
+HEIGHT="31" NATURALSIZEFLAG="0" ALIGN="BOTTOM"> In our case, <I>x=1/3</I>,
+so: <IMG SRC="figures/02.gif" WIDTH="75" HEIGHT="31" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM"> 4.318.</FONT></P>
+
+<P><FONT FACE="Times New Roman">For one-octave spacing, the formula
+returns 1.414, and for half-octave: 2.871. The frequency response
+(&quot;integrity&quot;) of the filter-bank implemented above is
+shown in fiftha. Globally, the curve is flat. However, along the
+spectrum, several local drops of up to 2dB are introduced. This
+phenomenon is unavoidable, given this <I>iq </I>value, and is
+caused by the shape and phase response of the Butterworth band-pass
+filter. Hence, any signal passing through the graphic EQ will
+be slightly colored, even when no amplification or attenuation
+were specified. In practice, this type of coloration is very subtle
+and it is usually quite unnoticeable. This filter-bank does introduce
+some overlapping among adjacent BPFs. Therefore, when specifying
+a drastic attenuation of a specific band, some of the frequencies
+designated for attenuation would still pass through the adjacent
+BPFs. For a more effective attenuation of a specific band, its
+neighbor bands should be attenuated as well. Anyway, as demonstrated
+in fifthe, this maximum attenuation of a band is bounded, thus
+the actual attenuation is lesser than the values specified in
+the score file. Amplification is less problematic, as can be seen
+in fifthc. The <I>icmpamp</I> parameter should be used to amplify
+or attenuate the overall output signal. This parameter could be
+used to compensate for signal loss or to avoid clipping. For the
+EQ suggested in fourth, a value of -10dB is a good starting point.</FONT></P>
+
+<P><FONT FACE="Times New Roman">A setting with a lower <I>iq</I>
+value, such as 2.2, introduces a larger overlapping, resulting
+in a smoother frequency response (i.e. no -2dB drops, as shown
+in fifthb.) However, a higher degree of overlapping causes the
+actual maximal attenuation to be even more limited (fifthf.) The
+lower value of <I>iq</I> yields wider bands, which are not necessarily
+a bad idea - it just has a different color.</FONT></P>
+
+<P><I><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times"><IMG 
+SRC="figures/fig05.gif" HEIGHT="262" WIDTH="347" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM"></FONT></I></P>
+
+<P><B><FONT FACE="Times New Roman"></FONT></B><A NAME="_Ref385426585"></A><B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure 5:</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> Some typical
+frequency response of the 1/3 octave graphic EQ and the modified
+overlapping graphic EQ (the one with <I>iq=2.2</I>.)</FONT></P>
+
+<P><FONT FACE="Times New Roman">It is possible to drastically
+reduce the overlapping among adjacent bands, by making the following
+modifications to the Csound code shown in fourth: In the ORC file,
+replace the statement <I>asig <A HREF="../../references/manual_html/sigmod/butterhp.htm">butterbp</A>
+asig,ifrq,ifrq/iq </I>with:</FONT></P>
+
+<P><FONT FACE="Courier New">asig <A HREF="../../references/manual_html/sigmod/butterhp.htm">butterbp</A>
+asig,ifrq,ifrq/iq<BR>
+asig <A HREF="../../references/manual_html/sigmod/butterhp.htm">butterbp</A>
+asig,ifrq,ifrq/iq<BR>
+asig <A HREF="../../references/manual_html/sigmod/butterhp.htm">butterbp</A>
+asig,ifrq,ifrq/iq<BR>
+asig <A HREF="../../references/manual_html/sigmod/butterhp.htm">butterbp</A>
+asig,ifrq,ifrq/iq</FONT></P>
+
+<P><FONT FACE="Times New Roman">So each filter-bank band will
+be filtered by four serially connected BPFs (to review the impact
+of this change, refer to secondb.) In addition, change the <I>iq</I>
+value to 2.85. Then, edit the score file and change the line <I>i2
+. . 20480</I> to <I>i2 . . 18000</I>. The modified filter-bank
+yields much narrower frequency bands and a significantly reduced
+amount of overlapping. In such a configuration, the formula for
+<I>iq</I> derivation does not hold. The new <I>iq</I> value was
+set through trial and error, thus optimizing the overall frequency
+response of the new filter-bank. sixth demonstrates some typical
+response of this graphic EQ.</FONT></P>
+
+<P><I><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times"><IMG 
+SRC="figures/fig06.gif" HEIGHT="176" WIDTH="347" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM"></FONT></I></P>
+
+<P><B><FONT FACE="Times New Roman"></FONT></B><A NAME="_Ref385426333"></A><B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure 6:</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> A typical frequency
+response of the narrow 1/3 octave graphic EQ. This EQ is implemented
+by applying four BPFs in series for each frequency band. <B>(a)</B>
+The filter-bank&#146;s frequency response is flat, more or less.
+The roll-off at 19KHz is unavoidable, but shouldn&#146;t be a
+real problem in most of the cases. <B>(b)</B> This EQ is capable
+of very deep and narrow attenuation. <B>(c)</B> Amplification
+is pretty narrow. However, in extreme settings, some artifacts
+are introduced. <B>(d)</B> The artifacts of example (c) can be
+easily minimized by adding some amplification to the adjacent
+bands.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Compressors and their Applications</FONT></H3>
+
+<H3><FONT FACE="Times New Roman">Introduction</FONT></H3>
+
+<P><I><FONT FACE="Times New Roman">Dynamics processors </FONT></I><FONT
+ FACE="Times New Roman">manipulate the dynamic range properties
+of audio signals. In other words, these processes alter the relationships
+of the loud parts to the soft ones. This family of processors
+includes <I>compressors</I>, <I>limiters</I>, <I>expanders</I>,
+<I>noise-gates</I> and some more special algorithms. Altering
+the dynamics of a sound can substantially change the way it is
+perceived by the brain, and can improve the way a specific track
+sounds in a context of a mix. Compressors are probably one of
+the most useful signal processing units in the recording studio.
+Generally speaking, a compressor reduces the dynamic range of
+a signal, by attenuating the amplitude of the its loud parts.
+When used properly, compression can make an acceptable recording
+sounds as a great one.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Generally speaking, a <I>compressor</I>
+gets an input audio signal, and returns a compressed signal as
+an output. There main predetermined parameters which are used
+to control the compressor&#146;s behavior are summarized in seventh.
+eighth demonstrates the compressor effect.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="2"
+CELLPADDING="3">
+  <TR>
+    <TD VALIGN="TOP"><FONT FACE="Courier New">Threshold dB</FONT></TD>
+    <TD WIDTH="82%" VALIGN="TOP"><FONT FACE="Courier New">Whenever
+      the input amplitude exceeds the threshold, gain-reduction is
+      applied.</FONT></TD>
+  </TR>
+  <TR>
+    <TD VALIGN="TOP"><FONT FACE="Courier New">Ratio</FONT></TD>
+    <TD WIDTH="82%" VALIGN="TOP"><FONT FACE="Courier New">Controls
+      the amount of gain reduction to be applied.<BR>
+      Ratio of 1 means no compression.<BR>
+      Ratio of 3 means that for each 3dB increase in the input amplitude,<BR>
+      the output amplitude is increased in only 1dB.</FONT></TD>
+  </TR>
+  <TR>
+    <TD VALIGN="TOP"><FONT FACE="Courier New">Attack Time</FONT></TD>
+    <TD WIDTH="82%" VALIGN="TOP"><FONT FACE="Courier New">The compressor&#146;s
+      reaction-time to an increase in the input signal&#146;s amplitude.</FONT></TD>
+  </TR>
+  <TR>
+    <TD VALIGN="TOP"><FONT FACE="Courier New">Release Time</FONT></TD>
+    <TD WIDTH="82%" VALIGN="TOP"><FONT FACE="Courier New">The compressor&#146;s
+      reaction-time to a decrease in the input signal&#146;s amplitude.</FONT></TD>
+  </TR>
+  <TR>
+    <TD VALIGN="TOP"><FONT FACE="Courier New">Compensation</FONT></TD>
+    <TD WIDTH="82%" VALIGN="TOP"><FONT FACE="Courier New">Amount
+      of amplification applied on the signal after it was compressed.</FONT></TD>
+  </TR>
+</TABLE><FONT FACE="Times New Roman"></FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/fig07.gif" 
+HEIGHT="373" WIDTH="835" NATURALSIZEFLAG="0" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT FACE="Times New Roman"></FONT></B><A NAME="_Ref384995189"></A><B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure 7:</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> The compressor&#146;s
+main predetermined parameters.</FONT></P>
+
+<P><FONT FACE="Times New Roman">A slow attack time (typically
+50-300 msec.) keeps the original transients unaffected, while
+a faster attack (e.g. 1 msec.) squeezes the whole envelope. Typical
+release time values range from 30 msec to 3 seconds. Tips on using
+the compressor are beyond the scope of this book. Throughout the
+rest of this chapter, the design of a Csound compressor will be
+described.</FONT></P>
+
+<P><I><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times"><IMG 
+SRC="figures/fig08.gif" HEIGHT="287" WIDTH="345" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM"></FONT></I></P>
+
+<P><B><FONT FACE="Times New Roman"></FONT></B><A NAME="_Ref384995366"></A><B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure 8:</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> The effect of
+compression on the sound&#146;s envelope.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Designing a Compressor - The
+First Step</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Generally speaking, a compressor
+algorithm consists of two main elements: the <I>Envelope Detector</I>
+and the <I>Gain-Reduction Unit</I> (ninth.) The envelope detector
+generates the envelope of the input signal, and the gain-reduction
+unit applies the actual compression on the signal. Usually, the
+envelope detector takes care of the attack and release parameters
+(for example, if the specified attack time is slow, the generated
+envelope should respond slowly to an increase in the input signal&#146;s
+amplitude.) The gain-reduction unit calculates the gain reduction
+to be applied according to the generated envelope, the threshold
+and the ratio settings.</FONT></P>
+
+<P><I><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times"><IMG 
+SRC="figures/fig09.gif" HEIGHT="158" WIDTH="347" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM"></FONT></I></P>
+
+<P><B><FONT FACE="Times New Roman"></FONT></B><A NAME="_Ref384995529"></A><B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure 9:</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> The schematic
+structure of a compressor.</FONT></P>
+
+<P><FONT FACE="Times New Roman">tenth presents a simple Csound
+compressor program. The program gets an input sound file and compresses
+it according to the parameters specified in the score file - threshold<I>,</I>
+ratio, attack, release and compensation. Part 3 of the program
+contains a simple envelope follower code, and part 4 consists
+of the gain reduction unit code.</FONT></P>
+
+<P><FONT FACE="Courier New">;==================== SIMPLE COMPRESSOR:
+ORC FILE ====================<BR>
+sr = 44100<BR>
+kr = 44100<BR>
+ksmps = 1 ;a setting of kspmps=1 is crucial!<BR>
+nchnls = 1<BR>
+<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">instr</A>
+1<BR>
+;-------------------------------1. ENTRY PARAMETERS -----------------<BR>
+ithresh = p4 ;threshold - in dB (-96 to 0)<BR>
+iratio = 1/p5 ;ratio - a number &gt;= 1<BR>
+iattack = p6 ;attack time - in seconds<BR>
+irelease = p7 ;release time - in seconds<BR>
+ireamp = <A HREF="../../references/manual_html/valcnv/dbamp.htm">ampdb</A>(p8)
+;compensation - in dB, usually &gt;= 0<BR>
+;-------------------------------2. INPUT SOUND -----------------------<BR>
+ain <A HREF="../../references/manual_html/sigio/in.htm">soundin</A>
+&quot;f:\kaza\violin.wav&quot;<BR>
+;-------------------------------3. ENVELOPE FOLLOWER -----------------<BR>
+ita = 1/(iattack*44100)<BR>
+itr = 1/(irelease*44100)<BR>
+kenv <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+0<BR>
+kin <A HREF="../../references/manual_html/sigmod/samphold.htm">downsamp</A>
+ain ;transform to K-type signals.<BR>
+kin = <A HREF="../../references/manual_html/valcnv/int.htm">abs</A>(kin)
+;use absolute value of input signal.<BR>
+kenv = (kin &gt; kenv ? (kenv*(1-ita)+kin*ita) : kenv*(1-itr))<BR>
+;-------------------------------4. GAIN REDUCTION UNIT ---------------<BR>
+ihedroom = <A HREF="../../references/manual_html/valcnv/dbamp.htm">dbamp</A>(32768)
+;value for 16 bit sounds<BR>
+kenvd = <A HREF="../../references/manual_html/valcnv/dbamp.htm">dbamp</A>(kenv+0.0001)-ihedroom
+;translate env. to dB<BR>
+kreduce = (kenvd &gt;= ithresh ? (kenvd-ithresh)*(iratio-1) :
+0)<BR>
+areduce <A HREF="../../references/manual_html/sigmod/samphold.htm">interp</A>
+kreduce<BR>
+aout = ain*<A HREF="../../references/manual_html/valcnv/dbamp.htm">ampdb</A>(areduce)*ireamp
+;perform compression<BR>
+<A HREF="../../references/manual_html/sigio/in.htm">out</A> aout<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">endin</A><BR>
+<BR>
+;============================= SCORE FILE ============================<BR>
+;-----Dur.--Thr.--Ratio--Attack--Release--Compensate<BR>
+i1 0 4 -20 4 0.001 0.1 0<BR>
+e<BR>
+;=====================================================================</FONT></P>
+
+<P><B><FONT FACE="Times New Roman"></FONT></B><A NAME="_Ref384997551"></A><B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure 10:</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> A Csound compressor
+code, based on a simple envelope follower algorithm.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The envelope follower updates
+<I>kenv</I> which holds the temporary envelope value. <I>kenv</I>
+values are in the range 0..32768. The gain reduction unit translate
+<I>kenv</I> to dB scale (stored in <I>kenvd</I>). The heart of
+the gain-reduction unit is the statement <I>kreduce = (kenvd&gt;=ithresh
+? (kenvd-ithresh)*(iratio-1)</I>. <I>kreduce</I> holds the amount
+of gain-reduction (in dB) to be applied on the input signal. If
+<I>kenvd</I> is lesser than the specified threshold, no gain-reduction
+is performed (i.e. <I>kreduce=0</I>.)</FONT></P>
+
+<P><FONT FACE="Times New Roman">The suggested envelope follower
+is a simple and fast method to estimate the input signal envelope,
+according to the given attack and release values. However, it
+has some annoying weaknesses. To investigate this method, the
+following experiment was performed: Consider the audio signals
+<I>aina</I> (signal A: a 200Hz sinus waveform) and <I>ainb</I>
+(signal B: a richer waveform) synthesized by the code appears
+in eleventh. The positive part of their waveform is shown in figures
+twelftha,b.</FONT></P>
+
+<P><FONT FACE="Courier New">kinamp <A HREF="../../references/manual_html/siggen/line.htm">linseg</A>
+0,0.2,0,0.0001,1,0.5,0.5,0.5,1,0.5,0,3,0<BR>
+aina <A HREF="../../references/manual_html/siggen/oscil.htm">oscil</A>
+30000*kinamp,200,1<BR>
+apart1 <A HREF="../../references/manual_html/siggen/oscil.htm">oscil</A>
+1, 258, 1 ;we assume that table 1<BR>
+apart2 <A HREF="../../references/manual_html/siggen/oscil.htm">oscil</A>
+1, 520, 1 ; is a sinus wave.<BR>
+apart3 <A HREF="../../references/manual_html/siggen/oscil.htm">oscil</A>
+2, 1400, 1<BR>
+apart4 <A HREF="../../references/manual_html/siggen/oscil.htm">oscil</A>
+3, 2300, 1<BR>
+ainb = (apart1+apart2+apart3+apart4)*4400*kinamp</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/fig11.gif" 
+HEIGHT="336" WIDTH="545" NATURALSIZEFLAG="0" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT FACE="Times New Roman"></FONT></B><A NAME="_Ref384997774"></A><B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure 11:</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> The two audio
+signals used to test the envelope follower.</FONT></P>
+
+<P><I><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times"><IMG 
+SRC="figures/fig12.gif" HEIGHT="445" WIDTH="416" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM"></FONT></I></P>
+
+<P><B><FONT FACE="Times New Roman"></FONT></B><A NAME="_Ref385000986"></A><B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure 12:</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> <B>(a,e)</B>
+The positive part of the two test signals <I>aina </I>and <I>ainb</I>.
+<B>(b,c,d,f,g,h) </B>The envelopes of <I>aina</I> and <I>ainb
+</I>generated by the simple envelope follower (under various attack
+time values).</FONT></P>
+
+<P><FONT FACE="Times New Roman">A good envelope follower should
+return similar envelopes for both of the tested signals. The envelopes
+generated by the suggested envelope follower, with various attack
+settings are described in twelfth. The results of this experiment
+reveals two undesired effects: First, for a given attack value,
+signal B&#146;s envelope is substantially softer than signal A&#146;s.
+Second, for each signal, the slower the attack value, the softer
+the envelope is. For all the above settings, it is desired that
+the envelope value at time &raquo; 1.4 sec would be around 100%
+(this definitely didn&#146;t happen.) Despite the problems mentioned
+above, this envelope follower is good enough for many applications
+- especially when a fast attack value (such as 1 msec) is used.
+The generated envelope will be smooth enough if <I>attack+release
+</I>equals about <I>30</I> msec. Later in this chapter, a better
+envelope detection method will be described.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Using RMS as an Envelope Follower</FONT></H3>
+
+<P><FONT FACE="Times New Roman">RMS is a technique used to measure
+the &quot;average&quot; energy of a signal, within a specified
+window of time. In Csound, the rms opcode can be used to obtain
+these values. Implementing a &quot;straight-forwards&quot; RMS
+envelope follower is trivial: Replace part 3 of the compressor
+code shown in tenth with the following Csound code:</FONT></P>
+
+<P><FONT FACE="Courier New">;-------------------------------3.
+ENVELOPE FOLLOWER ---------------</FONT></P>
+
+<P><FONT FACE="Courier New">iwinsize = 1/iattack<BR>
+kenv rms ain,iwinsize<BR>
+;-------------------------------------------------------------------<BR>
+</FONT><FONT FACE="Times New Roman"></FONT></P>
+
+<P><FONT FACE="Times New Roman">There are two main problems with
+this approach: First, the attack and release cannot be controlled
+separately - in the above code, the attack value is used to determine
+both the reaction time for gain-increase and gain-decrease. Second,
+a setting of <I>attack &lt; 30 </I>msec may cause problems: thirteenth
+demonstrates the RMS envelope follower behavior. For relatively
+large attack values, such as 0.1 seconds, the generated envelope
+is smooth, yet, slow-responding (thirteenthb.) For a faster attack,
+such as the one demonstrated in thirteenthc, the envelope responds
+fast enough. However, it contains <I>ripples</I> (thirteenthd.)
+Once the gain-reduction unit recieves a substantially rippled
+envelope, it will repeatedly change the gain-reduction applied
+on the input signal. Since these ripples have an audible frequency,
+the result would be a distorted output signal. Hence, for compression
+applications, this method can be used with a minimal useable attack
+value of about 30 msec (too slow for most of the applications.)</FONT></P>
+
+<P><FONT FACE="Courier New">kamp <A HREF="../../references/manual_html/siggen/line.htm">linseg</A>
+0, 0.1, 0, 0.0001, 16000, 0.2, 16000, 0.02, 32000,<BR>
+0.02, 16000, 0.2, 32000, 0.0001, 0, 1, 0<BR>
+ain <A HREF="../../references/manual_html/siggen/oscil.htm">oscil</A>
+kamp,400,1</FONT></P>
+
+<P><I><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times"><IMG 
+SRC="figures/fig13.gif" HEIGHT="565" WIDTH="835" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM"></FONT></I></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times"></FONT></B><A
+NAME="_Ref385001474"></A><B><FONT FACE="Times New Roman">Figure
+13:</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Envelope generation based on RMS metering. The above Csound code
+creates the tested input signal.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">A Better Envelope Follower</FONT></H3>
+
+<P><FONT SIZE="-1" FACE="Times New Roman">In this section, a new
+envelope detection method is presented. This method gives much
+more consistent results than the method presented in tenth, and
+doesn&#146;t suffer from the limitations of the RMS envelope follower
+previously discussed. To combine this method with our Csound compressor,
+replace parts 3 and 4 of the code (tenth) with the one presented
+in fourteenth.</FONT></P>
+
+<P><FONT SIZE="-1" FACE="Courier New">================ ADD THIS
+STATEMENT TO THE SCORE FILE ================<BR>
+f2 0 4097 6 1 4097 0 to<BR>
+======================================================================<BR>
+;-------------------------------3. ENVELOPE FOLLOWER------------------<BR>
+;----------------------------------3.1 INITIALIZATION-----------------<BR>
+irelcrvi = 2 ;id of ftable for release_curve.<BR>
+irelcrvs = 4096 ;size of ftable for release_curve.<BR>
+kptime <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+0 ;reset time of first peak.<BR>
+kpeak <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+0 ;reset value of first peak.<BR>
+ktime <A HREF="../../references/manual_html/siggen/line.htm">line</A>
+0,p3,p3 ;establish a clock.<BR>
+;----------------------------------3.2 MAIN ENV. FOLLOW CODE----------<BR>
+kin <A HREF="../../references/manual_html/sigmod/samphold.htm">downsamp</A>
+ain ;transform to K-type signals.<BR>
+kin = <A HREF="../../references/manual_html/valcnv/int.htm">abs</A>(kin)
+;use absolute value of input signal.<BR>
+;----------------------------------3.3 CALCULATE RELEASE WEIGHT-------<BR>
+kindex = irelcrvs*(ktime-kptime)/irelease<BR>
+kindex = (kindex &gt;= (irelcrvs-1) ? (irelcrvs-1) : kindex)<BR>
+kweight <A HREF="../../references/manual_html/siggen/table.htm">tablei</A>
+kindex, irelcrvi, 0, 0, 0<BR>
+krval = kweight*kpeak<BR>
+<A HREF="../../references/manual_html/pgmctl/igoto.htm">if</A>
+krval&gt;kin kgoto releasestage<BR>
+;----------------------------------3.4 DEAL WITH ATTACK STAGE---------<BR>
+kptime = ktime ;set new peak time.<BR>
+kpeak = kin ;set new peak value.<BR>
+kenv = kin ;set envelope to new peak value.<BR>
+kgoto cont ;end of envelope follower.<BR>
+;----------------------------------3.5 DEAL WITH RELEASE STAGE--------<BR>
+releasestage:<BR>
+kenv = krval ;set envelope according to the value<BR>
+; derived from the release-curve.<BR>
+cont:<BR>
+;---------------------------------------------------------------------<BR>
+;-------------------------------4. GAIN REDUCTION UNIT ---------------<BR>
+iatckfr = 1/iattack<BR>
+ihedroom = <A HREF="../../references/manual_html/valcnv/dbamp.htm">dbamp</A>(32768)
+;value for 16 bit sounds<BR>
+kenvd = <A HREF="../../references/manual_html/valcnv/dbamp.htm">dbamp</A>(kenv+0.0001)-ihedroom
+;translate env. to dB<BR>
+kreduce = (kenvd &gt;= ithresh ? (kenvd-ithresh)*(iratio-1) :
+0)<BR>
+areduce <A HREF="../../references/manual_html/sigmod/samphold.htm">interp</A>
+kreduce<BR>
+areduce <A HREF="../../references/manual_html/sigmod/butterhp.htm">butterlp</A>
+areduce,iatckfr ;apply attack response<BR>
+aout = ain*<A HREF="../../references/manual_html/valcnv/dbamp.htm">ampdb</A>(areduce)*ireamp
+;perform compression<BR>
+;---------------------------------------------------------------------</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times"></FONT></B><A
+NAME="_Ref385001997"></A><B><FONT SIZE="-1" FACE="Times New Roman">Figure
+14:</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+The improved envelope follower. To create a compressor based on
+this algorithm, replace parts 3 and 4 of the code shown in tenth
+with the above code, and change the score file as instructed.</FONT></P>
+
+<P><FONT SIZE="-1" FACE="Times New Roman">Principally, the envelope
+detection algorithm follows the input signal&#146;s absolute value
+whenever the input value is higher than the envelope value of
+the previous sample. This is called an <I>attack stage</I>. When
+the previous envelope value is higher than the current input signal
+(absolute) value, the algorithm enters a <I>release stage</I>,
+in which the envelope &quot;glides&quot; above the input signal,
+and gently drops, according to shape of the release-curve defined
+in ftable 2. The access to ftable 2 is performed in part 3.3 of
+the code. The release stage terminates when a new attack stage
+is triggered - this decision is performed by the statement <I>if
+krval&gt;kin kgoto releasestage</I>. The envelope follower algorithm
+takes care of the release response time. However, the attack response
+time is not handled. Actually, this treatment is postponed to
+the gain-reduction stage. To apply the attack response time, the
+code for the gain-reduction unit was slightly changed, by adding
+the statements: 1) <I>iatckfr = 1/iattack </I>2) <I>areduce butterlp
+areduce,iactkfr</I>. These statements apply a low-pass filter
+on the <U>control</U>-signal <I>areduce</I>. Please note that
+applying a LPF on a control signal introduces a response-time
+&quot;laziness&quot; in the signal.</FONT></P>
+
+<P><FONT SIZE="-1" FACE="Times New Roman">A similar experiment
+to the one presented in twelfth was also performed on this algorithm.
+The results are shown in fifteenth. Please compare the results
+with and twelfth. Although this envelope follower is not always
+ripple-free, this compressor usually provides very clean results
+when <I>attack &gt; 1 msec </I>and <I>release &gt; 40 msec</I>.</FONT></P>
+
+<P><I><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times"><IMG 
+SRC="figures/fig15.gif" HEIGHT="545" WIDTH="347" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM"></FONT></I></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times"></FONT></B><A
+NAME="_Ref385002282"></A><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+15:</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+The envelopes generated by the improved envelope follower (under
+various attack time values.) Compare the results with twelfth.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Using Look-Ahead Information
+To Achieve Better Envelope Detection</FONT></H3>
+
+<P><FONT SIZE="-1" FACE="Times New Roman">The envelope follower
+discussed above is a pretty good performer. However, the usage
+of an attack time faster than 1 msec or a release time faster
+than 40 msec tends to generate ripples which translate to audible
+distortion in the compressed signal. This envelope follower can
+be improved in various ways. The Csound code found in sixteenth
+is an implementation of a compressor, based on such an improvement.
+As can be seen, the algorithm is quite complicated. Detailed discussion
+of this envelope-detection method is beyond the scope of this
+chapter. To make a long story short, this is basically the same
+algorithm discussed above, with an additional network of ten &quot;future
+peak-detectors&quot;. Each such a detector constantly &quot;looks
+at the future&quot;, trying to locate new peaks which are about
+to arrive in the next <I>la</I> seconds (<I>la </I>is a predetermined
+parameter controlled by the user.) If the envelope is in a release
+stage and a &quot;future&quot; peak which is higher than the current
+envelope value is detected, the gliding envelope freezes until
+the expected peak arrives. This mechanism efficiently eliminates
+various types of distortion which otherwise would have been applied
+on the compressed sound. This implementation uses the &quot;parallel&quot;
+programming style previously discussed: Instrument 1 is the global
+sound-file reader. Each instance of instrument 2 is an independent
+future peak detector - so the ten instances establish the detection
+network. Instrument 3 contains the main envelope follower and
+the gain-reduction unit. It uses the future peak information collected
+by instrument 2 instances by accessing the global variables <I>gklap0..gklap9</I>.
+Owing to the look-ahead concept, the output signal is delayed
+in <I>la</I> seconds. It also means that the algorithm is not
+a pure &quot;real-time&quot; one. However, this envelope detector
+generally provides very smooth, reliable and fast-responding results.</FONT></P>
+
+<P><FONT SIZE="-1" FACE="Times New Roman">The predetermined parameters
+of this compressor are <I>threshold</I> (dB), <I>ratio</I> ( &gt;
+1), <I>attack</I> (sec.), <I>release</I> (sec.), <I>compensation</I>
+(dB) and <I>la (lookahead)</I> (sec.). These parameters should
+be specified in the score file&#146;s <I>i3</I> line. The <I>lookahead</I>
+parameter should also be specified in the <I>i2</I> line. <I>Attack</I>
+can have any value greater than 0.000045 seconds. <I>Release</I>&#146;s
+safe values can be 0.03 seconds or higher, while smaller values
+are usually fine, but might alter slight distortion to <U>some</U>
+input signals. A good starting-point for <I>lookahead</I> setting
+is the value of <I>Release</I>. However, feel free to increase
+this value, especially when <I>release</I> is very fast.</FONT></P>
+
+<P><FONT SIZE="-1" FACE="Courier New">;=====================================================================<BR>
+; A HARD-KNEE COMPRESSOR BASED ON AN ENVELOPE-DETECTOR<BR>
+; WITH A LOOK-AHEAD PEAK ANTICIPATION NETWORK<BR>
+; Written by Erez Webman 1997 (C).<BR>
+;=====================================================================<BR>
+;============================= ORC FILE ==============================<BR>
+;=== General settings ================================================<BR>
+sr = 44100<BR>
+kr = 44100<BR>
+ksmps = 1 ;A setting of ksmps=1 is crucial!<BR>
+nchnls = 1<BR>
+;=====================================================================<BR>
+;=== INSTRUMENT 1: READING SOUND FILE ===============================<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">instr</A>
+1<BR>
+gasig <A HREF="../../references/manual_html/sigio/in.htm">soundin</A>
+&quot;f:\kaza\violin.wav&quot; ;Sound file is read globally.<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">endin</A><BR>
+;=====================================================================<BR>
+<BR>
+;=== INSTRUMENT 2: LOOK-AHEAD PEAK DETECTION NET ====================<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">instr</A>
+2<BR>
+;--- Initialization --------------------------------------------------<BR>
+ilookahd = p4 ;Look-ahead window size (in seconds).<BR>
+idetid = p5 ;Look-ahead detector ID (0,1,...).<BR>
+idetnum = p6 ;Total number of detectors (up to 10).<BR>
+ioverlap = 4/sr ;<BR>
+idelta = 2/sr ;<BR>
+;Current detector win size (in sec.):<BR>
+iwinsize = (idetid=idetnum-1 ? ilookahd/idetnum - idelta : ilookahd/idetnum
++ ioverlap)<BR>
+idelay = ilookahd*1000*idetid/idetnum<BR>
+kptime <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+0 ;Time of current look-ahead peak.<BR>
+kpval <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+0 ;Value of current look-ahead peak.<BR>
+ktime <A HREF="../../references/manual_html/siggen/line.htm">line</A>
+0, p3, p3 ;Time passed.<BR>
+gklap0 <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+0 ;Look-ahead peak of detector #0.<BR>
+gklap1 <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+1 ;Look-ahead peak of detector #1.<BR>
+gklap2 <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+2 ;Look-ahead peak of detector #2.<BR>
+gklap3 <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+3 ;Look-ahead peak of detector #3.<BR>
+gklap4 <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+4 ;Look-ahead peak of detector #4.<BR>
+gklap5 <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+5 ;Look-ahead peak of detector #5.<BR>
+gklap6 <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+6 ;Look-ahead peak of detector #6.<BR>
+gklap7 <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+7 ;Look-ahead peak of detector #7.<BR>
+gklap8 <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+8 ;Look-ahead peak of detector #8.<BR>
+gklap9 <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+9 ;Look-ahead peak of detector #9.<BR>
+;---------------------------------------------------------------------<BR>
+;--- Create appropriate look-ahead signal ----------------------------<BR>
+aintmp = gasig<BR>
+ain <A HREF="../../references/manual_html/sigmod/vdelay.htm">vdelay</A>
+aintmp, idelay, idelay+1<BR>
+kin <A HREF="../../references/manual_html/sigmod/samphold.htm">downsamp</A>
+ain<BR>
+kin = <A HREF="../../references/manual_html/valcnv/int.htm">abs</A>(kin)<BR>
+;---------------------------------------------------------------------<BR>
+;--- Look-ahead signal treatment -------------------------------------<BR>
+;--- if current la peak has expired,<BR>
+; replace it with current sample level. ---<BR>
+kpval = (kptime &lt; ktime-iwinsize ? kin : kpval )<BR>
+kptime = (kptime &lt; ktime-iwinsize ? ktime : kptime )<BR>
+;--- if current sample is higher than current la peak,<BR>
+; replace la peak with current sample. ---<BR>
+kptime = (kin &gt;= kpval ? ktime : kptime )<BR>
+kpval = (kin &gt;= kpval ? kin : kpval )<BR>
+;---------------------------------------------------------------------<BR>
+;--- Update look-ahead peak list -------------------------------------<BR>
+gklap0 = (idetid=0 ? kpval : gklap0)<BR>
+gklap1 = (idetid=1 ? kpval : gklap1)<BR>
+gklap2 = (idetid=2 ? kpval : gklap2)<BR>
+gklap3 = (idetid=3 ? kpval : gklap3)<BR>
+gklap4 = (idetid=4 ? kpval : gklap4)<BR>
+gklap5 = (idetid=5 ? kpval : gklap5)<BR>
+gklap6 = (idetid=6 ? kpval : gklap6)<BR>
+gklap7 = (idetid=7 ? kpval : gklap7)<BR>
+gklap8 = (idetid=8 ? kpval : gklap8)<BR>
+gklap9 = (idetid=9 ? kpval : gklap9)<BR>
+;---------------------------------------------------------------------<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">endin</A><BR>
+<BR>
+;=====================================================================<BR>
+;=== INSTRUMENT 3: THE MAIN ENVELOPE FOLLOWER AND THE COMPRESSOR
+====<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">instr</A>
+3<BR>
+;--- Initialization --------------------------------------------------<BR>
+ithresh = p4 ;Threshold - in dB (max 0).<BR>
+iratio = 1/p5 ;Ratio - a number &gt;= 1.<BR>
+iattack = 1/p6 ;Attack - in seconds.<BR>
+irelease = p7 ;Release - in seconds.<BR>
+ireamp = <A HREF="../../references/manual_html/valcnv/dbamp.htm">ampdb</A>(p8)
+;Compensation - in dB (0=no change).<BR>
+ilookahd = p9 ;Look-Ahead - in seconds.<BR>
+ihedroom = <A HREF="../../references/manual_html/valcnv/dbamp.htm">dbamp</A>(32768)
+;Specific for 16 bit sound files.<BR>
+irelcrvi = 2 ;ID of ftable for release_curve.<BR>
+irelcrvs = 4096 ;Size of ftable for release_curve.<BR>
+idelay = ilookahd*1000<BR>
+krtime <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+0 ;Start-time of current release stage.<BR>
+kpval <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+0 ;Value of current peak.<BR>
+ktime <A HREF="../../references/manual_html/siggen/line.htm">line</A>
+0, p3, p3 ;Establish a clock.<BR>
+klapval <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+0 ;Current highest look-ahead peak.<BR>
+klaptime <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+0<BR>
+kenv <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+0<BR>
+;---------------------------------------------------------------------<BR>
+;--- Delay Signal ----------------------------------------------------<BR>
+aintmp = gasig<BR>
+ain <A HREF="../../references/manual_html/sigmod/vdelay.htm">vdelay</A>
+aintmp, idelay, idelay+1<BR>
+kin <A HREF="../../references/manual_html/sigmod/samphold.htm">downsamp</A>
+ain<BR>
+kin = <A HREF="../../references/manual_html/valcnv/int.htm">abs</A>(kin)<BR>
+;---------------------------------------------------------------------<BR>
+;--- Get the highest look-ahead peak ---------------------------------<BR>
+klapval = gklap1<BR>
+klapval = (gklap2 &gt; klapval ? gklap2 : klapval)<BR>
+klapval = (gklap3 &gt; klapval ? gklap3 : klapval)<BR>
+klapval = (gklap4 &gt; klapval ? gklap4 : klapval)<BR>
+klapval = (gklap5 &gt; klapval ? gklap5 : klapval)<BR>
+klapval = (gklap6 &gt; klapval ? gklap6 : klapval)<BR>
+klapval = (gklap7 &gt; klapval ? gklap7 : klapval)<BR>
+klapval = (gklap8 &gt; klapval ? gklap8 : klapval)<BR>
+klapval = (gklap9 &gt; klapval ? gklap9 : klapval)<BR>
+;---------------------------------------------------------------------<BR>
+;--- Calculate release value - will not necessarily be used ----------<BR>
+kindex = irelcrvs*(ktime-krtime)/irelease<BR>
+kindex = (kindex &gt;= (irelcrvs-1) ? (irelcrvs-1) : kindex)<BR>
+kweight <A HREF="../../references/manual_html/siggen/table.htm">tablei</A>
+kindex, irelcrvi, 0, 0, 0<BR>
+krval = kweight*kpval<BR>
+;---------------------------------------------------------------------<BR>
+;--- If highest look-ahead peak is higher than current envelope,<BR>
+; &quot;freeze&quot; the envelope drop ---<BR>
+krval = (klapval&gt;=kenv ? kenv : krval) ;&quot;freeze&quot;
+env.<BR>
+krtime = (klapval&gt;=kenv ? ktime : krtime) ;restart release.<BR>
+kpval = (klapval&gt;=kenv ? kenv : kpval) ;reinit peak value.<BR>
+;---------------------------------------------------------------------<BR>
+;--- Update envelope value and handle the attack case ----------------<BR>
+kenv = krval<BR>
+<A HREF="../../references/manual_html/pgmctl/igoto.htm">if</A>
+krval &gt; kin kgoto noattack<BR>
+; - if new peak was detected (attack stage) -<BR>
+kpval = kin ;Update current peak value.<BR>
+kenv = kin ;Envelope gets current peak value.<BR>
+krtime = ktime ;Set release stage start-time.<BR>
+noattack:<BR>
+;---------------------------------------------------------------------<BR>
+;--- Hard-Knee Gain Reduction Unit -----------------------------------<BR>
+kenvd = <A HREF="../../references/manual_html/valcnv/dbamp.htm">dbamp</A>(kenv+0.0001)-ihedroom<BR>
+kreduce = (kenvd &gt;= ithresh ? (kenvd-ithresh)*(iratio-1) :
+0)<BR>
+areduce <A HREF="../../references/manual_html/sigmod/samphold.htm">interp</A>
+kreduce<BR>
+areduce <A HREF="../../references/manual_html/sigmod/butterhp.htm">butterlp</A>
+areduce,iattack ;Apply attack parameter.<BR>
+aout = ain*<A HREF="../../references/manual_html/valcnv/dbamp.htm">ampdb</A>(areduce)*ireamp
+;Apply compression.<BR>
+aenv = kenv ;aenv can be used for<BR>
+; envelope monitoring.<BR>
+;---------------------------------------------------------------------<BR>
+;--- Output the sound and its envelope -------------------------------<BR>
+<A HREF="../../references/manual_html/sigio/in.htm">out</A> aout<BR>
+; <A HREF="../../references/manual_html/sigio/in.htm">outs</A>
+aout, 32768+areduce*1000 ;Monitor gain-reduction.<BR>
+; <A HREF="../../references/manual_html/sigio/in.htm">outs</A>
+ain, aenv ;Monitor envelope.<BR>
+;---------------------------------------------------------------------<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">endin</A><BR>
+<BR>
+;=========================== SCORE FILE ==============================<BR>
+f2 0 4097 6 1 4097 0 ; release curve<BR>
+; === Establish Look-ahead Detector Net ===<BR>
+;<BR>
+;----Time-LookAhead-Det_ID--Det_total_num--<BR>
+i2 0 4 0.05 0 10<BR>
+i2 . . . 1 .<BR>
+i2 . . . 2 .<BR>
+i2 . . . 3 .<BR>
+i2 . . . 4 .<BR>
+i2 . . . 5 .<BR>
+i2 . . . 6 .<BR>
+i2 . . . 7 .<BR>
+i2 . . . 8 .<BR>
+i2 . . . 9 .<BR>
+;<BR>
+; === Main Envelope-Follower/Compressor ===<BR>
+;<BR>
+;----Time-Thrsh-Rtio-Attack-Release-Compnst-LookAhd<BR>
+i3 0 4 -20 4 0.001 0.1 6 0.05<BR>
+;<BR>
+; === Sound-File Global Reader ===<BR>
+i1 0 4<BR>
+;<BR>
+e<BR>
+;=====================================================================</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times"></FONT></B><A
+NAME="_Ref385004472"></A><B><FONT SIZE="-1" FACE="Times New Roman">Figure
+16:</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+A Csound compressor code based on the suggested look-ahead envelope
+follower.</FONT></P>
+
+<H2><FONT FACE="Times New Roman">Soft-Knee Compressors and Transfer-Function
+Driven Processing</FONT></H2>
+
+<P><FONT SIZE="-1" FACE="Times New Roman">A useful way to describe
+the effect of a compressor is to draw a <I>transfer-function</I>
+which describes output amplitude vs. input amplitude. seventeentha
+demonstrates typical transfer-functions of a compressor. The compressor
+discussed in the previous sections is called a <I>Hard-Knee Compressor</I>.
+A <I>Soft-Knee Compressor</I> is a compressor which has a <I>variable
+ratio</I>:<B> </B>the louder the signal is, the higher the ratio
+will be. A typical transfer-function for a soft-knee compressor
+is drawn in seventeenthb. To implement a soft-knee compressor,
+one should replace the hard-knee gain-reduction unit with a <I>transfer-function
+driven gain-reduction unit</I>. Such a Csound implementation is
+not complicated - the desired transfer-function should be generated
+by the score-file as a ftable, and the gain-reduction unit should
+just emulate this function.</FONT></P>
+
+<P><I><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times"><IMG 
+SRC="figures/fig17.gif" HEIGHT="336" WIDTH="545" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM"></FONT></I></P>
+
+<P><B><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times"></FONT></B><A
+NAME="_Ref385505854"></A><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+17:</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Transfer-functions of a hard-knee and a soft-knee compressors.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Expanders, Noise Gates, Inverse
+Expanders and Limiters</FONT></H3>
+
+<P><FONT SIZE="-2" FACE="Times New Roman">An <I>Expander</I> is
+a dynamics processor which <U>attenuates soft-parts</U> of the
+input signal. It is actually a transfer-function driven compressor
+with a transfer-function such as the one shown in eighteentha.
+Usually, expanders are used to reduce the perceived noise floor
+of the recording. A <I>Noise-Gate</I> is a more brutal type of
+an expander (eighteenthb.) The look-ahead feature previously described
+can be very useful in expansion/noise-gating situations. Expanders
+and noise gates should be used with a very fast attack setting.
+Once a transfer-function driven compressor is in use, it is trivial
+to combine an expander with a compressor (eighteenthc.) Furthermore,
+more special processing can be obtained, such as the <I>Inverse
+Expander</I> described in eighteenthd. The inverse expander is
+great for adding dynamic stability for an audio track - and it
+sounds quite different than a traditional compressor.</FONT></P>
+
+<P><FONT SIZE="-2" FACE="Times New Roman">A <I>Limiter</I> is
+actually a compressor with a high threshold, a very high ratio
+(typically 20:1 and even more), a very-fast attack and a fast
+release. Such a processor is aimed at limiting the amplitude of
+the input signal by attenuating short and loud peaks found in
+the audio track.</FONT></P>
+
+<P><I><FONT SIZE="-2" FACE="Times New Roman,Georgia,Times"><IMG 
+SRC="figures/fig18.gif" HEIGHT="445" WIDTH="416" NATURALSIZEFLAG="0"
+ALIGN="BOTTOM"></FONT></I></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times"></FONT></B><A
+NAME="_Ref385505932"></A><B><FONT SIZE="-2" FACE="Times New Roman">Figure
+18:</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Transfer-functions of various dynamics processors.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Using a Side-Chain</FONT></H3>
+
+<P><FONT SIZE="-1" FACE="Times New Roman">A dynamics processor
+that features a <I>side-chain</I> gets two audio inputs: <I>main
+</I>and <I>side-chain</I>. The envelope detector generates an
+envelope based on the side-chain signal, while the gain-reduction/amplification
+is performed on the main signal, which is then sent to the output.
+Such a configuration is useful for various applications. For example,
+a vocal recording often suffer from excessive <I>sibilant</I>
+sounds (the excessive &quot;ssss&quot;). The sibilant can be effectively
+reduced by connecting an EQed version of the original sound to
+the side-chain. The EQ should emphasize the sibilant frequencies.
+The compressor should be set in such a way that only when a loud
+signal comes from the side-chain (an &quot;sss&quot; sound), the
+compressor will apply a gain-reduction. Typical settings for the
+EQ may be: drastic HPF at 1.5KHz plus 12dB amplification of the
+5-9KHz frequency range. Typical setting for the compressor may
+be: Attack=3 msec , Release= 9 msec , Ratio=1:10 and a threshold
+which is exceeded only when sibilant occur. This sibilant elimination
+process is called <I>De-essing</I>.</FONT></P>
+
+<H2><FONT FACE="Times New Roman">Summary</FONT></H2>
+
+<P><FONT SIZE="-1" FACE="Times New Roman">In this chapter, the
+design of graphic equalizers and dynamics processors in Csound
+was reviewed. To ensure high-quality results, careful testing
+and measurements should be performed during the development stage.
+The frequency response curve extraction program which was discussed
+in this chapter, is an important tool for such testing. A graphic
+equalizer is mainly based on a filter-bank. There are various
+filter-bank configurations, each of them may suit the needs of
+a different equalization application. As demonstrated, a tradeoff
+between the frequency-band isolation and the overall filter-bank
+integrity is usually found. Doubtlessly, compressors are one of
+the most critical units in a recording studio. The heart of the
+compressor is its envelope detector. Throughout this chapter,
+various envelope detection methods were presented and compared,
+and a complete compressor implementation was given.</FONT></P>
+
+<P><FONT SIZE="-1" FACE="Times New Roman">The ultimate evaluation
+criterion of a signal processor is the way it <U>sounds</U>. This
+is especially true for dynamics processors and equalizers. Let
+your ears be the final judge and not your oscilloscope. However,
+use your oscilloscope (or any other measurement method) in order
+to achieve a better understanding of the processing results&#146;
+nature.</FONT>
+
+</BODY>
+</HTML>

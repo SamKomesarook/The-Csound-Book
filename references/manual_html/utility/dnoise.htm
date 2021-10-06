@@ -1,0 +1,117 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+   <title>dnoise</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="sdif2ads.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="srconv.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/utility.htm#dnoise">
+Utilities: File Conversion</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>dnoise</h2>
+
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+
+<p>A noise reduction utility using frequency-domain noise-gating.</p>
+
+<pre>
+  <strong>csound</strong>  -U <strong>dnoise </strong>[flags] -i noisefile -o outputfilename inputfilename</pre>
+<p>or</p>
+<pre>
+  <strong>dnoise</strong>  [flags] -i noisefile -o outputfilename inputfilename
+</pre>
+
+<p><em>-i filename</em>	&#8211; name of input soundfile containing the noise reference</p>
+<p><em>-o filename</em> &#8211;	output soundfile name</p>
+<p><em>-N num</em> &#8211; number of bandpass filters. The default value is 1024.</p>
+<p><em>-w num</em>	&#8211; filter overlap factor: 0, 1, (2), or 3. <em>-w</em> should not be used if <em>-M</em> is specified.</p>
+<p><em>-M num</em>	&#8211; analysis window length. The default value is <em>N</em>-1. <em>-M</em> should not be used if <em>-w</em> is specified.</p>
+<p><em>-L num</em>	&#8211; synthesis window length. The default value is <em>M</em> </p>
+<p><em>-D num</em>	&#8211; decimation factor. The default value is <em>M</em> / 8.</p>
+<p><em>-b time	</em>&#8211; begin time in noise reference soundfile. The default value is 0.</p>
+<p><em>-B sampnum</em>	&#8211; starting sample in noise reference soundfile. The default value is 0.</p>
+<p><em>-e time	</em>&#8211; end time in noise reference soundfile. The default value is end of file.</p>
+<p><em>-E sampnum	</em>&#8211; final sample in noise reference soundfile. The default value is end of file.</p>
+<p><em>-t num	</em>&#8211; threshold above noise reference in dB. The default value is 30.</p>
+<p><em>-S num</em>	&#8211; sharpness of noise-gate turnoff in the range 1 to 5.  The default value is 1. </p>
+<p><em>-n num</em>	&#8211; number of FFT frames to average. The default value is 5.</p>
+<p><em>-m num</em>	&#8211; minimum gain of noise-gate when off, in dB. The default value is -40.</p>
+
+<p><em>-A</em>	&#8211; AIFF format output</p>
+<p><em>-W</em>	&#8211; WAV format output</p>
+<p><em>-J</em>	&#8211; IRCAM format output</p>
+<p><em>-h</em> &#8211; skip soundfile header. Not valid for AIFF or WAV output.</p>
+<p><em>-8</em> &#8211; 8-bit unsigned character sound samples</p>
+<p><em>-c</em> &#8211; 8-bit signed character sound samples</p>
+<p><em>-a</em> &#8211; alaw sound samples</p>
+<p><em>-u</em> &#8211; ulaw sound samples</p>
+<p><em>-s</em>	&#8211; short integer sound samples</p>
+<p><em>-l</em> &#8211; long integer sound samples</p>
+<p><em>-f</em> &#8211; float sound samples. (New in Csound 3.47) Floats also supported for WAV files.</p>
+
+<p><em>-V</em>	&#8211; verbose status information</p>
+<p><em>-R</em> &#8211; continually rewrite header while writing soundfile (WAV/AIFF)</p>
+<p><em>-- filename</em> &#8211; output to log file <em>filename</em></p>
+<p><em>-H1</em> &#8211; generates a rotating line progress report. Can also be written <em>-H</em>.</p>
+<p><em>-H2</em> &#8211; generates a &quot;.&quot; every time a buffer is written</p>
+<p><em>-H3</em> &#8211; reports the size in seconds of the output</p>
+<p><em>-H4</em> &#8211; sounds a bell for every buffer of the output written</p>
+
+
+<p><strong>dnoise</strong> is a noise reduction utility using frequency-domain noise-gating. This method of noise reduction work best in with hiss type noise.  The algorithm used in <strong>dnoise</strong> is based on one proposed by Moorer and Berger<sup>1</sup>.  The <strong>dnoise</strong> algorithm differs from the original in that it uses the weighted overlap-add formulation for short-time Fourier analysis-resynthesis, in place of the recursive formula suggested by Moorer and Berger. The gain in each frequency bin is computed independently according to:</p>
+<pre>
+  gain = g0 + (1-g0) * [avg / (avg + th*th*nref)]<span class="exp">sh</span>
+</pre>
+<p>where <em>avg</em> and <em>nref</em> are the mean squared signal and noise respectively.  This also is slightly different than in Moorer and Berger.  The critical parameters <em>th</em> and <em>g0</em> are specified in dB and internally converted to decimal values.  The <em>nref</em> values are computed at the start of the program on the basis of a noise reference soundfile, specified in the command line with <em>-i</em>, which contains noise without signal. The average values are computed over a rectangular window of <em>m</em> FFT frames looking both ahead and behind the current time.  This corresponds to a temporal extent of <tt style="line-height: 1.5">m*D/R</tt>, which is typically <tt style="line-height: 1.5">(m*N/8)/R</tt>.  The default settings of <em>N</em>, <em>M</em>, and <em>D</em> should be appropriate for most uses.  A sample rate higher than 16 kHz may require a higher <em>N</em>. </p>
+
+<h3>Reference</h3>
+<p>Moorer, James A., and Berger, Mark, &quot;Linear-Phase Bandsplitting: Theory and Applications,&quot; <em>Journal of the Audio Engineering Society</em>, Volume 34, Issue 3 (1996), pp. 143-152.</p>
+
+<h3>Authors</h3>
+<p>Mark Dolson<br>
+August, 1989</p>
+
+<p>John ffitch (Adaptation for Csound)<br>
+December, 2000<br>
+New in Csound 4.10
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="sdif2ads.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="srconv.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/utility.htm#dnoise">
+Utilities: File Conversion</a>
+</body>
+
+</html>

@@ -1,0 +1,112 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+
+<head>
+   <title>sr, kr, ksmps, nchnls</title>
+
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="express.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="strset.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm#header"><font size="-2" color="#000000" face="Verdana, Arial, Helvetica, Century Gothic">
+Orchestra Syntax: Orchestra Header Statements</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>sr, kr, ksmps, nchnls</h2>
+
+
+<pre>
+<strong>  sr    </strong>   =        iarg
+<strong>  kr    </strong>   =        iarg
+<strong>  ksmps    </strong>=        iarg
+<strong>  nchnls</strong>   =        iarg
+</pre>
+
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+
+
+<p>
+These statements are global value <a href="assign.htm"><em>assignments</em></a>, made at the beginning of an orchestra, before any instrument block is defined. Their function is to set certain<a href="kvar.htm#reserved"> <em>reserved symbol variables</em></a> that are required for performance. Once set, these reserved symbols can be used in expressions anywhere in the orchestra.
+</p>
+
+
+<p>
+<strong>sr</strong>  = (optional) &#8211; set sampling rate to <em>iarg</em> samples per second per channel. The default value is 44100. Beginning with Csound version 4.13, 24 bit audio is supported.
+</p>
+
+<p>
+<strong>kr</strong> = (optional) &#8211; set control rate to <em>iarg</em> samples per second. The default value is 4410.
+</p>
+
+
+<p>
+<strong>ksmps</strong> = (optional) &#8211; set the number of samples in a control period to. This value must equal<strong> sr/kr</strong>. The default value is 10.
+</p>
+
+
+<p>
+<strong>nchnls</strong> = (optional) &#8211; set number of channels of audio output to <em>iarg</em>. (1 = mono, 2 = stereo, 4 = quadraphonic.) Beginning with Csound version 4.13, more than 8 channels are possible. The default value is 1 (mono).
+</p>
+
+
+
+
+
+<p>
+In addition, any <a href="kvar.htm#global">global variable</a> can be initialized by an <em>init-time assignment</em> anywhere before the first <a href="iblock.htm"><strong>instr statement</strong></a>.
+All of the above assignments are run as instrument 0 (i-pass only) at the start of real performance.
+</p>
+
+<p>Beginning with Csound version 3.46, either <strong>sr</strong>, <strong>kr</strong>, or <strong>ksmps</strong> may be omitted. Csound will attempt to calculate the omitted value from the specified values, but it should evaluate to an integer.</p>
+<h3>Example</h3>
+
+
+
+<pre>  <strong>sr</strong> = 10000
+  <strong>kr</strong> = 500
+  <strong>ksmps</strong> = 20
+  gi1 <strong>= </strong>sr/2.
+  ga <strong>init </strong>0
+  itranspose <strong>= </strong>octpch(.0l)
+</pre>
+
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="express.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="strset.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm#header">Orchestra Syntax: Orchestra Header Statements</font></a>
+</body>
+</html>
+

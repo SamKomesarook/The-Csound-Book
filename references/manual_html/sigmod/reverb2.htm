@@ -1,0 +1,106 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>reverb2, nreverb</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="comb.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="nestedap.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#reverb" class="toqr">
+Signal Modifiers: Reverberation</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>reverb2, nreverb</h2>
+
+<pre>
+  ar      <strong>reverb2</strong>    asig, ktime, khdif[, iskip]
+  ar      <strong>nreverb</strong>    asig, ktime, khdif[, iskip][,inumCombs, ifnCombs][, inumAlpas, ifnAlpas]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This is a reverberator consisting of 6 parallel comb-lowpass filters being fed into a series of 5 allpass filters. <strong>nreverb</strong> replaces <strong>reverb2</strong> (version 3.48) and so both opcodes are identical.
+</p>
+<h3>Initialization</h3>
+<p><em>iskip</em> &#8211; Skip initialization if present and non-zero
+</p>
+<p><em>inumCombs</em> &#8211; number of filter constants in comb filter. If omitted, the values default to the <strong>nreverb</strong> constants. New in Csound version 4.09.</p>
+
+<p><em>ifnCombs</em> &#8211; function table with <em>inumCombs</em> comb filter time values, followed the same number of gain values. The ftable should not be rescaled (use negative fgen number). Positive time values are in seconds. The time values are converted internally into number of samples, then set to the next greater prime number. If teh time is negative, it is interpreted directly as time in sample frames, and no processing is done (except negation). New in Csound version 4.09.</p>
+
+<p><em>inumAlpas</em>, <em>ifnAlpas</em> &#8211; same as <em>inumCombs</em> and <em>ifnCombs</em>, for allpass filter. New in Csound version 4.09.</p>
+
+<h3>Performance</h3>
+<p>The output of <strong>nreverb</strong> (and <strong>reverb2</strong>) is zeroed on the first perfomance pass. The input signal <em>asig</em> is reverberated for <em>ktime</em> seconds. The parameter <em>khdif</em> controls the high frequency diffusion amount. The values of <em>khdif</em> should be from 0 to 1. If <em>khdif</em> is set to 0 the all the frequencies decay with the same speed. If <em>khdif</em> is 1, high frequencies decay faster than lower ones. If <em>ktime</em> is inadvertently set to a non-positive number, <em>ktime</em> will be reset automatically to 0.01. (New in Csound version 4.07.)
+</p>
+<p>As of Csound version 4.09, <strong>nreverb</strong> may read any number of comb and allpass filter from an ftable.</p>
+<h3>Examples</h3>
+<p>This results in a 2.5 sec reverb with faster high frequency attenuation:
+</p>
+<pre>
+  a1      <strong>oscil</strong>     10000, 100, 1
+  a2      <strong>reverb2</strong>   a1, 2.5, .3
+          <strong>out</strong>       a1 + a2 * .2
+</pre>
+
+<p>This illustrates the use of an ftable for filter constants:</p>
+<pre>
+;Orchestra:
+          instr 1
+  a1      soundin    "neopren.wav"
+  a2      nreverb    a1, 1.5, .75, 0, 8, 71, 4, 72
+          out        a1 + a2 * .4
+          endin
+
+;Score:
+  ; freeverb time constants, as direct (negative) sample, with arbitrary gains
+  f71 0 16   -2  -1116 -1188 -1277 -1356 -1422 -1491 -1557 -1617  0.8  0.79  0.78  0.77  0.76  0.75  0.74  0.73  
+  f72 0 16   -2  -556 -441 -341 -225  0.7  0.72  0.74  0.76
+
+i1   0     7
+e
+</pre>
+<h3>Authors</h3>
+<p>Paris Smaragdis (<strong>reverb2</strong>)<br>
+MIT, Cambridge<br>
+1995
+</p>
+<p>Richard Karpen  (<strong>nreverb</strong>)<br>
+Seattle, Wash<br>
+1998
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="comb.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="nestedap.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#reverb" class="toqr">
+Signal Modifiers: Reverberation</font></a>
+</body>
+
+</html>

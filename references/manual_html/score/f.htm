@@ -1,0 +1,81 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>f Statement (or Function Table Statement)</title>
+   	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="eval.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="i.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#statements" class="toqr">
+Score Syntax: Statements</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>f Statement (or Function Table Statement)</h2>
+
+<pre>
+  <strong>f</strong>  p1  p2  p3  p4 ...</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This causes a GEN subroutine to place values in a stored function table for use by instruments.
+</p>
+<h3>P Fields</h3>
+
+<pre>
+  p1    Table number (from 1 to 200) by which the stored function will be known. A negative number requests that the table be destroyed.   
+  p2    Action time of function generation (or destruction) in beats. 
+  p3    Size of function table (i.e.  number of points) Must be a power of 2, or a power-of-2 plus 1 (see below). Maximum table size is 16777216 (2**24) points. 
+  p4    Number of the GEN routine to be called (see <a href="../gen/top.htm">GEN ROUTINES</a>). A negative value will cause rescaling to be omitted. 
+  p5    |
+  p6    |    Parameters whose meaning is determined by the particular GEN
+        |    routine.
+  .     |
+  .     |
+</pre>
+
+<h3>Special Considerations </h3>
+<p>Function tables are arrays of floating-point values. Arrays can be of any length in powers of 2; space allocation always provides for 2<small><sup>n</sup></small> points plus an additional <em>guard point</em>. The guard point value, used during interpolated lookup, can be automatically set to reflect the table's purpose: If <em>size</em> is an exact power of 2, the guard point will be a copy of the first point; this is appropriate for <em>interpolated wrap-around lookup</em> as in <strong>oscili</strong>, etc., and should even be used for non-interpolating <strong>oscil</strong> for safe consistency. If <em>size</em> is set to 2<small><sup>n</sup></small> + 1, the guard point value automatically extends the contour of table values; this is appropriate for single-scan functions such in <strong>envplx</strong>, <strong>oscil1</strong>, <strong>oscil1i</strong>, etc.
+</p>
+<p>Table space is allocated in primary memory, along with instrument data space. The maximum table number has a soft limit of 200; this can be extended if required.
+</p>
+<p>An existing function table can be removed by an <strong>f statement</strong> containing a negative p1 and an appropriate action time. A function table can also be removed by the generation of another table with the same p1. Functions are not automatically erased at the end of a score section.
+</p>
+<p>p2 action time is treated in the same way as in <strong>i statement</strong>s with respect to sorting and modification by <strong>t statement</strong>s. If an <strong>f statement</strong> and an <strong>i statement</strong> have the same p2, the sorter gives the <strong>f statement</strong> precedence so that the function table will be available during note initialization.
+</p>
+<p>An <strong>f 0 statement</strong> (zero p1, positive p2) may be used to create an action time with no associated action. Such time markers are useful for padding out a score section (see <a href="s.htm"><strong>s statement</strong></a>)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="eval.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="i.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#statements" class="toqr">
+Score Syntax: Statements</font></a>
+</body>
+
+</html>

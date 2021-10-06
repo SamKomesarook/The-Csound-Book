@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>pitchamdf</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pitch.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../control/tempest.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</font></a>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>pitchamdf</h2>
+<pre>
+  kcps,   <strong>pitchamdf</strong> asig, imincps, imaxcps[, icps[, imedi[, idowns[, iexcps]]]]
+  krms
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Follows the pitch of a signal based on the AMDF method (Average Magnitude Difference Function). Outputs pitch and amplitude tracking signals. The method is quite fast and should run in realtime. This technique usually works best for monophonic signals.</p>
+
+<h3>Initialization</h3>
+
+<p><em>imincps</em> &#8211; estimated minimum frequency (expressed in Hz) present in the signal</p>
+<p><em>imaxcps</em> &#8211; estimated maximum frequency present in the signal</p>
+<p><em>icps</em> &#8211; estimated initial frequency of the signal. If 0, icps = (<em>imincps</em>+<em>imaxcps</em>) / 2. The default is 0.</p>
+<p><em>imedi</em> &#8211; size of median filter applied to the output <em>kcps</em>. The size of the filter will be <em>imedi</em>*2+1. If 0, no median filtering will be applied. The default is 1.</p>
+<p><em>idowns</em> &#8211; downsampling factor for <em>asig</em>. Must be an integer. A factor of <em>idowns</em> &gt; 1 results in faster performance, but may result in worse pitch detection. Useful range is 1 - 4. The default is 1.</p>
+<p><em>iexcps</em> &#8211; how frequently pitch analysis is executed, expressed in Hz.  If 0, <em>iexcps</em> is set to <em>imincps</em>. This is usually reasonable, but experimentation with other values may lead to better results. Default is 0.</p>
+
+<h3>Performance</h3>
+
+<p><em>kcps</em> &#8211; pitch tracking output</p>
+<p><em>krms</em> &#8211; amplitude tracking output</p>
+
+<p><strong>pitchamdf</strong> usually works best for monophonic signals, and is quite reliable if appropriate initial values are chosen. Setting <em>imincps</em> and <em>imaxcps</em> as narrow as possible to the range of the signal's pitch, results in better detedtion and performance.</p>
+<p>Because this process can only detect pitch after an initial delay, setting <em>icps</em> close to the signal's real initial pitch prevents spurious data at the beginning.</p>
+<p>The median filter prevents <em>kcps</em> from jumping. Experiment to determine the optimum value for <em>imedi</em> for a given signal.</p>
+<p>Other initial values can usually be left at the default settings. Lowpass filtering of <em>asig</em> before passing it to <strong>pitchamdf</strong>, can improve preformance, especially with complex waveforms.</p>
+
+<h3>Example</h3>
+<pre>
+  ginput  <strong>ftgen</strong>     1, 0, 0, -1, &quot;input.wav&quot;, 0, 4, 0  ; input signal
+  giwave  <strong>ftgen</strong>     2, 0, 1024, 10, 1, 1, 1, 1         ; synth wave
+
+          <strong>instr</strong> 1
+  asig    <strong>losci</strong>l    1, 1, ginput, 1                    ; get input signal with original freq
+  asig    <strong>tone</strong>      asig, 1000                         ; lowpass-filter
+  kcps, krms <strong>pitchamdf</strong> asig, 150, 500, 200             ; extract pitch and envelope
+  asig1   <strong>oscil</strong>     krms, kcps, iwave                  ; &quot;resynthesize&quot; with some waveform
+          <strong>out</strong>       asig1
+          <strong>endin</strong>
+</pre>
+<h3>Author</h3>
+<p>Peter Neub&auml;cker<br>
+Munich, Germany<br>
+August, 1999<br>
+New in Csound version 3.59</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+
+<br>
+
+<p align="center">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pitch.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../control/tempest.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</font></a>
+</body>
+</html>

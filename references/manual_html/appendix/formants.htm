@@ -1,0 +1,1704 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>Formant Values</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="amp.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="windows.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Appendix: Window Functions</font>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2 align="center">Formant Values</h2>
+
+<center>
+<table border cellspacing="1" cellpadding="4" width="680">
+	<tr>
+		<td width="100" valign="MIDDLE" bgcolor="silver">
+    &nbsp;
+		</td>
+		<td width="48" valign="MIDDLE" bgcolor="silver">
+f1
+		</td>
+		<td width="48" valign="MIDDLE" bgcolor="silver">
+f2
+		</td>
+		<td width="48" valign="MIDDLE" bgcolor="silver">
+f3
+		</td>
+		<td width="48" valign="MIDDLE" bgcolor="silver">
+f4
+		</td>
+		<td width="48" valign="MIDDLE" bgcolor="silver">
+f5
+		</td>
+		<td width="100" valign="MIDDLE" bgcolor="silver">
+    &nbsp;
+		</td>
+		<td width="48" valign="MIDDLE" bgcolor="silver">
+f1
+		</td>
+		<td width="48" valign="MIDDLE" bgcolor="silver">
+f2
+		</td>
+		<td width="48" valign="MIDDLE" bgcolor="silver">
+f3
+		</td>
+		<td width="48" valign="MIDDLE" bgcolor="silver">
+f4
+		</td>
+		<td width="48" valign="MIDDLE" bgcolor="silver">
+f5
+		</td>
+	</tr>
+	<tr>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>soprano &quot;a&quot;</strong>
+		</td>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>tenor &quot;a&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+800
+		</td>
+		<td width="48" valign="MIDDLE">
+1150
+		</td>
+		<td width="48" valign="MIDDLE">
+2900
+		</td>
+		<td width="48" valign="MIDDLE">
+3900
+		</td>
+		<td width="48" valign="MIDDLE">
+4950
+		</td>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+650
+		</td>
+		<td width="48" valign="MIDDLE">
+1080
+		</td>
+		<td width="48" valign="MIDDLE">
+2650
+		</td>
+		<td width="48" valign="MIDDLE">
+2900
+		</td>
+		<td width="48" valign="MIDDLE">
+3250
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-6
+		</td>
+		<td width="48" valign="MIDDLE">
+-32
+		</td>
+		<td width="48" valign="MIDDLE">
+-20
+		</td>
+		<td width="48" valign="MIDDLE">
+-50
+		</td>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-6
+		</td>
+		<td width="48" valign="MIDDLE">
+-7
+		</td>
+		<td width="48" valign="MIDDLE">
+-8
+		</td>
+		<td width="48" valign="MIDDLE">
+-22
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+80
+		</td>
+		<td width="48" valign="MIDDLE">
+90
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+130
+		</td>
+		<td width="48" valign="MIDDLE">
+140
+		</td>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+80
+		</td>
+		<td width="48" valign="MIDDLE">
+90
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+130
+		</td>
+		<td width="48" valign="MIDDLE">
+140
+		</td>
+	</tr>
+	<tr>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>soprano &quot;e&quot;</strong>
+		</td>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>tenor &quot;e&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+350
+		</td>
+		<td width="48" valign="MIDDLE">
+2000
+		</td>
+		<td width="48" valign="MIDDLE">
+2800
+		</td>
+		<td width="48" valign="MIDDLE">
+3600
+		</td>
+		<td width="48" valign="MIDDLE">
+4950
+		</td>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+400
+		</td>
+		<td width="48" valign="MIDDLE">
+1700
+		</td>
+		<td width="48" valign="MIDDLE">
+2600
+		</td>
+		<td width="48" valign="MIDDLE">
+3200
+		</td>
+		<td width="48" valign="MIDDLE">
+3580
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-20
+		</td>
+		<td width="48" valign="MIDDLE">
+-15
+		</td>
+		<td width="48" valign="MIDDLE">
+-40
+		</td>
+		<td width="48" valign="MIDDLE">
+-56
+		</td>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-14
+		</td>
+		<td width="48" valign="MIDDLE">
+-12
+		</td>
+		<td width="48" valign="MIDDLE">
+-14
+		</td>
+		<td width="48" valign="MIDDLE">
+-20
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+60
+		</td>
+		<td width="48" valign="MIDDLE">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+150
+		</td>
+		<td width="48" valign="MIDDLE">
+200
+		</td>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+70
+		</td>
+		<td width="48" valign="MIDDLE">
+80
+		</td>
+		<td width="48" valign="MIDDLE">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+	</tr>
+	<tr>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>soprano &quot;i&quot;</strong>
+		</td>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>tenor &quot;i&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+270
+		</td>
+		<td width="48" valign="MIDDLE">
+2140
+		</td>
+		<td width="48" valign="MIDDLE">
+2950
+		</td>
+		<td width="48" valign="MIDDLE">
+3900
+		</td>
+		<td width="48" valign="MIDDLE">
+4950
+		</td>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+290
+		</td>
+		<td width="48" valign="MIDDLE">
+1870
+		</td>
+		<td width="48" valign="MIDDLE">
+2800
+		</td>
+		<td width="48" valign="MIDDLE">
+3250
+		</td>
+		<td width="48" valign="MIDDLE">
+3540
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-12
+		</td>
+		<td width="48" valign="MIDDLE">
+-26
+		</td>
+		<td width="48" valign="MIDDLE">
+-26
+		</td>
+		<td width="48" valign="MIDDLE">
+-44
+		</td>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-15
+		</td>
+		<td width="48" valign="MIDDLE">
+-18
+		</td>
+		<td width="48" valign="MIDDLE">
+-20
+		</td>
+		<td width="48" valign="MIDDLE">
+-30
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+60
+		</td>
+		<td width="48" valign="MIDDLE">
+90
+		</td>
+		<td width="48" valign="MIDDLE">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+40
+		</td>
+		<td width="48" valign="MIDDLE">
+90
+		</td>
+		<td width="48" valign="MIDDLE">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+	</tr>
+	<tr>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>soprano &quot;o&quot;</strong>
+		</td>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>tenor &quot;o&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+450
+		</td>
+		<td width="48" valign="MIDDLE">
+800
+		</td>
+		<td width="48" valign="MIDDLE">
+2830
+		</td>
+		<td width="48" valign="MIDDLE">
+3800
+		</td>
+		<td width="48" valign="MIDDLE">
+4950
+		</td>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+400
+		</td>
+		<td width="48" valign="MIDDLE">
+800
+		</td>
+		<td width="48" valign="MIDDLE">
+2600
+		</td>
+		<td width="48" valign="MIDDLE">
+2800
+		</td>
+		<td width="48" valign="MIDDLE">
+3000
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-11
+		</td>
+		<td width="48" valign="MIDDLE">
+-22
+		</td>
+		<td width="48" valign="MIDDLE">
+-22
+		</td>
+		<td width="48" valign="MIDDLE">
+-50
+		</td>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-10
+		</td>
+		<td width="48" valign="MIDDLE">
+-12
+		</td>
+		<td width="48" valign="MIDDLE">
+-12
+		</td>
+		<td width="48" valign="MIDDLE">
+-26
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+70
+		</td>
+		<td width="48" valign="MIDDLE">
+80
+		</td>
+		<td width="48" valign="MIDDLE">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+130
+		</td>
+		<td width="48" valign="MIDDLE">
+135
+		</td>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+40
+		</td>
+		<td width="48" valign="MIDDLE">
+80
+		</td>
+		<td width="48" valign="MIDDLE">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+	</tr>
+	<tr>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>soprano &quot;u&quot;</strong>
+		</td>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>tenor &quot;u&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+325
+		</td>
+		<td width="48" valign="MIDDLE">
+700
+		</td>
+		<td width="48" valign="MIDDLE">
+2700
+		</td>
+		<td width="48" valign="MIDDLE">
+3800
+		</td>
+		<td width="48" valign="MIDDLE">
+4950
+		</td>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+350
+		</td>
+		<td width="48" valign="MIDDLE">
+600
+		</td>
+		<td width="48" valign="MIDDLE">
+2700
+		</td>
+		<td width="48" valign="MIDDLE">
+2900
+		</td>
+		<td width="48" valign="MIDDLE">
+3300
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-16
+		</td>
+		<td width="48" valign="MIDDLE">
+-35
+		</td>
+		<td width="48" valign="MIDDLE">
+-40
+		</td>
+		<td width="48" valign="MIDDLE">
+-60
+		</td>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-20
+		</td>
+		<td width="48" valign="MIDDLE">
+-17
+		</td>
+		<td width="48" valign="MIDDLE">
+-14
+		</td>
+		<td width="48" valign="MIDDLE">
+-26
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+50
+		</td>
+		<td width="48" valign="MIDDLE">
+60
+		</td>
+		<td width="48" valign="MIDDLE">
+170
+		</td>
+		<td width="48" valign="MIDDLE">
+180
+		</td>
+		<td width="48" valign="MIDDLE">
+200
+		</td>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+40
+		</td>
+		<td width="48" valign="MIDDLE">
+60
+		</td>
+		<td width="48" valign="MIDDLE">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+	</tr>
+	<tr>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>alto &quot;a&quot;</strong>
+		</td>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>bass &quot;a&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+800
+		</td>
+		<td width="48" valign="MIDDLE">
+1150
+		</td>
+		<td width="48" valign="MIDDLE">
+2800
+		</td>
+		<td width="48" valign="MIDDLE">
+3500
+		</td>
+		<td width="48" valign="MIDDLE">
+4950
+		</td>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="100" valign="MIDDLE">
+600
+		</td>
+		<td width="48" valign="MIDDLE">
+1040
+		</td>
+		<td width="48" valign="MIDDLE">
+2250
+		</td>
+		<td width="48" valign="MIDDLE">
+2450
+		</td>
+		<td width="48" valign="MIDDLE">
+2750
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-4
+		</td>
+		<td width="48" valign="MIDDLE">
+-20
+		</td>
+		<td width="48" valign="MIDDLE">
+-36
+		</td>
+		<td width="48" valign="MIDDLE">
+-60
+		</td>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-7
+		</td>
+		<td width="48" valign="MIDDLE">
+-9
+		</td>
+		<td width="48" valign="MIDDLE">
+-9
+		</td>
+		<td width="48" valign="MIDDLE">
+-20
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+80
+		</td>
+		<td width="48" valign="MIDDLE">
+90
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+130
+		</td>
+		<td width="48" valign="MIDDLE">
+140
+		</td>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+60
+		</td>
+		<td width="48" valign="MIDDLE">
+70
+		</td>
+		<td width="48" valign="MIDDLE">
+110
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+130
+		</td>
+	</tr>
+</table>
+
+
+
+<table border cellspacing="1" cellpadding="4" width="624">
+	<tr>
+		<td width="100" valign="MIDDLE">
+    &nbsp;
+		</td>
+		<td width="48" valign="MIDDLE">
+f1
+		</td>
+		<td width="48" valign="MIDDLE">
+f2
+		</td>
+		<td width="48" valign="MIDDLE">
+f3
+		</td>
+		<td width="48" valign="MIDDLE">
+f4
+		</td>
+		<td width="48" valign="MIDDLE">
+f5
+		</td>
+		<td width="100" valign="MIDDLE">
+		</td>
+		<td width="48" valign="MIDDLE">
+f1
+		</td>
+		<td width="48" valign="MIDDLE">
+f2
+		</td>
+		<td width="48" valign="MIDDLE">
+f3
+		</td>
+		<td width="48" valign="MIDDLE">
+f4
+		</td>
+		<td width="48" valign="MIDDLE">
+f5
+		</td>
+	</tr>
+	<tr>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>alto &quot;e&quot;</strong>
+		</td>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>bass &quot;e&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+400
+		</td>
+		<td width="48" valign="MIDDLE">
+1600
+		</td>
+		<td width="48" valign="MIDDLE">
+2700
+		</td>
+		<td width="48" valign="MIDDLE">
+3300
+		</td>
+		<td width="48" valign="MIDDLE">
+4950
+		</td>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+400
+		</td>
+		<td width="48" valign="MIDDLE">
+1620
+		</td>
+		<td width="48" valign="MIDDLE">
+2400
+		</td>
+		<td width="48" valign="MIDDLE">
+2800
+		</td>
+		<td width="48" valign="MIDDLE">
+3100
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-24
+		</td>
+		<td width="48" valign="MIDDLE">
+-30
+		</td>
+		<td width="48" valign="MIDDLE">
+-35
+		</td>
+		<td width="48" valign="MIDDLE">
+-60
+		</td>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-12
+		</td>
+		<td width="48" valign="MIDDLE">
+-9
+		</td>
+		<td width="48" valign="MIDDLE">
+-12
+		</td>
+		<td width="48" valign="MIDDLE">
+-18
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+60
+		</td>
+		<td width="48" valign="MIDDLE">
+80
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+150
+		</td>
+		<td width="48" valign="MIDDLE">
+200
+		</td>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+40
+		</td>
+		<td width="48" valign="MIDDLE">
+80
+		</td>
+		<td width="48" valign="MIDDLE">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+	</tr>
+	<tr>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>alto &quot;i&quot;</strong>
+		</td>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>bass &quot;i&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+350
+		</td>
+		<td width="48" valign="MIDDLE">
+1700
+		</td>
+		<td width="48" valign="MIDDLE">
+2700
+		</td>
+		<td width="48" valign="MIDDLE">
+3700
+		</td>
+		<td width="48" valign="MIDDLE">
+4950
+		</td>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+250
+		</td>
+		<td width="48" valign="MIDDLE">
+1750
+		</td>
+		<td width="48" valign="MIDDLE">
+2600
+		</td>
+		<td width="48" valign="MIDDLE">
+3050
+		</td>
+		<td width="48" valign="MIDDLE">
+3340
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-20
+		</td>
+		<td width="48" valign="MIDDLE">
+-30
+		</td>
+		<td width="48" valign="MIDDLE">
+-36
+		</td>
+		<td width="48" valign="MIDDLE">
+-60
+		</td>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-30
+		</td>
+		<td width="48" valign="MIDDLE">
+-16
+		</td>
+		<td width="48" valign="MIDDLE">
+-22
+		</td>
+		<td width="48" valign="MIDDLE">
+-28
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+50
+		</td>
+		<td width="48" valign="MIDDLE">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+150
+		</td>
+		<td width="48" valign="MIDDLE">
+200
+		</td>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+60
+		</td>
+		<td width="48" valign="MIDDLE">
+90
+		</td>
+		<td width="48" valign="MIDDLE">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+	</tr>
+	<tr>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>alto &quot;o&quot;</strong>
+		</td>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>bass &quot;o&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+450
+		</td>
+		<td width="48" valign="MIDDLE">
+800
+		</td>
+		<td width="48" valign="MIDDLE">
+2830
+		</td>
+		<td width="48" valign="MIDDLE">
+3500
+		</td>
+		<td width="48" valign="MIDDLE">
+4950
+		</td>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+400
+		</td>
+		<td width="48" valign="MIDDLE">
+750
+		</td>
+		<td width="48" valign="MIDDLE">
+2400
+		</td>
+		<td width="48" valign="MIDDLE">
+2600
+		</td>
+		<td width="48" valign="MIDDLE">
+2900
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-9
+		</td>
+		<td width="48" valign="MIDDLE">
+-16
+		</td>
+		<td width="48" valign="MIDDLE">
+-28
+		</td>
+		<td width="48" valign="MIDDLE">
+-55
+		</td>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-11
+		</td>
+		<td width="48" valign="MIDDLE">
+-21
+		</td>
+		<td width="48" valign="MIDDLE">
+-20
+		</td>
+		<td width="48" valign="MIDDLE">
+-40
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+70
+		</td>
+		<td width="48" valign="MIDDLE">
+80
+		</td>
+		<td width="48" valign="MIDDLE">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+130
+		</td>
+		<td width="48" valign="MIDDLE">
+135
+		</td>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+40
+		</td>
+		<td width="48" valign="MIDDLE">
+80
+		</td>
+		<td width="48" valign="MIDDLE">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+	</tr>
+	<tr>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>alto &quot;u&quot;</strong>
+		</td>
+		<td width="340" height="40" valign="bottom" colspan="6" bgcolor="#ECECEC" nowrap align="center">
+<strong>bass &quot;u&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+325
+		</td>
+		<td width="48" valign="MIDDLE">
+700
+		</td>
+		<td width="48" valign="MIDDLE">
+2530
+		</td>
+		<td width="48" valign="MIDDLE">
+3500
+		</td>
+		<td width="48" valign="MIDDLE">
+4950
+		</td>
+		<td width="100" valign="MIDDLE">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+350
+		</td>
+		<td width="48" valign="MIDDLE">
+600
+		</td>
+		<td width="48" valign="MIDDLE">
+2400
+		</td>
+		<td width="48" valign="MIDDLE">
+2675
+		</td>
+		<td width="48" valign="MIDDLE">
+2950
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-12
+		</td>
+		<td width="48" valign="MIDDLE">
+-30
+		</td>
+		<td width="48" valign="MIDDLE">
+-40
+		</td>
+		<td width="48" valign="MIDDLE">
+-64
+		</td>
+		<td width="100" valign="MIDDLE">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-20
+		</td>
+		<td width="48" valign="MIDDLE">
+-32
+		</td>
+		<td width="48" valign="MIDDLE">
+-28
+		</td>
+		<td width="48" valign="MIDDLE">
+-36
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+50
+		</td>
+		<td width="48" valign="MIDDLE">
+60
+		</td>
+		<td width="48" valign="MIDDLE">
+170
+		</td>
+		<td width="48" valign="MIDDLE">
+180
+		</td>
+		<td width="48" valign="MIDDLE">
+200
+		</td>
+		<td width="100" valign="MIDDLE">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE">
+40
+		</td>
+		<td width="48" valign="MIDDLE">
+80
+		</td>
+		<td width="48" valign="MIDDLE">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+	</tr>
+</table>
+
+
+<table border cellspacing="1" cellpadding="4" width="340">
+	<tr>
+		<td width="100" valign="MIDDLE" bgcolor="silver">
+    &nbsp;
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2" bgcolor="silver">
+f1
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3" bgcolor="silver">
+f2
+		</td>
+		<td width="48" valign="MIDDLE" bgcolor="silver">
+f3
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3" bgcolor="silver">
+f4
+		</td>
+		<td width="48" valign="MIDDLE" bgcolor="silver">
+f5
+		</td>
+	</tr>
+	<tr>
+		<td height="40" valign="bottom" colspan="11" bgcolor="#ECECEC" nowrap align="center">
+<strong>countertenor &quot;a&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+660
+		</td>
+		<td width="48" valign="MIDDLE">
+1120
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+2750
+		</td>
+		<td width="48" valign="MIDDLE">
+3000
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+3350
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-6
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+-23
+		</td>
+		<td width="48" valign="MIDDLE">
+-24
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+-38
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+80
+		</td>
+		<td width="48" valign="MIDDLE">
+90
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+120
+		</td>
+		<td width="48" valign="MIDDLE">
+130
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+140
+		</td>
+	</tr>
+	<tr>
+		<td height="40" valign="bottom" colspan="11" bgcolor="#ECECEC" nowrap align="center">
+<strong>countertenor &quot;e&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+440
+		</td>
+		<td width="48" valign="MIDDLE">
+1800
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+2700
+		</td>
+		<td width="48" valign="MIDDLE">
+3000
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+3300
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-14
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+-18
+		</td>
+		<td width="48" valign="MIDDLE">
+-20
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+-20
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+70
+		</td>
+		<td width="48" valign="MIDDLE">
+80
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+120
+		</td>
+	</tr>
+	<tr>
+		<td height="40" valign="bottom" colspan="11" bgcolor="#ECECEC" nowrap align="center">
+<strong>countertenor &quot;i&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+270
+		</td>
+		<td width="48" valign="MIDDLE">
+1850
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+2900
+		</td>
+		<td width="48" valign="MIDDLE">
+3350
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+3590
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-24
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+-24
+		</td>
+		<td width="48" valign="MIDDLE">
+-36
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+-36
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+40
+		</td>
+		<td width="48" valign="MIDDLE">
+90
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+120
+		</td>
+	</tr>
+	<tr>
+		<td height="40" valign="bottom" colspan="11" bgcolor="#ECECEC" nowrap align="center">
+<strong>countertenor &quot;o&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+430
+		</td>
+		<td width="48" valign="MIDDLE">
+820
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+2700
+		</td>
+		<td width="48" valign="MIDDLE">
+3000
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+3300
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-10
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+-26
+		</td>
+		<td width="48" valign="MIDDLE">
+-22
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+-34
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+40
+		</td>
+		<td width="48" valign="MIDDLE">
+80
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+120
+		</td>
+	</tr>
+	<tr>
+		<td height="40" valign="bottom" colspan="11" bgcolor="#ECECEC" nowrap align="center">
+<strong>countertenor &quot;u&quot;</strong>
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+freq (Hz)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+370
+		</td>
+		<td width="48" valign="MIDDLE">
+630
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+2750
+		</td>
+		<td width="48" valign="MIDDLE">
+3000
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+3400
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+amp (dB)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+0
+		</td>
+		<td width="48" valign="MIDDLE">
+-20
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+-23
+		</td>
+		<td width="48" valign="MIDDLE">
+-30
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+-34
+		</td>
+	</tr>
+	<tr>
+		<td width="100" valign="MIDDLE" colspan="2">
+bw (Hz)
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+40
+		</td>
+		<td width="48" valign="MIDDLE">
+60
+		</td>
+		<td width="48" valign="MIDDLE" colspan="3">
+100
+		</td>
+		<td width="48" valign="MIDDLE">
+120
+		</td>
+		<td width="48" valign="MIDDLE" colspan="2">
+120
+		</td>
+	</tr>
+</table>
+</center>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="amp.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="windows.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Appendix: Window Functions</font>
+</body>
+
+</html>

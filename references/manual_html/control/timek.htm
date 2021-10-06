@@ -1,0 +1,91 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>timek, times, timeinstk, timeinsts</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="cpuprc.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="clock.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#timeread" class="toqr">
+Instrument Control: Time Reading</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>timek, times, timeinstk, timeinsts</h2>
+
+<pre>
+  ir      <strong>timek</strong>
+  kr      <strong>timek</strong>
+  ir      <strong>times</strong>
+  kr      <strong>times</strong>
+  kr      <strong>timeinstk</strong>
+  kr      <strong>timeinsts</strong>
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Opcodes to read absolute time since the start of the performance or of an instance of an instrument - in two formats.
+</p>
+<h3>Performance</h3>
+<p><strong>timek</strong> is for time in k-rate cycles. So with:
+</p>
+<pre>
+  <strong>sr</strong>    = 44100 
+  <strong>kr</strong>    = 6300 
+  <strong>ksmps</strong> = 7
+</pre>
+<p>then after half a second, the <strong>timek</strong> opcode would report 3150. It will always report an integer.
+</p>
+<p>Time in seconds is available with <strong>times</strong>. This would return 0.5 after half a second.
+</p>
+<p><strong>times</strong> and<strong> timek </strong>can also<strong> </strong>operate only at the start of the instance of the instrument. Both produce an i-rate variable (starting with <em>i</em> or <em>gi</em>) as their output.
+</p>
+<p><strong>timek</strong> and <strong>times</strong> can both produce a k-rate variable for output.
+</p>
+<p>There are no input parameters.
+</p>
+<p><strong>timeinstk</strong> and <strong>timeinsts</strong> are similar to <strong>timek</strong> and <strong>times</strong>, except they return the time since the start of this instance of the instrument.
+</p>
+
+<h3>Deprecated Names</h3>
+<p>In Csound 3.52 the opcode names <strong>instimes</strong> and <strong>instimek</strong> were changed to <strong>timeinsts</strong> and <strong>timeinstk</strong>, repsectively. The original forms were deprecated.</p>
+
+<h3>Author</h3>
+<p>Robin Whittle<br>
+Australia<br>
+May 1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="cpuprc.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="clock.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#timeread" class="toqr">
+Instrument Control: Time Reading</font></a>
+</body>
+</html>

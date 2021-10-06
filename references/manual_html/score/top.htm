@@ -1,0 +1,90 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>The Standard Numeric Score</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigio/flashtxt.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="nextp.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm" class="toqr">
+Score Syntax</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h1>The Standard Numeric Score</h1>
+<hr size="2" color="#A9A9A9" noshade>
+<h2>Preprocessing of Standard Scores</h2>
+<p>A <strong>Score</strong> (a collection of score statements) is divided into time-ordered sections by the <a href="s.htm"><strong>s statement</strong></a>. Before being read by the orchestra, a score is preprocessed one section at a time. Each section is normally processed by 3 routines: <a href="top.htm#carry">Carry</a>, <a href="top.htm#tempo">Tempo</a>, and <a href="top.htm#sort">Sort</a>.
+</p>
+
+<h3><a name="carry">Carry</a></h3>
+
+<p>Within a group of consecutive <a href="i.htm"><strong>i statements</strong></a> whose p1 whole numbers correspond, any pfield left empty will take its value from the same pfield of the preceding statement. An empty pfield can be denoted by a single point (.) delimited by spaces. No point is required after the last nonempty pfield. The output of Carry preprocessing will show the carried values explicitly. The Carry Feature is not affected by intervening comments or blank lines; it is turned off only by a non- <a href="i.htm"><strong>i statement</strong></a> or by an <strong>i statement</strong> with unlike p1 whole number.
+</p>
+<p>Three additional features are available for p2 alone: +, ^ + <em>x</em>, and ^ - <em>x</em>. The symbol + in p2 will be given the value of p2 + p3 from the preceding i statement. This enables note action times to be automatically determined from the sum of preceding durations. The + symbol can itself be carried. It is legal only in p2. E.g.: the statements
+</p>
+<pre>
+  i1   0    .5        100         
+  i .  +                   
+  i
+</pre>
+<p>will result in
+</p>
+<pre>
+  i1   0         .5        100
+  i1   .5        .5        100
+  i1   1         .5        100
+</pre>
+<p>The symbols ^ + <em>x</em> and ^ - <em>x</em> determine the current p2 by adding or subtracting, respectively, the value of <em>x</em> from the preceding p2. These may be used in p2 only.
+</p>
+<p>The Carry feature should be used liberally. Its use, especially in large scores, can greatly reduce input typing and will simplify later changes.
+</p>
+
+<h3><a name="tempo">Tempo</a></h3>
+
+<p>This operation time warps a score section according to the information in a <a href="t.htm"><strong>t statement</strong></a>. The tempo operation converts p2 (and, for <a href="i.htm"><strong>i statements</strong></a>, p3) from original beats into real seconds, since those are the units required by the orchestra. After time warping, score files will be seen to have orchestra-readable format demonstrated by the following: <strong>i</strong> p1 p2beats p2seconds p3beats p3seconds p4 p5 ....
+</p>
+
+<h3><a name="sort">Sort</a></h3>
+
+<p>This routine sorts all action-time statements into chronological order by p2 value. It also sorts coincident events into precedence order. Whenever an <a href="f.htm"><strong>f statement</strong></a> and an <a href="i.htm"><strong>i statement</strong></a> have the same p2 value, the <strong>f statement</strong> will precede. Whenever two or more <strong>i statements</strong> have the same p2 value, they will be sorted into ascending p1 value order. If they also have the same p1 value, they will be sorted into ascending p3 value order. Score sorting is done section by section (see <a href="s.htm"><strong>s statement</strong></a>). Automatic sorting implies that score statements may appear in any order within a section.
+</p>
+<h3>N.B.</h3>
+<p>The operations Carry, Tempo and Sort are combined in a 3-phase single pass over a score file, to produce a new file in orchestra-readable format ( see the Tempo example). Processing can be invoked either explicitly by the <strong>Scsort</strong> command, or implicitly by CSound which processes the score before calling the orchestra. Source-format files and orchestra-readable files are both in ASCII character form, and may be either perused or further modified by standard text editors. User-written routines can be used to modify score files before or after the above processes, provided the final orchestra-readable statement format is not violated. Sections of different formats can be sequentially batched; and sections of like format can be merged for automatic sorting.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigio/flashtxt.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="nextp.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm" class="toqr">
+Score Syntax</font></a>
+</body>
+
+</html>

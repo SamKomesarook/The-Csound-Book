@@ -1,0 +1,337 @@
+// Created by Microsoft (R) C/C++ Compiler Version 12.00.8168.0 (58b7e01d).
+//
+// c:\mkg\csound\axcsoundexe\axcsoundexe___win32_release\JCsound_Csound.tlh
+//
+// C++ source equivalent of Win32 type library JCsound_Csound.dll
+// compiler-generated file created 03/09/99 at 23:24:27 - DO NOT EDIT!
+
+#pragma once
+#pragma pack(push, 8)
+
+#include <comdef.h>
+
+namespace AXCSOUNDLib {
+
+//
+// Forward references and typedefs
+//
+
+struct __declspec(uuid("3de31672-d1a4-11d2-accc-005004052bf7"))
+/* dispinterface */ _IAXCsoundEvents;
+struct /* coclass */ AXCsound;
+struct __declspec(uuid("018cd11c-20de-11d2-917d-00a0cc30c276"))
+/* dual interface */ IAXCsound;
+
+//
+// Smart pointer typedef declarations
+//
+
+_COM_SMARTPTR_TYPEDEF(_IAXCsoundEvents, __uuidof(IDispatch));
+_COM_SMARTPTR_TYPEDEF(IAXCsound, __uuidof(IAXCsound));
+
+//
+// Type library items
+//
+
+struct __declspec(uuid("3de31672-d1a4-11d2-accc-005004052bf7"))
+_IAXCsoundEvents : IDispatch
+{
+    //
+    // Wrapper methods for error-handling
+    //
+
+    // Methods:
+    HRESULT UpdateView ( );
+};
+
+struct __declspec(uuid("018cd11d-20de-11d2-917d-00a0cc30c276"))
+AXCsound;
+    // [ default ] interface IAXCsound
+    // [ default, source ] dispinterface _IAXCsoundEvents
+
+struct __declspec(uuid("018cd11c-20de-11d2-917d-00a0cc30c276"))
+IAXCsound : IDispatch
+{
+    //
+    // Property data
+    //
+
+    __declspec(property(get=GetFilename,put=PutFilename))
+    _bstr_t Filename;
+    __declspec(property(get=GetCommand,put=PutCommand))
+    _bstr_t Command;
+    __declspec(property(get=GetAutoSize,put=PutAutoSize))
+    VARIANT_BOOL AutoSize;
+    __declspec(property(get=GetOrcFilename))
+    _bstr_t OrcFilename;
+    __declspec(property(get=GetScoFilename))
+    _bstr_t ScoFilename;
+    __declspec(property(get=GetMidiFilename))
+    _bstr_t MidiFilename;
+    __declspec(property(get=GetOutputSoundfileName))
+    _bstr_t OutputSoundfileName;
+    __declspec(property(get=GetScore,put=PutScore))
+    _bstr_t Score;
+    __declspec(property(get=GetScoreLine,put=PutScoreLine))
+    _bstr_t ScoreLine[];
+    __declspec(property(get=GetCaption,put=PutCaption))
+    _bstr_t Caption;
+    __declspec(property(get=GetScoreLineCount,put=PutScoreLineCount))
+    long ScoreLineCount;
+    __declspec(property(get=GetOrchestra,put=PutOrchestra))
+    _bstr_t Orchestra;
+
+    //
+    // Wrapper methods for error-handling
+    //
+
+    void PutAutoSize (
+        VARIANT_BOOL pbool );
+    VARIANT_BOOL GetAutoSize ( );
+    void PutCaption (
+        _bstr_t pstrCaption );
+    _bstr_t GetCaption ( );
+    HRESULT Play ( );
+    HRESULT Pause ( );
+    HRESULT Resume ( );
+    HRESULT Stop ( );
+    HRESULT Open (
+        _bstr_t Filename );
+    HRESULT Import (
+        _bstr_t Filename );
+    HRESULT Save (
+        _bstr_t Filename );
+    HRESULT Export (
+        _bstr_t Filename );
+    HRESULT OpenSound ( );
+    _bstr_t GetFilename ( );
+    void PutFilename (
+        _bstr_t pVal );
+    _bstr_t GetCommand ( );
+    void PutCommand (
+        _bstr_t pVal );
+    _bstr_t GetOrcFilename ( );
+    _bstr_t GetScoFilename ( );
+    _bstr_t GetMidiFilename ( );
+    _bstr_t GetOutputSoundfileName ( );
+    _bstr_t GetScore ( );
+    void PutScore (
+        _bstr_t pVal );
+    _bstr_t GetScoreLine (
+        long Index );
+    void PutScoreLine (
+        long Index,
+        _bstr_t pVal );
+    HRESULT AddScoreLine (
+        _bstr_t Note );
+    HRESULT AddNote10 (
+        double p1,
+        double p2,
+        double p3,
+        double p4,
+        double p5,
+        double p6,
+        double p7,
+        double p8,
+        double p9,
+        double p10 );
+    HRESULT AddNote9 (
+        double p1,
+        double p2,
+        double p3,
+        double p4,
+        double p5,
+        double p6,
+        double p7,
+        double p8,
+        double p9 );
+    HRESULT AddNote8 (
+        double p1,
+        double p2,
+        double p3,
+        double p4,
+        double p5,
+        double p6,
+        double p7,
+        double p8 );
+    HRESULT AddNote7 (
+        double p1,
+        double p2,
+        double p3,
+        double p4,
+        double p5,
+        double p6,
+        double p7 );
+    HRESULT AddNote6 (
+        double p1,
+        double p2,
+        double p3,
+        double p4,
+        double p5,
+        double p6 );
+    HRESULT AddNote5 (
+        double p1,
+        double p2,
+        double p3,
+        double p4,
+        double p5 );
+    HRESULT AddNote4 (
+        double p1,
+        double p2,
+        double p3,
+        double p4 );
+    HRESULT AddNote3 (
+        double p1,
+        double p2,
+        double p3 );
+    long GetScoreLineCount ( );
+    void PutScoreLineCount (
+        long pVal );
+    _bstr_t GetOrchestra ( );
+    void PutOrchestra (
+        _bstr_t pVal );
+    HRESULT RemoveAll ( );
+    HRESULT RemoveCommand ( );
+    HRESULT RemoveOrchestra ( );
+    HRESULT RemoveScore ( );
+    HRESULT RemoveScoreExceptFunctions ( );
+    HRESULT UpdateView ( );
+
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall put_AutoSize (
+        VARIANT_BOOL pbool ) = 0;
+    virtual HRESULT __stdcall get_AutoSize (
+        VARIANT_BOOL * pbool ) = 0;
+    virtual HRESULT __stdcall put_Caption (
+        BSTR pstrCaption ) = 0;
+    virtual HRESULT __stdcall get_Caption (
+        BSTR * pstrCaption ) = 0;
+    virtual HRESULT __stdcall raw_Play ( ) = 0;
+    virtual HRESULT __stdcall raw_Pause ( ) = 0;
+    virtual HRESULT __stdcall raw_Resume ( ) = 0;
+    virtual HRESULT __stdcall raw_Stop ( ) = 0;
+    virtual HRESULT __stdcall raw_Open (
+        BSTR Filename ) = 0;
+    virtual HRESULT __stdcall raw_Import (
+        BSTR Filename ) = 0;
+    virtual HRESULT __stdcall raw_Save (
+        BSTR Filename ) = 0;
+    virtual HRESULT __stdcall raw_Export (
+        BSTR Filename ) = 0;
+    virtual HRESULT __stdcall raw_OpenSound ( ) = 0;
+    virtual HRESULT __stdcall get_Filename (
+        BSTR * pVal ) = 0;
+    virtual HRESULT __stdcall put_Filename (
+        BSTR pVal ) = 0;
+    virtual HRESULT __stdcall get_Command (
+        BSTR * pVal ) = 0;
+    virtual HRESULT __stdcall put_Command (
+        BSTR pVal ) = 0;
+    virtual HRESULT __stdcall get_OrcFilename (
+        BSTR * pVal ) = 0;
+    virtual HRESULT __stdcall get_ScoFilename (
+        BSTR * pVal ) = 0;
+    virtual HRESULT __stdcall get_MidiFilename (
+        BSTR * pVal ) = 0;
+    virtual HRESULT __stdcall get_OutputSoundfileName (
+        BSTR * pVal ) = 0;
+    virtual HRESULT __stdcall get_Score (
+        BSTR * pVal ) = 0;
+    virtual HRESULT __stdcall put_Score (
+        BSTR pVal ) = 0;
+    virtual HRESULT __stdcall get_ScoreLine (
+        long Index,
+        BSTR * pVal ) = 0;
+    virtual HRESULT __stdcall put_ScoreLine (
+        long Index,
+        BSTR pVal ) = 0;
+    virtual HRESULT __stdcall raw_AddScoreLine (
+        BSTR Note ) = 0;
+    virtual HRESULT __stdcall raw_AddNote10 (
+        double p1,
+        double p2,
+        double p3,
+        double p4,
+        double p5,
+        double p6,
+        double p7,
+        double p8,
+        double p9,
+        double p10 ) = 0;
+    virtual HRESULT __stdcall raw_AddNote9 (
+        double p1,
+        double p2,
+        double p3,
+        double p4,
+        double p5,
+        double p6,
+        double p7,
+        double p8,
+        double p9 ) = 0;
+    virtual HRESULT __stdcall raw_AddNote8 (
+        double p1,
+        double p2,
+        double p3,
+        double p4,
+        double p5,
+        double p6,
+        double p7,
+        double p8 ) = 0;
+    virtual HRESULT __stdcall raw_AddNote7 (
+        double p1,
+        double p2,
+        double p3,
+        double p4,
+        double p5,
+        double p6,
+        double p7 ) = 0;
+    virtual HRESULT __stdcall raw_AddNote6 (
+        double p1,
+        double p2,
+        double p3,
+        double p4,
+        double p5,
+        double p6 ) = 0;
+    virtual HRESULT __stdcall raw_AddNote5 (
+        double p1,
+        double p2,
+        double p3,
+        double p4,
+        double p5 ) = 0;
+    virtual HRESULT __stdcall raw_AddNote4 (
+        double p1,
+        double p2,
+        double p3,
+        double p4 ) = 0;
+    virtual HRESULT __stdcall raw_AddNote3 (
+        double p1,
+        double p2,
+        double p3 ) = 0;
+    virtual HRESULT __stdcall get_ScoreLineCount (
+        long * pVal ) = 0;
+    virtual HRESULT __stdcall put_ScoreLineCount (
+        long pVal ) = 0;
+    virtual HRESULT __stdcall get_Orchestra (
+        BSTR * pVal ) = 0;
+    virtual HRESULT __stdcall put_Orchestra (
+        BSTR pVal ) = 0;
+    virtual HRESULT __stdcall raw_RemoveAll ( ) = 0;
+    virtual HRESULT __stdcall raw_RemoveCommand ( ) = 0;
+    virtual HRESULT __stdcall raw_RemoveOrchestra ( ) = 0;
+    virtual HRESULT __stdcall raw_RemoveScore ( ) = 0;
+    virtual HRESULT __stdcall raw_RemoveScoreExceptFunctions ( ) = 0;
+    virtual HRESULT __stdcall raw_UpdateView ( ) = 0;
+};
+
+//
+// Wrapper method implementations
+//
+
+#include "c:\mkg\csound\axcsoundexe\axcsoundexe___win32_release\JCsound_Csound.tli"
+
+} // namespace AXCSOUNDLib
+
+#pragma pack(pop)

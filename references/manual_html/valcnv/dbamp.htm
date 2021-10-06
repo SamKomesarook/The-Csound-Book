@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>dbamp, ampdb, dbfsamp, ampdbfs</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="sin.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="rnd.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/math.htm#amp" class="toqr">
+Mathematical Functions: Amplitude Functions</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>dbamp, ampdb, dbfsamp, ampdbfs</h2>
+<pre>
+          <strong>dbamp</strong>(x)     (init-rate or control-rate args only)
+          <strong>ampdb</strong>(x)     (no rate restriction)
+
+          <strong>dbfsamp</strong>(x)   (init-rate or control-rate args only)
+          <strong>ampdbfs</strong>(x)   (no rate restriction)
+
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Where the argument within the parentheses may be an expression. These functions perform conversions between raw amplitude values and their decibel equivelents. The result can then be a term in a further expression.</p>
+<p><strong>dbamp</strong>(<em>x</em>) &#8211; returns the decibel equivalent of the raw amplitude <em>x</em>.</p>
+<p><strong>ampdb</strong>(<em>x</em>) &#8211; returns the amplitude equivalent of the decibel value <em>x</em>. Thus:</p>
+<ul>
+	 <li>60 dB = 1000 
+   <li>66 dB = 1995.262 
+   <li>72 dB = 3891.07 
+   <li>78 dB = 7943.279
+   <li>84 dB = 15848.926 
+   <li>90 dB = 31622.764
+</ul>
+<p><strong>dbfsamp</strong>(<em>x</em>) &#8211; returns the decibel equivalent, relative to full scale amplitude, of the raw amplitude <em>x</em>. Full scale is assumed to be 16 bit. New is Csound Version 4.16.</p>
+<p><strong>ampdbfs</strong>(<em>x</em>) &#8211; returns the amplitude equivalent of the decibel value <em>x</em>, which is relative to full scale amplitude. Full scale is assumed to be 16 bit. New is Csound Version 4.16.</p>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="sin.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="rnd.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/math.htm#amp" class="toqr">
+Mathematical Functions: Amplitude Functions</font></a>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>schedule, schedwhen</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../syntax/assign.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="schdkwhn.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#invocation" class="toqr">
+Orchestra Syntax: Instrument Invocation</font></a>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>schedule, schedwhen</h2>
+
+<pre>
+          <strong>schedule</strong>  insnum, iwhen, idur[, p4, p5, ...]
+          <strong>schedwhen</strong> ktrigger, kinsnum, kwhen, kdur[, p4, p5, ...]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Adds a new score event
+</p>
+<h3>Initialization</h3>
+<p><em>insnum</em> &#8211; instrument number. Equivalent to p1 in a score <strong>i statement</strong>.
+</p>
+<p><em>iwhen</em> &#8211; start time of the new event. Equivalent to p2 in a score <strong>i statement</strong>.
+</p>
+<p><em>idur</em> &#8211; duration of event. Equivalent to p3 in a score <strong>i statement</strong>.
+</p>
+<h3>Performance</h3>
+<p><em>ktrigger</em> &#8211; trigger value for new event
+</p>
+<p><strong>schedule</strong> adds a new score event. The arguments, including options, are the same as in a score. The <em>iwhen</em> time (p2) is measured from the time of this event.
+</p>
+<p>If the duration is zero or negative the new event is of MIDI type, and inherits the release sub-event from the scheduling instruction.
+</p>
+<p>In the case of <strong>schedwhen</strong>, the event is only scheduled when the k-rate value <em>ktrigger</em> is first non-zero.
+</p>
+<h3>Example</h3>
+
+<pre>
+;; Double hit and 1 sec separation
+          <strong>instr</strong> 1
+          <strong>schedule</strong>  2,  1, 0.5, p4, p5
+  a1      <strong>shaker</strong>    p4, 60, 0.999, 0, 100, 0
+          <strong>out</strong>       a1
+          <strong>endin</strong>
+  
+          <strong>instr</strong> 2
+  a1      <strong>marimba</strong>   p4, cpspch(p5), p6, p7, 2, 6.0, 0.05, 1, 0.1
+          <strong>out</strong>       a1
+          <strong>endin</strong> 
+  
+          <strong>instr</strong> 3 
+  kr      <strong>table</strong>     kr, 1
+          <strong>schedwhen</strong> kr, 1, 0.25, 1, p4, p5
+          <strong>endin</strong>
+</pre>
+
+<h3></h3>
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath/Codemist Ltd.<br>
+Bath, UK<br>
+November, 1998 (New in Csound version 3.491)<br>
+Based on work by Gabriel Maldonado
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../syntax/assign.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="schdkwhn.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#invocation" class="toqr">
+Orchestra Syntax: Instrument Invocation</font></a>
+</body>
+</html>

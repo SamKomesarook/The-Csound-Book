@@ -1,0 +1,75 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>specsum, specdisp</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="specptrk.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="spectrum.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/spectral.htm" class="toqr">
+Operations Using Spectral Data Types</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>specsum, specdisp</h2>
+
+<pre>
+  ksum    <strong>specsum</strong>   wsig[, interp]
+          <strong>specdisp</strong>  wsig, iprd[, iwtflg]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Initialization</h3>
+<p><em>interp</em> (optional) &#8211; if non-zero, interpolate the output signal (<em>koct </em>or <em>ksum</em>). The default value is 0 (repeat the signal value between changes).
+</p>
+<p><em>iwtflg</em> (optional) &#8211; wait flag. If non-zero, hold each display until released by the user. The default value is 0 (no wait).
+</p>
+<h3>Performance</h3>
+<p><strong>specsum</strong> &#8211; sum the magnitudes across all channels of the spectrum. At each new frame of <em>wsig</em>, the magnitudes are summed and released as a scalar <em>ksum</em> signal. Between frames, the output is either repeated or interpolated at the k-rate. This unit produces a k-signal summation of the magnitudes present in the spectral data, and is thereby a running measure of its moment-to-moment overall strength.
+</p>
+<p><strong>specdisp</strong> &#8211; display the magnitude values of spectrum <em>wsig</em> every <em>iprd</em> seconds (rounded to some integral number of <em>wsig</em>'s originating <em>iprd</em>).
+</p>
+<h3>Example</h3>
+
+<pre>
+  ksum     <strong>specsum</strong>   wsig,  1                    ; sum the spec bins, and ksmooth
+           <strong>if</strong>        ksum &lt; 2000   <strong>kgoto</strong>  zero   ; if sufficient amplitude
+  koct     <strong>specptrk</strong>  wsig                        ;    pitch-track the signal
+           <strong>kgoto</strong>      contin
+zero:  
+  koct    =     0                                ; else output zero
+contin:</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="specptrk.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="spectrum.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/spectral.htm" class="toqr">
+Operations Using Spectral Data Types</font></a>
+</body>
+
+</html>

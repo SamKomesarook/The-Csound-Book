@@ -1,0 +1,560 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>QuickRef: Mathematical Operations</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body text="black" link="black" vlink="black" alink="black" bgcolor="white">
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent">
+      <img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" width="10">
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="instrctl.htm">
+      <img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="pitch.htm">
+      <img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h1>Mathematical Operations</h1>
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="logic"><h2>Mathematical Operations: Arithmetic and Logic Operations</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="642">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/math.htm">
+      <strong>- </strong>a</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/math.htm">
+      <strong>+ a</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/math.htm">
+      a<strong> &amp;&amp; </strong>b</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (logical AND; not audio-rate)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/math.htm">
+      a<strong> || </strong>b</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (logical OR; not audio-rate)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/math.htm">
+      a<strong> + </strong>b</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/math.htm">
+      a<strong> - </strong>b</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/math.htm">
+      a<strong> * </strong>b</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/math.htm">
+      a<strong> / </strong>b</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/math.htm">
+      a<strong> ^ </strong>b</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (b not audio-rate)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/math.htm">
+      a<strong> % </strong>b</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+</table>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="math"><h2>Mathematical Operations: Mathematical Functions</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="642">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/int.htm">
+      <strong>int</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (init-rate or control-rate args only)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/int.htm">
+      <strong>frac</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (init-rate or control-rate args only)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/int.htm">
+      <strong>i</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (control-rate args only)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/int.htm">
+      <strong>abs</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/int.htm">
+      <strong>exp</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/int.htm">
+      <strong>log</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/int.htm">
+      <strong>log10</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/int.htm">
+      <strong>sqrt</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/powoftwo.htm">
+      <strong>powoftwo(x)</strong></a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (init-rate or control-rate args only)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/powoftwo.htm">
+      <strong>logbtwo(x)</strong></a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (init-rate or control-rate args only)
+    </td>
+  </tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="trig"><h2>Mathematical Operations: Trigonometric Functions</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="642">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/sin.htm">
+      <strong>sin</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/sin.htm">
+      <strong>cos</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/sin.htm">
+      <strong>tan</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/sin.htm">
+      <strong>sininv</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/sin.htm">
+      <strong>cosinv</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/sin.htm">
+      <strong>taninv</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/sin.htm">
+      <strong>sinh</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/sin.htm">
+      <strong>cosh</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/sin.htm">
+      <strong>tanh</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="amp"><h2>Mathematical Operations: Amplitude Functions</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="642">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/dbamp.htm">
+      <strong>dbamp</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (init-rate or control-rate args only)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/dbamp.htm">
+      <strong>ampdb</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/dbamp.htm">
+      <strong>dbfsamp</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (init-rate or control-rate args only)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/dbamp.htm">
+      <strong>ampdbfs</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="rand"><h2>Mathematical Operations: Random Functions</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="642">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../valcnv/rnd.htm">
+      <strong>rnd</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (init- or control-rate only)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../valcnv/rnd.htm">
+      <strong>birnd</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (init- or control-rate only)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../valcnv/urd.htm">
+      <strong>urd</strong>(x)</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (no rate restrictions)
+    </td>
+  </tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="opcode"><h2>Mathematical Operations: Opcode Equivalents of Functions</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="642">
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      ar
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/sum.htm">
+      <strong>sum</strong></a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      asig1, asig2[,asig3...asigN]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      ar
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/product.htm">
+      <strong>product</strong></a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      asig1, asig2[,asig3...asigN]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/k/ar
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/pow.htm">
+      <strong>pow</strong></a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      i/k/aarg, i/k/pow
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      i/k/ar
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/taninv2.htm">
+      <strong>taninv2</strong></a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      i/k/ax, i/k/ay
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      ar
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/mac.htm">
+      <strong>mac</strong></a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      asig1, ksig1, asig2, ksig2, asig3, ...
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="12%" valign="TOP">
+      ar
+    </td>
+    <td class="qr" nowrap width="17%" valign="TOP">
+      <a class="qr" href="../valcnv/mac.htm">
+      <strong>maca</strong></a>
+    </td>
+    <td class="qr" nowrap width="71%" valign="TOP">
+      asig1, ksig1, asig2, ksig2, asig3, ...
+    </td>
+  </tr>
+</table>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent">
+      <img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" width="10">
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="instrctl.htm">
+      <img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="pitch.htm">
+      <img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+</body>
+
+</html>

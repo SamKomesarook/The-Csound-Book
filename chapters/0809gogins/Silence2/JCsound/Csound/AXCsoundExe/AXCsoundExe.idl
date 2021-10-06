@@ -1,0 +1,20 @@
+// AXCsoundExe.idl : IDL source for AXCsoundExe.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (AXCsoundExe.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(0FF27560-3E66-11D2-8F6B-006008028B07),
+	version(1.0),
+	helpstring("AXCsoundExe 1.0 Type Library")
+]
+library AXCSOUNDEXELib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+};

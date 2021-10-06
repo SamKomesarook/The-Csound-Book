@@ -1,0 +1,69 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>CEC_popup</title>
+	</head>
+
+	<body>
+		&nbsp;
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="cec_togg.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="cec_rsli.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<h2>The&nbsp; cpopup object</h2>
+		</center>
+		<center>
+			<a href="#NAME">Name</a></center>
+		<center>
+			<a href="#SYNOPSIS">Synopsis</a></center>
+		<center>
+			<a href="#OPTIONS">Options</a></center>
+		<center>
+			<a href="#DESCRIPTION">Description</a></center>
+		<center>
+			<a href="#SUBSTITUTION">Substitution</a></center>
+		<center>
+			<a href="#EXAMPLE">Example</a><br>
+			<br>
+			<br>
+		</center>
+		<center>
+			<hr>
+		</center>
+		<h4><a name="NAME"></a><u>NAME</u></h4>
+		<b>cpopup</b> - Creation of a pop-up menu
+		<h4><a name="SYNOPSIS"></a><u>SYNOPSIS</u></h4>
+		<pre><b>cpopup</b> name -value {option0 option1 option2 ...}&nbsp; ?options?</pre>
+		<h4><a name="OPTIONS"></a><u>OPTIONS</u></h4>
+		<b>-label</b> <i>name</i><br>
+		-<b>init </b><i>value</i><br>
+		&nbsp;
+		<h4><a name="DESCRIPTION"></a><u>DESCRIPTION</u></h4>
+		The <b>cpopup</b> command produces a popup menu with the menu choices determined by the <b>-value</b> list.&nbsp;&nbsp; The <b>-label</b> flag can be used to specify an alternative name&nbsp; for the toggle in the interface.<br>
+		&nbsp;
+		<h4><a name="SUBSTITUTION"></a><u>SUBSTITUTION</u></h4>
+		At compilation, any instance of <i>gkname or giname</i> in the orchestra, will be replaced by the index number of the option chosen, starting at 0 for the first option in the list. The user determines the propriety of an i-rate or k-rate usage in a given context. The cpopup&nbsp; object can also be used in the score by using the replacement string : [name] .
+		<p>The cpopup object can also be used in the score by using the replacement string : <b>[name]</b>
+		<p>An option menu is also produced with the options: <b>k-rate, record, playback, load and save</b>. The user can record slider events with <b>record</b> and replay them with <b>playback.</b> A given stream can be saved under any name with save and recalled with load. <b>k-rate</b> allows to simply play the popup without recording.<br>
+		&nbsp;
+		<h4><a name="EXAMPLE"></a><u>EXAMPLE</u></h4>
+		At compilation, the popup menu:
+		<pre>&nbsp;&nbsp;&nbsp;&nbsp; <b>cpopup</b> type -val {hi-pass low-pass band-pass notch} -label filtertype -init hi-pass</pre>
+		will produce a popup menu with the label <i>filtertype</i> and will return 2 if band-pass is selected or 0 if<i> hi-pass</i> is selected, through the <i>gktype</i> or <i>gitype</i> global variable in the orchestra .&nbsp; The initial value will be<i> hi-pass</i>.
+		<p>
+		<hr>
+		<br>
+		Copyright &copy; 1996 - 97
+	</body>
+
+</html>

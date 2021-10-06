@@ -1,0 +1,696 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Using Csound for Sonification</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">14. Using Csound for Sonification</FONT></H1>
+
+<H2><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">David
+Rossiter</FONT></H2>
+
+<H3><FONT FACE="Times New Roman">Introduction</FONT></H3>
+
+<P><FONT FACE="Times New Roman">In recent years a new field of
+research has evolved. Called 'sonification', it involves the expression
+of data with some form of acoustical representation. Studies to
+date have shown that there is considerable potential for the perception
+of data sets when they are appropriately expressed in this way.
+However, researchers have used a very wide variety of sound generation
+devices, often of limited flexibility and complete incompatibility
+with each other.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Csound is a remarkable tool for
+sonification scientists. It has a large array of very powerful
+and highly flexible sound synthesis and morphing commands. It
+is public domain, and so valuable research fund money does not
+need to be used to purchase it. Csound has been ported to just
+about every single computer platform. There are a wide variety
+of public domain instruments which may be used. It is actively
+used by hundreds of researchers across the world in closely related
+and interlinked fields of research such as acoustics, psychoacoustics,
+and computer music. It may therefore be regarded as something
+of a standard, as much as one may exist across such a wide and
+diverse scope. This chapter considers issues relating to how a
+sonification program can best employ Csound.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Previous Sonification Approaches</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Many notable researchers have
+contributed to the field of sonification and illustrated the great
+potential for data sonification, particularly when combined with
+some form of visual representation of the data. Of note in this
+context are the proceedings of the bi-annual conferences on Auditory
+Display (i.e., Kramer, 1994), which contain a variety of quality
+contributions. The most frequently cited reference in the field
+is the paper by Scaletti &amp; Craig (1991), in which the authors
+describe their experiments with a number of sonification methods,
+with the intention of enhancing a series of pre-existing visualization
+sequences of physical phenomena.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Investigators use a wide variety
+of sound generation devices ranging from MIDI devices to dedicated
+hardware devices. For example, Scaletti &amp; Craig (1991) utilized
+the Capybara multiple DSP system, Jackson &amp; Francioni (1991)
+and Sonnewald et al. (1990) employed MIDI equipment, and Travera
+(1994) employed the Convolvotron spatial audio hardware. It is
+proposed that the Csound system may more effectively be adopted
+as a common base for researchers in the field to share ideas and
+techniques, perhaps building on the observations presented here.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Sonification Instrument Design</FONT></H3>
+
+<P><FONT FACE="Times New Roman">With regards to sonification,
+instruments may fall under the following classifications, or may
+be written such that they use techniques from more than one domain.</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">'Traditional' musical instruments,
+  such as a clarinet and a piano. Depending on the context, an
+  advantage of employing common musical instruments is the likely
+  level of familiarity to the user.</FONT>
+  <LI><FONT FACE="Times New Roman">Purely synthetic sound instruments,
+  perhaps designed with regard to aspects of psychoacoustic effect.</FONT>
+  <LI><FONT FACE="Times New Roman">Instruments which function by
+  replaying a pre-recorded soundfile. Soundfiles of this nature
+  are typically categorized according to speech or non-speech content.
+  An example of the former is the recording of a spoken message.
+  An example of the latter is the recording of a siren.</FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">Parameters popularly manipulated
+for sonification include fundamental frequency, amplitude, timing
+parameters and envelope parameters such as attack, sustain, decay
+and release. Other parameters may be implemented according to
+the intention of the designer. There may be parameters unique
+to the design of a particular instrument. Different mathematical
+relationships may be used in the mapping. The two predominant
+mappings are linear and logarithmic. Techniques derived from the
+large body of scientific research concerning the phenomenon of
+sound and acoustics (i.e. Helmholtz, 1877; Bregman, 1990) stretching
+back to the 19<sup>th</sup> Century and before may be adopted
+and extended for sonification.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The exact ways in which different
+forms of data may be best mapped to sound parameters is the subject
+of much investigation by sonification researchers and is in itself
+outside the scope of this chapter. The reader is referred to the
+references listed at the end, many of which offer valuable insights
+and examples of sonification mappings. For example, Bregman (pg
+291, 1990) states two strong heuristic aural-visual associations;
+changes of visual intensity with changes in amplitude of sound,
+and changes of vertical position in space with changes of pitch.
+He highlights the intuity of processing 2D diagrams with aural
+representations employing time along the x axis and frequency
+along the y axis.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Once generated, instrument note
+events may be further processed for greater effect, such as reverberation
+or filtering. For example, by using spatialization techniques
+it is possible to give the acoustical impression that each sonification
+event is positioned at some point in three dimensional space.
+This technique was used by the author for a system for the sonification
+of 3D medical images (Rossiter &amp; Ng, 1996a).</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Designing Csound Instruments
+For Sonification</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Sonification is typically concerned
+with the usage of one or more different instruments in the experimental
+expression of a data set. A number of different parameters, parameter
+ranges, and modes of parameter mapping may be explored in order
+to seek effective expressions of the data set under investigation.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In designing a Csound sonification
+instrument in this context, a balance needs to be made between
+generalization and specificity. An instrument may be designed
+with a unique set of parameters particular to a sonification experiment.
+However, this individuality may be at the cost of the ability
+to easily re-use that instrument in future experiments. By agreeing
+on a standard array of p-fields and their meaning, a portfolio
+of sonification instruments can then be built from which a selection
+may be made for exploratory use without the requirement for re-writing
+the instrument. Although this may not be appropriate in the context
+of every sonification instrument, it should be implemented to
+as great an extent as is possible. Each data parameter being sonified
+should be expressed as one of the p-fields being presented to
+a Csound instrument. If that particular p-field is not implemented
+in that instrument, the instrument should simply ignore the parameter
+(Csound will operate normally even if a p-field is presented to
+an instrument but is not referenced by that instrument). The instrument
+should not use that p-field for another purpose.</FONT></P>
+
+<P><FONT FACE="Times New Roman">For example, a sonification researcher
+may adopt part or all of the selection shown in table 1 as the
+base case 'standard' for his/her system.</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Table
+1:</FONT></B></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="2"
+bordercolor="#000000" WIDTH="542" CELLPADDING="0">
+  <TR>
+    <TD WIDTH="35%" VALIGN="TOP" BGCOLOR="#000000">
+      <P><CENTER><B><FONT COLOR="#ffffff" SIZE="-1" FACE="Courier New">Fundamental
+      Parameters</FONT></B></CENTER></TD>
+    <TD WIDTH="29%" VALIGN="TOP" BGCOLOR="#000000">
+      <P><CENTER><B><FONT COLOR="#ffffff" SIZE="-1" FACE="Courier New">Envelope
+      Parameters</FONT></B></CENTER></TD>
+    <TD WIDTH="36%" VALIGN="TOP" BGCOLOR="#000000">
+      <P><CENTER><B><FONT COLOR="#ffffff" SIZE="-1" FACE="Courier New">Filtering
+      Parameters</FONT></B></CENTER></TD>
+  </TR>
+  <TR>
+    <TD WIDTH="35%" VALIGN="TOP"><FONT SIZE="-1" FACE="Courier New">P1
+      - Instrument number</FONT></TD> 
+    <TD WIDTH="29%" VALIGN="TOP"><FONT SIZE="-1" FACE="Courier New">P6
+      - Attack time</FONT></TD>
+    <TD WIDTH="36%" VALIGN="TOP"><FONT SIZE="-1" FACE="Courier New">P10
+      - Low pass (cutoff freq)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD WIDTH="35%" VALIGN="TOP"><FONT SIZE="-1" FACE="Courier New">P2
+      - Start time</FONT></TD> 
+    <TD WIDTH="29%" VALIGN="TOP"><FONT SIZE="-1" FACE="Courier New">P7
+      - Decay time</FONT></TD>
+    <TD WIDTH="36%" VALIGN="TOP"><FONT SIZE="-1" FACE="Courier New">P11
+      - High pass (cutoff freq)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD WIDTH="35%" VALIGN="TOP"><FONT SIZE="-1" FACE="Courier New">P3
+      - Duration</FONT></TD> 
+    <TD WIDTH="29%" VALIGN="TOP"><FONT SIZE="-1" FACE="Courier New">P8
+      - Sustain time</FONT></TD>
+    <TD WIDTH="36%" VALIGN="TOP"><FONT SIZE="-1" FACE="Courier New">P12
+      - Band pass (center freq)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD WIDTH="35%" VALIGN="TOP"><FONT SIZE="-1" FACE="Courier New">P4
+      - Fundamental frequency</FONT></TD> 
+    <TD WIDTH="29%" VALIGN="TOP"><FONT SIZE="-1" FACE="Courier New">P9
+      - Release time</FONT></TD> 
+    <TD WIDTH="36%" VALIGN="TOP"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD WIDTH="35%" VALIGN="TOP"><FONT SIZE="-1" FACE="Courier New">P5
+      - Amplitude</FONT></TD> 
+    <TD WIDTH="29%" VALIGN="TOP"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD WIDTH="36%" VALIGN="TOP"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">All p-fields beyond the determined
+standard configuration (p-fields 13 and higher in the example
+above) may then be employed as required by individual instruments.
+The list of further effects and techniques which may be applied
+within an instrument are dependent only on the skill and particular
+design intentions of the sonification instrument creator. Examples
+include distortion, flanging, pitch shifting, chorusing, filtering,
+the inclusion of sound file playing, and many more.</FONT></P>
+
+<P><FONT FACE="Times New Roman">A simple design for experimental
+representation of data based on beat frequencies is shown in listing
+1. An example score file is shown in listing 2. In this example,
+the researcher has determined that the p-field arrangement shown
+in table 1 for p-fields 1 to 9 will be implemented within each
+sonification instrument, but that subsequent fields are instrument
+dependent. And so, for example, although p-fields 10 to 12 in
+this instance contain filtering data which is not processed by
+the particular instrument shown, the data should remain presented
+to the instrument so that in the event that any alternative instrument
+is employed which recognizes the p-fields, the effects are implemented.
+This provides a compromise between instrument individuality and
+common functionality. In this way a range of different instruments
+may be rapidly employed for sonification studies as appropriate,
+with no score changes required apart from to the instrument number
+(p-field 1).</FONT></P>
+
+<P><FONT FACE="Times New Roman">&nbsp;</FONT><B><FONT SIZE="-1"
+ FACE="Times New Roman,Georgia,Times">Listing 1</FONT></B><FONT
+ FACE="Times New Roman">:<BR>
+</FONT><FONT FACE="Courier New">; File 'beat.orc'<BR>
+;<BR>
+; This is an example sonification instrument expressing the<BR>
+; beat frequency phenomenon. Two sine waves are generated<BR>
+; and the listener perceives a beat frequency equal to the<BR>
+; difference between the two frequencies.<BR>
+; Created by David Rossiter.<BR>
+<BR>
+; This particular set of header information<BR>
+; is designed for speed.<BR>
+<BR>
+sr = 8000<BR>
+kr = 800<BR>
+ksmps = 10<BR>
+nchnls = 1<BR>
+<BR>
+instr 1<BR>
+<BR>
+; Create instrument-dependent implementation of<BR>
+; Attack Decay Sustain Release waveform shaping<BR>
+<BR>
+k1 linseg 0, p6*p3, 1, p7*p3, 0.8, p8*p3, 0.8, p9*p3, 0<BR>
+<BR>
+aosc1 oscil 10000, 100, 1 ; oscillate at frequency 1<BR>
+aosc2 oscil 10000, 100+p4, 1 ; oscillate at frequency 2<BR>
+<BR>
+out (aosc1+aosc2) *p5 *k1 ; combine both signals<BR>
+; with amp and waveshaping<BR>
+<BR>
+endin<BR>
+<BR>
+</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">Listing 2:<BR>
+</FONT></B><FONT FACE="Courier New">; File 'beat.sco'<BR>
+;<BR>
+; This is the score file for the 'beat.orc' sonification instrument.<BR>
+; Created by David Rossiter.<BR>
+<BR>
+f1 0 256 10 1 ; Create a sine wave table<BR>
+<BR>
+; Parameter fields are as described in main text.<BR>
+;<BR>
+; In this example, attack, decay, sustain and release are<BR>
+; all expressed as fractions of the time period, and amplitude<BR>
+; is a multiplier within the range 0 to 1.<BR>
+;<BR>
+; Start Dur Freq Amp Att Dec &nbsp;Sus Rel &nbsp;Low High Band<BR>
+i1 &nbsp;0 &nbsp;&nbsp;&nbsp;2 &nbsp;&nbsp;10 &nbsp;&nbsp;1 &nbsp;0.1
+0.05 0.6 0.25 80 &nbsp;1500 400<BR>
+e</FONT><FONT FACE="Times New Roman">&nbsp;&nbsp;</FONT></P>
+
+<H2><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">Interfacing
+A Sonification Program With Csound</FONT></H2>
+
+<P><FONT FACE="Times New Roman">It is possible to create score
+files containing data to be sonified 'by hand', using a text editor.
+However, data intended for sonification is typically obtained
+in some automated method, resulting in a stream of data. This
+data is then presented to the sonification engine, after any required
+formatting. The techniques for employing Csound as the sonification
+engine are discussed in the following sections.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Extending Csound Code</FONT></H3>
+
+<P><FONT FACE="Times New Roman">There are several different approaches
+towards using Csound for Sonification. One is to extend the Csound
+program to incorporate a sonification stage. This stage would
+generate the data for sonification and pass it internally to the
+normal Csound analysis and sound generation mechanisms. This option
+involves examining, extending, and re-compiling the Csound source
+code so that the sonification data input and analysis section
+is embodied within the Csound code itself. This is certainly possible,
+but requires a high proficiency in programming and a knowledge
+of the internal operation of Csound. Note also that as soon as
+the Csound source code is altered there is a danger that the program
+in its entirety will not compile on other platforms as a consequence
+of the changes. For these reasons, this approach to using Csound
+as a sonification engine is not recommended. For such a project,
+the reader is encouraged to study the relevant sections elsewhere
+within this volume. A better approach is to place the sonification
+data extraction and processing procedures into a separate program
+which calls Csound for sonification synthesis tasks as required.
+Related techniques are discussed in the following sections.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Approaches to Sonification Program
+Control</FONT></H3>
+
+<P><FONT FACE="Times New Roman">In designing a sonification system
+which uses Csound as the output engine, there are a number of
+questions to be addressed. Will the sonification program</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">create the orc file?</FONT>
+  <LI><FONT FACE="Times New Roman">create the sco file?</FONT>
+  <LI><FONT FACE="Times New Roman">directly call Csound?</FONT>
+  <LI><FONT FACE="Times New Roman">control Csound in real-time?</FONT>
+  <LI><FONT FACE="Times New Roman">use Csound in real-time output
+  mode?</FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">These aspects are discussed in
+the following sections.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Creation of Files</FONT></H3>
+
+<P><FONT FACE="Times New Roman">As described elsewhere in this
+volume, Csound relies on two files to operate, the 'orchestra'
+file, which contains the instrument(s), and the 'score' file,
+which contains the information needed to drive the instrument(s)
+such as pitch-duration data. Both these files are traditionally
+created 'by hand' through the use of any text editor. In the context
+of sonification a separate program is often used to generate or
+access the data intended for sonification. This program needs
+to format the data in an appropriate score format before passing
+it to Csound.</FONT></P>
+
+<P><FONT FACE="Times New Roman">For example, in listing 3 a C
+program is shown which generates both an orchestra file, called
+'scale.orc', and a score file, called 'scale.sco'. The program
+then instructs Csound to use these files to synthesize the sound
+sequence. Although the examples in this chapter use the C language,
+the same general technique could be used for programs written
+in other languages.</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Listing
+3:<BR>
+</FONT></B><FONT FACE="Courier New">/* This program creates an
+orchestra file and a score file to generate<BR>
+/* an ascending chromatic scale. The Csound program is then invoked<BR>
+/* to generate the sequence. Created by David Rossiter.<BR>
+*/<BR>
+#include &quot;stdio.h&quot;<BR>
+<BR>
+#define orc_filename &quot;scale.orc&quot;<BR>
+#define sco_filename &quot;scale.sco&quot;<BR>
+<BR>
+void create_orc_file()<BR>
+{<BR>
+FILE *fp;<BR>
+if ((fp=fopen(orc_filename,&quot;w&quot;))==NULL) {<BR>
+printf(&quot;Sorry, I am unable to open %s\n&quot;,orc_filename);<BR>
+exit(1);<BR>
+}<BR>
+else {<BR>
+fprintf(fp,&quot; sr=8000\n kr=800\n ksmps=10\n nchnls=1\n \n&quot;);<BR>
+fprintf(fp,&quot;instr 1\n&quot;);<BR>
+fprintf(fp,&quot; asig oscil 10000, p4, 1\n&quot;);<BR>
+fprintf(fp,&quot; out asig\n&quot;);<BR>
+fprintf(fp,&quot;endin\n&quot;);<BR>
+fclose(fp);<BR>
+}<BR>
+}<BR>
+<BR>
+void create_sco_file()<BR>
+{<BR>
+FILE *fp;<BR>
+float note_start=0.0, note_duration=0.5;<BR>
+long pitch_start=50, pitch_end=150;<BR>
+long pitch;<BR>
+<BR>
+if ((fp=fopen(sco_filename,&quot;w&quot;))==NULL) {<BR>
+printf(&quot;Sorry, I am unable to open %s\n&quot;,sco_filename);<BR>
+exit(1);<BR>
+}<BR>
+else {<BR>
+fprintf(fp,&quot;f1 0 256 10 1\n&quot;);<BR>
+fprintf(fp,&quot;\n&quot;);<BR>
+<BR>
+for (pitch=pitch_start;pitch&lt;pitch_end;pitch++) {<BR>
+fprintf(fp,&quot;i1 %f %f %ld\n&quot;, note_start, note_duration,
+pitch);<BR>
+note_start+=0.5;<BR>
+}<BR>
+<BR>
+fprintf(fp,&quot;e&quot;);<BR>
+fclose(fp);<BR>
+}<BR>
+}<BR>
+<BR>
+main(argc, argv)<BR>
+short argc; char **argv;<BR>
+{<BR>
+char system_string[100];<BR>
+<BR>
+create_orc_file();<BR>
+create_sco_file();<BR>
+<BR>
+sprintf(system_string, &quot;csound %s %s&quot;, orc_filename,
+sco_filename);<BR>
+system(system_string);<BR>
+}</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Real-time Sonification</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The modern speed of computer systems
+has brought real-time Csound into everyday use. Accordingly, a
+sonification process may enjoy a level of real-time expression,
+in the form of both real-time input to and real-time output from
+Csound. For example, a sonification program may be constantly
+expressing data derived from system analyses of process behavior.
+This data may be derived and converted by the sonification program
+for real-time presentation to Csound, which generates the output
+synthesis as soon as the input information is received.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In the following sections the
+techniques for real-time input and output are described.&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman">1) Initializing Real-time Output</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The syntax for invocation of Csound
+in real-time output mode is, unfortunately, inconsistent across
+computer platforms. This is partly a reflection of the different
+varieties and capabilities of audio hardware used by computer
+systems. The most common forms of syntax required to invoke Csound
+for real-time output are '-o /dev/audio' and '-o devaudio'. For
+example, for a SunSparc platform running the Sun Unix operating
+system, real-time output would be achieved by</FONT></P>
+
+<P><FONT FACE="Courier New">csound -u -o /dev/audio scale.orc
+scale.sco</FONT></P>
+
+<P><FONT FACE="Times New Roman">For a Silicon Graphics platform
+running their particular form of Unix, real-time output is achieved
+by</FONT></P>
+
+<P><FONT FACE="Courier New">csound -o devaudio scale.orc scale.sco</FONT></P>
+
+<P><FONT FACE="Times New Roman">This may also be the appropriate
+syntax for real-time output on a Linux system. Alternatively the
+use of '-o dac' may be required instead (this depends on the Csound
+release). The latter option also applies to the Microsoft Windows
+95 platform.</FONT></P>
+
+<P><FONT FACE="Times New Roman">It is also likely to be appropriate
+to include the '-h' parameter in the Csound parameter list. This
+instructs Csound not to output the sound information header. The
+header is a short piece of informative data required at the start
+of a soundfile, which if used together with the '-o' real-time
+output option is sent as audio data directly to the speaker and
+subsequently perceived as an uncomfortable audio glitch.&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman">2) Presenting Real-time Input</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Real-time input control of Csound
+requires more care than real-time output, but it is a straightforward
+task if the procedure is correctly followed.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The procedure is as follows.</FONT></P>
+
+<DIR>
+  <P><FONT FACE="Times New Roman">1. Create the Csound orchestra
+  file in the normal way.</FONT>
+  <P><FONT FACE="Times New Roman">2. Create a score file which
+  contains the instruction f0 3600 . When Csound processes this
+  instruction, one consequence is that it waits for 3600 seconds
+  (one hour) during which it will process score events which are
+  presented to it in the manner described below. In the examples
+  that follow, this score file is called 'pause.sco'.</FONT>
+  <P><FONT FACE="Times New Roman">3. Invoke Csound such that it
+  expects score information to be presented via standard input.
+  This is indicated by the command line option '-L stdin'. (If
+  Csound is invoked with this parameter just by typing its name
+  on the command line in the common way, score events can be simply
+  typed one by one by the user, and each score line is then sent
+  to Csound as soon as the Enter key is pressed. A sonification
+  program can use this capability of Csound to present score events
+  to Csound as and when required).</FONT>
+  <P><FONT FACE="Times New Roman">4. After step 3 has been executed,
+  score events can subsequently be sent to Csound through the connection.
+  If these score events have a start time (p-field 2) of zero then
+  Csound will synthesize the event as soon as it receives it. In
+  the event that a start time greater than zero is used, Csound
+  will wait for the specified length of time after receiving the
+  event before synthesizing it. Function table declarations that
+  would usually be within the score file are also be presented
+  to Csound in the same way.</FONT>
+</DIR>
+
+<P><FONT FACE="Times New Roman">In listing 4 there is an example
+program which illustrates the real-time input techniques described.&nbsp;</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Listing
+4:<BR>
+</FONT></B><FONT FACE="Courier New">/* This piece of code opens
+a pipe to Csound. Score events are<BR>
+/* then passed to Csound through the pipe. If Csound is invoked<BR>
+/* in real-time output mode, the program can send score events
+as<BR>
+/* and when required to Csound for immediate synthesis.<BR>
+/* Created by David Rossiter.<BR>
+*/<BR>
+{<BR>
+FILE *csound_pointer;<BR>
+char pipe_string[200];<BR>
+<BR>
+/* It is assumed that pause.sco already exists as described in
+the<BR>
+/* main text. Alternatively, the sonification program could create
+it.<BR>
+*/<BR>
+/* Prepare the string for use in the pipe creation process */<BR>
+sprintf(pipe_string, &quot;csound -s -L stdin instruments.orc
+pause.sco&quot;);<BR>
+<BR>
+/* Create pipe to Csound for writing score events */<BR>
+csound_pointer=popen(pipe_string, &quot;w&quot;);<BR>
+<BR>
+if ( csound_pointer==NULL ) { /* System failed to create the pipe
+*/<BR>
+fprintf(stderr, &quot;Pipe link to Csound has failed\n&quot;);<BR>
+exit(1);<BR>
+} else {<BR>
+/* Now regular score instructions can be sent as and */<BR>
+/* when required. Arbitrary examples follow. */<BR>
+fprintf( csound_pointer, &quot;f1 0 256 10 1\n&quot;); /* A table...
+*/<BR>
+fprintf( csound_pointer, &quot;i1 0 20 100\n&quot;); /* A sound
+event... */<BR>
+/* ...this can continue as required... */<BR>
+<BR>
+/* The following line may be required at regular */<BR>
+/* intervals, or possibly after each 'fprintf' */<BR>
+fflush( csound_pointer ); /* This forces out any buffered */<BR>
+/* items in the system pipe */<BR>
+}<BR>
+}</FONT></P>
+
+<P><FONT FACE="Times New Roman">By adding the appropriate real-time
+output parameter flags discussed in the last section, output as
+well as input could be conducted in real-time. For example, on
+a Silicon Graphics platform the invocation</FONT></P>
+
+<P><FONT FACE="Courier New">csound -s -L stdin -o devaudio instruments.orc
+pause.sco</FONT></P>
+
+<P><FONT FACE="Times New Roman">will enable real-time input control
+in the manner described previously, with the synthesized sound
+being generated in real-time.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Handling Multiple Instruments</FONT></H3>
+
+<P><FONT FACE="Times New Roman">A sonification program employing
+Csound as the audio synthesis engine typically requires the use
+of a select few instruments from possibly a very large selection.
+The problem of how to arrange a portfolio of sonification instruments
+from which a select few may be used is worth addressing. One approach
+is to write an enormous Csound orchestra file which includes all
+the many instruments that may be of use. However, this approach
+would place a large demand on memory resources, as all the various
+instruments would be compiled by Csound and stored in memory regardless
+of whether or not they are actually used during the sonification
+task. If memory demands are excessive then the sonification will
+either fail completely or undergo a massive decrease in speed,
+in the region of 100-1000 times slower, due to page swapping by
+the operating system. There are also memory cache considerations
+which imply that if Csound uses a relatively smaller amount of
+memory resources it may run notably faster than would otherwise
+be the case. Furthermore, the delay when Csound is first invoked
+is proportional to the number of instruments.</FONT></P>
+
+<P><FONT FACE="Times New Roman">To counter these drawbacks, an
+advanced approach may be adopted as follows. The technique requires
+the sonification program taking only the Csound instruments of
+interest from the selection available, and concatenating these
+into a single orchestra file for use in the subsequent sonification
+task. The name of the newly created orc file is passed to Csound
+via the command line in the normal way. This method, used by the
+author for a sonification system for arbitrary linear data streams
+(Rossiter &amp; Ng, 1996b), ensures there is only the necessary
+demand on memory and computation power. However, a number of points
+need to be considered.</FONT></P>
+
+<DIR>
+  <P><FONT FACE="Times New Roman">1. For logistical aid, ensure
+  all the Csound instruments which may be selected for use by the
+  sonification program are each listed in their own separate orc
+  files prior to the start of the process. They may also have associated
+  score files containing any function table definitions they require.</FONT>
+  <P><FONT FACE="Times New Roman">2. Instruments need to use a
+  standard arrangement of p-field mappings exists, as discussed
+  previously.</FONT>
+  <P><FONT FACE="Times New Roman">3. The list of required instruments
+  for the sonification process needs to be established by the sonification
+  program. Each of the associated sco files containing function
+  table declarations are loaded from file, and given a new, unique
+  table number.</FONT>
+  <P><FONT FACE="Times New Roman">4. The list of required instruments
+  for the sonification process is established by the sonification
+  program. Each instrument is then copied from it's original orc
+  file and placed into the compilation orc file due to be subsequently
+  used by Csound. During the copying, the orc files need to be
+  modified so that each instrument is guaranteed a unique instrument
+  number, and each reference to a table is adjusted so that it
+  refers to the new table reference number assigned in step 3.</FONT>
+  <P><FONT FACE="Times New Roman">5. The table declarations, using
+  their new function table numbers, then need to be presented to
+  Csound in the same method that score events are presented. For
+  example, in the context of real-time control of Csound by the
+  sonification program, the tables need to be passed through the
+  pipe.</FONT>
+</DIR>
+
+<H3><FONT FACE="Times New Roman">Performance Tuning</FONT></H3>
+
+<P><FONT FACE="Times New Roman">It is advisable to tune the sonification
+task for the best speed/quality trade-off. For example, a relatively
+lower processor workload can be achieved by changing the number
+of channels to mono format (that is, ensure the orc file has the
+line 'nchnls = 1' at the top), in addition to ensuring the 'sr=...',
+'kr=...' and corresponding 'ksmps' lines in the orchestra file
+accommodate the lowest sampling rate value that works. Please
+refer to other parts of this volume for further guidance on how
+a Csound performance may be most effectively 'tuned'.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">References</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Kramer, G. (1994), Editor. Auditory
+Display Sonification, Audification, and Auditory Interfaces. Proceeding
+volume XVIII in the Santa Fe Institute Studies in the Sciences
+of Complexity. Addison-Wesley: New York</FONT></P>
+
+<P><FONT FACE="Times New Roman">Scaletti, C., &amp; Craig, A.B.
+(1991) Using sound to extract meaning from complex data. Proceedings
+of the SPIE Conference 1459, San Jose, California, pp. 207-219</FONT></P>
+
+<P><FONT FACE="Times New Roman">Travera, L.F. (1994) Three dimensional
+sound for data presentation in a virtual reality environment.
+Unpublished MSc thesis in Computer Science. University of Illinois
+at Urbana-Champaign, USA</FONT></P>
+
+<P><FONT FACE="Times New Roman">Jackson, J.A., &amp; Francioni,
+J.M. (1991) Aural signatures of parallel programs. Proceedings
+of the 25th Hawaii International Conference on System Sciences,
+vol. 2, pp. 218-229</FONT></P>
+
+<P><FONT FACE="Times New Roman">Sonnenwald, D.H., Gopinaht, B.,
+Haberman, G.O., Keese, W.M., &amp; Myers, J.S. (1990) InfoSound:
+an audio aid to program comprehension. Proceedings of the 22nd
+Hawaii International Conference on System Sciences, vol. 11, pp.
+541-546</FONT></P>
+
+<P><FONT FACE="Times New Roman">Helmholtz, H. (1877) On the sensations
+of tone as a physiological basis for the theory of music. 2nd
+edition (1885) republished by Dover: New York, 1954</FONT></P>
+
+<P><FONT FACE="Times New Roman">Bregman, A.S. (1990) Auditory
+scene analysis: the perceptual organization of sound. MIT Press:
+Cambridge, Mass.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Rossiter, D., &amp; Ng, W.Y. (1996a)
+A system for the complementary visualization of 3D volume images
+using 2D and 3D binaurally processed sonification representations.
+The Proceedings of IEEE Visualization '96, pp 351-354.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Rossiter, D., &amp; Ng, W.Y. (1996b)
+A system for the musical investigation and expression of levels
+of self-similarity in an arbitrary data stream. The Proceedings
+of the 1996 International Computer Music Conference, pp. 282-284</FONT></P>
+
+<P><FONT FACE="Times New Roman">&nbsp;</FONT>
+
+</BODY>
+</HTML>

@@ -1,0 +1,115 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>in, ins, inq, inh, ino, soundin, diskin</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../spectral/spectrum.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="inx.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#input" class="toqr">
+Signal Input and Output: Input</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>in, ins, inq, inh, ino, soundin, diskin</h2>
+
+<pre>
+  ar1                                   <strong>in</strong>
+  ar1, ar2                              <strong>ins</strong>
+  ar1, ar2,  ar3, a4                    <strong>inq</strong>
+  ar3, ar4
+  ar1, ar2, ar3, ar4, ar5, ar6           <strong>inh</strong>
+  ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8 <strong>ino</strong>
+  
+  ar1                                    <strong>soundin</strong>   ifilcod[, iskptim[, iformat]]
+  ar1, ar2                               <strong>soundin</strong>   ifilcod[, iskptim[, iformat]]
+  ar1,...ar24                            <strong>soundin</strong>   ifilcod[, iskptim[, iformat]]
+  ar3, ar4
+  
+  ar1[,ar2[, ar3,ar4]]                   <strong>diskin</strong>    ifilcod, kpitch[, iskiptim[, iwraparound[, iformat]]]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>These units read audio data from an external device or stream.
+</p>
+<h3>Initialization</h3>
+<p><em>ifilcod</em> &#8211; integer or character-string denoting the source soundfile name. An integer denotes the file soundin.filcod ; a character-string (in double quotes, spaces permitted) gives the filename itself, optionally a full pathname. If not a full path, the named file is sought first in the current directory, then in that given by the environment variable SSDIR (if defined) then by SFDIR. See also <a href="../gen/GEN01.htm"><strong>GEN01</strong></a>.
+</p>
+<p><em>iskptim</em> (optional) &#8211; time in seconds of input sound to be skipped. The default value is 0.
+</p>
+<p><em>iformat</em> (optional) &#8211; specifies the audio data file format:
+</p>
+<ul>
+	<li>1 = 8-bit signed char (high-order 8 bits of a 16-bit integer)
+	<li>2 = 8-bit A-law bytes
+	<li>3 = 8-bit U-law bytes
+	<li>4 = 16-bit short integers
+	<li>5 = 32-bit long integers
+	<li>6 = 32-bit floats
+</ul>
+<p>If <em>iformat</em> = 0 it is taken from the soundfile header, and if no header from the CSound <a href="../command/desc.htm"><strong>-o</strong> command</a> flag. The default value is 0.
+</p>
+<p><em>iwraparound</em> &#8211; 1 = on, 0 = off (wraps around to end of file either direction)
+</p>
+<p><em>kpitch</em> &#8211; can be any real number. a negative number signifies backwards playback. The given number is a pitch ratio, where:
+</p>
+<pre>
+	1   =  norm pitch
+	2   =  oct higher
+	3   =  12th higher, etc.
+	.5  =  oct lower
+	.25 =  2oct lower, etc.
+	-1  =  norm pitch backwards
+	-2  =  oct higher backwards, etc.
+</pre>
+
+<h3>Performance</h3>
+<p><strong>in</strong>, <strong>ins</strong>, <strong>inq, inh, ino</strong> &#8211; copy the current values from the standard audio input buffer. If the command-line  <a href="../command/desc.htm"><strong>-i</strong> flag</a> is set, sound is read continuously from the audio input stream (e.g. <em>stdain</em> or a soundfile) into an internal buffer. Any number of these units can read freely from this buffer.
+</p>
+<p><strong>soundin</strong> is functionally an audio generator that derives its signal from a pre-existing file. The number of channels read in is controlled by the number of result cells, a1, a2, etc., which must match that of the input file. A <strong>soundin</strong> unit opens this file whenever the host instrument is initialized, then closes it again each time the instrument is turned off. There can be any number of <strong>soundin</strong> units within a single instrument or orchestra; also, two or more of them can read simultaneously from the same external file. Beginning with Csound version 4.13, <strong>soundin</strong> can read any number of channels, up to a maximum of 24 channels.
+</p>
+<p><strong>diskin</strong> is identical to <strong>soundin</strong>, except that it can alter the pitch of the sound that is being read.
+</p>
+
+
+<h3>Authors</h3>
+<p>Barry Vercoe, Matt Ingalls<br>
+MIT, Mills College<br>
+1993-1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../spectral/spectrum.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="inx.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#input" class="toqr">
+Signal Input and Output: Input</font></a>
+</body>
+
+</html>

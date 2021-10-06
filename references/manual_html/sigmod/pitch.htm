@@ -1,0 +1,92 @@
+
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>pitch</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../control/clockon.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pchamdf.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing">Instrument Control: Sensing and Control</font></a>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>pitch</h2>
+
+
+<pre>
+  koct,   <strong>pitch</strong>      asig, iupdte, ilo, ihi, idbthresh[, ifrqs, iconf, istrt, iocts, iq, inptls, irolloff, iskip]
+  kamp
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+
+
+<p>Using the same techniques as <a href="../spectral/spectrum.htm"><strong>spectrum</strong></a> and <a href="../spectral/specptrk.htm"><strong>specptrk</strong></a>, pitch tracks the pitch of the signal in octave point decimal form, and amplitude in dB.</p>
+<h3>Initialization</h3>
+<p><em>iupdte</em> &#8211; length of period, in seconds, that outputs are updated
+</p>
+<p><em>ilo</em>, <em>ihi</em> &#8211; range in which pitch is detected, expressed in octave point decimal
+</p>
+<p><em>idbthresh</em> &#8211; amplitude, expressed in decibels, necessary for the pitch to be detected.  Once started it continues until it is 6 dB down.
+</p>
+<p><em>ifrqs</em> &#8211; number of divisons of an octave. Default is 12 and is limited to 120.
+</p>
+<p><em>iconf</em> &#8211; the number of conformations needed for an octave jump. Default is 10.
+</p>
+<p><em>istrt</em> &#8211; starting pitch for tracker. Default value is (<em>ilo</em> + <em>ihi</em>)/2.
+</p>
+<p><em>iocts</em> &#8211; number of octave decimations in spectrum. Default is 6.
+</p>
+<p><em>iq</em> &#8211; Q of analysis filters. Default is 10.
+</p>
+<p><em>inptls</em> &#8211; number of harmonics, used in matching. Computation time increases with the number of harmonics. Default is 4.
+</p>
+<p><em>irolloff</em> &#8211; amplitude rolloff for the set of filters expressed as fraction per octave. Values must be positive. Default is 0.6.
+</p>
+<p><em>iskip</em> &#8211; if non-zero, skips initialization
+</p>
+<h3>Performance</h3>
+<p><strong>pitch</strong> analyzes the input signal, <em>asig</em>, to give a pitch/amplitude pair of outputs, for the strongest frequency in the signal. The value is updated every <em>iupdte</em> seconds.
+</p>
+<p>The number of partials and rolloff fraction can effect the pitch tracking, so some experimentation may be necessary. Suggested values are 4 or 5 harmonics, with rolloff 0.6, up to 10 or 12 harmonics with rolloff 0.75 for complex timbres, with a weak fundamental.</p>
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath, Codemist Ltd.<br>
+Bath, UK<br>
+April, 1999<br>
+New in Csound version 3.54
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../control/clockon.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pchamdf.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing">Instrument Control: Sensing and Control</font></a>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>An Introduction to Csound</title>
+	</head>
+
+	<body bgcolor="white">
+		<div align="left">
+			<h1><b><font face="Times New Roman">An Introduction to Csound</font></b></h1>
+			<h2><font face="Times New Roman"><b>Eric L. Singer</b></font></h2>
+			<h3><font face="Times New Roman"><b>What Is Csound?</b></font></h3>
+			<p><font face="Times New Roman">Csound is a public domain computer program which processes text files to synthesize audio and music on a computer. This process is commonly referred to as software synthesis. &quot;Csound&quot; refers to both a software synthesis language and a program for translating this language into sound.</font></p>
+		</div>
+		<p><font face="Times New Roman">Csound is generally used for non-real-time synthesis. This means that sound does not come out immediately upon running the program. When used in this mode, Csound computes sound output and writes it to a file, which can then be played back. The time it takes to process is dependent on the speed of the computer, the complexity of the instruments and the length of the score.</font></p>
+		<p><font face="Times New Roman">On a fast computer system, Csound may be able to perform synthesis in real-time, dependent on the complexity of the input files. That is, Csound can play sound out of the computer as the program is running.</font></p>
+		<p><font face="Times New Roman">Csound runs on a variety of computer platforms. Currently, versions of the program are available for Macintosh, PowerMac, IBM-PC, Atari, Amiga, NeXT, Sun, SGI, HP and other computers. This paper describes the use of Csound on a Macintosh computer. However, most of the information contained in this report is applicable to other versions. Since Csound is currently used mostly for non-real-time synthesis, the descriptions in the report pertain to using Csound in this mode, unless otherwise noted.</font></p>
+		<p><font face="Times New Roman">When using Csound, the first step is to create two text files: an<b> </b>orchestra and a score file. The orchestra file contains the specifications for the software &quot;instruments&quot; to be played. The score file is a list of the notes and control parameters which play the instruments. Csound reads these files as input and produces digital audio samples, which are then written to disk as a sound file. In other words, the orchestra and score files specify synthesis computations to be performed, and Csound generates samples by performing these computations directly.</font></p>
+		<p><font face="Times New Roman">Csound can also accept MIDI input in two ways. A standard MIDI file from a sequencer can be converted to a Csound score file, or Csound can process a standard MIDI file while running using MIDI information to play the orchestra instruments directly. On fast computers, Csound can process live MIDI input and play sound in real-time.</font></p>
+		<p><font face="Times New Roman">The instruments in the orchestra file are created from a set of building blocks which include oscillators, envelope generators, function generators, sample file input, physical models, filters, effects and more. These are similar to the building blocks found in analog and digital synthesizers.</font></p>
+		<p><font face="Times New Roman">Csound has several advantages over hardware synthesizers, however. The blocks can be arranged in any order and in any quantity. If you require an instrument with a complex arrangement of 1000 oscillators, you can create it in Csound. In addition, Csound includes many functions which are not available in synthesizers, such as physical modeling, phase vocoding, linear predictive coding and spectral analysis and resynthesis.</font></p>
+		<p><font face="Times New Roman">The trade-off for Csound&#146;s versatility is speed. Because Csound runs on general purpose computers rather than dedicated hardware found in commercial synthesis, it cannot run as fast. This is why it is usually used for non-real-time synthesis. As computer systems get faster, Csound will increasingly be used for real-time synthesis.</font></p>
+		<h2><font face="Times New Roman"><b>Computer Hardware and Software Requirements for Using Csound</b></font></h2>
+		<p><font face="Times New Roman">You will need a computer on which Csound can run. Versions of Csound are available via anonymous FTP on the Internet for most types of computers. See the Internet guide at the end of the report for more information on obtaining the program.</font></p>
+		<p><font face="Times New Roman">The computer must have sound output capability. On the Macintosh, you can use the built-in internal or external sound system or dedicated sound hardware such as a Digidesign AudioMedia, SoundTools or ProTools system or a MediaVision ProAudioSpectrum card.</font></p>
+		<p><font face="Times New Roman">You will need a separate program to play back the audio files generated. For playing sound files on the Mac, you can use SoundDesigner or SoundEdit software or a shareware program such as SoundHack. SoundHack is available via anonymous FTP and can play sound files through the Mac&#146;s built-in sound system using Sound Manager 3.0.</font></p>
+		<p><font face="Times New Roman">You will also need a text editor or word processor in which to create your orchestra and score files. A recommended text editor for the Mac is BBEdit Lite, which is also available via anonymous FTP.</font></p>
+		<h2><font face="Times New Roman"><b>Creating Music with Csound</b></font></h2>
+		<p><font face="Times New Roman">There are three basic steps to creating music with Csound. The first is to create the orchestra and score files. The next is to run Csound, specifying the orchestra and score file names. The program produces a sound file in the format which you select, such as a Sound Designer II or AIFF file. Finally, the sound file can be played back using Sound Designer or another digital audio program.</font></p>
+		<p><font face="Times New Roman">The following guide will help you learn to understand and use Csound. It contains introductory information and tutorials and is meant to complement the manual and tutorials which are included with the program.</font></p>
+		<h2><font face="Times New Roman"><b>Csound&#146;s Concept of Time</b></font></h2>
+		<p><font face="Times New Roman">Before writing Csound files, it is important to understand the program&#146;s concept of processing time. As Csound processes the orchestra and score files, it performs computations at certain times or rates. The three divisions of time are i-time, k-time and a-time. Variables in the orchestra file begin with the letters &quot;i,&quot; &quot;k,&quot; and &quot;a,&quot; corresponding to these time divisions. The value of a variable can change only at its corresponding time.</font></p>
+		<p><font face="Times New Roman">A-time variables can change on each sample (i.e. at the sampling rate specified in the orchestra header). They are used for audio signals which are sent to the output and any signals that must change at the audio rate. For example, in FM synthesis, both the modulator and carrier oscillator frequencies are in the audio range so they would both be a-time variables in Csound.</font></p>
+		<p><font face="Times New Roman">K-time variables change at the control rate (also specified in the orchestra header). K-time variables are used for control signals such as envelope generators. Because the control rate is usually lower than the sample rate, it is more efficient to use k-time instead of a-time variables for slower-changing signals. For example, an amplitude envelope would usually be a k-time variable.</font></p>
+		<p><font face="Times New Roman">I-time (initialization time) occurs at the beginning of each note. Since each note is started by an i-statement in the score, i-statements correspond to i-time. Any variable in the orchestra file beginning with an &quot;i&quot; can only change its value at i-time (i.e. once per note at the beginning of the note). I-time variables are used to initialize note parameters which will not change during the note. For example, if each note played by an instrument is to have a constant pitch, the pitch variable will be an i-time variable.</font></p>
+		<p><font face="Times New Roman">In the score file, each i-statement also has parameter fields which are read by the instruments in the orchestra using p# variables (where # is the parameter number). Since p-fields can only change once per note, they correspond to i-time so are usually assigned to i-time variables.</font></p>
+		<h2><font face="Times New Roman"><b>Orchestra File</b></font></h2>
+		<p><font face="Times New Roman">The orchestra file begins with a header section in which the sample rate, control rate and number of output channels are specified. This is followed by individual instrument sections containing the specifications for each instrument.</font></p>
+		<h2><font face="Times New Roman"><b>Orchestra Header Format</b></font></h2>
+		<p><font face="Times New Roman">The header consists of the following four statements:</font></p>
+		<ul>
+			<p><font face="Courier New">sr = #  ; # is the sample rate<br>
+			kr = #  ; # is the control rate<br>
+			ksmps = # ; # must equal the sample rate divided by the control rate<br>
+			nchnls = # ; # is number of output channels</font></p>
+		</ul>
+		<h2><b><font face="Times New Roman">Orchestra Instrument Format</font></b></h2>
+		<p><font face="Times New Roman">Each instrument block contains the specifications for one instrument. A block is delineated by &quot;instr #&quot; and &quot;endin&quot; (# is the instrument number). In between are the variables and commands which make up the instrument:</font></p>
+		<ul>
+			<p><font face="Courier New">instr # ; starts section for instrument number #<br>
+			...<br>
+			&lt;instrument statements here&gt;<br>
+			...<br>
+			endin ; end of this instrument definition</font></p>
+		</ul>
+		<h2><font face="Times New Roman"><b>Score File</b></font></h2>
+		<p><font face="Times New Roman">The score file consists mostly of i-statements. Each i-statement plays a note on a given instrument in the orchestra and specifies the instrument parameters of the note. The score file usually includes f-statements at the beginning which are used to create wave tables or function tables. It may also include other types of statements such as t-statements for changing tempo.</font></p>
+		<p><font face="Times New Roman">An i-statement line begins with &quot;i#&quot; (where # is the instrument number). It is followed by p-fields separated by spaces or tabs. Each p-field is a numeric value of an instrument parameter. Two p-fields are predefined by CSound. p2 is the note starting time in beats and p3 is the note duration in beats. The default beat rate is one beat per second, which can be changed using a tempo statement. The rest of the p-fields are defined by each individual instrument in the orchestra file.</font></p>
+		<h2><font face="Times New Roman"><b>Example Orchestra and Score Files</b></font></h2>
+		<p><font face="Times New Roman">Below are an example orchestra and score file which are documented to show the meanings of the commands. You can run the files through Csound and listen to the output while following the statements to hear the results.</font></p>
+		<h2><font face="Times New Roman"><b>Example Orchestra File</b></font></h2>
+		<ul>
+			<p><font face="Courier New">sr = 44100 ; sample rate<br>
+			kr = 2205 ; control rate<br>
+			ksmps = 20 ; sr / kr<br>
+			nchnls = 1 ; mono output</font></p>
+			<p><font face="Courier New">instr 1 ; instrument #1, a table-lookup oscillator<br>
+			asignal oscili 10000, 440, 1 ; amp = 10000, freq = 440 Hz, tbl = 1<br>
+			out asignal ; send it to output<br>
+			endin</font><font face="Times New Roman"><br>
+			</font></p>
+			<p><font face="Courier New">instr 2 ; instrument #2, same as #1 but with p-fields for input.<br>
+			asignal oscili p4, p5, p6 ; amp = p4, freq = p5, tbl = p6<br>
+			out asignal<br>
+			endin<br>
+			</font></p>
+			<p><font face="Courier New">instr 3 ; same but more readable<br>
+			iamp = p4 ; init iamp to equal to p4<br>
+			ifreq = p5 ; init ifreq to equal to p5<br>
+			itbl = p6 ; init itbl to equal to p6<br>
+			asignal oscili iamp, ifreq, itbl ; same as #2<br>
+			out asignal<br>
+			endin<br>
+			</font></p>
+			<p><font face="Courier New">instr 4 ; add some control<br>
+			idur = p3 ; remember, p3 is always duration<br>
+			iamp = p4<br>
+			ifreq = p5<br>
+			itbl = p6<br>
+			kenv line 0, idur, iamp ; goes from 0 to iamp in idur time<br>
+			asignal oscili kenv, ifreq, itbl ; now amp has an envelope<br>
+			out asignal<br>
+			endin<br>
+			</font><font face="Times New Roman">&nbsp;</font></p>
+			<p><font face="Courier New">instr 5 ; mix three detuned oscs creates chorus effect<br>
+			idur = p3<br>
+			iamp = p4<br>
+			ifreq = p5<br>
+			itbl = p6<br>
+			kenv line 0, idur, iamp<br>
+			a1 oscili kenv, ifreq, itbl<br>
+			a2 oscili kenv, ifreq * .995, itbl ; detune freq down a bit<br>
+			a3 oscili kenv, ifreq * 1.005, itbl ; detune freq up a bit<br>
+			out a1 + a2 + a3 ; add signals together - same as mixing<br>
+			endin<br>
+			</font></p>
+			<p><font face="Courier New">instr 6 ; build a square wave by additive synthesis<br>
+			iamp = p4<br>
+			ifreq = p5<br>
+			itbl = p6<br>
+			a1 oscili iamp, ifreq, itbl ; fundamental<br>
+			a3 oscili iamp / 3, ifreq * 3, itbl ; 3rd harmonic<br>
+			a5 oscili iamp / 5, ifreq * 5, itbl ; 5th harmonic<br>
+			a7 oscili iamp / 7, ifreq * 7, itbl ; 7th harmonic<br>
+			a9 oscili iamp / 9, ifreq * 9, itbl ; 9th harmonic<br>
+			out a1 + a3 + a5 + a7 + a9 ; add them together<br>
+			endin</font><font face="Times New Roman">&nbsp;</font></p>
+			<p><font face="Courier New">instr 7 ; create an FM pair<br>
+			idur = p3<br>
+			imodamp = p4<br>
+			imodfreq = p5<br>
+			icaramp = p6<br>
+			icarfreq = p7<br>
+			kenv line 0, idur, imodamp ; modulator envelope<br>
+			amod oscili kenv, imodfreq, 1 ; modulator osc with increasing amp, const freq<br>
+			acar oscili icaramp, icarfreq+amod, 1 ; carrier osc with const amp, modulated freq<br>
+			out acar ; only carrier is heard<br>
+			endin</font></p>
+			<p><font face="Courier New">instr 8 ; filtered noise<br>
+			idur = p3<br>
+			iamp = p4<br>
+			istartfreq = p5<br>
+			iendfreq = p6<br>
+			anoise rand iamp ; random (noise) gen<br>
+			kenv expon istartfreq, idur, iendfreq ;exponential envelope for filter frequency<br>
+			afiltnoise reson anoise, kenv, kenv / 12, 2 ;put noise through a resonant filter<br>
+			out afiltnoise<br>
+			endin</font></p>
+			<p><font face="Courier New">instr 9 ; gets input from sound file<br>
+			ifilenum = 1<br>
+			asound soundin ifilenum ;filename = &quot;soundin.1&quot;<br>
+			out asound<br>
+			endin<br>
+			</font></p>
+			<p><font face="Courier New">instr 10 ; sound file with reverb<br>
+			ifilenum = 1<br>
+			irvbtime = p4<br>
+			asound soundin ifilenum ; get sound in<br>
+			arvb reverb asound / 6, irvbtime ; send to reverb at reduced level<br>
+			out asound+arvb ; mix original with reverb<br>
+			endin<br>
+			</font></p>
+			<p><font face="Courier New">instr 11 ; Karplus-Strong plucked string algorithm<br>
+			idur = p3<br>
+			iamp = p4<br>
+			ipitch = p5<br>
+			ifreq = cpspch(ipitch)<br>
+			astring pluck iamp, ifreq, ifreq, 0, 1 ; for full explanation of &quot;pluck,&quot; see Csound manual<br>
+			out astring<br>
+			endin<br>
+			</font></p>
+		</ul>
+		<div align="left">
+			<h2><font face="Times New Roman"><b>Example Score File</b></font></h2>
+		</div>
+		<ul>
+			<p><font face="Courier New">; f1 = sine wave table<br>
+			; create at time 0, length=1024<br>
+			; gen 10 (sine wave partial generator), one harmonic (pure sine wave)<br>
+			</font></p>
+			<p><font face="Courier New">f1 0 1024 10 1<br>
+			</font></p>
+			<p><font face="Courier New">; f2 = sawtooth table</font><font face="Courier New"><br>
+			; use gen 10 to add partials with amp = 1/n<br>
+			</font></p>
+			<p><font face="Courier New">f2 0 1024 10 1 .5 .333333 .25 .2 .166667 .142857 .125<br>
+			</font></p>
+			<p><font face="Courier New">; i1 = table lookup osc</font><font face="Courier New"><br>
+			; i1 start dur<br>
+			</font></p>
+			<p><font face="Courier New">i1 0 1<br>
+			</font></p>
+			<p><font face="Courier New">; i2 = same as i1</font><font face="Courier New"><br>
+			; i2 start dur p4 p5 p6<br>
+			</font></p>
+			<p><font face="Courier New">i2 2 1 10000 440 1<br>
+			</font></p>
+			<p><font face="Courier New">; i3 = same as i1</font><font face="Courier New"><br>
+			; i3 start dur amp freq table<br>
+			; the . means repeat from line above<br>
+			; the + means add last start and dur for new start time<br>
+			; (+ is valid in start field only)<br>
+			</font></p>
+			<p><font face="Courier New">i3 4 1 10000 440 1<br>
+			i3 + . . . 2<br>
+			</font></p>
+			<p><font face="Courier New">; i4 = i1 with envelope</font><font face="Courier New"><br>
+			; i4 start dur amp freq table<br>
+			</font></p>
+			<p><font face="Courier New">i4 7 1 10000 440 2<br>
+			</font></p>
+			<p><font face="Courier New">; i5 = chorusing</font><font face="Courier New"><br>
+			; i5 start dur amp freq table<br>
+			</font></p>
+			<p><font face="Courier New">i5 9 1 10000 440 2<br>
+			</font></p>
+			<p><font face="Courier New">; i6 = additive square wave</font><font face="Courier New"><br>
+			; i6 start dur amp freq table<br>
+			</font></p>
+			<p><font face="Courier New">i6 11 1 10000 440 1<br>
+			</font></p>
+			<p><font face="Courier New">; i7 = FM pair<br>
+			; i7 start dur modamp modfreq caramp carfreq<br>
+			</font></p>
+			<p><font face="Courier New">i7 13 3 10000 220 10000 440<br>
+			</font></p>
+			<p><font face="Courier New">; i8 = filtered noise</font><font face="Courier New"><br>
+			; i8 start dur amp startfreq endfreq<br>
+			</font></p>
+			<p><font face="Courier New">i8 17 3 10000 10000 20<br>
+			</font></p>
+			<p><font face="Courier New">; i9 = sampler</font><font face="Courier New"><br>
+			; i9 start dur<br>
+			</font></p>
+			<p><font face="Courier New">i9 21 3<br>
+			</font></p>
+			<p><font face="Courier New">; i10 = sampler with reverb</font><font face="Courier New"><br>
+			; i10 start dur rvbtime<br>
+			</font></p>
+			<p><font face="Courier New">i10 25 6 3<br>
+			</font></p>
+			<p><font face="Courier New">; i11 = plucked string</font><font face="Courier New"><br>
+			; i11 start dur amp pitch<br>
+			</font></p>
+			<p><font face="Courier New">i11 32 .5 10000 8.00<br>
+			i11 + . . 8.04<br>
+			i11 + . . 8.00<br>
+			i11 + . . 8.07<br>
+			i11 + . . 8.00<br>
+			i11 + 3 . 9.00<br>
+			</font></p>
+		</ul>
+		<h2><font face="Times New Roman"><b>Creating a Csound Instrument from a Model</b></font></h2>
+		<p><font face="Times New Roman">One useful aspect of Csound is that it is easy to create a synthesized instrument from a model or block diagram. In this section, a diagram and description of an FM instrument for playing brass-like tones will be used to demonstrate how to go from an instrument model to a Csound instrument. The model is from John Chowning&#146;s paper on FM synthesis entitled &quot;The Synthesis of Complex Audio Spectra by Means of Frequency Modulation.&quot;</font></p>
+		<p><font face="Times New Roman">Excerpts from the paper with the instrument diagram and description are included in the appendix to this report. The block diagram in Figure 1.10 will be used to create an instrument in the orchestra file.</font></p>
+		<p><font face="Times New Roman">The top of the orchestra file must begin with a header specifying the sampling rate, control rate and number of output channels:</font></p>
+		<ul>
+			<p><font face="Courier New">sr = 44100 ; sampling rate<br>
+			kr = 4410 ; control rate<br>
+			ksmps = 10 ; sr / kr<br>
+			nchnls = 1 ; one output channel<br>
+			</font></p>
+		</ul>
+		<p><font face="Times New Roman">Next begins the instrument definition. This model has several input parameters, which are listed in the text and shown across the top of the diagram. These correspond to instrument parameters in Csound (p#, where # is the parameter number). The parameters for this instrument are duration (p3), amplitude (p4), carrier frequency (p5), modulating frequency (p6), modulation index 1 (p7) and modulation index 2 (p8). These are defined as i-time variables because they are set at the beginning (initialization) of each note:</font></p>
+		<ul>
+			<p><font face="Courier New">instr 1 ; instrument #1<br>
+			idur = p3<br>
+			iamp = p4<br>
+			icarfreq = p5<br>
+			imodfreq = p6<br>
+			imodindex1 = p7<br>
+			imodindex2 = p8<br>
+			</font></p>
+		</ul>
+		<p><font face="Times New Roman">Two more parameters, dev1 and dev2, are calculated from the input parameters. The formulas given can be used explicitly to define these parameters:</font></p>
+		<ul>
+			<p><font face="Courier New">idev1 = p7 * p6<br>
+			idev2 = (p8 - p7) * p6</font></p>
+		</ul>
+		<p><font face="Times New Roman">Next, the signal flow of the diagram is followed and recreated. The first step is to create the two envelope generators, labeled u.g.4 and u.g.5. Figure 1.11 in Chowning&#146;s paper shows the envelope function for brass-like tones as a series of line segments. The levels are from 0 to 1 and the times are given as a fraction of the duration. In Csound, the &quot;linseg&quot; function can be used to create this envelope.</font></p>
+		<p><font face="Times New Roman">The parameters to linseg alternate &lt;level&gt; &lt;time&gt; &lt;level&gt; &lt;time&gt; &lt;level&gt; etc., where &lt;time&gt; is the time it takes to move between the two surrounding &lt;level&gt; values. Because an envelope is a control function, it should be defined as a k-time variable:</font></p>
+		<ul>
+			<p><font face="Courier New">kbrassenv linseg 0, idur/6, 1, idur/6, .75, idur/2, .65, idur/6, 0</font></p>
+		</ul>
+		<p><font face="Times New Roman">This envelope function is used to create u.g.4 and u.g.5. The frequency input to the envelope generators is implicit in the envelope function (the &quot;frequency&quot; of the envelope is one over its duration, which is the duration of this envelope function). The amplitude inputs are simply scaling amounts, which correspond to multiplying the envelope function by the amplitude:</font></p>
+		<ul>
+			<p><font face="Courier New">kug4 = iamp * kbrassenv<br>
+			kug5 = idev2 * kbrassenv<br>
+			</font></p>
+		</ul>
+		<p><font face="Times New Roman">The next function, u.g.6, is a simple adder. This must be a k-time variable since it adds a value from another k-time variable:</font></p>
+		<ul>
+			<p><font face="Courier New">kug6 = idev1 + kug5<br>
+			</font></p>
+		</ul>
+		<p><font face="Times New Roman">Csound&#146;s &quot;oscili&quot; command is used to create u.g.1, which is a sine wave oscillator. The amplitude input of the oscillator is u.g.6 and the frequency input is the modulating frequency. Since the frequency will be in the audio range, an a-time variable must be used:</font></p>
+		<ul>
+			<p><font face="Courier New">aug1 oscili kug6, imodfreq, 1</font></p>
+		</ul>
+		<p><font face="Times New Roman">The score file will need to define wave table 1 to be a sine wave. Another adder, u.g.2, adds the carrier frequency plus u.g.1. This must also be an a-time variable, since it will add values from an another a-time variable:</font></p>
+		<ul>
+			<p><font face="Courier New">aug2 = icarfreq + aug1</font></p>
+		</ul>
+		<p><font face="Times New Roman">The last function is u.g.3, the carrier oscillator. It is a sine wave oscillator with amplitude input from u.g.4 and frequency input from u.g.2:</font></p>
+		<ul>
+			<p><font face="Courier New">aug3 oscili kug4, aug2, 1</font></p>
+		</ul>
+		<p><font face="Times New Roman">Finally, the carrier is output using the &quot;out&quot; function and the instrument block is ended:</font></p>
+		<ul>
+			<p><font face="Courier New">out aug3<br>
+			endin</font></p>
+		</ul>
+		<p><font face="Times New Roman">The completed instrument looks like this:</font></p>
+		<ul>
+			<p><font face="Courier New">instr 1<br>
+			idur = p3<br>
+			iamp = p4<br>
+			icarfreq = p5<br>
+			imodfreq = p6<br>
+			imodindex1 = p7<br>
+			imodindex2 = p8<br>
+			idev1 = p7 * p6<br>
+			idev2 = (p8 - p7) * p6<br>
+			kbrassenv linseg 0, idur/6, 1, idur/6, .75, idur/2, .65, idur/6, 0<br>
+			kug4 = iamp * kbrassenv<br>
+			kug5 = idev2 * kbrassenv<br>
+			kug6 = idev1 + kug5<br>
+			aug1 oscili kug6, imodfreq, 1<br>
+			aug2 = icarfreq + aug1<br>
+			aug3 oscili kug4, aug2, 1<br>
+			out aug3<br>
+			endin<br>
+			</font></p>
+		</ul>
+		<p><font face="Times New Roman">The score file begins with the sine wave table definition. A sine wave can be created using Csound&#146;s &quot;gen 10&quot; function. Wave table &quot;f1&quot; is defined to be created at time 0 (so it is available for use right away), with a length of 1024 points (an adequate size in this case), using &quot;gen&quot; function number 10 to generate a single partial (a fundamental sine wave):</font></p>
+		<ul>
+			<p><font face="Courier New">f1 0 1024 10 1</font></p>
+		</ul>
+		<p><font face="Times New Roman">Chowning&#146;s text specifies the parameters to be used for brass-like tones. These are used to play a note on the instrument:</font></p>
+		<ul>
+			<p><font face="Courier New">; i1 start dur amp carfreq modfreq modindex1 modindex2<br>
+			</font></p>
+			<p><font face="Courier New">i1 0 0.6 10000 440 440 0 5</font></p>
+		</ul>
+		<p><font face="Times New Roman">If the input parameters are modified and the envelope function is changed to an exponential decay, the same basic instrument design can be used to create other types of sounds. Here is the modified instrument definition for Chowning&#146;s bell-like sound:</font></p>
+		<ul>
+			<p><font face="Courier New">instr 2<br>
+			idur = p3<br>
+			iamp = p4<br>
+			icarfreq = p5<br>
+			imodfreq = p6<br>
+			imodindex1 = p7<br>
+			imodindex2 = p8<br>
+			idev1 = p7 * p6<br>
+			idev2 = (p8 - p7) * p6<br>
+			kbellenv expon 1, idur, .000001 ; expon can go close but not all the way to zero<br>
+			kug4 = iamp * kbellenv<br>
+			kug5 = idev2 * kbellenv<br>
+			kug6 = idev1 + kug5<br>
+			aug1 oscili kug6, imodfreq, 1<br>
+			aug2 = icarfreq + aug1<br>
+			aug3 oscili kug4, aug2, 1<br>
+			out aug3<br>
+			endin<br>
+			</font></p>
+		</ul>
+		<p><font face="Times New Roman">These are the note parameters for the sound:</font></p>
+		<p><font face="Courier New">; i2 start dur amp carfreq modfreq modindex1 modindex2</font></p>
+		<p><font face="Courier New">i2 0 15 10000 200 280 0 10</font></p>
+		<h2><font face="Times New Roman"><b>Using MIDI Input in Csound</b></font></h2>
+		<p><font face="Times New Roman">Csound can accept MIDI from a live input or a standard MIDI file and use it to play instruments in the orchestra. There are two ways to use MIDI file input with Csound. One is to use the MIDI-to-Csound program to convert a standard MIDI file into a score file. The other is to use special commands in the instrument definitions which accept MIDI input. The first method allows for faster processing. The second method allows for more versatility in that continuous controllers can be used in the instrument definitions.</font></p>
+		<p><font face="Times New Roman">To use the MIDI-to-Csound program, first create and save a MIDI sequence as a standard MIDI file. When you run MIDI-to-Csound, you must first set up the parameter mapping information. The program provides a self-explanatory dialog box for assigning MIDI information to p-fields in a Csound score. Each of the sixteen channels can be assigned to a Csound instrument, or patch changes can be used to select the instruments. MIDI note and controller information can be assigned to p4 through p7. It is customary to set p4 equal to MIDI velocity and p5 equal to MIDI pitch. The program automatically assigns p2 as the note starting time and p3 as the duration.</font></p>
+		<p><font face="Times New Roman">After setting up the parameter map, you can open and convert a standard MIDI file. The program will output a standard Csound score text file. To this file, you can add other information as needed. Mainly, you will probably need to add f-statements for wave tables.</font></p>
+		<p><font face="Times New Roman">Since MIDI-to-Csound simply places MIDI values in the p-fields, your instruments must convert these values to more useful quantities. Here is an example of an instrument which plays an oscillator using MIDI notes. It assumes that p4 was assigned to MIDI velocity and p5 was assigned to MIDI Pitch. A velocity from 0-127 is converted to an amplitude range of 0 to 10000. A pitch from 0-127 is converted to &quot;octave point decimal&quot; (or &quot;oct&quot;) format, where middle C (MIDI note 60) equals 8.00. Then, the oct value is converted to frequency in cycles per second (&quot;cps&quot; format) using the &quot;cpsoct&quot; command.</font></p>
+		<ul>
+			<p><font face="Courier New">instr 1<br>
+			idur = p3 ; duration is set automatically in p3<br>
+			iamp = p4 * 10000 / 127 ; convert 0-127 to 0-10000<br>
+			ifreq = cpsoct(p5 / 12 + 3) ; convert 0-127 to cycles per second<br>
+			anote oscili iamp, ifreq, 1 ; play an oscil with the note<br>
+			out anote<br>
+			endin</font></p>
+		</ul>
+		<p><font face="Times New Roman">To get MIDI file input directly into Csound, you must use MIDI input commands in the instrument definitions of the orchestra file. The score file will contain lines to activate each instrument, but the instruments will be played and controlled by MIDI information. The startup dialog box for Csound has an option for selecting the standard MIDI file to be used.</font></p>
+		<p><font face="Times New Roman">Here is an example instrument which uses direct MIDI input. This instrument gets notes from MIDI and converts note number to frequency. Amplitude comes from velocity and is converted to a range of 0-10000. It also gets continuous pitch bend data and scales it to a range of 0-1. This is used to bend the pitch in the positive direction up to an octave.</font></p>
+		<ul>
+			<p><font face="Courier New">instr 1<br>
+			iamp ampmidi 10000 ;get velocity, scale to 0-10000<br>
+			ifreq cpsmidi ;get note number in cps<br>
+			kbend pchbend 1 ;get pitch bend, scale to 0-1<br>
+			knewfreq = ifreq + ifreq * kbend ;compute new freq with pitch bend<br>
+			anote oscili iamp, knewfreq, 1<br>
+			out anote<br>
+			endin<br>
+			</font></p>
+		</ul>
+		<p><font face="Times New Roman">The score file contains a wave table for the oscillator and a line to activate the instrument for 60 seconds. The instrument will then wait for notes to come from the MIDI file.</font></p>
+		<ul>
+			<p><font face="Courier New">; a sine wave ftable</font></p>
+			<p><font face="Courier New">f1 0 4096 10 1</font></p>
+			<p><font face="Courier New">; activate for 60 seconds, wait for MIDI</font></p>
+			<p><font face="Courier New">i1 0 60</font></p>
+		</ul>
+		<h2><font face="Times New Roman"><b>Csound Mailing List</b></font></h2>
+		<p><font face="Times New Roman">To subscribe to the Csound mailing list, send mail to Majordomo@maths.ex.ac.uk with the line &quot;subscribe csound &lt;yourname@youraddress&gt;&quot; in the body of the message. You will receive a welcome message to let you know that you are subscribed and will begin receiving mail from other users posting to the list. To post your own message, send it to csound@maths.ex.ac.uk.</font></p>
+		<h2><font face="Times New Roman"><b>Bibliography</b></font></h2>
+		<p><font face="Times New Roman" size="2"> The following bibliography contains references useful to the Csound user. Each reference is followed by a description of the subject matter.</font><font face="Times New Roman"><br>
+		Borin, G., De Poli, G., and Sarti, A. &quot;Algorithms and Structures for Synthesis Using Physical Models,&quot; <i>Computer Music Journal</i> , vol. 16, no. 4, 1992</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(Examples of physical modeling synthesis)</font><font face="Times New Roman"><br>
+		Chowning, John, and David Bristow, <i>FM Theory &amp; Applications: By Musicians for Musicians</i>, Tokyo: Yamaha Music Foundation, 1986</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(Easy guide to FM synthesis)</font><font face="Times New Roman"><br>
+		Chowning, John M., &quot;The Synthesis of Complex Audio Spectra by Means of Frequency Modulation,&quot; <i>Journal of the Audio Engineering Society</i>, 21(7), 1973</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(John Chowning&#146;s original FM synthesis paper)</font><font face="Times New Roman"><br>
+		Dodge, Charles and Thomas A. Jerse, <i>Computer Music: Synthesis, Composition, and Performance, </i>New York: Schirmer Books, 1985</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(Good source for instrument models; excellent all-around computer music reference)</font><font face="Times New Roman"><br>
+		Dolson, Mark, &quot;The Phase Vocoder: A Tutorial,&quot; <i>Computer Music Journal</i> , vol. 10, no. 4, 1986</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(Phase vocoding is available in Csound with the pvoc command and pvanal program)</font><font face="Times New Roman"><br>
+		Hiller, Lejaren A., <i>Experimental Music</i>, New York: McGraw-Hill, 1959</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(Early book on algorithmic composition and computer music)</font><font face="Times New Roman"><br>
+		Karplus, R., and A. Strong, &quot;Digital Synthesis of Plucked String and Drum Timbres,&quot; <i>Computer Music Journal</i>, vol.7, no.2, 1983</font><font face="Times New Roman"><br>
+		</font><font face="Times New Roman" size="2">(Csound &quot;pluck&quot; command is based on the Karplus-Strong algorithm)</font><font face="Times New Roman"><br>
+		Mathews, Max V., et. al., <i>The Technology of Computer Music</i>, Cambridge, Mass: M.I.T. Press, 1969</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(Articles and papers pertaining to computer music by many authors)</font><font face="Times New Roman"><br>
+		Mathews, Max V. and John R. Pierce, ed., <i>Current Directions in Computer Music Research, </i>Cambridge, MA<i>: </i>MIT Press, 1989</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(Includes many articles on advanced software synthesis techniques)</font><font face="Times New Roman"><br>
+		Moore, F. Richard, <i>Elements of Computer Music, </i>Englewood Cliffs, NJ: Prentice Hall, 1990</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(Covers many areas of digital audio and synthesis, discusses software synthesis with <i>cmusic, </i>a precursor to Csound)</font><font face="Times New Roman"><br>
+		Pierce, John R., <i>The Science of Musical Sound</i>, New York: Freeman, 1992</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(Science and physics behind musical sound)</font><font face="Times New Roman"><br>
+		Roads, Curtis, &quot;Physical Modeling: The History of Digital Simulations of Acoustic Instruments,&quot; <i>Keyboard Magazine</i>, Sept. 1994</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(Recent article about the up-and-coming area of physical modeling synthesis)</font><font face="Times New Roman"><br>
+		Roads, Curtis, ed., <i>The Music Machine</i>, Cambridge, Mass: MIT Press, 1989</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(Articles and papers pertaining to computer music by many authors)</font><font face="Times New Roman"><br>
+		Risset, Jean-Claude, <i>An Introductory Catalogue of Computer-Synthesized Sound</i>, Murray Hil, NJ: Bell Telephone Laboratories, 1969</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(Early work by Risset on synthesized instruments)</font><font face="Times New Roman"><br>
+		Risset, Jean-Claude, and M. V. Mathews, &quot;Analysis of musical instrument tones, &quot; <i>Physics Today</i> 22(2), 1969</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(Analysis of trumpets and other tones)</font><font face="Times New Roman"><br>
+		Roads, Curtis and John Strawn (editors), <i>Foundations of Computer Music, </i>Cambridge, Mass: MIT Press, 1988</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(Includes many articles on software synthesis techniques)</font><font face="Times New Roman"><br>
+		Vercoe, Barry L. et al, <i>Csound Manual, </i>&copy;1986, 1992 Massachusetts Institute of Technology</font><font face="Times New Roman"><br>
+		 </font><font face="Times New Roman" size="2">(User&#146;s guide and reference manual for Csound, includes an excellent Csound tutorial by Richard Boulanger)</font><font face="Times New Roman"><br>
+		</font></p>
+		<h2><font face="Times New Roman"><b>Appendix</b></font></h2>
+		<p><font face="Times New Roman">The following two pages are from &quot;The Synthesis of Complex Audio Spectra by Means of Frequency Modulation&quot; by John M. Chowning. These are referred to in the section of this report entitled &quot;Creating a Csound Instrument from a Model.&quot;</font>
+	</body>
+
+</html>

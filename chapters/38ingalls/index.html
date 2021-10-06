@@ -1,0 +1,286 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Composing with Csound on the Macintosh</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">36. Composing with Csound on
+the Macintosh</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Matt Ingalls</FONT></H2>
+
+<P><FONT FACE="Times New Roman">Berry, Madole, and I began the
+<I>Csound</I> development for mainly selfish reasons. Although
+we were extremely responsive to other's comments and suggestions,
+most of our changes to the application were things we wanted for
+our own composing with <I>Csound</I>. It is not surprising then,
+that the first developments I made were things I personally needed
+to work with <I>Csound</I>. As a result, I started to compose
+with our version soon after the development began. To date, I
+have written two works with <I>Csound</I>, both entitled <I>f(Ear).</I>
+The first composition is a seventy minute work for four channel
+tape and seven instruments, written for my Master's Thesis Concert
+at Mills College. The second work, an eight minute tape piece,
+was commissioned by the Society for Electro-Acoustic Music in
+the United States (SEAMUS) and ASCAP for the 1997 SEAMUS Conference
+in Kansas City. Both works were composed completely on a Macintosh,
+taking full advantage of the new features in <I>Csound</I>.</FONT></P>
+
+<P><FONT FACE="Times New Roman">With both works, I used <I>Csound</I>
+to generate individual gestures and textures, saving them as separate
+sound files. Then, I used <I>DeckII</I>, a mixing program similar
+to <I>ProTools</I>, to mix the files into a working piece of music.
+For the thesis work, I took advantage of the four channel output
+provided by the <I>ProTools</I> hardware by assigning each channel
+to one of the intended four speakers. Although <I>Csound</I> can
+produce four channel sound files, <I>DeckII</I> cannot recognize
+them. As a result, I had to use two Csound orchestras for one
+score. The orchestras were identical to each other except that
+one contained the front speaker output, while the other contained
+output for the back speakers.</FONT></P>
+
+<P><FONT FACE="Times New Roman">To generate all four channels
+with one button click, I saved two command lines with the different
+orchestras to a &quot;batch&quot; file. Batch files are one of
+the new features I added to <I>Csound</I>. By creating the ability
+to save a UNIX-style command line of all the current settings
+and files, a batch file allows a user to automate multiple <I>perf</I>
+generations of command lines sequentially. This feature takes
+full advantage of the <I>Csound/perf</I> separation, becoming
+especially useful in situations where multiple passes of different
+processing instruments are desired.</FONT></P>
+
+<P><FONT FACE="Times New Roman">As with previous compositions
+on other platforms, the main method I use on the Macintosh has
+been the generation of Csound scores. Since I was actually developing
+the Macintosh version, I was able, for the first time, to include
+the score generator within <I>Csound</I> itself. Although there
+are many freely-distributed score generator applications available,
+the one I included in the front-end interface is unique in that
+it allows a composer to combine normal Csound score data and score
+generation data within the same score file. This feature has reduced
+the amount of applications and text files I have had to work with,
+making score generation easier and faster. In fact, with the proper
+options selected, I can now use score generation just like a normal
+Csound score, with all the additional processing steps hidden
+from me by the application.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The score generator, described
+in detail in the appendix, is a simple, convenient way to generate
+gestures of Csound score note events algorithmically. The intended
+use is for granular synthesis, but the score generator can be
+useful for creating many other types of gestures and textures.
+By easily producing huge numbers of note events, the score generator
+can greatly simplify complex Csound instruments, reduce the amount
+of debugging, and even speed up sound rendering performance in
+some cases.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The data for the score generator
+consists of functions describing boundaries of randomness for
+each note parameter field in the generated gesture. These functions
+are written in a &quot;source&quot; score, signified by a newly
+defined statement: 'p'. When &quot;Score Generation&quot; is selected
+in the front-end, the source score is copied character by character
+to the new score, except for 'p' statements, which are interpreted
+and later compiled into a gesture of note ('i') events.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In addition to having the score
+generation data inside a normal Csound score, I have added many
+new features not present in my previous score generator programs.
+I have taken full advantage of these new improvements within my
+<I>f(Ear)</I> compositions, which make extensive use of <I>Csound's</I>
+score generator. For example, in the commissioned work, I created
+a series of random chords with random orchestration by using the
+new &quot;quantize&quot; feature. This feature let me create a
+texture of notes with their start-times rounded to the nearest
+quantum value that I set. With a large value and a large density,
+I was able to stack notes to create chords. In addition, the &quot;exponential
+interpolation&quot; and &quot;exponential random distribution&quot;
+features, two other new additions to the score generator, have
+proven especially useful for specifying textures dealing with
+density. With these features, it is possible to generate a texture
+with a constant density, but with note start times disproportionally
+distributed.</FONT></P>
+
+<P><FONT FACE="Times New Roman">To save all my current options,
+file names, and default directories while composing both <I>f(Ear)
+</I>works, I frequently used the newly implemented &quot;project&quot;
+files. This saved valuable studio time usually wasted finding
+and opening files at the start of a composing session. I implemented
+project files to have an easy way to ensure that settings were
+correct, which were often changed on a multi-user or multi-project
+system. Previously at Mills, with multiple users on one computer,
+other students would frequently change the location of the default
+sound file directory, sometimes confusing the next user as to
+why their sound files were not being read or created properly.
+Now with project files, this is no longer a problem.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Of course, I constantly use a
+text editor while composing in <I>Csound</I>, and the ability
+to select a preferred text editor has proven very significant
+to my new way of working on the Macintosh. During our development,
+I enabled <I>Csound</I> to automatically open selected files inside
+my text editor. This feature proved extremely useful, for if not
+generating sound, the majority of time spent working with <I>Csound</I>
+is in a text editor editing orchestras and scores. With the new
+developments, however, <I>Csound</I> took care of switching between
+the two applications, so I could spend more time composing.</FONT></P>
+
+<P><FONT FACE="Times New Roman">My most recent compositions have
+also taken advantage of <I>Csound's</I> enhanced implementation
+of floating-point files. In fact, I estimate that using floating-point
+files has saved me hours of work that might have been spent correcting
+sound files with improper amplitudes. Floating-point files are
+extremely useful because they can be scaled and combined freely
+without a loss in fidelity. In addition, since there is no set
+maximum value, it is impossible for floating-point sound files
+to contain any &quot;clipped&quot; samples out of range like integer
+sound files can.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In fact, <I>Csound</I> has always
+had the ability to create and read floating-point files, but was
+never fully supported in the previous Macintosh versions. In the
+latest version, however, Dave Madole added three important and
+useful additions to <I>Csound's</I> use of floats. First, the
+ability to play floating-point sound files was implemented. The
+Macintosh Sound Manager can only play sixteen and eight bit integer
+sound file formats, so almost every Macintosh sound application
+does not support the floating-point formats. As a result, it was
+almost pointless to generate sound in floats, since there was
+no way to hear the sound. Madole enabled the floating-point playback
+ability by simply scaling each sample to a sixteen bit integer
+before sending it to the play routines. The scale factor, coincidentally,
+was already present in <I>Csound's</I> internal workings.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In supporting floats, however,
+there was no way to store the maximum value of a sound file: a
+definite problem. Some file formats which support floating-point,
+such as IRCAM, store the maximum float value in their headers.
+However, none of the file formats supported on the previous Macintosh
+versions of Csound contained header information for floating-point.
+Madole, with the cooperation of Tom Erbe at CalArts, has created
+a new AIFF-C file format option for floating-point, making space
+to store the maximum value of the sound in the header. It is our
+hope that the computer music community will support this standard.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The final floating-point improvement
+was the added option to have a generated floating-point sound
+file automatically rescaled to a sixteen bit integer file. With
+the option enabled, <I>perf</I> generates a sound file in floating-point,
+then, after generation, rescales the entire file to sixteen bit
+integers with a full maximum amplitude. Not only does this eliminate
+any samples out of range, but it assures the best fidelity by
+using the full amplitude range possible for sixteen bit sound
+files. This option has proven extremely useful in saving time
+and improving sound quality. At Mills, virtually every user of
+<I>Csound</I> uses this format exclusively.</FONT></P>
+
+<P><FONT FACE="Times New Roman">By far, the <I>Csound</I> improvement
+having the most profound effect upon my work has been the addition
+of the playback features. While composing both <I>f(Ear)</I> works,
+I could actually listen to the sound as soon as it was generated,
+as many times as needed within the same program. In fact, with
+the new &quot;Play Sound File When Done&quot; option selected,
+I was able to generate and listen to sounds with one mouse click.
+This was a first in my usage of Csound on any platform, and something
+for which I have been waiting for a long time.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In addition, the &quot;transport&quot;
+window, prototyped by Berry, and later implemented by Madole,
+has allowed me to hear my current sound file during and after
+generation. Before our development, I was wasting valuable studio
+time waiting for a Csound run to finish, only to find that the
+entire resulting file was either silence or unusable in some way.
+The transport is very significant in that for the first time a
+composer need not wait until the generation of a sound file is
+complete to hear it. In fact, while working on my thesis composition,
+I developed a habit to always pause the generation after only
+a few seconds of rendering, making sure nothing was entered wrong
+into the score or orchestra. I find it hard to believe that it
+took so long for someone to implement such a simple, yet essential
+feature. To the best of my knowledge, the Macintosh version is
+the only platform with this valuable addition.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In addition to playing a sound
+file, <I>Csound's</I> new playing routines are also used in real-time
+processes. Previously, Erik Dahl's version included real-time
+playback through the Macintosh Sound Manager, but it was not fully
+implemented. Using the sound routines from Mike Berry's own real-time
+synthesis application, <I>Grainwave</I>, Berry and Madole replaced
+Dahl's code, streamlining and modifying the <I>Grainwave</I> code
+to meet <I>Csound's</I> needs. In the early 1990s Csound had already
+been modified to allow the possibility of running in real-time,
+so hardly any changes had to be made in the core source. Once
+in place, the new sound code proved to be more robust and efficient
+than the previous version, making real-time generation of a moderately
+simple score and orchestra possible.</FONT></P>
+
+<P><FONT FACE="Times New Roman">As with my first experience with
+real-time mixing, <I>Csound's</I> real-time features have given
+me new methods and ways of thinking about tape music composition.
+For example, I used real-time sound playback to explore and tune
+<I>f(Ear)'s </I>instrument parameters, using either MIDI input
+or Berry's additions to the &quot;xyin&quot; unit generator. With
+real-time audio feedback, I was able to find &quot;sweet spots&quot;
+in my orchestra with greater speed and accuracy. In addition,
+I was able to use MIDI control to explore the full palette of
+possible sounds in an instrument, which is not easily accomplished
+through typing note parameters in a score.</FONT></P>
+
+<P><FONT FACE="Times New Roman">One final addition to <I>Csound's</I>
+real-time sound implementation is real-time input. As before,
+the routines were taken from <I>Grainwave</I> and implemented
+by Berry and Madole. Although still limited by problems in the
+Macintosh Operating System, real-time input offers huge potential
+for using <I>Csound</I> as a software effects processor and real-time
+sampler. Although I have not yet created any music with this feature,
+I have plans to do so in the near future. One potential project
+is to use <I>Csound</I> to process and sample clarinet sounds
+in real-time. Running an algorithmic interactive software (<I>HMSL</I>)
+on another computer, I hope to control <I>Csound</I> via MIDI,
+creating an &quot;intelligent&quot; effects processor.&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Conclusion</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The new features in <I>Csound</I>
+have greatly increased my productivity in composing tape music.
+The speed of current computers combined with the ease of our new
+interface on top of the Macintosh Operating System has made the
+composition of both <I>f(Ear)</I> works the least frustrating
+computer music experience I have ever had. The ability to actually
+modify the tools I use to compose has been an invaluable resource
+to me and my compositions. In addition, it has been a thrill to
+create and freely distribute something that not only I find useful,
+but people around the world find useful, as well. Already, other
+composers have premiered new works created with our new version
+of <I>Csound</I>.</FONT></P>
+
+<P><FONT FACE="Times New Roman">My desire for the future is to
+further enhance my working environment, again with free software
+development. The <I>Csound</I> development has given me a nice
+way of composing by creating (and listening to) gestures in <I>Csound</I>,
+but unfortunately I still have to combine them using a commercial
+mixing application. Just as I had many annoyances with Erik Dahl's
+Csound version before we developed it further, I have many problems
+with the commercially available mixing programs. Since it is impossible
+to inherit code from these commercial software companies, an application
+will have to be created from scratch.</FONT></P>
+
+<P><FONT FACE="Times New Roman">This new application would be
+a &quot;Csound mixer,&quot; encompassing both <I>Csound</I> and
+a graphical mixing environment. While eliminating the numerous
+useless and arcane features contained in most commercial mixing
+applications, both applications could be combined into something
+that functioned both as a graphical score editor and a digital
+mixer. Most certainly, this new application would include all
+the important features I have been using in my recent composing,
+such as floating-point files, real-time processing, algorithmic
+note generation, and interapplication communication. Many composers
+and sound designers, including myself, are in need of such a tool,
+and it is my hope that <I>Csound</I> development will continue
+in this direction.</FONT>
+
+</BODY>
+</HTML>

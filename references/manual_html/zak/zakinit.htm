@@ -1,0 +1,79 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>zakinit</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="top.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="ziw.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/zak.htm" class="toqr">
+Zak Patch System</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>zakinit</h2>
+
+<pre>
+          <strong>zakinit</strong>   isizea, isizek
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Establishes zak space. Must be called only once.
+</p>
+<h3>Initialization</h3>
+<p><em>isizea</em> &#8211; the number of audio rate locations for a-rate patching. Each location is actually an array which is ksmps long.
+</p>
+<p><em>isizek</em> &#8211; the number of locations to reserve for floats in the zk space. These can be written and read at i- and k-rates.
+</p>
+<h3>Performance</h3>
+<p>At least one location each is always allocated for both za and zk spaces. There can be thousands or tens of thousands za and zk ranges, but most pieces probably only need a few dozen for patching signals. These patching locations are referred to by number in the other zak opcodes.
+</p>
+<p>To run <strong>zakinit</strong> only once, put it outside any instrument definition, in the orchestra file header, after <strong>sr</strong>,<strong> kr</strong>,<strong> ksmps</strong>, and <strong>nchnls.</strong>
+</p>
+<h3>Example</h3>
+
+<pre>
+          <strong>zakinit</strong>   10 30 
+</pre>
+<p>reserves memory for locations 0 to 30 of zk space and for locations 0 to 10 of a-rate za space. With ksmps = 8, this would take 31 floats for zk and 80 floats for za space.
+</p>
+<h3>Author</h3>
+<p>Robin Whittle<br>
+Australia<br>
+May 1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="top.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="ziw.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/zak.htm" class="toqr">
+Zak Patch System</font></a>
+</body>
+
+</html>

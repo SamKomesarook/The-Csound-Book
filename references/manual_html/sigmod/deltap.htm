@@ -1,0 +1,112 @@
+
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>deltap, deltapi, deltapn, deltap3</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="delayr.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="multitap.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#delay" class="toqr">
+Signal Modifiers: Delay</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>deltap, deltapi, deltapn, deltap3</h2>
+
+<pre>
+  ar      <strong>deltap</strong>     kdlt
+  ar      <strong>deltapi</strong>    xdlt
+  ar      <strong>deltapn</strong>    xnumsamps
+  ar      <strong>deltap3</strong>    xdlt
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+
+Tap a delay line at variable offset times. 
+<h3>Performance</h3>
+<p>These units can tap into a <strong>delayr</strong>/<strong>delayw</strong> pair, extracting delayed audio from the <em>idlt</em> seconds of stored sound. There can be any number of <strong>deltap</strong> and/or <strong>deltapi</strong> units between a read/write pair. Each receives an audio tap with no change of original amplitude.
+</p>
+<p><strong>deltap</strong> extracts sound by reading the stored samples directly; <strong>deltapi</strong> extracts sound by interpolated readout. By interpolating between adjacent stored samples <strong>deltapi</strong> represents a particular delay time with more accuracy, but it will take about twice as long to run.
+</p>
+<p>The arguments <em>kdlt</em>, <em>xdlt</em> specify the tapped delay time in seconds. Each can range from 1 control period to the full delay time of the read/write pair; however, since there is no internal check for adherence to this range, the user is wholly responsible. Each argument can be a constant, a variable, or a time-varying signal; the <em>xdlt</em> argument in <strong>deltapi</strong> implies that an audio-varying delay is permitted there. deltapn is identical to <strong>deltapi</strong>, except delay time is specified in number of samples, instead of seconds (Hans Mikelson). <strong>deltap3</strong> is experimental, and uses cubic interpolation. (New in Csound version 3.50.)
+</p>
+<p>These units can provide multiple delay taps for arbitrary delay path and feedback networks. They can deliver either constant-time or time-varying taps, and are useful for building chorus effects, harmonizers, and Doppler shifts. Constant-time delay taps (and some slowly changing ones) do not need interpolated readout; they are well served by <strong>deltap</strong>. Medium-paced or fast varying dlt's, however, will need the extra services of <strong>deltapi</strong>.
+</p>
+<p><strong>delayr</strong>/<strong>delayw</strong> pairs may be interleaved. To associate a delay tap unit with a specific <strong>delayr</strong> unit, it not only has to be located between that <strong>delayr</strong> and the appropriate <strong>delayw</strong> unit, but must also precede any following <strong>delayr</strong> units. See Example 2. (This feature added in Csound version 3.57 by Jens Groh and John ffitch).
+</p>
+<p><strong>N.B.</strong> k-rate delay times are not internally interpolated, but rather lay down stepped time-shifts of audio samples; this will be found quite adequate for slowly changing tap times. For medium to fast-paced changes, however, one should provide a higher resolution audio-rate timeshift as input.
+</p>
+<h3>Example</h3>
+
+<p><strong>Example 1</strong></p>
+<pre>
+  asource  <strong>buzz</strong>      1, 440, 20, 1
+  atime    <strong>linseg</strong>    1, p3/2,.01, p3/2,1   ; trace a distance in secs
+  ampfac   <strong>=</strong>         1/atime/atime         ; and calc an amp factor
+  adump    <strong>delayr</strong>    1                     ; set maximum distance
+  amove    <strong>deltapi</strong>   atime                 ; move sound source past
+           <strong>delayw</strong>    asource               ; the listener
+           <strong>out</strong>       amove * ampfac
+</pre>
+<p><strong>Example 2</strong></p>
+<pre>
+  ainput1 =	..... 
+  ainput2 =	..... 
+  kdlyt1  =	..... 
+  kdlyt2  =	..... 
+
+;Read delayed signal, first delayr instance:
+  adump   <strong>delayr</strong>  4.0 
+  adly1   <strong>deltap</strong>  kdlyt1       ;associated with first delayr instance 
+
+;Read delayed signal, second delayr instance:
+  adump   <strong>delayr</strong>  4.0 
+  adly2   <strong>deltap</strong>  kdlyt2       ; associated with second delayr instance 
+
+;Do some cross-coupled manipulation: 
+  afdbk1  =       0.7 * adly1 + 0.7 * adly2 + ainput1 
+  afdbk2  =       -0.7 * adly1 + 0.7 * adly2 + ainput2 
+
+;Feed back signal, associated with first delayr instance: 
+          <strong>delayw</strong>  afdbk1 
+
+;Feed back signal, associated with second delayr instance: 
+          <strong>delayw</strong>  afdbk2
+          <strong>outs</strong>    adly1, adly2
+
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="delayr.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="multitap.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#delay" class="toqr">
+Signal Modifiers: Delay</font></a>
+</body>
+
+</html>

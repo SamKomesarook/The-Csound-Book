@@ -1,0 +1,70 @@
+{; accumtest.sco
+ ; © Dami‡n Keller. November 1998. 
+ ; Using CMask in ecological modeling.
+
+f1	0	1024	7	0	512	1	512	0
+f2 0 8193 -1 "bot.sd2" 0 4 1  
+f3 0 8193 -1 "bot.sd2" 0 4 1
+
+}
+
+; accumulator in limit mode.
+; init value for p2 is 0 by default, other parameters
+; can be reinitialized at arbitrary values.
+; mask uses half-cosine interpolation to allow for a smooth
+; transition between events.
+
+f 0 3  
+
+p1 	const 1
+
+p2 	range -.005 .005  		; grain interonset.
+	accum limit .001 .02   init 0   
+	prec 5
+
+p3 	range .05 .3  			; grain duration.
+	prec 5
+	
+p4 	rnd uni 				; grain amplitude  
+	mask [0 .7 ipl cos] [0 1 ipl cos]
+	prec 5
+
+p5	range .9 1.1
+	prec 5
+
+p6	range .9 1.1
+	prec 5
+	
+p7	range 2 3
+	prec 0
+	
+p8	range 2 3
+	prec 0
+
+
+f 3 4.5  
+
+p1 	const 1
+
+p2 	range -.005 .005  		; grain interonset.
+	accum limit .001 .02   init 0   
+	prec 5
+
+p3 	range .05 .3 			; grain duration.
+	prec 5
+	
+p4 	rnd uni 				; grain amplitude  
+	mask [.7 0 ipl cos] [1 0 ipl cos]
+	prec 5
+
+p5	range .9 1.1
+	prec 5
+
+p6	range .9 1.1
+	prec 5
+	
+p7	range 2 3
+	prec 0
+	
+p8	range 2 3
+	prec 0

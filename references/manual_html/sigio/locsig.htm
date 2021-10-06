@@ -1,0 +1,144 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>locsig, locsend</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pan.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="space.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#panning" class="toqr">
+Signal Modifiers: Panning and Spatialization</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>locsig, locsend</h2>
+
+<pre>
+  a1, a2            <strong>locsig</strong>    asig, kdegree, kdistance, kreverbsend
+  a1, a2,  a3, a4   <strong>locsig</strong>    asig, kdegree, kdistance, kreverbsend
+ 
+  a1, a2            <strong>locsend</strong>
+  a1, a2,  a3, a4   <strong>locsend</strong>
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p><strong>locsig</strong> takes an input signal and distributes it among 2 or 4 channels using values in degrees to calculate the balance between adjacent channels. It also takes arguments for distance (used to attenuate signals that are to sound as if they are some distance further than the loudspeaker itself), and for the amount the signal that will be sent to reverberators. This unit is based upon the example in the Charles Dodge/Thomas Jerse book, <em>Computer Music</em>, page 320.
+</p>
+<p><strong>locsend</strong> depends upon the existence of a previously defined <strong>locsig</strong>. The number of output signals must match the number in the previous <strong>locsig</strong>. The output signals from <strong>locsend</strong> are derived from the values given for distance and reverb in the <strong>locsig</strong> and are ready to be sent to local or global reverb units (see example below). The reverb amount and the balance between the 2 or 4 channels are calculated in the same way as described in the Dodge book (an essential text!).
+</p>
+<h3>Performance</h3>
+<p><em>kdegree</em> &#8211; value between 0 and 360 for placement of the signal in a 2 or 4 channel space configured as: a1=0, a2=90, a3=180, a4=270 (kdegree=45 would balanced the signal equally between a1 and a2). <strong>locsig</strong> maps <em>kdegree</em> to sin and cos functions to derive the signal balances (ie.: asig=1, kdegree=45, a1=a2=.707).
+</p>
+<p><em>kdistance</em> &#8211; value &gt;= 1 used to attenuate the signal and to calculate reverb level to simulate distance cues.  As <em>kdistance</em> gets larger the sound should get softer and somewhat more reverberant (assuming the use of <strong>locsend</strong> in this case).
+</p>
+<p><em>kreverbsend</em> &#8211; the percentage of the direct signal that will be factored along with the distance and degree values to derive signal amounts that can be sent to a reverb unit such as reverb, or reverb2.
+</p>
+<h3>Example</h3>
+
+
+<pre>
+  asig some audio signal
+  kdegree            <strong>line</strong>    0, p3, 360
+  kdistance          <strong>line</strong>    1, p3, 10
+  a1, a2, a3, a4     <strong>locsig</strong>  asig, kdegree, kdistance, .1
+  ar1, ar2, ar3, ar4 <strong>locsend</strong>
+  ga1 = ga1+ar1
+  ga2 = ga2+ar2
+  ga3 = ga3+ar3
+  ga4 = ga4+ar4
+                     <strong>outq</strong>    a1, a2, a3, a4
+<strong>endin</strong>
+
+<strong>instr</strong> 99 ; reverb instrument
+  a1                 <strong>reverb2</strong> ga1, 2.5, .5
+  a2                 <strong>reverb2</strong> ga2, 2.5, .5
+  a3                 <strong>reverb2</strong> ga3, 2.5, .5
+  a4                 <strong>reverb2</strong> ga4, 2.5, .5
+                     <strong>outq</strong>    a1, a2, a3, a4
+  ga1=0
+  ga2=0
+  ga3=0
+  ga4=0
+</pre>
+<p>In the above example, the signal, <em>asig</em>, is sent around a complete circle once during the duration of a note while at the same time it becomes more and more &quot;distant&quot; from the listeners' location. <strong>locsig</strong> sends the appropriate amount of the signal internally to <strong>locsend</strong>. The outputs of the <strong>locsend</strong> are added to global accumulators in a common Csound style and the global signals are used as inputs to the reverb units in a separate instrument.
+</p>
+<p><strong>locsig</strong> is useful for quad and stereo panning as well as fixed placed of sounds anywhere between two loudspeakers. Below is an example of the fixed placement of sounds in a stereo field.
+</p>
+<pre>
+<strong>instr</strong> 1
+  a1, a2             <strong>locsig</strong>  asig, p4, p5, .1
+  ar1, ar2           <strong>locsend</strong>
+  ga1=ga1+ar1
+  ga2=ga2+ar2
+                     <strong>outs</strong> a1, a
+<strong>endin
+instr</strong> 99 
+  ; reverb....
+<strong>endin</strong>
+</pre>
+<p>A few notes:
+</p>
+<pre>
+  ;place the sound in the left speaker and near:
+  i1 0 1 0 1
+  
+  ;place the sound in the right speaker and far:
+  i1 1 1 90 25
+  
+  ;place the sound equally between left and right and in the middle ground distance:
+  i1 2 1 45 12
+  e
+</pre>
+<p>The next example shows a simple intuitive use of the distance value to simulate Doppler shift. The same value is used to scale the frequency as is used as the distance input to <strong>locsig</strong>.
+</p>
+<pre>
+  kdistance          <strong>line</strong>    1, p3, 10
+  kfreq = (ifreq * 340) / (340 + kdistance)
+  asig               <strong>oscili</strong>  iamp, kfreq, 1
+  kdegree            <strong>line</strong>    0, p3, 360
+  a1, a2, a3, a4     <strong>locsig</strong>  asig, kdegree, kdistance, .1
+  ar1, ar2, ar3, ar4 <strong>locsend</strong>
+</pre>
+
+
+<h3>Author</h3>
+<p>Richard Karpen<br>
+Seattle, Wash<br>
+1998  (New in Csound version 3.48)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pan.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="space.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#panning" class="toqr">
+Signal Modifiers: Panning and Spatialization</font></a>
+</body>
+
+</html>

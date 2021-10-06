@@ -1,0 +1,84 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>=, init, tival, divz</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="iblock.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../control/schedule.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm#varinit">Orchestra Syntax: Variable Initialization</font></a>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>=, init, tival, divz</h2>
+
+<pre>
+  ir       <strong>=          </strong>iarg
+  kr       <strong>=          </strong>karg
+  ar       <strong>=          </strong>xarg
+  ir       <strong>init       </strong>iarg
+  kr       <strong>init       </strong>iarg
+  ar       <strong>init       </strong>iarg
+  ir       <strong>tival</strong>
+  ir       <strong>divz       </strong>ia, ib, isubst
+  kr       <strong>divz       </strong>ka, kb, ksubst
+  ar       <strong>divz       </strong>xa, xb, ksubst
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p><strong>= </strong>(simple assignment) - Put the value of the expression <em>iarg</em> (<em>karg, xarg</em>) into the named result. This provides a means of saving an evaluated 
+result for later use.
+</p>
+<p><strong>init</strong> &#8211; Put the value of the i-time expression <em>iarg</em> into a k- or a-rate variable, i.e., initialize the result. Note that <strong>init</strong> provides the only 
+case of an init-time statement being permitted to write into a perf-time (k- or 
+a-rate) result cell; the statement has no effect at perf-time.
+</p>
+<p><strong>tival</strong> &#8211; Put the value of the instrument's internal &quot;tie-in&quot; flag into the named i-rate variable. Assigns 1 if this note has been &quot;tied&quot; onto a previously held note ( see <a href="../score/i.htm"><strong>i statement</strong></a>); assigns 0 if no tie actually took place. (See also <a href="../pgmctl/igoto.htm"><strong>tigoto</strong></a>.)
+</p>
+<p><strong>divz</strong> &#8211; Whenever <em>b</em> is not zero, set the result to the value <em>a / b</em>; when <em>b</em> is zero, set it to the value of <em>subst</em> instead.
+</p>
+<p><strong>pset</strong> &#8211; This unit defines and initializes numeric 
+arrays at orchestra load time. Although defined within an instrument it is not 
+part of its i-time or performance operation. One statement is allowed per 
+instrument. These values are available as i-time defaults. When an instrument is 
+triggered from MIDI it only gets p1 and p2 from the event, and p3, p4, etc. will 
+receive the actual preset values.
+</p>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<br>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="iblock.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../control/schedule.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm#varinit">
+Orchestra Syntax: Variable Initialization</a>
+</body>
+</html>

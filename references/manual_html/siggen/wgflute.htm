@@ -1,0 +1,100 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>wgflute</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="wgbow.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="wgbrass.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#waveguide" class="toqr">
+Signal Generators: Waveguide Physical Modeling</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>wgflute</h2>
+
+<pre>
+  ar      <strong>wgflute</strong>    kamp, kfreq, kjet, iatt, idetk, kngain, kvibf, kvamp, ifn[, iminfreq[, ijetrf[, iendrf]]]
+  </pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Audio output is a tone similar to a flute, using a physical model developed from Perry Cook, but re-coded for Csound.<br>
+</p>
+<h3>Initialization</h3>
+<p><em>iatt </em> &#8211; time in seconds to reach full blowing pressure. 0.1 seems to correspond to reasonable playing.
+</p>
+<p><em>idetk</em> &#8211; time in seconds taken to stop blowing. 0.1 is a smooth ending
+</p>
+<p><em>ifn </em> &#8211; table of shape of vibrato, usually a sine table, created by a function
+</p>
+<p><em>iminfreq</em> &#8211; lowest frequency at which the instrument will play. If it is omitted it is taken to be the same as the initial kfreq. If <em>iminfreq</em> is negative, initialization will be skipped.
+</p>
+<h3>Performance</h3>
+<p><em>kamp</em> &#8211; Amplitude of note.
+</p>
+<p><em>kfreq</em> &#8211; Frequency of note played. While it can be varied in performance, I have not tried it.
+</p>
+<p><em>kjet - </em>a parameter controlling the air jet. Values should be positive, and about 0.3. The useful range is approximately 0.08 to 0.56.<br>
+</p>
+<p><em>kngain</em> &#8211; amplitude of the noise component, about 0 to 0.5
+</p>
+<p><em>kvibf</em> &#8211; frequency of vibrato in Hertz. Suggested range is 0 to 12
+</p>
+<p><em>kvamp </em> &#8211; amplitude of the vibrato
+</p>
+<p><em>kjetrf </em> &#8211; amount of reflection in the breath jet that powers the flute. Default value is 0.5.
+</p>
+<p><em>kendrf</em> &#8211; reflection coefficient of the breath jet. Default value is 0.5. Both <em>ijetrf </em>and <em>iendrf </em>are used in the calculation of the pressure differential.
+</p>
+<p><br>
+</p>
+<h3></h3>
+
+<h3>Example</h3>
+
+<pre>
+  a1      <strong>wgflute</strong>    31129.60, 440, 0.32, 0.1, 0.1, 0.15, 5.925, 0.05, 1
+          <strong>out</strong>        a1
+</pre>
+
+<h3>Author</h3>
+<p>John ffitch (after Perry Cook)<br>
+University of Bath, Codemist Ltd.<br>
+Bath, UK<br>
+New in Csound version 3.47
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="wgbow.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="wgbrass.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#waveguide" class="toqr">
+Signal Generators: Waveguide Physical Modeling</font></a>
+</body>
+
+</html>

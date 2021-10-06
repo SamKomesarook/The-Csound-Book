@@ -1,0 +1,98 @@
+
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+
+<head>
+
+	
+<title>fold</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="ntrpol.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../zak/top.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#sample" class="toqr">
+Signal Modifiers: Sample Level Operators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>fold</h2>
+<pre>
+  ar      <strong>fold</strong>      asig, kincr
+</pre>
+
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+
+<p>Adds artificial foldover to an audio signal.</p>
+
+
+<h3>Performance</h3>
+
+<p><em>asig</em> &#8211; input signal</p>
+
+<p><em>kincr</em> &#8211; amount of foldover expressed in multiple of sampling rate. Must be &gt;= 1</p>
+
+
+<p><strong>fold</strong> is an opcode which creates artificial foldover.  For example, when <em>kincr</em> is equal to 1 with sr=44100, no foldover is added. When <em>kincr</em> is set to 2, the foldover is equivalent to a downsampling to 22050, when it is set to 4, to 11025 etc. Fractional values of <em>kincr</em> are possible, allowing a continuous variation of foldover amount. This can be used for a wide range of special effects.</p>
+
+
+<h3>Example</h3>
+
+<pre>
+<strong>instr</strong>	1
+  kfreq   <strong>line</strong>      1,p3,200
+  a1      <strong>oscili</strong>    10000, 100, 1
+  k1      <strong>init</strong>      8.5
+  a1      <strong>fold</strong>      a1, kfreq	
+          <strong>out</strong>       a1		
+<strong>endin</strong>
+</pre>
+
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+1999<br>
+New in Csound version 3.56
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="ntrpol.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../zak/top.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#sample" class="toqr">
+Signal Modifiers: Sample Level Operators</font></a>
+</body>
+
+
+</html>
+

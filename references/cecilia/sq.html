@@ -1,0 +1,74 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>The Cybil compositional language</title>
+	</head>
+
+	<body>
+		&nbsp;
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="commands.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="li.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<h2>The sq algorithm</h2>
+		</center>
+		<center>
+			<a href="cybil.html">The Cybil composition language</a></center>
+		<center>
+			<a href="gensyn.html">Cybil general syntax</a></center>
+		<center>
+			<a href="commands.html">Algorithms</a><b><a href="sq.html"> sq</a> - <a href="li.html">li </a>-<a href="li.html"> </a><a href="lo.html">lo </a>- <a href="ma.html">ma</a> - <a href="gr.html">gr</a></b></center>
+		<center>
+			<a href="funcs.html">Functions</a> <b><a href="ran.html">ran </a>- <a href="pik.html">pik</a> - <a href="pa.html">pa</a> - <a href="co.html">co</a></b></center>
+		<center>
+			<a href="oper.html">Operations</a></center>
+		<center>
+			<a href="examp.html">Examples of Cybil command lines</a>&nbsp;<br>
+			<br>
+		</center>
+		<center>
+			<hr>
+		</center>
+		&nbsp;
+		<h4>The sq algorithm</h4>
+		<pre>{sq val1 val2 val3....duration(s)}</pre>
+		The <b>sq</b> is for sequence. The list of values given after <b>sq</b> will be sequenced and looped. Last element in the list is the repeat factor or the duration in seconds (s) <b>N.B.</b> if the repeat counter is given with a number, this number will indicate the number of times the sq will be looped.
+		<p>&nbsp;Values can be a number of things:<br>
+		&nbsp;
+		<ol>
+			<li><b>a real number.</b> The number will be entered as is in the sequence.
+			<pre>{sq 4.567 0.56 8 10s}&nbsp;
+{sq 3 5.5 6 30} &lt;--this will yeild 90 events!</pre>
+			<li><b>an algorithm. </b>The algorithm can be any of the available algorithms including another sequence. Each embedded algorithm will be fully evaluated before the containing <b>sq</b> will move to the next element in the list.
+			<pre>{sq 4 8 {sq 6 5 4 2} 8 2}</pre>
+			will yield:<b><i> 4 8 6 5 4 6 5 4 8 4 8 6 5 4 6 5 4 8</i></b>
+			<pre>{sq {li 1 10 10} 8 8 8 2}</pre>
+			will yield:<b><i> 1 2 3 4 5 6 7 8 9 10 8 8 8 1 2 3 4 5 6 7 8 9 10 8 8 8</i></b>
+			<p>If embedded commands are timed in seconds, the highest level determines the total duration of the command. Hence an embedded command would not complete its course should the timer for the container run out before.<br>
+			&nbsp;<br>
+			&nbsp;
+			<li><b>a CECILIA irate variable.</b> Any irate variable from the CECILIA interface can be used (sliders, toggles, option) by including the name of the variable between <b>[]</b> brackets. The substitution is done before the score is pre-compiled.
+			<pre>{sq 4 5 [blue] 6 7 [black] 30s}</pre>
+			where <b>blue</b> and <b>black</b> have been defined as irate variables&nbsp; in the CECILIA interface.<br>
+			&nbsp;<br>
+			&nbsp;
+			<li><b>a <a href="funcs.html">Cybil function</a>. </b>Any Cybil function can be used to generate a value for the sequencer. Each time the value is needed, the function is evaluated (see functions further).
+			<pre>{sq 4 5 {ran f .5 3.3} 4 30s}</pre>
+			Each time the sequence steps through the third element in the list, a random number between .5 and 3.3 will be generated.
+		</ol>
+		<hr>
+		<br>
+		&nbsp;
+	</body>
+
+</html>

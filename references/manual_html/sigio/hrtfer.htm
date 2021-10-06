@@ -1,0 +1,105 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>hrtfer</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="space.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../sigmod/vbap.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"</a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#panning" class="toqr">
+Signal Modifiers: Panning and Spatialization</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>hrtfer</h2>
+
+<pre>
+  aleft, aright   <strong>hrtfer</strong>    asig, kaz, kelev, &quot;HRTFcompact&quot;
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Output is binaural (headphone) 3D audio.
+</p>
+<h3>Initialization</h3>
+<p><em>kAz</em> &#8211; azimuth value in degrees. Positive values represent position on the right, negative values are positions on the left.
+</p>
+<p><em>kElev</em> &#8211; elevation value in degrees. Positive values represent position above horizontal, negative values are positions above horizontal.
+</p>
+<p>At present, the only file which can be used with <strong>hrtfer</strong> is HRTFcompact. It must be passed to the opcode as the last argument within quotes as shown above.
+</p>
+<p>HRTFcompact my be obtained via anonymous ftp from:
+</p>
+<pre>
+  <a href="ftp://ftp.maths.bath.ac.uk/pub/dream/utilities/Analysis/HRTFcompact">ftp://ftp.maths.bath.ac.uk/pub/dream/utilities/Analysis/HRTFcompact</a>
+</pre>
+
+
+<h3>Performance</h3>
+<p>These unit generators place a mono input signal in a virtual 3D space around the listener by convolving the input with the appropriate HRTF data specified by the opcode's azimuth and elevation values. <strong>hrtfer</strong> allows these values to be k-values, allowing for dynamic spatialization. <strong>hrtfer</strong> can only place the input at the requested position because the HRTF is loaded in at i-time (remember that currently, CSound has a limit of 20 files it can hold in memory, otherwise it causes a segmentation fault). The output will need to be scaled either by using balance or by multiplying the output by some scaling constant.
+</p>
+<p>Note - the sampling rate of the orchestra must be 44.1kHz. This is because 44.1kHz is the sampling rate at which the HRTFs were measured. In order to be used at a different rate, the HRTFs would need to be re-sampled at the desired rate.
+</p>
+<h3>Example</h3>
+
+
+<pre>
+  kaz          <strong>linseg</strong>  0, p3, -360  ; move the sound in circle
+  kel          <strong>linseg</strong>  -40, p3, 45  ; around the listener, changing
+                                    ; elevation as its turning
+  asrc         <strong>soundin</strong> &quot;soundin.1&quot;
+  aleft,aright <strong>hrtfer</strong>  asrc, kaz, kel, &quot;HRTFcompact&quot;
+  aleftscale   =       aleft * 200
+  arightscale  =       aright * 200
+               <strong>outs</strong>    aleftscale, arightscale
+</pre>
+
+<h3></h3>
+
+
+
+
+
+
+
+
+<h3>Authors</h3>
+<p>Eli Breder &amp; David MacIntyre<br>
+Montreal<br>
+1996
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="space.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../sigmod/vbap.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"</a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#panning" class="toqr">
+Signal Modifiers: Panning and Spatialization</font></a>
+</body>
+
+</html>

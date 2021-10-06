@@ -1,0 +1,317 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Wave-terrain Synthesis</TITLE>
+  <META NAME="Author" CONTENT="Josep M Comajuncosas">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">21. Wave-terrain Synthesis</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Josep M. Comajuncosas</FONT></H2>
+
+<H3><FONT FACE="Times New Roman">Introduction</FONT></H3>
+
+<P><FONT FACE="Times New Roman">As an extension to ordinary wavetable
+synthesis, wave-terrain synthesis (WTS) <I>extends the principle
+of wavetable lookup to the scanning of three-dimensional surfaces</I>
+(see the <I>Computer Music Tutorial</I>, by Curtis Roads, pp.163-167).
+One can interpret WT Synthesis as <I>two-variable function synthesis</I>,
+and even implement it as pure orc code, but then the computational
+costs are incremented substantially. It&acute;s better to deal
+with a 2-dymensional table, and index it in a way similar to wavetable
+synthesis.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Implementation</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The lack of arrays in Csound is
+a major problem when one tries to implement this kind of algorithms.
+Some estrategies are possible, notably those involving the new
+R.Whittle opcodes for table manipulation, or the<I> zak system</I>.
+In my designs I used the table generator <I>ftgen</I>, which is
+able to create tables from whithin the orchestra, though in a
+non-standard way. Typically, <I>ftgen</I> is intended to be called
+in the header statement, but, as I needed full control over the
+parameters of the table being generated, I placed it in an instrument
+which is executed first and generates the tables using a simple
+loop. I created a squared surface of n*n points as a row of n
+tables of size n (this constraints the surface sides to be multiple
+of 2). This method is straightforward and fast, and a wide variety
+of different surfaces can be generated this way.</FONT></P>
+
+<P><FONT FACE="Times New Roman">To get predictable waveforms from
+WT synthesis one must begin with simple surfaces and paths. But
+by simply looking at the surface a great deal of information can
+be extracted. Using Winsound, for example, you can get a close
+idea of the surface by looking at those hundreds of tables generated
+being rapidly displayed, like multiple slices of the surface.
+To index the table one must design an <I>orbit</I>, that is, an
+arbitrary path trough the surface. It is important to notice that
+the resulting waveform is influended both by the surface and by
+the orbit itself. Both for simplicity and predictability I often
+use circular or spiral orbits. Some instruments use more complex
+paths, though.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Let&acute;s as an example consider
+the surface (given in the example num. 7)</FONT></P>
+
+<P><FONT FACE="Courier New">z(x,y) = sin(2*pi*x)*sin(2*pi*y) with
+both x and y in [0,1]</FONT></P>
+
+<P><CENTER><FONT FACE="Times New Roman"><IMG SRC="surface.gif"
+HEIGHT="300" WIDTH="400" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></CENTER></P>
+
+<P><FONT FACE="Times New Roman">Indexing it with a circular orbit
+of radius r centered at (.5, .5)</FONT></P>
+
+<P><FONT FACE="Courier New">x = .5 + r*cos(2*pi*f)<BR>
+y = .5 + r*sin(2*pi*f)</FONT></P>
+
+<P><FONT FACE="Times New Roman">will give us the following output</FONT></P>
+
+<P><FONT FACE="Courier New">z = sin(2*pi*(.5 + r*cos(2*pi*f))*sin(2*pi*.5
++ r*sin(2*pi*f))</FONT></P>
+
+<P><FONT FACE="Times New Roman">which is the product (amplitude
+modulation) of two frequency-modulated signals. For the serious
+researches, further analysis should be necessary, of course.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The indexation is not without
+problems with Csound, for the ordinary<I> table</I> and <I>tablei
+</I>ugens don&acute;t allow to change the table number at k rate.
+In my first attempts (version 3.47 beta) I used tablera (again
+in a non-standard way), but this forces ksmps =1. The new <I>tablekt
+</I>and <I>tableikt</I> opcodes (from v. 3.47) are the most suitable
+ones for this purpose. I&acute;ve already used them in most of
+those designs. With <I>tablera</I> one must take into account
+that the indexes are truncated. 2D-Linear interpolation will be
+used to improve the s/n ratio without the need of large memory
+requirements. With <I>tableikt</I> the table look-up process already
+perfoms interpolation, and the result is much more elegant, resulting
+in a faster implementation.<BR>
+You must also consider the convenience of using<I> limit</I> or<I>
+wrap mode</I> in <I>tableikt.</I> With periodic waveforms the
+wrap mode will elegantly solve the problem of indexing accidentally
+outside the [0,1] range.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Examples</FONT></H3>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" COLS="1"
+WIDTH="100%" CELLSPACING="2" CELLPADDING="0">
+  <TR>
+    <TD>All the instruments have been tested with Winsound 3.47.
+      The opcodes used have been recently implemented, so previous
+      versions won&acute;t work at all, except maybe for the first
+      instruments, from v. 3.45</TD> 
+  </TR>
+</TABLE></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">wts1</FONT>
+</UL>
+
+<P><A HREF="instruments/wts1.orc"><FONT FACE="Times New Roman">orc</FONT></A><FONT
+ FACE="Times New Roman"> <A HREF="instruments/wts1.sco">sco</A></FONT></P>
+
+<P><FONT FACE="Times New Roman">This first orchestra shows the
+basic implementation of WT synthesis. The surface is simply an
+inclined plane which, indexed by a circular orbit, will give a
+<I>pure</I> sine wave as output.<BR>
+</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">wts2</FONT>
+</UL>
+
+<P><A HREF="instruments/wts2.orc"><FONT FACE="Times New Roman">orc</FONT></A><FONT
+ FACE="Times New Roman"> <A HREF="instruments/wts2.sco">sco</A></FONT></P>
+
+<P><FONT FACE="Times New Roman">Let&acute;s compare the previous
+code with this one, with 2-D interpolation implemented as orc
+code. The quality has been greatly improved at some computational
+cost. All the remaining examples will use interpolation. With
+it one can use fairly small tables (256 points or less) without
+causing a noticeable table-lookup noise.<BR>
+</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">wts3</FONT>
+</UL>
+
+<P><A HREF="instruments/wts3.orc"><FONT FACE="Times New Roman">orc</FONT></A><FONT
+ FACE="Times New Roman"> <A HREF="instruments/wts3.sco">sco</A></FONT></P>
+
+<P><FONT FACE="Times New Roman">When the surface itself is sinusoidal
+(or more complex) we can obtain FM like timbres. The same applies
+to using different frequencies in the x and the y component of
+the (circular) orbit. More experiments later on.<BR>
+</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">wts4</FONT>
+</UL>
+
+<P><A HREF="instruments/wts4.orc"><FONT FACE="Times New Roman">orc</FONT></A><FONT
+ FACE="Times New Roman"> <A HREF="instruments/wts4.sco">sco</A></FONT></P>
+
+<P><FONT FACE="Times New Roman">Now we&acute;ll use the new <I>tableikt</I>
+opcode, which works like<I> tablei</I> but allowing k-rate table
+change, with interpolated read-out like in <I>tablei</I>. Even
+without any further refinement the result should be much better
+than using <I>tablera</I> with no interpolation.</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">wts5</FONT>
+</UL>
+
+<P><A HREF="instruments/wts5.orc"><FONT FACE="Times New Roman">orc</FONT></A><FONT
+ FACE="Times New Roman"> <A HREF="instruments/wts5.sco">sco</A></FONT></P>
+
+<P><FONT FACE="Times New Roman">And the same instrument with interpolation.</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">wts6</FONT>
+</UL>
+
+<P><A HREF="instruments/wts6.orc"><FONT FACE="Times New Roman">orc</FONT></A><FONT
+ FACE="Times New Roman"> <A HREF="instruments/wts6.sco">sco</A></FONT></P>
+
+<P><FONT FACE="Times New Roman">Till now we&acute;ve not done
+anything new, as all the tables generated are identical and the
+result could be perfectly the same using a single one (a simple
+<I>oscili </I>unit!). Let&acute;s try now to create true 2-D tables.
+First, we&acute;ll use the previous design but gradually changing
+the initial phase of the cosine wave stored in the tables.</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">wts7</FONT>
+</UL>
+
+<P><A HREF="instruments/wts7.orc"><FONT FACE="Times New Roman">orc</FONT></A><FONT
+ FACE="Times New Roman"> <A HREF="instruments/wts7.sco">sco</A></FONT></P>
+
+<P><FONT FACE="Times New Roman">This instrument implements the
+surface given as an example in the Introduction. The orbit is
+a spiral whose radius is controled by an envelope. Look carefully
+at the code to see how can you implement a virtual envelope to
+all the tables (here a sine wave).</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">wts8</FONT>
+</UL>
+
+<P><A HREF="instruments/wts8.orc"><FONT FACE="Times New Roman">orc</FONT></A><FONT
+ FACE="Times New Roman"> <A HREF="instruments/wts8.sco">sco</A></FONT></P>
+
+<P><FONT FACE="Times New Roman">Other GEN routines could be used
+as well, each one with its own applications. This one uses GEN11
+varying dynamically r (a&nbsp; multiplier in an amplitude coefficient
+series). It creates a kind of frequency-dependant resonance, an
+effect similar can be obtained with waveshaping. At low frequencies
+the sound is great!</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">wts9</FONT>
+</UL>
+
+<P><A HREF="instruments/wts9.orc"><FONT FACE="Times New Roman">orc</FONT></A><FONT
+ FACE="Times New Roman"> <A HREF="instruments/wts9.sco">sco</A></FONT></P>
+
+<P><FONT FACE="Times New Roman">This instruments implements dynamic
+waveshaping, storing in each table a slightly different GEN13-generated
+table. The orbit indexes first a zone with only the 1st harmonic
+(though not in a fixed table, but in a elliptic path which provides
+a minimally evolving timbre), then one with only even harmonics,
+afterwards a zone with all the harmonics present and finally just
+with odd harmonics. Quite costly to implement without WTS.</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">wts10</FONT>
+</UL>
+
+<P><A HREF="instruments/wts10.orc"><FONT FACE="Times New Roman">orc</FONT></A><FONT
+ FACE="Times New Roman"> <A HREF="instruments/wts10.sco">sco</A></FONT></P>
+
+<P><FONT FACE="Times New Roman">The last example uses a fairly
+simple surface indexed by a complex orbit, setting the frequencies
+of the <I>oscil </I>units associated to the x and y coordinates
+to different values, which creates a typical timbral evolution,
+ranging from tremolo effects to FM timbres.&nbsp; A non-periodic
+(inharmonic) signal can be obtained simply by setting the frequencies
+of the oscil units controlling the x and the y dimensions of the
+path to mutually prime numbers. The idea is not very different
+from ordinary FM synthesis. One could use a chaotic orbit and
+see how it sounds, but I believe the result would&acute;t be much
+different from using that chaotic orbit itself to generate the
+sound.<BR>
+</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Compositional Applications<BR>
+</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The next three examples are suposed
+to be more useful. There&acute;s nothing new in them, but the
+timbres are more interesting.<BR>
+</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">Example 1:</FONT>
+</UL>
+
+<P><A HREF="instruments/example1.orc"><FONT FACE="Times New Roman">orc</FONT></A><FONT
+ FACE="Times New Roman"> <A HREF="instruments/example1.sco">sco</A></FONT></P>
+
+<P><FONT FACE="Times New Roman">Once the table has been stored
+in memory, it is efficient to index it with multiple and slightly
+different orbits, for example placing the center of the orbit
+at different places in the surface. This orquestra creates in
+this way a very dense, deep analog-like drone sound.<BR>
+</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">Example 2:</FONT>
+</UL>
+
+<P><A HREF="instruments/example2.orc"><FONT FACE="Times New Roman">orc</FONT></A><FONT
+ FACE="Times New Roman"> <A HREF="instruments/example2.sco">sco</A></FONT></P>
+
+<P><FONT FACE="Times New Roman">Not to forget more <I>creative</I>
+timbres, here is a sample. The surface is make of random values
+following a Weibull distribution. Variations in the variable of
+GEN21-10 and in the orbit provide a timbre which ranges from noise
+to a quasi-periodic granulated signal (enhanced with the interpolation
+in the table look-up and the lowpass filter before the output).<BR>
+</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">Example 3:</FONT>
+</UL>
+
+<P><A HREF="instruments/example3.orc"><FONT FACE="Times New Roman">orc</FONT></A><FONT
+ FACE="Times New Roman"> <A HREF="instruments/example3.sco">sco</A></FONT></P>
+
+<P><FONT FACE="Times New Roman">A timbral change from brass to
+clarinet can be implemented with dynamic waveshaping and other
+refinements. Some people call this <I>morphing</I>... Don&acute;t
+expect too much of this design as it is entirely empyrical, in
+fact the effect is too subtle.<BR>
+</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Conclusions and Further Work<BR>
+</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Wave-terrain Synthesis has shown
+to be a simple yet effective way to create complex timbral textures.
+With its graphical background it is also quite easy to predict
+the basic character of the sound, and the code is computationally
+fast, though the memory requirements can be quite large. To design
+arbitrary surfaces my method is not enough flexible, though. Sometimes
+it would be necessary to implement them as orquestra code, but
+then all the computational efficiency would be lost. Wave-terrain
+Synthesis could be also used as a tool for sound modification,
+by using a recording as one dimension of the surface, or as the
+orbit. I&acute;ve not carried out any experiments in this direction.</FONT>
+
+</BODY>
+</HTML>

@@ -1,0 +1,70 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>The Csound Command</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../gen/gen31.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="desc.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/command.htm" class="toqr">
+The Csound Command</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h1>The Csound Command</h1>
+<hr size="2" color="#A9A9A9" noshade>
+<p><strong>Csound</strong> is a command for passing anorchestra file andscore file to Csound to generate a soundfile. The score file can be in one of many different formats, according to user preference. Translation, sorting, and formatting into orchestra-readable numeric text is handled by various preprocessors; all or part of the score is then sent on to the orchestra. Orchestra performance is influenced by command flags, which set the level of displays and console reports, specify I/0 filenames and sample formats, and declare the nature of real-time sensing and control.
+</p>
+<h2>Order of Precedence</h2>
+<p>With some recent additions to Csound, there are now three places (and in some cases four) where options for Csound performance may be set. They are processed in the following order:</p>
+<ol>
+<li>Csound's own defaults
+<li>.csoundrc file
+<li>Csound command line
+<li>&lt;CsOptions&gt; tag in a .csd file
+<li>Orchestra header (for sr, kr, ksmps, nchnls)
+</ol>
+<p>The last assignment of an option will override any earlier ones.</p>
+<h2>Generic Flags</h2>
+<p>Many flags are generic Csound command flags. Various platform implementations may not react the same way to different flags!
+</p>
+<p>The format of a command is:
+</p>
+<pre>  <strong>csound</strong> [-flags] orchname scorename</pre>
+<p>where the arguments are of 2 types: <em>flag</em> arguments (beginning with a &quot;-&quot;), and <em>name</em> arguments (such as filenames). Certain flag arguments take a following name or numeric argument.</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../gen/gen31.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="desc.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/command.htm" class="toqr">
+The Csound Command</font></a>
+</body>
+
+</html>

@@ -1,0 +1,162 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>Nomenclature</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="dirfiles.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="statemnt.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm"><font size="-2" color="#000000" face="Verdana, Arial, Helvetica, Century Gothic">
+Syntax of the Orchestra</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>Nomenclature</h2>
+<hr size="2" color="#A9A9A9" noshade>
+<p>Throughout this document, opcodes are indicated in <strong>boldface</strong> and their argument and result mnemonics, when mentioned in the text, are given in <em>italics</em>. Argument names are generally mnemonic (<em>amp</em>, <em>phs</em>), and the result is usually denoted by the letter <em>r</em>. Both are preceded by a type qualifier <em>i, k, a,</em> or <em>x</em> (e.g. <em>kamp, iphs, ar</em>). The prefix <em>i</em> denotes scalar values valid at note init time; prefixes <em>k</em> or <em>a</em> denote control (scalar) and audio (vector) values, modified and referenced continuously throughout performance (i.e. at every control period while the instrument is active). Arguments are used at the prefix-listed times; results are created at their listed times, then remain available for use as inputs elsewhere. With few exceptions, argument rates may not exceed the rate of the result. The validity of inputs is defined by the following:</p>
+<ul>
+	<li>arguments with prefix <em>i</em> must be valid at init time;
+	<li>arguments with prefix <em>k</em> can be either control or init values (which remain valid);
+	<li>arguments with prefix <em>a</em> must be vector inputs;
+	<li>arguments with prefix <em>x</em> may be either vector or scalar (the compiler will distinguish).
+
+</ul>
+
+<p>All arguments, unless otherwise stated, can be expressions whose results conform to the above. Most opcodes (such as <strong>linen</strong> and <strong>oscil</strong>) can be used in more than one mode, which one being determined by the prefix of the result symbol.</p>
+<p>Thoughout this manual, the term &quot;opcode&quot; is used to indicate a command that usually produces an a-, k-, or i-rate output, and always forms the basis of a complete Csound orchestra statement. Items such as &quot;<b>+</b>&quot; or &quot;<b>sin</b>(x)&quot; or, &quot;( a <b>>=</b>  b <b>?</b> c <b>:</b> d)&quot; are called &quot;operators.&quot; </p>
+<p>In the Csound orchestra, statements fall into twelve major categores, consisting of sixty-five sub-categories. The categories are as follows:</p>
+
+<h3>Orchestra Syntax</h3>
+<ul> 
+  <li>Orchestra Header Statements
+  <li>Instrument Block Statements
+  <li>Variable Initialization
+</ul>
+<h3>Instrument Control</h3>
+<ul>
+  <li>Instrument Invocation
+  <li>Duration Control
+  <li>Realtime Performance Control
+  <li>Time Reading
+  <li>Clock Control
+  <li>Sensing and Control
+  <li>Conditional Values
+  <li>Macros
+  <li>Program Flow Control
+  <li>Reinitialization
+</ul>
+<h3>Mathematical Operations</h3>
+<ul>
+  <li>Arithmetic and Logic Operations
+  <li>Mathematical Functions
+  <li>Trigonometric Functions
+  <li>Amplitude Functions
+  <li>Random Functions
+  <li>Opcode Equivalents of Functions
+</ul>
+<h3>Pitch Converters</h3>
+<ul>
+  <li>Functions
+  <li>Tuning Opcodes
+</ul>
+<h3>MIDI Support</h3>
+<ul>
+  <li>Converters
+  <li>Controller Input
+  <li>Slider Banks
+  <li>Generic I/O
+  <li>Note-on/Note-off
+  <li>MIDI Message Output
+  <li>Realtime Messages
+  <li>MIDI Event Extenders
+</ul>
+<h3>Signal Generators</h3>
+<ul>
+  <li>Linear and Exponential Generators
+  <li>Table Access
+  <li>Phasors
+  <li>Basic Oscillators
+  <li>Dynamic Spectrum Oscillators
+  <li>Additive Synthesis/Resynthesis
+  <li>FM Synthesis
+  <li>Sample Playback
+  <li>Granular Synthesis
+  <li>Waveguide Physical modeling
+  <li>Models and Emulations
+  <li>STFT Resynthesis (Vocoding)
+  <li>LPC Resynthesis
+  <li>Random (Noise) Generators
+</ul>
+<h3>Function Table Control</h3>
+<ul>
+  <li>Tables Queries
+  <li>Table Selection
+  <li>Read/Write Operations
+</ul>
+<h3>Signal Modifiers</h3>
+<ul>
+  <li>Standard Filters
+  <li>Specialized Filters
+  <li>Envelope Modifiers
+  <li>Amplitude Modifiers
+  <li>Signal Limiters
+  <li>Delay
+  <li>Reverberation
+  <li>Waveguides
+  <li>Special Effects
+  <li>Convolution and Morphing
+  <li>Panning and Spatialization
+  <li>Sample Level Operators
+</ul>
+<h3>Zak Patch System</h3>
+<ul>
+  <li>Zak Patch System
+</ul>
+<h3>Operations Using Spectral Data Types</h3>
+<ul>
+  <li>Operations Using Spectral Data Types
+</ul>
+<h3>Signal Input and Output</h3>
+<ul>
+  <li>Input
+  <li>Output
+  <li>File I/O
+  <li>Sound File Queries
+  <li>Printing and Display
+</ul>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="dirfiles.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="statemnt.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm"><font size="-2" color="#000000" face="Verdana, Arial, Helvetica, Century Gothic">
+Syntax of the Orchestra</font></a>
+</body>
+
+</html>

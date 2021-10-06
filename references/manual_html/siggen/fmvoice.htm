@@ -1,0 +1,104 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>fmvoice</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="foscil.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="fmbell.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#fm" class="toqr">
+Signal Generators: FM Synthesis</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>fmvoice</h2>
+
+
+<pre>
+  ar      <strong>fmvoice</strong>    kamp, kfreq, kvowel, ktilt, kvibamt, kvibrate, ifn1, ifn2, ifn3, ifn4, ivibfn
+  </pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>FM Singing Voice Synthesis<br>
+</p>
+<h3>Initialization</h3>
+<p><em>ifn1, ifn2, ifn3,ifn3</em> -- Tables, usually of sinewaves.<br>
+</p>
+<h3>Performance</h3>
+<p><br>
+<em>kamp</em> &#8211; Amplitude of note.
+</p>
+<p><em>kfreq</em> &#8211; Frequency of note played.
+</p>
+<p><em>kvowel -- </em>the vowel being sung, in the range 0-64
+</p>
+<p><em>ktilt -- </em>the spectral tilt of the sound in the range 0 to 99
+</p>
+<p><em>kvibamt -- </em>Depth of vibrato
+</p>
+<p><em>kvibrate -- </em>Rate of vibrato
+</p>
+<p>
+</p>
+<h3>Example</h3>
+
+
+
+
+
+
+
+
+
+<pre>    k1    <strong>line </strong>     0, p3, 64
+    a1    <strong>fmvoice</strong>   31129.60, 110, k1, 0, 0.005, 6, 1,1,1,1,1
+</pre>
+
+
+
+
+
+
+
+
+
+<h3>Author</h3>
+<p>John ffitch (after Perry Cook)<br>
+University of Bath, Codemist Ltd.<br>
+Bath, UK<br>
+New in Csound version 3.47<br>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="foscil.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="fmbell.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#fm" class="toqr">
+Signal Generators: FM Synthesis</font></a>
+</body>
+
+</html>

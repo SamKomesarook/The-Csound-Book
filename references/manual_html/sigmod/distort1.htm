@@ -1,0 +1,123 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>distort1</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="flanger.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="phaser1.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#effects" class="toqr">
+Signal Modifiers: Special Effects</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>distort1</h2>
+
+<pre>
+  ar      <strong>distort1</strong>   asig[, kpregain][, kpostgain[, kshape1[, kshape2]]]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Implementation of modified hyperbolic tangent distortion. <strong>distort1</strong> can be used to generate wave shaping distortion based on a modification of the <a href="../valcnv/sin.htm"><strong>tanh</strong></a> function.
+</p>
+<pre>
+         exp(asig * (pregain + shape1)) - exp(asig*(pregain+shape2))
+  aout = -----------------------------------------------------------
+         exp(asig*pregain)              + exp(-asig*pregain)
+</pre>
+
+<h3>Performance</h3>
+<p><em>asig - </em>is the input signal.
+</p>
+<p><em>kpregain</em> &#8211; determines the amount of gain applied to the signal before waveshaping. A value of 1 gives slight distortion.
+</p>
+<p><em>kpostgain</em> &#8211; determines the amount of gain applied to the signal after waveshaping.
+</p>
+<p><em>kshape1</em> &#8211; determines the shape of the positive part of the curve. A value of 0 gives a flat clip, small positive values give sloped shaping.
+</p>
+<p><em>kshape2</em> &#8211; determines the shape of the negative part of the curve.
+</p>
+<p>All arguments except <em>asig</em>, were made optional in Csound version 3.52.
+</p>
+<h3>Example</h3>
+
+
+
+
+
+
+
+
+
+<pre>
+  gadist  <strong>init</strong>     0
+  
+          <strong>instr</strong>    1
+  iamp    =        p4
+  ifqc    =        cpspch(p5)
+  asig    <strong>pluck</strong>    iamp, ifqc, ifqc, 0, 1
+  gadist  =       gadist + asig
+          <strong>endin
+  </strong>
+          <strong>instr</strong>    50
+  kpre    <strong>init</strong>     p4
+  kpost   <strong>init</strong>     p5
+  kshap1  <strong>init</strong>     p6
+  kshap2  <strong>init</strong>     p7
+  aout    <strong>distort1</strong> gadist, kpre, kpost, kshap1, kshap2
+          outs     aout, aout
+  gadist  =        0
+          <strong>endin
+  </strong>
+  
+  ;   Sta  Dur  Amp    Pitch
+  i1  0.0  3.0  10000  6.00
+  i1  0.5  2.5  10000  7.00
+  i1  1.0  2.0  10000  7.07
+  i1  1.5  1.5  10000  8.00
+  
+  ;   Sta  Dur  PreGain PostGain Shape1 Shape2
+  i50 0    3    2       1        0      0
+  e
+</pre>
+
+
+<h3>Author</h3>
+<p>Hans Mikelson<br>
+December 1998 (New in Csound version 3.50)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="flanger.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="phaser1.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#effects" class="toqr">
+Signal Modifiers: Special Effects</font></a>
+</body>
+
+</html>

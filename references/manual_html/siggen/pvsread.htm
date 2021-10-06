@@ -1,0 +1,87 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>pvsfread</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvsanal.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvsynth.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#vocoding" class="toqr">
+Signal Generators: STFT Resynthesis (Vocoding)</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>pvsfread</h2>
+
+<pre>
+  fr      <strong>pvsfread</strong>   ktimpnt, ifilcod[,ichan]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+
+<p>Create an <em>fsig</em> stream by reading a selected channel from a PVOC-EX analysis file loaded into memory.</p>
+
+<h3>Initialization</h3>
+<p><em>ifilcod</em> &#8211; name of the analysis file, in double quotes. This must have the <tt>.pvx&nbsp;</tt>file extension. A multi-channel PVOC-EX file can be generated using the extended <strong>pvanal</strong> utility.</p>
+
+<p><em>ichan</em> &#8211; the channel to read (counting from 0). Default is 0.</p>
+
+
+<h3>Performance</h3>
+<p><em>ktimpnt</em> &#8211; time to read through PVOC-EX analysis file, in seconds. <em>ktimpnt</em> must always be positive, but can move forwards or backwards in time, be stationary or discontinuous, as a pointer into the analysis file. </p>
+
+<p><strong>pvsfread</strong> creates an <em>fsig</em> stream by reading a selected channel from a PVOC-EX analysis file loaded into memory (<em>ifilcod</em>), with frame interpolation. Only format 0 files (amplitude + frequency) are currently supported. The operation of this opcode mirrors that of <strong>pvoc</strong>, but outputs an <em>fsig</em> instead of a resynthesized signal.</p>
+
+<p>Note that analysis files can be very large, especially if multichannel. Reading such files into memory will very likely incur breaks in the audio during real-time performance. As the file is read only once, and is then available to all other interested opcodes, it may be advantageous to preload a large analysis filesat startup, using a dedicated instrument.</p>
+
+<h3>Example</h3>
+
+<pre>
+  idur    <strong>filelen</strong>    &quot;test.pvx&quot;          ; find dur of (stereo) analysis file
+  kpos    <strong>line</strong>       0, p3, idur          ; to ensure we process whole file
+  fsigr   <strong>pvsfread</strong>   kpos, &quot;test.pvx&quot;, 1  ; create fsig from R channel
+</pre>
+<p><strong>Note:</strong> As this example shows, the <strong>filelen</strong> opcode has been extended to accept both old and new analysis file formats.</p>
+
+<h3>Author</h3>
+<p>Richard Dobson<br>
+Somerset, England<br>
+August, 2001<br>
+New in Csound 4.14</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvsanal.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvsynth.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#vocoding" class="toqr">
+Signal Generators: STFT Resynthesis (Vocoding)</font></a>
+</body>
+
+</html>

@@ -1,0 +1,1068 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Implementing MIDI Opcodes in Csound</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">5. Implementing MIDI Opcodes
+in Csound</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Gabriel Maldonado</FONT></H2>
+
+<P><FONT FACE="Times New Roman">Implementing MIDI opcodes is not
+very different from implementing the standard ones. The only thing
+to take into account is the hardware MIDI interface and the Operating
+System routines that access it in a particular platform. I had
+to do with MS Windows 95, an O.S. that does not allow to drive
+hardware directly, but by means of a lot of standard, device-independent
+API (Application Programming Interface) functions. The APIs provided
+with Win95 are low-level routines, so quite difficult to program.
+For this reason I implemented an higher level interface to access
+the Win95 APIs. I will not deal with these routines in this text.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Below I will describe some MIDI
+opcodes I added to Csound. In this description I will always refer
+to my higher level MIDI interface routines (not to their implementation
+details), because they can be easily re-programmed in other O.S.</FONT></P>
+
+<P><FONT FACE="Times New Roman">IMPORTANT! For understanding the
+sources presented in this text, some concepts must be clear, i.e.
+the difference among:</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">Csound instr code in the orchestra<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">current instrument instance<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">current opcode instance<BR>
+  </FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">A Csound instrument can have several
+copies of itself running in parallel and at the same time during
+the performance. Each copy is called <I>instrument instance</I>.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Within an instrument there may
+be several calls to the same opcode with different argument values.
+Each copy is named <I>opcode instance </I>.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Thus Csound can run at the same
+time N instance of the same instrument containing M istances of
+a certain opcode; the total number of opcode instances will be
+N * M.<BR>
+&nbsp;&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman">The MIDI IN Opcodes Sources</FONT></H3>
+
+<P><FONT FACE="Times New Roman">If anybody is interested to implement
+MIDI IN in their own O.S., they should know at least one of the
+following things:</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">hardware-port-access implementation
+  of the midi interface<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">software API implementation
+  of MIDI IN in particular O.S.</FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">The first things that should be
+implemented are hardware MIDI port initialization and closing
+routines. These can be implemented by calling a custom initialization
+function within <B><I>MidiOpen( )</I></B> function and a closing
+function within <B><I>MidiClose( )</I></B> function (both located
+in file <B>midirecv.c</B>).</FONT></P>
+
+<P><FONT FACE="Times New Roman">In Csound most MIDI IN accessing
+is done by function <B><I>sensMidi( )</I></B> (located in the
+file <B>midirecv.c</B> too) .</FONT></P>
+
+<P><FONT FACE="Times New Roman">When I analized MIDI IN engine
+sources in Csound, I referred to the function:</FONT></P>
+
+<UL>
+  <DIR>
+    <P><FONT FACE="Times New Roman">int readmidi(char *mbuf, int
+    size)</FONT>
+  </DIR>
+</UL>
+
+<P><FONT FACE="Times New Roman">(called within &quot;BLASTER&quot;
+conditional compilation block of caller function <B><I>sensMidi(
+) </I></B>). Function<B><I> readmidi( )</I></B> simply fills the
+buffer <B><I>mbuf</I></B> with the bytes (two or three) of current
+midi message, if a new message is pending. If a message is pending,
+this function reads the message and returns the number of bytes
+actually read, else it returns 0. The second thing to do is to
+override this function in accordance with your MIDI interface
+and/or O.S. <B><I>,</I></B> and to enable that function in the
+conditional compilation.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Doing these things is not very
+difficult if hardware interface or MIDI API functionalities are
+known. Unfortunately Windows MIDI APIs are not very simple to
+program, so I created a C++ class for doing these tasks.</FONT></P>
+
+<P><FONT FACE="Times New Roman">My MIDI IN opcodes do not access
+directly these routines, but take it for granted that Csound MIDI
+IN engine is already implemented in your platform (i.e. standard
+B.Vercoe MIDI IN opcodes are already functional) if you actually
+want to use them.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In this text source lines are
+numbered to make easier treatment reference. Obviously you must
+remove this numbering when you compile them, because C language
+does not allow line numbers.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">1. The <I>imidic7</I> and <I>midic7</I>
+Sources</FONT></H3>
+
+</h3>
+
+<P><FONT FACE="Times New Roman">The<B><I> imidic7</I></B> and
+<B><I>midic7</I></B> sources are located in files <B><A HREF="code/midiops2.c">midiops2.c</A></B>
+and <B><A HREF="code/midiops2.h">midiops2.h</A></B>.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Below there is a description of
+both opcodes.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In the header file <B><A HREF="code/midiops2.h">midiops2.h</A></B>
+there is <B>MIDICTL2</B> data type declaration:</FONT></P>
+
+<P><FONT FACE="Courier New">1 typedef struct { 2 OPDS h;<BR>
+3 float *r, *ictlno, *imin, *imax, *ifn;<BR>
+4 BOOL flag;<BR>
+5 FUNC *ftp;<BR>
+6 long ctlno;<BR>
+7 } MIDICTL2;</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Source
+1</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">While in file <B><A HREF="code/midiops2.c">midiops2.c</A></B>
+there is <B><I>imidic7</I></B> function:<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">1 void imidic7(MIDICTL2 *p)<BR>
+2 {<BR>
+3 float value;<BR>
+4 register FUNC *ftp;<BR>
+5 register long ctlno;<BR>
+6 if ((ctlno = *p-&gt;ictlno) &lt; 0 || ctlno &gt; 127)<BR>
+7 initerror(&quot;illegal controller number&quot;);<BR>
+8 else {<BR>
+9 value = curip-&gt;m_chnbp-&gt;ctl_val[ctlno] / f7bit;<BR>
+10 if (*p-&gt;ifn &gt; 0) {<BR>
+11 if ((ftp = ftfind(p-&gt;ifn)) == NULL) return;<BR>
+12 /* if valid ftable,use value as index */<BR>
+13 value = *(ftp-&gt;ftable +<BR>
+14 (long)(value * ftp-&gt;flen));<BR>
+15 /* no interpolation */<BR>
+16 }<BR>
+17 *p-&gt;r = value * (*p-&gt;imax - *p-&gt;imin)<BR>
+18 + *p-&gt;imin; /* scales the output*/<BR>
+19 }<BR>
+20 }</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Source
+2</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">In Csound you write a new opcode
+by writing one or more C-functions, each with only one argument
+(see line 1 of source 2). This argument is a pointer to a custom
+data type. This custom data type must be declared in a separate
+header file (source 1) and consists of a structure containing
+:</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">an <B>OPDS</B> strucure (line
+  2)<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">float pointer(s) to output(s)
+  (if output is present in that opcode). In our case <B>r</B> pointer
+  is used (line 3).<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">float pointer(s) to each opcode
+  argument. In our case <B>*ictlno, *imin, *imax, *ifn</B> are
+  used (line 3).<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">Internal storage variables which
+  lifetime is the duration of opcode instance. In our case the
+  variables of sevaral types declared in lines 4-5-6 of source
+  1.<BR>
+  </FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">Let&#146;s go to main source of
+<B><I>imidic7</I></B>.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The opcode<B><I> imidic7</I></B>
+is an init-time opcode, so the main function is called only once
+in instrument instance life.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Csound syntax of this opcode is:</FONT></P>
+
+<P><B><I><FONT FACE="Times New Roman">idest imidic7 ictlno, imin,
+imax, [ifn]</FONT></I></B></P>
+
+<P><FONT FACE="Times New Roman">where <B><I>ictlno</I></B> is
+midi controller number; <B><I>imin</I></B> and <B><I>imax</I></B>
+are maximum and minimum floating-point value to be scaled from
+0-127 MIDI values or from a table array of values if <B><I>ifn</I></B>
+argument (optional) is present; <B><I>ifn</I></B> is the number
+of the table.</FONT></P>
+
+<P><FONT FACE="Times New Roman">See source 2 and note that:</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">In lines 3 to 5 there are three
+  local variables declarations used to speed up pointer operations:
+  <B>value</B> is a variable used for temporary storage of result;
+  <B>ftp</B> is used as pointer to current table address and <B>ctlno</B>
+  is used as controller number.<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">In lines 6 -7 there is a conditional
+  exit point, activated when argument <B><I>ictlno</I></B> is not
+  in the 0-127 range.<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">Line 9 stores in <B>value</B>
+  the current normalized (from 0.0 to 1.0) value of the MIDI controller
+  <B><I>ictlno</I></B>.<BR>
+  </FONT>
+  <LI><B><FONT FACE="Times New Roman">curip</FONT></B><FONT FACE="Times New Roman">
+  is a global pointer to a <B>INSDS</B> type, i.e. a structure
+  containing a lot of members whose purpose is to register Csound
+  instruments status and to make it avalaible to other parts of
+  code at a certain moment. <B>curip</B> is declared and initialized
+  externally and points to current intrument instance. In line
+  9 <B>curip</B> is used to access the current value of MIDI controller
+  <B><I>ictlno.<BR>
+  </I></B></FONT>
+  <LI><FONT FACE="Times New Roman">If <B><I>ifn</I></B> argument
+  is present (line 10) then current <B><I>imidic7 </I></B>uses
+  <B>value</B> as index of table number <B><I>ifn</I></B>. If <B><I>ifn</I></B>
+  is present, but is not a valid table number (line 11) current
+  <B><I>imidic7 </I></B>instance is forced to terminate, else uses
+  <B>value</B> as index of table <B><I>ifn</I></B> (lines 13-14)
+  and the result is stored in <B>value</B> itself. In <B><I>imidic7</I></B>
+  and <B><I>midic7</I></B> opcodes no interpolation is used, whereas
+  in<B><I> (i)midic14</I></B> and in <B><I>(i) midic21</I></B>
+  it is.<BR>
+  </FONT>
+  <LI><B><FONT FACE="Times New Roman">ftfind( p-&gt;ifn)</FONT></B><FONT
+   FACE="Times New Roman"> function returns <B><I>ifn</I></B> table
+  address (line 11).<BR>
+  </FONT>
+  <LI><B><FONT FACE="Times New Roman">ftp</FONT></B><FONT FACE="Times New Roman">
+  pointer is used as table address temporary storage.<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">In lines 17-18 output is scaled
+  according to <B><I>imin</I></B> and <B><I>imax</I></B> values
+  and is stored in its final location.<BR>
+  </FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">To complete the implementation
+of any new opcode you must always add some custom code to the
+file <B>entry.c</B>. The following text is referred to <B><I>imidic7</I></B>
+opcode, but you can easily adapt it according to any opcode source.</FONT></P>
+
+<P><FONT FACE="Times New Roman">At the beginning of file <B><A
+HREF="code/entry.c">entry.c</A> </B>you must add:</FONT></P>
+
+<UL>
+  <DIR>
+    <P><FONT FACE="Times New Roman">#include &quot;midiops2.h&quot;</FONT>
+  </DIR>
+</UL>
+
+<P><FONT FACE="Times New Roman">this will include the header file
+containing the custom data types declarations.</FONT></P>
+
+<P><FONT FACE="Times New Roman">At the function declaration point
+of <B><A HREF="code/entry.c">entry.c</A> </B>you must add:</FONT></P>
+
+<UL>
+  <DIR>
+    <P><FONT FACE="Times New Roman">void imidic7(void*);</FONT>
+  </DIR>
+</UL>
+
+<P><FONT FACE="Times New Roman">this gives the correct functions
+prototypes of new opcodes.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Inside the OENTRY <B>opcodlst[
+]</B> structure array declaration in file <B><A HREF="code/entry.c">entry.c</A>
+</B>you must add:</FONT></P>
+
+<DIR>
+  <P><FONT FACE="Times New Roman">{ &quot;imidic7&quot;,S(MIDICTL2),
+  1, &quot;i&quot;, &quot;iiio&quot;,<BR>
+  imidic7, NULL, NULL },</FONT>
+</DIR>
+
+<P><FONT FACE="Times New Roman">This is a composite element initialization
+of <B>opcodlst[ ] </B>array. The sub-elements are (from left to
+right):</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">a string constant containing
+  the opcode name<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">the data structure size of that
+  opcode<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">a number which declares what
+  kind of thread are used in current opcode (a bitwise OR of :
+  1=i-rate threads; 2=k-rate threads; 4=a-rate threads)<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">a string constant declaring
+  the rate of output(s) (i = i-rate; k = k-rate; a= a-rate; x =
+  k or a-rate; o = optional i-rate argument)<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">a string constant declaring
+  the rate of input(s)<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">address of i-rate function or
+  NULL if it does not exist<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">address of k-rate function or
+  NULL if it does not exist<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">address of a-rate function or
+  NULL if it does not exist<BR>
+  </FONT>
+</UL>
+
+<H2><FONT FACE="Times New Roman">The <I>midic7</I> sources</FONT></H2>
+
+<P><FONT FACE="Courier New">1 void midic7set(MIDICTL2 *p) 2 {<BR>
+3 register long ctlno;<BR>
+4 if ((ctlno = *p-&gt;ictlno) &lt; 0 || ctlno &gt; 127)<BR>
+5 initerror(&quot;illegal controller number&quot;);<BR>
+6 else p-&gt;ctlno = ctlno;<BR>
+7 if (*p-&gt;ifn &gt; 0) {<BR>
+8 if (((p-&gt;ftp = ftfind(p-&gt;ifn)) == NULL))<BR>
+9 p-&gt;flag = FALSE; /* invalid ftable */<BR>
+10 else p-&gt;flag= TRUE;<BR>
+11 }<BR>
+12 else p-&gt;flag= FALSE;<BR>
+13 }</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Source
+3<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Courier New">1 void midic7(MIDICTL2 *p)<BR>
+2 {<BR>
+3 float value;<BR>
+4 register INSDS *curip = p-&gt;h.insdshead;<BR>
+5<BR>
+6 value = curip-&gt;m_chnbp-&gt;ctl_val[p-&gt;ctlno] / f7bit;<BR>
+7 if (p-&gt;flag){ /* if valid ftable,use value 8as index*/<BR>
+9 value = *(p-&gt;ftp-&gt;ftable<BR>
+10 + (long)(value * p-&gt;ftp-&gt;flen));<BR>
+11 /* no interpolation */<BR>
+12 }<BR>
+13 *p-&gt;r = value * (*p-&gt;imax - *p-&gt;imin) + *p-&gt;imin;<BR>
+14 /* scales the output */<BR>
+15 }</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Source
+4</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">The<B><I> imidic7 </I></B>and
+<B><I>midic7 </I></B>opcodes are almost identical in functionality:
+the only difference is that<B><I> imidic7</I></B> works at i-rate
+while <B><I>midic7 </I></B>works at k-rate. Both use <B>MIDICTL2</B>
+structure as argument data type.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The<B><I> midic7</I></B> opcode
+is a k-rate opcode and consists of two C-language functions: <B>midic7set()
+</B>and <B>midic7( )</B>. The <B>midic7set( )</B> function is
+called only once during the initialization pass, whereas the <B>midic7(
+)</B> function is called at each k pass. Most k and a-rate opcodes
+need an initialization function to initialize some data, which
+are then used in k-passes.</FONT></P>
+
+<P><FONT FACE="Times New Roman">So <B>midic7set( )</B> (see source
+3) is used for:</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">checking if <B><I>ictlno </I></B>is
+  out of range (0-127) (see lines 4-5)<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">initializing <B>ftp</B> member
+  of structure MIDICTL2 with current table address and checking
+  if it points to a valid table (see lines 7-8)<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">initializing <B>flag </B>member
+  of structure MIDICTL2 (a flag which informs <B>midic7( )</B>
+  function whether table indexing is used or not; see lines 9-12)</FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">All these tasks need to be executed
+only once per opcode instance.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The<B> midic7( )</B> function
+(see source 4) does all remaining operations at k-rate i.e. :</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">stores in <B>value</B> the current
+  normalized (from 0.0 to 1.0) value of the MIDI controller (line
+  6). Note that <B>curip</B> is now local and is initialized with
+  the pointer of the previously defined instance (the member <B>h.inshead</B>
+  of <B>MIDICTL2</B> structure) of current instrument<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">stores in <B>value</B> current
+  table value if current call uses table indexing (lines 7-9)<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">scales output according to <B><I>imin</I></B>
+  and <B><I>imax</I></B> and stores it in its final location (line
+  13)</FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">For completing <B><I>midic7</I></B>
+opcode implementation, you must take into account the file<B>
+entry.c.</B></FONT></P>
+
+<P><FONT FACE="Times New Roman">At the beginning of file <B>entry.c
+</B>you must add the include header file directive as usual (if
+it has not been done before):</FONT></P>
+
+<UL>
+  <DIR>
+    <P><FONT FACE="Courier New">#include &quot;midiops2.h&quot;</FONT>
+  </DIR>
+</UL>
+
+<P><FONT FACE="Times New Roman">This will include the header file
+containing the custom data types declarations.</FONT></P>
+
+<P><FONT FACE="Times New Roman">At the function declaration point
+of <B>entry.c </B>you must add:</FONT></P>
+
+<UL>
+  <DIR>
+    <P><FONT FACE="Courier New">void midic7set(void*), midic7(void*);</FONT>
+  </DIR>
+</UL>
+
+<P><FONT FACE="Times New Roman">This gives the correct functions
+prototypes of new opcodes.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Inside the OENTRY <B>opcodlst[
+]</B> structure array declaration in file <B><A HREF="code/entry.c">entry.c</A>
+</B>you must add:</FONT></P>
+
+<P><FONT FACE="Courier New">{ &quot;midic7&quot;,S(MIDICTL2),
+3, &quot;k&quot;, &quot;ikko&quot;, midic7set, midic7 ,NULL }</FONT></P>
+
+<P><FONT FACE="Times New Roman">that&#146;s all.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">2. The <I>imidic14</I> and <I>midic14</I>
+Sources</FONT></H3>
+
+</h3>
+
+<P><B><FONT FACE="Times New Roman">The<I> imidic14</I></FONT></B><FONT
+ FACE="Times New Roman"> and <B><I>midic14</I></B> sources are
+located in files <B>midiops2.c</B> and <B>midiops2.h</B>.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Below there is a description of
+<B><I>imidic14</I></B> opcode.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In the header file <B><A HREF="code/midiops2.h">midiops2.h</A></B>
+there is <B>MIDICTL3</B> data type declaration:</FONT></P>
+
+<P><FONT FACE="Courier New">1 typedef struct { 2 OPDS h;<BR>
+3 float *r, *ictlno1, *ictlno2, *imin, *imax, *ifn;<BR>
+4 BOOL flag;<BR>
+5 FUNC *ftp;<BR>
+6 long ctlno1, ctlno2;<BR>
+7 } MIDICTL3;</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Source</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> <B>5</B></FONT></P>
+
+<P><FONT FACE="Times New Roman">while in file <B><A HREF="code/midiops2.c">midiops2.c</A></B>
+there is <B><I>imidic14</I></B> function:<BR>
+<BR>
+</FONT><FONT FACE="Courier New">1 void imidic14(MIDICTL3 *p)<BR>
+2 {<BR>
+3 float value;<BR>
+4 register FUNC *ftp;<BR>
+5 register long ctlno1;<BR>
+6 register long ctlno2;<BR>
+7<BR>
+8 if ((ctlno1 = *p-&gt;ictlno1) &lt; 0 || ctlno1 &gt; 127 ||<BR>
+9 (ctlno2 = *p-&gt;ictlno2) &lt; 0 || ctlno2 &gt; 127 )<BR>
+10 initerror(&quot;illegal controller number&quot;);<BR>
+11 else {<BR>
+12 value = (curip-&gt;m_chnbp-&gt;ctl_val[ctlno1] * 128<BR>
+13 + curip-&gt;m_chnbp-&gt;ctl_val[ctlno2])<BR>
+14 / f14bit;<BR>
+15 if (*p-&gt;ifn &gt; 0) {<BR>
+16 /* linear interpolation routine */<BR>
+17 register float phase;<BR>
+18 register float *base_address;<BR>
+19 register float *base;<BR>
+20 register float *top;<BR>
+21 register float diff;<BR>
+22 register long length;<BR>
+23<BR>
+24 /* if valid ftable,use value as index */<BR>
+25 if ((ftp = ftfind(p-&gt;ifn)) == NULL) return;<BR>
+26 phase = value * (length = ftp-&gt;flen);<BR>
+27 diff = phase - (long) phase;<BR>
+28 base = (base_address = ftp-&gt;ftable)<BR>
+29 + (long)(phase);<BR>
+30 top = base + 1 ;<BR>
+31 top = top - base_address &gt; length ?<BR>
+32 base_address : top;<BR>
+33 value = *base + (*top - *base) * diff;<BR>
+34 }<BR>
+35 *p-&gt;r = value * (*p-&gt;imax - *p-&gt;imin) + *p-&gt;imin;<BR>
+36 }<BR>
+37 }</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Courier New">Source</FONT></B><FONT
+ SIZE="-1" FACE="Courier New"> <B>6</B></FONT></P>
+
+<P><FONT FACE="Times New Roman">The Csound syntax of <B><I>imidic14
+</I></B>opcode is:</FONT></P>
+
+<P><B><I><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">idest
+imidic14 ictlno1, ictlno2, imin, imax, [ifn]</FONT></I></B></P>
+
+<P><FONT FACE="Times New Roman">where <B><I>ictlno1</I></B> is
+the number of MIDI controller which sends most significant byte
+of the value; <B><I>ictlno2</I></B> is the number of MIDI controller
+which sends less significant byte of the value; <B><I>imin</I></B>
+and <B><I>imax</I></B> are maximum and minimum floating-point
+numbers to be scaled from 0 to 16383 (128 * 128 - 1, integer numbers)
+or from a table array of values if <B><I>ifn</I></B> argument
+(optional) is present; <B><I>ifn</I></B> is the number of the
+table.</FONT></P>
+
+<P><FONT FACE="Times New Roman">There are three main differences
+beetween <B><I>(i)midic7</I></B> and <B><I>(i)midic14</I></B>
+:</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">more resolution (from 0 to 16383
+  raw values in input)<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">one more argument (<B><I>ictlno2</I></B>
+  containing LSB control number)<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">linear interpolation when table
+  indexing is used<BR>
+  </FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">So, analyzing source 6 we can
+note that:</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">in lines 8 -10 <B>two</B> controller
+  numbers are now tested<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">in lines 12-14 MSB and LSB values
+  are joined, normalized (from 0.0 to 1.0) and stored in <B>value</B>
+  variable<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">in lines 15-34 there is the
+  linear interpolation routine. There are a lot of register variables
+  declarations whose purpose is to accelerate pointer operations.
+  Integer phase and its fractional part are calculated (lines 26-27),
+  as well as the address of current table indexing (line 28). A
+  wraparound feature is also implemented to prevent index to exceed
+  table length (lines 31-32) . Then interpolation is calculated
+  and stored in <B>value</B> variable (line 33).<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">Finally output is scaled according
+  to <B><I>imin</I></B> and <B><I>imax</I></B> values and stored
+  in its final location (line 35).<BR>
+  </FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">For completing imidic14 opcode
+implementation you must take into account file<B> entry.c.</B></FONT></P>
+
+<P><FONT FACE="Times New Roman">At the beginning of file <B>entry.c
+</B>you must add the include header file directive as usual (if
+it has not been done before):</FONT></P>
+
+<UL>
+  <DIR>
+    <P><FONT FACE="Courier New">#include &quot;midiops2.h&quot;</FONT>
+  </DIR>
+</UL>
+
+<P><FONT FACE="Times New Roman">this will include the header file
+containing the custom data types declarations.</FONT></P>
+
+<P><FONT FACE="Times New Roman">At the function declaration point
+of <B>entry.c </B>you must add:</FONT></P>
+
+<UL>
+  <DIR>
+    <P><FONT FACE="Courier New">void imidic14(void*);</FONT>
+  </DIR>
+</UL>
+
+<P><FONT FACE="Times New Roman">this gives the correct functions
+prototypes of new opcodes.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Inside the OENTRY <B>opcodlst[
+]</B> structure array declaration in file <B>entry.c </B>you must
+add:</FONT></P>
+
+<P><FONT FACE="Courier New">{ &quot;imidic14&quot;,S(MIDICTL3),1,
+&quot;i&quot;, &quot;iiiio&quot;, imidic14, NULL ,NULL },</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Source Analysis</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Now let&#146;s go to <B><I>imidic14</I></B>
+opcode sources analisis. Here follows the initialization function:</FONT></P>
+
+<P><FONT FACE="Courier New">1 void midic14set(MIDICTL3 *p) 2 {<BR>
+3 register long ctlno1;<BR>
+4 register long ctlno2;<BR>
+5 if ((ctlno1 = *p-&gt;ictlno1) &lt; 0 || ctlno1 &gt; 127 ||<BR>
+6 (ctlno2 = *p-&gt;ictlno2) &lt; 0 || ctlno2 &gt; 127 )<BR>
+7 initerror(&quot;illegal controller number&quot;);<BR>
+8 else {<BR>
+9 p-&gt;ctlno1 = ctlno1;<BR>
+10 p-&gt;ctlno2 = ctlno2;<BR>
+11 }<BR>
+12 if (*p-&gt;ifn &gt; 0) {<BR>
+13 if (((p-&gt;ftp = ftfind(p-&gt;ifn)) == NULL))<BR>
+14 p-&gt;flag = FALSE; /* invalid ftable */<BR>
+15 else p-&gt;flag= TRUE;<BR>
+16 }<BR>
+17 else p-&gt;flag= FALSE;<BR>
+18 }</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Source</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> <B>7<BR>
+</B></FONT></P>
+
+<P><FONT FACE="Times New Roman">Here is the k-rate function:</FONT></P>
+
+<P><FONT FACE="Courier New">1 void midic14(MIDICTL3 *p)<BR>
+2 {<BR>
+3 float value;<BR>
+4 register INSDS *curip = p-&gt;h.insdshead;<BR>
+5<BR>
+6 value = (curip-&gt;m_chnbp-&gt;ctl_val[p-&gt;ctlno1] *128<BR>
+7 + curip-&gt;m_chnbp-&gt;ctl_val[p-&gt;ctlno2] )<BR>
+8 / f14bit;<BR>
+9 if (p-&gt;flag) { /*if valid ftable,use value as index*/<BR>
+10<BR>
+11 /* linear interpolation routine */<BR>
+12 register float phase;<BR>
+13 register float *base_address;<BR>
+14 register float *base;<BR>
+15 register float *top;<BR>
+16 register float diff;<BR>
+17 register long length;<BR>
+18<BR>
+19 phase = value * (length = p-&gt;ftp-&gt;flen);<BR>
+20 diff = phase - (long) phase;<BR>
+21 base = (base_address = p-&gt;ftp-&gt;ftable)<BR>
+22 + (long)(phase);<BR>
+23 top = base + 1 ;<BR>
+24 top = (top - base_address &gt; length) ?<BR>
+25 base_address : top;<BR>
+26 value = *base + (*top - *base) * diff;<BR>
+27 }<BR>
+28 *p-&gt;r = value * (*p-&gt;imax - *p-&gt;imin) + *p-&gt;imin;<BR>
+29 }</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Source</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> <B>8</B></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">midic14set( )</FONT></B><FONT
+ FACE="Times New Roman"> function checks if <B><I>ictlno1</I></B>
+and <B><I>ictlno2</I></B> are within the correct range (lines
+5-7 of source 7) and if a valid <B><I>ifn</I></B> value is present
+(lines 12-17).</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">midic14( )</FONT></B><FONT
+ FACE="Times New Roman"> function does the following things:</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">joins MSB and LSB values, normalizes
+  the result (from 0.0 to 1.0) and stores it in <B>value</B> variable
+  (lines 6-8 of source 8)<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">if <B><I>ifn</I></B> argument
+  is present, it does lineary interpolated table indexing (lines
+  9-27)<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">scales output according to <B><I>imin</I></B>
+  and <B><I>imax</I></B> values and stores in it in the final location
+  (line 28)</FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">For completing <I>midic14</I>
+opcode implementation you must take into account file<B> entry.c.</B></FONT></P>
+
+<P><FONT FACE="Times New Roman">At the beginning of file <B>entry.c
+</B>you must add the include header file directive as usual (if
+it has not been done before):</FONT></P>
+
+<UL>
+  <DIR>
+    <P><FONT FACE="Courier New">#include &quot;midiops2.h&quot;</FONT>
+  </DIR>
+</UL>
+
+<P><FONT FACE="Times New Roman">this will include the header file
+containing the custom data types declarations.</FONT></P>
+
+<P><FONT FACE="Times New Roman">At the function declaration point
+of <B>entry.c </B>you must add:</FONT></P>
+
+<P><FONT FACE="Courier New">void midic14(void*);</FONT></P>
+
+<P><FONT FACE="Times New Roman">This gives the correct functions
+prototypes of new opcodes.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Inside the OENTRY <B>opcodlst[
+]</B> structure array declaration in file <B>entry.c </B>you must
+add:</FONT></P>
+
+<P><FONT FACE="Courier New">{ &quot;midic14&quot;,S(MIDICTL3),
+3, &quot;k&quot;, &quot;iikko&quot;, midic14set, midic14 ,NULL
+},</FONT></P>
+
+<P><FONT FACE="Times New Roman">The<B><I> imidic21</I></B> and
+<B><I>midic21</I></B> opcodes are almost identical to imidic14
+and midic14, the few differences are:</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">a greater resolution (21 bit)<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">an additional argument (<B><I>ictlno3</I></B>)</FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">so their sources are not included
+in this text. Refer to files<B> midiops2.h </B>and <B>midiops2.c
+.</B></FONT></P>
+
+<H3><FONT FACE="Times New Roman">2. MIDI OUT Opcodes Sources</FONT></H3>
+
+<P><FONT FACE="Times New Roman">For implementing these opcodes
+in your platform, you must override the following functions, since
+the Csound MIDI OUT opcodes sources directly call them:</FONT></P>
+
+<P><FONT FACE="Courier New">void note_on(int chan, int num, int
+vel);<BR>
+void note_off(int chan, int num, int vel);<BR>
+void control_change(int chan, int num, int value);<BR>
+void after_touch(int chan, int value);<BR>
+void program_change(int chan, int num);<BR>
+void pitch_bend(int chan, int lsb, int msb);<BR>
+void poly_after_touch(int chan, int note_num, int value);<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">These function should directly
+interact with your O.S. or hardware, if possible. The purpose
+of these function is quite obvious: they send to MIDI OUT port
+the corresponding messages. So these function are the <I>software
+interface</I> with MIDI OUT port.</FONT></P>
+
+<P><FONT FACE="Times New Roman">All MIDI OUT opcodes have not
+a <B>k</B> or <B>a</B>-rate return value in Csound orc, because
+their output is implicitly sent to MIDI OUT port.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Below there is the treatment of
+the simplest opcodes (<B><I>ion, ioff</I></B>) and of the most
+complex one (<B><I>moscil</I></B>). See sources in files <B>midiout.h</B>
+and <B>midiout.c </B>to understand other MIDI OUT opcodes.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">1. The <I>ion</I> and <I>ioff</I>
+Sources</FONT></H3>
+
+<P><B><FONT FACE="Times New Roman">The<I> ion</I></FONT></B><FONT
+ FACE="Times New Roman"> and <B><I>ioff</I></B> opcodes are the
+simplest MIDI OUT opcodes and here are the sources.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In the file <B><A HREF="code/midiout.h">midiout.h</A></B>:</FONT></P>
+
+<P><FONT FACE="Courier New">typedef struct {<BR>
+OPDS h;<BR>
+float *ichn,*inum,*ivel;<BR>
+} OUT_ON;</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Source</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> <B>9</B></FONT></P>
+
+<P><FONT FACE="Times New Roman">In the file <B><A HREF="code/midiout.c">midiout.c</A></B>:</FONT></P>
+
+<P><FONT FACE="Courier New">void iout_on(OUT_ON *p)<BR>
+{<BR>
+note_on((int)*p-&gt;ichn,(int)*p-&gt;inum,(int)*p-&gt;ivel);<BR>
+}<BR>
+void iout_off(OUT_ON *p)<BR>
+{<BR>
+note_off((int)*p-&gt;ichn,(int)*p-&gt;inum,(int)*p-&gt;ivel);<BR>
+}</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Source</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> <B>10</B></FONT></P>
+
+<P><FONT FACE="Times New Roman">Csound syntax of these opcodes
+is:</FONT></P>
+
+<P><B><I><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">ion
+ichn, inum, ivel</FONT></I></B></P>
+
+<P><B><I><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">ioff
+ichn, inum, ivel</FONT></I></B></P>
+
+<P><FONT FACE="Times New Roman">Note that, as they are MIDI OUT
+opcodes, they do not return any audio or kontrol value, as their
+output is implicitly sent to MIDI OUT port.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The code is very very easy to
+understand:</FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">struct OUT_ON only contains
+  OPDS type (necessary for all opcodes) and Csound-syntax arguments<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">iout_on( ) and iout_off( ) functions
+  symply call the respective MIDI OUT interface functions<BR>
+  </FONT>
+</UL>
+
+<H3><FONT FACE="Times New Roman">2. The <I>moscil</I> Sources</FONT></H3>
+
+<P><B><FONT FACE="Times New Roman">The<I> moscil</I></FONT></B><FONT
+ FACE="Times New Roman"> opcode is a sort of oscillator of MIDI
+data. Its syntax is:</FONT></P>
+
+<P><B><I><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">moscil
+kchn, knum, kvel, kdur, kpause</FONT></I></B></P>
+
+<P><FONT FACE="Times New Roman">Note that, as it is a MIDI OUT
+opcode, it does not return any audio or kontrol value, as its
+output is implicitly sent to the MIDI OUT port. All the arguments
+can be varied at k-rate</FONT></P>
+
+<P><FONT FACE="Times New Roman">The arguments meaning is the following:</FONT></P>
+
+<UL>
+  <LI><B><FONT FACE="Times New Roman">kchn</FONT></B><FONT FACE="Times New Roman">
+  is midi channel of current note (range: 0-15)<BR>
+  </FONT>
+  <LI><B><FONT FACE="Times New Roman">knum</FONT></B><FONT FACE="Times New Roman">
+  is current note-number (range: 0-127)<BR>
+  </FONT>
+  <LI><B><FONT FACE="Times New Roman">kvel</FONT></B><FONT FACE="Times New Roman">
+  is current velocity (reange: 0-127)<BR>
+  </FONT>
+  <LI><B><FONT FACE="Times New Roman">kdur</FONT></B><FONT FACE="Times New Roman">
+  is the duration of current note in seconds<BR>
+  </FONT>
+  <LI><B><FONT FACE="Times New Roman">kpause</FONT></B><FONT FACE="Times New Roman">
+  is the duration of a pause appended to the end of current note</FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">Here are the sources.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Here is the data structure type
+declaration (in the file <B>midiout.h</B>):</FONT></P>
+
+<P><FONT FACE="Courier New">1 typedef struct {<BR>
+2 OPDS h;<BR>
+3 float *kchn,*knum,*kvel,*kdur,*kpause;<BR>
+4 float istart_time;<BR>
+5 int last_chn, last_num, last_vel;<BR>
+6 float last_dur, last_pause;<BR>
+7 BOOL fl_note_expired, fl_first_note, fl_end_note;<BR>
+8 } MOSCIL;</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Source</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> <B>11</B></FONT></P>
+
+<P><FONT FACE="Times New Roman">The temporary storage members
+of the <B>OSCIL</B> structure are:</FONT></P>
+
+<UL>
+  <LI><B><FONT FACE="Times New Roman">istart_time</FONT></B><FONT
+   FACE="Times New Roman">, (line 4 of source 11) which holds absolute
+  time at the moment current MIDI note is turned on, in seconds<BR>
+  </FONT>
+  <LI><B><FONT FACE="Times New Roman">last_chn</FONT></B><FONT
+   FACE="Times New Roman">, <B>last_num</B>, <B>last_vel</B>, <B>last_dur
+  </B>and <B>last_pause </B>which hold respectively channel, note-number,
+  velocity, note-duration and pause values of last elapsed k-cicle<BR>
+  </FONT>
+  <LI><B><FONT FACE="Times New Roman">fl_note_expired</FONT></B><FONT
+   FACE="Times New Roman"> is a flag reporting whether current
+  note time is expired or not<BR>
+  </FONT>
+  <LI><B><FONT FACE="Times New Roman">fl_first_note</FONT></B><FONT
+   FACE="Times New Roman"> is a flag reporting whether current
+  note is the first note of current instance of the opcode or not<BR>
+  </FONT>
+  <LI><B><FONT FACE="Times New Roman">fl_end_note</FONT></B><FONT
+   FACE="Times New Roman">, is a flag reporting whether global
+  duration of current Csound instrument has been elapsed or it
+  is still in progress. When current instrument instance is ending,
+  <B><I>moscil</I></B> artificially extends its life of some k-rate
+  cycles to allow sending a note-off message.</FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">Here is the initialization function
+(in the file <B><A HREF="code/midiout.c">midiout.c</A>)</B>:</FONT></P>
+
+<P><FONT FACE="Courier New">1 void moscil_set(MOSCIL *p) 2 {<BR>
+3 if (p-&gt;h.insdshead-&gt;xtratim &lt; EXTRA_TIME)<BR>
+4 p-&gt;h.insdshead-&gt;xtratim = EXTRA_TIME;<BR>
+5 p-&gt;istart_time = (float) kcounter * onedkr;<BR>
+6 p-&gt;fl_first_note = TRUE;<BR>
+7 p-&gt;fl_note_expired = TRUE;<BR>
+8 p-&gt;fl_end_note = FALSE;<BR>
+9 }</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Source</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> <B>12</B></FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">Lines 3-4 of source 12 check
+  if the instrument extra time life value is already set by another
+  opcode within the same Csound instrument; if not, set it to <B>EXTRA_TIME</B>
+  value (a constant decalred in the same file that express the
+  k-periods number of instrument extra time).<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">Line 5 calculates current instrument
+  start time in seconds and stores the result in <B>istart_time
+  </B>member of <B>MOSCIL</B> structure. <B>kcounter</B> is a global
+  variable created and initialized in file <B>oload.c </B>containing
+  the number of k-period elapsed since current Csound session<B>;
+  onedkr</B> is a global variable created and initialized in file
+  <B>oload.c </B>containing 1/kr.<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">Lines 6-8 set the three flags
+  to their initial values.</FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">And here is the k-rate function
+(in the file <B><A HREF="code/midiout.c">midiout.c</A> </B>too):</FONT></P>
+
+<P><FONT FACE="Courier New">1 void moscil(MOSCIL *p) 2 {<BR>
+3 if (p-&gt;fl_first_note) {<BR>
+4 p-&gt;fl_first_note = FALSE;<BR>
+5 goto first_note;<BR>
+6 }<BR>
+7 if (!(p-&gt;fl_note_expired)) {<BR>
+8 if (p-&gt;h.insdshead-&gt;relesing) {<BR>
+9 p-&gt;fl_note_expired = TRUE;<BR>
+10 p-&gt;fl_end_note = TRUE;<BR>
+11 note_off(p-&gt;last_chn, p-&gt;last_num,<BR>
+12 p-&gt;last_vel);<BR>
+13 }<BR>
+14 else if ( p-&gt;last_dur<BR>
+15 &lt; (float)kcounter * onedkr<BR>
+16 - p-&gt;istart_time )<BR>
+17 {<BR>
+18 p-&gt;fl_note_expired = TRUE;<BR>
+19 note_off(p-&gt;last_chn,p-&gt;last_num,<BR>
+20 p-&gt;last_vel);<BR>
+21 }<BR>
+22 }<BR>
+23 else {<BR>
+24 if ( !p-&gt;fl_end_note<BR>
+25 &amp;&amp; p-&gt;last_pause + p-&gt;last_dur<BR>
+26 &lt; (float) kcounter * onedkr - p-&gt;istart_time<BR>
+27 &amp;&amp; !(p-&gt;h.insdshead-&gt;relesing)) {<BR>
+28 register float ftemp;<BR>
+29 p-&gt;istart_time = p-&gt;istart_time<BR>
+30 + p-&gt;last_pause<BR>
+31 + p-&gt;last_dur;<BR>
+32 p-&gt;last_dur = (ftemp = *p-&gt;kdur) &gt; 0 ?<BR>
+33 ftemp : onedkr;<BR>
+34 /* dur must be at least 1/kr */<BR>
+35 p-&gt;last_pause = (ftemp = *p-&gt;kpause) &gt; 0 ?<BR>
+36 ftemp : onedkr;<BR>
+37 first_note:<BR>
+38 {<BR>
+39 register int temp;<BR>
+40 p-&gt;last_chn = (temp = abs((int) *p-&gt;kchn)) &lt;<BR>
+41 NUMCHN ? temp : NUMCHN-1;<BR>
+42 p-&gt;last_num = (temp = abs((int) *p-&gt;knum)) &lt;<BR>
+43 128 ? temp : 127;<BR>
+44 p-&gt;last_vel = (temp = abs((int) *p-&gt;kvel)) &lt;<BR>
+45 128 ? temp : 127;<BR>
+46 }<BR>
+47 p-&gt;fl_note_expired = FALSE;<BR>
+48 note_on(p-&gt;last_chn, p-&gt;last_num,<BR>
+49 p-&gt;last_vel);<BR>
+50 }<BR>
+51 }<BR>
+52 }</FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Source</FONT></B><FONT
+ SIZE="-1" FACE="Times New Roman,Georgia,Times"> <B>13</B></FONT></P>
+
+<UL>
+  <LI><FONT FACE="Times New Roman">Lines 3-5 of source 13 check
+  if current MIDI note is the first note of current <B><I>moscil</I></B>
+  instance: if it is, it goes to line 37 in which there is a routine
+  sending a note-on MIDI message . This routine is executed each
+  time a note duration and a pause duration have elapsed (see below
+  for details). Lines 4-5 are executed only once per <B><I>moscil</I></B>
+  instance.<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">Line 7 checks if at current
+  time a note is activated or a pause is pending. If there is an
+  active note (i.e. if it is not expired) then line 8 checks if
+  the life of current instrument instance is ending; in this case
+  lines 11-12 send a note-off message to avoid the last note to
+  hang forever, otherwise lines 14-16 check if current note duration
+  has elapsed and, in this case, lines 18-20 send a note-off message
+  to MIDI OUT port.<BR>
+  </FONT>
+  <LI><FONT FACE="Times New Roman">If a pause is pending (see program
+  flow in line 7 and 23) lines 24-27 check the following conditions:
+  instrument life must not be terminating (line 24); last pause
+  must be elapsed (lines 25-26); instrument life must not be in
+  extra-time period. If these three conditions are true, a note
+  on message is sent to MIDI OUT port (lines 48-49) and istart_time,
+  istart_dur, last_pause, last_chn, last_num and last_vel member
+  of structure MOSCIL are re-initialized<BR>
+  (lines 29-45).</FONT>
+</UL>
+
+<H3><FONT FACE="Times New Roman">Conclusion</FONT></H3>
+
+</h3>
+
+<P><FONT FACE="Times New Roman">In this chapter we learned to
+implement new realtime opcodes. I hope these opcodes can be only
+the beginning of a trend. I also invite you to go beyond the capabilities
+of MIDI, implementing a more complete music network system allowing
+floating point messages such as ZIPI and SKINI (by Perry Cook).
+The next step will be to implement external applications supporting
+a grafical interface which simulate an array controller-sliders
+to allow the interactive realtime generation of any MIDI message.
+So a person will use only the computer in a concert, without the
+need for external midi devices. Another possibility could be the
+translation of MIDI to SCSI opcodes to allow two computers running
+at the same time to control each others in realtime. Because the
+SCSI protocol is much faster than MIDI, it would allow one to
+use virtual-reality input devices for controlling Csound in a
+very precise, fast and refined way.</FONT>
+
+</BODY>
+</HTML>

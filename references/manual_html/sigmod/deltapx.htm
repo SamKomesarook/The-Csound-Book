@@ -1,0 +1,134 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>deltapx, deltapxw</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="vdelayx.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="comb.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#delay" class="toqr">
+Signal Modifiers: Delay</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>deltapx, deltapxw</h2>
+
+<pre>
+  ar      <strong>deltapx</strong>    adel, iwsize
+          <strong>deltapxw</strong>   asig, adel, iwsize	
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>These units read from (<strong>deltapx</strong>) and write to (<strong>deltapxw</strong>) a <<a href="delayr.htm">strong>delayr</strong></a>/<a href="delayr.htm"><strong>delayw</strong></a> delay line using higher quality interpolation than other delay units.</p>
+
+<h3>Initialization</h3>
+<p><em>iwsize</em> &#8211; interpolation window size in samples. Allowable values are integer multiplies of 4 in the range 4 to 1024. When <em>iwsize</em> = 4, cubic interpolation is used. Increasing <em>iwsize</em> improves sound quality at the expense of CPU usage, and minimum delay time (See Example 1, below). 
+
+<p><strong>Note:</strong> Window sizes for opcodes other than <strong>deltapx</strong> are:<br>
+<ul>
+	<li><a href="deltap.htm"><strong>deltap</strong></a>: 1
+	<li><a href="deltap.htm"><strong>deltapn</strong></a>: 1
+	<li><a href="deltap.htm"><strong>deltapi</strong></a> (linear): 2
+	<li><a href="deltap.htm"><strong>deltap3</strong></a> (cubic): 4
+</ul>
+</p>
+
+<h3>Performance</h3>
+<p><em>adel</em> &#8211; delay time in seconds
+</p>
+<p><em>asig</em> &#8211; input signal to be delayed
+</p>
+
+<p><strong>deltapxw</strong> adds the input signal to the delay line at <em>adel</em> seconds. This opcode can be mixed with delay line read units (<a href="deltap.htm"><strong>deltap</strong></a>, <a href="deltap.htm"><strong>deltapn</strong></a>, <a href="deltap.htm"><strong>deltapi</strong></a>, <a href="deltap.htm"><strong>deltap3</strong></a>, and <strong>deltapx</strong>) in any order. The actual delay time is the difference between the read and write times.</p>
+
+<h3>Examples</h3>
+<p><strong>Example 1.</strong> For calculation of delay times:</p>
+<pre>
+  a1      <strong>delayr</strong>     idlr
+          <strong>deltapxw</strong>   a2, adl1, iws1
+  a3      <strong>deltapx</strong>    adl2, iws2
+          <strong>deltapxw</strong>   a4, adl3, iws3
+          <strong>delayw</strong>     a5
+</pre>
+<p>Calculation of minimum and maximum delay times for Example 1 are as follows:</p>
+<p>Delay line length:<br>
+<tt>&nbsp;&nbsp;idlr &gt;= 1/kr</tt></p>
+
+<p>Write before read:<br>
+<tt>&nbsp;&nbsp;adl1 &gt;= (iws1/2)/sr</tt></p>
+
+<p>Write before read, allowing shorter delays:<br>
+<tt>&nbsp;&nbsp;adl1 &lt;= idlr - (1 + iws1/2)/sr</tt></p>
+
+<p>Read times:<br>
+<tt>&nbsp;&nbsp;adl2 &gt;= 1/kr + (iws2/2)/sr<br>
+&nbsp;&nbsp;adl2 &lt;= idlr - (1 + iws2/2)/sr<br>
+&nbsp;&nbsp;adl2 &gt;= adl1 + (iws1 + iws2) / (2*sr)<br>
+&nbsp;&nbsp;adl2 &gt;= 1/kr + adl3 + (iws2 + iws3) / (2*sr)</tt></p>
+
+<p>Write after read:<br>
+<tt>&nbsp;&nbsp;adl3 &gt;= (iws3/2)/sr</tt></p>
+
+<p>Write after read, allowing feedback:<br>
+<tt>&nbsp;&nbsp;adl3 &lt;= idlr - (1 + iws3/2)/sr</tt></p>
+
+<p><strong>Example 2</strong></p>
+<pre>
+  a1      <strong>phasor</strong>     300.0
+  a1      =          a1 - 0.5
+  a_      <strong>delayr</strong>     1.0
+  adel    <strong>phasor</strong>     4.0
+  adel    =          <strong>sin</strong> (2.0 * 3.14159265 * adel) * 0.01 + 0.2
+          <strong>deltapxw</strong>   a1, adel, 32
+  adel    <strong>phasor</strong>     2.0
+  adel    =          <strong>sin</strong> (2.0 * 3.14159265 * adel) * 0.01 + 0.2
+          <strong>deltapxw</strong>   a1, adel, 32
+  adel    =          0.3
+  a2      <strong>deltapx</strong>    adel, 32
+  a1      =          0
+          <strong>delayw</strong>     a1
+
+          <strong>out</strong>        a2 * 20000.0
+</pre>
+
+<h3>Author</h3>
+<p>Istvan Varga<br>
+August 2001<br>
+New in Csound 4.13
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="vdelayx.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="comb.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#delay" class="toqr">
+Signal Modifiers: Delay</font></a>
+</body>
+
+</html>

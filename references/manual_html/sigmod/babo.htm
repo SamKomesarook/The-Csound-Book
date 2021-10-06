@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+	<title>babo</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="nestedap.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="wguide1.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#reverb" class="toqr">
+Signal Modifiers: Reverberation</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>babo</h2>
+<pre>
+  a1, a2  <strong>babo</strong>      asig, ksrcx, ksrcy, ksrcz, irx, iry, irz[, idiff[, ifno]]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p><strong>babo</strong>  stands  for  <strong>ba</strong>ll-within-the-<strong>bo</strong>x.   It is a physical model reverberator based on the paper by Davide  Rocchesso "The  Ball  within  the Box: a sound-processing metaphor", Computer Music Journal,  Vol  19,  N.4,  pp.45-47,  Winter 1995.</p>
+<p>The resonator geometry can be defined, along with some response characteristics, the position of the listener within the resonator, and the position of the sound source.</p>
+<h3>Initialization</h3>
+<p><em>irx, iry, irz</em> &#8211; the  coordinates of the geometry of the resonator (length of the edges in meters)</p>
+
+<p><em>idiff</em> &#8211; is  the  coefficient  of  diffusion  at  the walls,  which regulates the amount of diffusion (0-1, where 0 = no diffusion, 1 = maximum diffusion - default: 1)</p>
+
+<p><em>ifno</em> &#8211; expert  values  function:  a function number that holds all the additional parameters  of the resonator. This is typically a GEN2--type function used in non-rescaling mode. They are as follows:
+	<ul>
+		<li><em>decay</em> &#8211; main decay of the resonator (default: 0.99)</li>
+		<li><em>hydecay</em> &#8211; high frequency decay of the resonator (default: 0.1)</li>
+		<li><em>rcvx, rcvy, rcvz</em> &#8211; the coordinates of the position of the receiver (the listener) (in  meters;  0,0,0 is the resonator center)</li>
+		<li><em>rdistance</em> &#8211; the  distance in meters between the two pickups (your ears,  for  example  - default: 0.3)</li>
+		<li><em>direct</em> &#8211; the attenuation of the direct signal (0-1, default: 0.5)</li>
+		<li><em>early_diff</em> &#8211; the attenuation coefficient of the  early reflections (0-1, default: 0.8)</li>
+	</ul>
+</p>
+
+
+<h3>Performance</h3>
+<p><em>asig</em> &#8211; the input signal</p>
+
+<p><em>ksrcx, ksrcy, ksrcz</em> &#8211; the virtual coordinates of the source of sound (the input signal). These are allowed to move at k-rate and provide all the necessary variations in terms of response of the resonator.</p>
+
+<h3>Examples</h3>
+
+Orchestra File - Simple usage
+<pre>
+                   ; minimal babo instrument
+                   ;
+                   instr 1
+                   ix     =p5          ; x position of source
+                   iy     =p6          ; y position of source
+                   iz     =p7          ; z position of source
+                   ixsize =p8          ; width  of the resonator
+                   iysize =p9          ; depth  of the resonator
+                   izsize =p10         ; height of the resonator
+
+       ainput      soundin p4
+
+       al,ar       babo    ainput*0.9, ix, iy, iz, ixsize, iysize, izsize
+
+                   outs    al,ar
+
+                   endin
+</pre>
+<p>Score File - Simple Usage</p>
+<pre>
+       ; simple babo usage:
+       ;
+       ;p4     : soundin number
+       ;p5     : x position of source
+       ;p6     : y position of source
+       ;p7     : z position of source
+       ;p1     : width  of the resonator
+       ;p12    : depth  of the resonator
+       ;p13    : height of the resonator
+       ;
+       i1  0 10 1  6  4  3     14.39 11.86 10
+       ;           ^^^^^^^     ^^^^^^^^^^^^^^
+       ;           |||||||     ++++++++++++++: optimal room dims according to
+       ;           |||||||                     Milner and Bernard JASA 85(2), 1989
+       ;           +++++++++: source position
+       e
+</pre>
+<p>Orchestra File - Expert usage</p>
+<pre>
+                   ; full blown babo instrument with movement
+                   ;
+                   instr 2
+                   ixstart=p5          ; start x position of source (left-right)
+                   ixend  =p8          ; end   x position of source
+                   iystart=p6          ; start y position of source (front-back)
+                   iyend  =p9          ; end   y position of source
+                   izstart=p7          ; start z position of source (up-down)
+                   izend  =p10         ; end   z position of source
+                   ixsize =p11         ; width  of the resonator
+                   iysize =p12         ; depth  of the resonator
+                   izsize =p13         ; height of the resonator
+                   idiff  =p14         ; diffusion coefficient
+                   iexpert=p15         ; power user values stored in this function
+
+       ainput      soundin p4
+       ksource_x   line    ixstart, p3, ixend
+       ksource_y   line    iystart, p3, iyend
+       ksource_z   line    izstart, p3, izend
+
+       al,ar       babo    ainput*0.9, ksource_x, ksource_y, ksource_z,                    ixsize, iysize, izsize, idiff, iexpert
+
+                   outs    al,ar
+
+                   endin
+</pre>
+<p>Score File - Expert Usage</p>
+<pre>
+       ; full blown instrument
+       ;p5         : start x position of source (left-right)
+       ;p6         : end   x position of source
+       ;p7         : start y position of source (front-back)
+       ;p8         : end   y position of source
+       ;p9         : start z position of source (up-down)
+       ;p10        : end   z position of source
+       ;p11        : width  of the resonator
+       ;p12        : depth  of the resonator
+       ;p13        : height of the resonator
+       ;p14        : diffusion coefficient
+       ;p15        : power user values stored in this function
+
+       ;         decay  hidecay rx ry rz rdistance direct early_diff
+       f1  0 8 -2  0.95   0.95   0  0  0    0.3     0.5      0.8  ; brighter
+       f2  0 8 -2  0.95   0.5    0  0  0    0.3     0.5      0.8  ; default (to be set as)
+       f3  0 8 -2  0.95   0.01   0  0  0    0.3     0.5      0.8  ; darker
+       f4  0 8 -2  0.95   0.7    0  0  0    0.3     0.1      0.4  ; to hear the effect of diffusion
+       f5  0 8 -2  0.9    0.5    0  0  0    0.3     2.0      0.98 ; to hear the movement
+       f6  0 8 -2  0.99   0.1    0  0  0    0.3     0.5      0.8  ; default vals
+       ;        ^
+       ;         ----- gen. number: negative to avoid rescaling
+
+
+       i2   10 10 1  6  4  3   6   4  3  14.39  11.86  10   1   6 ; defaults
+       i2   +   4 2  6  4  3   6   4  3  14.39  11.86  10   1   1 ; hear brightness 1
+       i2   +   4 2  6  4  3  -6  -4  3  14.39  11.86  10   1   2 ; hear brightness 2
+       i2   +   4 2  6  4  3  -6  -4  3  14.39  11.86  10   1   3 ; hear brightness 3
+       i2   +   3 2  .6 .4 .3 -.6 -.4 .3  1.439  1.186  1.0 0.0 4 ; hear diffusion 1
+       i2   +   3 2  .6 .4 .3 -.6 -.4 .3  1.439  1.186  1.0 1.0 4 ; hear diffusion 2
+       i2   +   4 2 12  4  3 -12  -4 -3  24.39  21.86  20   1   5 ; hear movement
+       ;
+       i2   +   4 1  6  4  3   6   4  3  14.39  11.86   10  1   1 ; hear brightness 1
+       i2   +   4 1  6  4  3  -6  -4  3  14.39  11.86   10  1   2 ; hear brightness 2
+       i2   +   4 1  6  4  3  -6  -4  3  14.39  11.86   10  1   3 ; hear brightness 3
+       i2   +   3 1  .6 .4 .3 -.6 -.4 .3  1.439  1.186  1.0 0.0 4 ; hear diffusion 1
+       i2   +   3 1  .6 .4 .3 -.6 -.4 .3  1.439  1.186  1.0 1.0 4 ; hear diffusion 2
+       i2   +   4 1 12  4  3 -12  -4 -3  24.39  21.86   20  1   5 ; hear movement
+       ;            ^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^  ^   ^
+       ;            |||||||||||||||||||  |||||||||||||||||  |    --: expert values function
+       ;            |||||||||||||||||||  |||||||||||||||||  +--: diffusion
+       ;            |||||||||||||||||||  ----------------: optimal room dims according to Milner and Bernard JASA 85(2), 1989
+       ;            |||||||||||||||||||
+       ;            --------------------: source position start and end
+       e
+</pre>
+
+<h3>Authors</h3>
+<p>Paolo Filippi<br>
+Padova, Italy<br>
+1999
+</p>
+<p>Nicola Bernardini<br>
+Rome, Italy<br>
+2000</p>
+
+<p>New in Csound version 4.09</p>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="nestedap.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="wguide1.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#reverb" class="toqr">
+Signal Modifiers: Reverberation</font></a>
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN23</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen21.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen25.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#file" class="toqr">
+<strong>GEN</strong> Routines: File Access</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN23</h2>
+
+<pre>
+  <strong>f</strong>  #     time   size    -23      &quot;filename.txt&quot;
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This subroutine reads numeric values from an external ascii file
+</p>
+<h3>Initialization</h3>
+<p><em>&quot;filename.txt&quot;</em> &#8211; numeric values contained in &quot;filename.txt&quot; (which indicates the complete pathname of the character file to be read), can be separated by spaces, tabs, newline characters or commas.  Also, words that contains non-numeric characters can be used as comments since they are ignored.
+</p>
+<p><em>size</em> &#8211; number of points in the table. Must be a power of 2 , power of 2 + 1, or zero.  If <em>size</em> = 0, table size is determined by the number of numeric values in <em>filename.txt</em>. (New in Csound version 3.57)</p>
+<h3>Note</h3>
+<p>All characters following ';' (comment) are ignored until next line (numbers too).
+</p>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+February, 1998<br>
+New in Csound version 3.47
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen21.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen25.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#file" class="toqr">
+<strong>GEN</strong> Routines: File Access</font></a>
+</body>
+
+</html>

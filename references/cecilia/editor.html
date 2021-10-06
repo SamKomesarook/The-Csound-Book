@@ -1,0 +1,148 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>The Cecilia Editor</title>
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+	</head>
+
+	<body bgcolor="white">
+		&nbsp;
+		<center>
+			<p>
+			<table cols="3" width="100%" nosave>
+				<tr align="center" nosave>
+					<td align="left" valign="top" nosave><a href="tools.html"><b>&lt;--</b></a></td>
+					<td align="center" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="right" valign="top" nosave><a href="inter.html"><font color="black"><b>--&gt;</b></font></a></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			<p>&nbsp;</center>
+		<center>
+			<h2>THE&nbsp; CECILIA EDITOR</h2>
+		</center>
+		<center>
+			<p><a href="#General">General</a></center>
+		<center>
+			<p><a href="#Menus">Menus</a></center>
+		<center>
+			<p>
+			<hr>
+		</center>
+		<center>
+			<p><img src="cecEdit.gif" height="819" width="767"></center>
+		<center>
+			<p>&nbsp;</center>
+		<p>
+		<hr width="100%">
+		</p>
+		<h3><a name="General"></a>General&nbsp; <a href="#"><font size="1"><b>top</b></font></a></h3>
+		<p>The CECILIA editor is optimized for Csound orchestra building/testing. Showing how to build Csound orchestras and scores is beyond the scope of this document, but the full Csound&nbsp; gives all the information required to get started in Csound programming. Key-shortcuts are indicated in the menus and should be used as they save an inordinate amount of programming time. Most of the menu commands are self-explanatory but one should take the time to explore them as they offer many subtle options.<br>
+		&nbsp;
+		<h4><u>The Opcode Inserter</u></h4>
+		<ul>
+			The Opcode Inserter is one of the most powerful feature of the CECILIA Editor. In fact, every household in the world should have an Opcode Inserter. To bring up the inserter, you use Button-3/Command-click in any pane. A popup menu cascade is posted and you can choose the opcode you want. The opcode is pasted with all its syntax so there is no need to hunt for that elusive parameter number! The Opcode Inserter is context aware so the cascade varies according to the pane from which you call it.
+		</ul>
+		<h4><u>Mouse bindings</u></h4>
+		<ul>
+			<li>Scroll window-panes by holding Button-2 and dragging (Unix).
+			<li>Button-2-Double-click pastes previous selection at the cursor (Unix).
+			<li>Button-3/Command-click brings up insert window.
+			<li>Drag Button-1 on panel label to change its relative size.
+			<li>Button-2 on panel label withdraws that panel.
+			<li>Button-3 on panel label solos that panel. Button-3 again re-establishes position of former panes.
+		</ul>
+		<h4><u>Productivity hints</u></h4>
+		<ul>
+			<li>Use the Opcode Inserter !!!
+			<li>Colorize your syntax. When the opcodes are colorized, when you pass over them with the mouse, the syntax is posted in the Assistance window. Useful! Informative!
+			<li>To consult the manual on an opcode, select the opcode in your text and hit Alt-u and Wham!,&nbsp; there is the manual page!
+			<li>The shortcut keys for play/stop are functional in the editor.
+			<li>There is<b> no need to save changes between computations</b>. Computation is always based on current contents of the editor. Save to store changes only.
+			<li>Selecting a word and hitting Alt-f/Alt-b will go to the next instance of that word in the current pane.
+			<li>&quot;Alt-minus&quot; on a selected number in any of the window panes will round that number to the nearest power of 2 lower than that number. &quot;Alt-equal&quot; will do the opposite.
+		</ul>
+		<p>
+		<hr width="100%">
+		<br>
+		&nbsp;
+		<h3><a name="Menus"></a><b>Menus <a href="#"><font size="1">top</font></a></b></h3>
+		<ul>
+			<li>&nbsp;<b>File</b>
+		</ul>
+		<ul>
+			<ul>
+				<li><b>New</b>
+				<ul>
+					<li><b>Module...</b>&nbsp; ; Prepares CECILIA for a new module and opens the Editor.
+					<li><b>builtin&nbsp;</b> ;&nbsp; Select a builtin sound processing module.
+					<li><b>Others modules</b> ; Modules and Snapshots from the Module Preference folder.
+					<li><b>Update menu</b> ; Update the New cascade to include just-created items.
+				</ul>
+			</ul>
+		</ul>
+		<ul>
+			<ul>
+				<li><b>Open...</b> ; Open the fileselector to choose Modules, Snapshots or Csound orchestras.
+				<li><b>Save module ; </b>Save the current module.
+				<li><b>Save module as...</b>
+				<li><b>Export as .orc/.sco ; </b>Save the module as separate csound text files (interface objects are lost).
+				<li><b>Import score file...</b> ; Reinitializes a module after modifications to the interface.
+				<li><b>Export score file as... </b>; Write the score to a text file.
+				<li><b>Import MidiFile score...</b> ; Open a Midifile for score control.
+				<li><b>Use precompiled orchestra</b> ; Use the previously computed temp orchestra file for the current computation.
+				<li><b>Use precompiled score</b> ; Use the the previously computed temp score file for the current computation.
+				<li><b>Reinit module</b> ; Re-initialize the module. (Essential after making changes in the interface).
+				<li><b>Preferences...</b>&nbsp; ; Open the Preferences window.
+				<li><b>Close</b> ; Withdraw the editor window.<br>
+				&nbsp;
+			</ul>
+			<li><b>Edit</b>
+			<ul>
+				<li><b>Undo operation&nbsp;</b> ; Unlimited number of undos of text operations.
+				<li><b>Cut/Copy/Paste</b> ;&nbsp; Cuts, copies and pastes text.
+				<li><b>Select All</b> ; Select all the text in the current pane.
+				<li><b>Comment/Uncomment</b>; Insert/delete a &quot;;&quot; charcater in fron of the current line.
+				<li><b>Go to line...</b> ; Opens line selection window.
+				<li><b>Search Forward/Backward...</b> ;&nbsp; Opens the search window.
+				<li><b>Replace</b> ; Opens the Search and Replace window.
+				<li><b>Higher/Lower Power of-2</b> ; Round the selected text to the nearest power of-2. Selection must be a number.
+				<li><b>Colorize/De-colorize Syntax</b> ; Colorize all Csound opcodes, keywords and CECILIA objects.
+				<li><b>Tabulate Score</b> ; Insert tabs between parameters columns in the score.
+				<li><b>Help with Selected opcode</b> ; Launch the Csound manual at the page containing the selected opcode.
+			</ul>
+			<p>&nbsp;
+			<li><a href="soundwin.html"><b>Csound</b></a><br>
+			&nbsp;
+			<li><b>Font</b>
+			<ul>
+				<li><b>Tab space</b> ; Adjust the distance of tab character.
+				<li><b>Font/Size/Style</b> ; Choose the font name, size and style of the editor.
+			</ul>
+			<p>&nbsp;
+			<li><b>Section</b>
+			<ul>
+				<li><b>info ... csoundOut</b> ; Post/unpost the selected window pane.
+				<li><b>Save as Default</b> ; Keep the current pane arrangement as the default for the editor.
+				<li><b>Show all panels</b>
+				<li><b>Hide other panels </b>; HIde all panes but the current one.
+				<li><b>Hide current panel</b> ;
+				<li><b>Cycle panel focus;</b> Circle the focus from one pane to the next.
+				<li><b>Colorize on parse</b> ; Colorize the syntax automatically when opening a new module.
+			</ul>
+			<p>&nbsp;
+			<li><b>Manual</b>
+			<ul>
+				<li><b>Full on-line Csound manual. Netscape must be present and running.</b><br>
+				&nbsp;
+			</ul>
+			<li><a href="soundwin.html"><b>Windows</b></a><br>
+			&nbsp;
+			<li><a href="soundwin.html"><b>Help</b></a>
+		</ul>
+		<p>&nbsp;
+	</body>
+
+</html>

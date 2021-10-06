@@ -1,0 +1,83 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>noteon, noteoff, noteondur, noteondur2</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="midiout.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="moscil.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#note" class="toqr">
+MIDI Support: Note-on/Note-off</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>noteon, noteoff, noteondur, noteondur2</h2>
+
+<pre>
+          <strong>noteon</strong>     ichn, inum, ivel
+          <strong>noteoff</strong>    ichn, inum, ivel
+          <strong>noteondur</strong>   ichn, inum, ivel, idur
+          <strong>noteondur2</strong> ichn, inum, ivel, idur
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Send noteon and noteoff messages to the MIDI OUT port.
+</p>
+<h3>Initialization</h3>
+<p><em>ichn</em> &#8211; MIDI channel number (0-15)
+</p>
+<p><em>inum</em> &#8211; note number (0-127)
+</p>
+<p><em>ivel</em> &#8211; velocity (0-127)
+</p>
+<h3>Performance</h3>
+<p><strong>noteon</strong> (i-rate note on) and <strong>noteoff</strong> (i-rate note off) are the simplest MIDI OUT opcodes. <strong>noteon</strong> sends a MIDI noteon message to MIDI OUT port, and <strong>noteoff</strong> sends a noteoff message. A <strong>noteon</strong> opcode must always be followed by an <strong>noteoff</strong> with the same channel and number inside the same instrument, otherwise the note will play endlessly. These <strong>noteon</strong> and <strong>noteoff</strong> are useful only when introducing a <a href="../pgmctl/igoto.htm"><strong>timout</strong></a> statement to play a non-zero duration MIDI note. For most purposes it is better to use <strong>noteondur</strong> and <strong>noteondur2</strong>.
+</p>
+<p><strong>noteondur</strong> and <strong>noteondur2</strong> (i-rate note on with duration) send a noteon and a noteoff MIDI message both with the same channel, number and velocity. Noteoff message is sent after <em>idur</em> seconds are elapsed by the time <strong>noteondur</strong> was active.
+</p>
+<p><strong>noteondur</strong> differs from <strong>noteondur2</strong> in that <strong>noteondur</strong> truncates note duration when current instrument is deactivated by score or by real-time playing, while <strong>noteondur2</strong> will extend performance time of current instrument until <em>idur</em> seconds have elapsed. In real-time playing, it is suggested to use <strong>noteondur</strong> also for undefined durations, giving a large <em>idur</em> value.
+</p>
+<p>Any number of <strong>noteondur</strong> or <strong>noteondur2</strong> opcodes can appear in the same Csound instrument, allowing chords to be played by a single instrument.
+</p>
+<h3>Name Changes </h3>
+<p>Prior to Csound version 3.52 (February, 1999), these opcodes were called <strong>ion</strong>, <strong>ioff</strong>, <strong>iondur</strong>, and <strong>iodur2</strong>. <strong>ondur</strong> and <strong>ondur2</strong> changed to <strong>noteondur</strong> and <strong>noteondur2</strong> in Csound version 3.53.
+</p>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+New in Csound version 3.47
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="midiout.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="moscil.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#note" class="toqr">
+MIDI Support: Note-on/Note-off</font></a>
+</body>
+</html>

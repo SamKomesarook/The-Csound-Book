@@ -1,0 +1,79 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>lowres, lowresx</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="resony.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="vlowres.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>lowres, lowresx</h2>
+
+<pre>
+  ar      <strong>lowres</strong>     asig, kcutoff, kresonance[, iskip]
+  ar      <strong>lowresx</strong>    asig, kcutoff, kresonance[, inumlayer, iskip]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description </h3>
+<p><strong>lowres</strong> is a resonant lowpass filter. <strong>lowresx</strong> is equivalent to more layer of  <strong>lowres</strong>, with the same arguments, serially connected.
+</p>
+<h3>Initialization</h3>
+<p><em>inumlayer</em> &#8211; number of elements in a <strong>lowresx</strong> stack. Default value is 4. There is no maximum.
+</p>
+<p><em>iskip</em> &#8211; initial disposition of internal data space. A zero value will clear the space; a non-zero value will allow previous information to remain. The default value is 0.
+</p>
+<h3>Performance</h3>
+<p><em>asig</em>  - input signal
+</p>
+<p><em>kcutoff</em> &#8211; filter cutoff frequency point
+</p>
+<p><em>kresonance</em> &#8211; resonance amount
+</p>
+<p><strong>lowres</strong> is a resonant lowpass filter derived from a Hans Mikelson orchestra. This implementation is much faster than implementing it in Csound language, and it allows <strong>kr</strong> lower than <strong>sr</strong>. <em>kcutoff</em> is not in Hz and <em>kresonance</em> is not in dB, so experiment for the finding best results.
+</p>
+<p><strong>lowresx</strong> is equivalent to more layer of <strong>lowres</strong>, with the same arguments, serially connected. Using a stack of a larger number of filters allows a sharper cutoff. This is faster than using a larger number of instances of <strong>lowres</strong> in a Csound orchestra, because only one initialization and k cycle are needed at time, and the audio loop falls enterely inside the cache memory of processor. Based on an orchestra by Hans Mikelson.
+</p>
+<h3>Author</h3>
+<p>Gabriel Maldonado (adapted by John ffitch)<br>
+Italy<br>
+New in Csound version 3.49
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="resony.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="vlowres.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</font></a>
+</body>
+
+</html>

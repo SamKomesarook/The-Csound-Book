@@ -1,0 +1,87 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>spectrum</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="specsum.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../sigio/in.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/spectral.htm" class="toqr">
+Operations Using Spectral Data Types</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>spectrum</h2>
+
+<pre>
+  wsig    <strong>spectrum</strong>  xsig, iprd, iocts, ifrqa, iq[, ihann, idbout, idsprd, idsinrs]</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Generate a constant-Q, exponentially-spaced DFT across all octaves of a multiply-downsampled control or audio input signal.
+</p>
+<h3>Initialization</h3>
+<p><em>ihann</em> (optional) &#8211; apply a Hamming or Hanning window to the input. The default is 0 (Hamming window)
+</p>
+<p><em>idbout</em> (optional) &#8211; coded conversion of the DFT output:
+</p>
+<ul>
+	<li>0 = magnitude</li>
+	<li>1 = dB</li>
+	<li>2 = mag squared</li>
+	<li>3 = root magnitude</li>
+</ul>
+<p>The default value is 0 (magnitude).
+</p>
+<p><em>idisprd</em> (optional) &#8211; if non-zero, display the composite downsampling buffer every <em>idisprd</em> seconds.  The default value is 0 (no display).
+</p>
+<p><em>idsines</em> (optional) &#8211; if non-zero, display the Hamming or Hanning windowed sinusoids used in DFT filtering.  The default value is 0 (no sinusoid display).
+</p>
+<h3>Performance</h3>
+<p>This unit first puts signal <em>asig</em> or <em>ksig</em> through <em>iocts</em> of successive octave decimation and downsampling, and preserves a buffer of down-sampled values in each octave (optionally displayed as a composite buffer every <em>idisprd</em> seconds).  Then at every <em>iprd</em> seconds, the preserved samples are passed through a filter bank (<em>ifrqs</em> parallel filters per octave, exponentially spaced, with frequency/bandwidth Q of <em>iq</em>), and the output magnitudes optionally converted (<em>idbout </em>) to produce a band-limited spectrum that can be read by other units.
+</p>
+<p>The stages in this process are computationally intensive, and computation time varies directly with <em>iocts</em>, <em>ifrqs</em>, <em>iq</em>, and inversely with <em>iprd</em>. Settings of <em>ifrqs</em> = 12, <em>iq</em> = 10, <em>idbout</em> = 3, and <em>iprd</em> = .02 will normally be adequate, but experimentation is encouraged. <em>ifrqs</em> currently has a maximum of 120 divisions per octave. For audio input, the frequency bins are tuned to coincide with A440.
+</p>
+<p>This unit produces a self-defining spectral datablock <em>wsig</em>, whose characteristics used (<em>iprd</em>, <em>iocts</em>, <em>ifrqs</em>, <em>idbout</em>) are passed via the data block itself to all derivative <em>wsigs</em>. There can be any number of spectrum units in an instrument or orchestra, but all <em>wsig</em> names must be unique.
+</p>
+<h3>Example</h3>
+
+
+<pre>
+  asig    <strong>in</strong>                                ; get external audio
+  wsig    <strong>spectrum</strong>  asig,.02,6,12,33,0,1,1  ; downsample in 6 octs &amp; calc a 72 pt dft (Q 33, dB out) every 20 msecs
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="specsum.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../sigio/in.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/spectral.htm" class="toqr">
+Operations Using Spectral Data Types</font></a>
+</body>
+
+</html>

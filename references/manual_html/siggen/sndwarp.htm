@@ -1,0 +1,130 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>sndwarp, sndwarpst</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="granule.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="scantop.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#granular" class="toqr">
+Signal Generators: Granular Synthesis</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>sndwarp, sndwarpst</h2>
+
+<pre>
+  ar      <strong>sndwarp</strong>    xamp, xtimewarp, xresample, ifn1, ibeg, iwsize, irandw, ioverlap, ifn2, itimemode
+  [, ac]
+  ar1,    <strong>sndwarpst</strong>  xamp, xtimewarp, xresample, ifn1, ibeg, iwsize, irandw, ioverlap, ifn2, itimemode
+  ar2[,ac1,
+  ac2]
+  
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p><strong>sndwarp</strong> reads sound samples from a table and applies time-stretching and/or pitch modification. Time and frequency modification are independent from one another. For example, a sound can be stretched in time while raising the pitch! The window size and overlap arguments are important to the result and should be experimented with. In general they should be as small as possible. For example, start with <em>iwsize</em>=sr/10 and <em>ioverlap</em>=15. Try <em>irandw</em>=<em>iwsize</em>*.2. If you can get away with less overlaps, the program will be faster. But too few may cause an audible flutter in the amplitude. The algorithm reacts differently depending upon the input sound and there are no fixed rules for the best use in all circumstances. But with proper tuning, excellent results can be achieved.
+</p>
+<h3>Initialization</h3>
+<p><em>ifn1</em> &#8211; the number of the table holding the sound samples which will be subjected to the <strong>sndwarp</strong> processing. <a href="../gen/GEN01.htm"><strong>GEN01</strong></a> is the appropriate function generator to use to store the sound samples from a pre-existing soundfile.
+</p>
+<p><em>ibeg</em> &#8211; the time in seconds to begin reading in the table (or soundfile). When <em>itimemode</em> is non- zero, the value of <em>xtimewarp</em> is offset by <em>ibeg</em>.
+</p>
+<p><em>iwsize</em> &#8211; the window size in samples used in the time scaling algorithm.
+</p>
+<p><em>irandw</em> &#8211; the bandwidth of a random number generator. The random numbers will be added to <em>iwsize</em>.
+</p>
+<p><em>ioverlap</em> &#8211; determines the density of overlapping windows.
+</p>
+<p><em>ifn2</em> &#8211; a function used to shape the window. It is usually used to create a ramp of some kind from zero at the beginning and back down to zero at the end of each window. Try using a half a sine (i.e.: f1 0 16384 9 .5 1 0) which works quite well. Other shapes can also be used.
+</p>
+<h3>Performance</h3>
+<p><em>ar</em> &#8211; the single channel of output from the <strong>sndwarp</strong> unit generator while <em>ar1</em> and <em>ar2</em> are the stereo (left and right) outputs from <strong>sndwarpst</strong>. <strong>sndwarp</strong> assumes that the function table holding the sampled signal is a mono one while <strong>sndwarpst</strong> assumes that it is stereo. This simply means that <strong>sndwarp</strong> will index the table by single-sample frame increments and <strong>sndwarpst</strong> will index the table by a two-sample frame increment. The user must be aware then that if a mono signal is used with sndwarst or a stereo one with <strong>sndwarp</strong>, time and pitch will be altered accordingly.
+</p>
+
+<p><em>ac</em> &#8211; in <strong>sndwarp</strong> and <em>ac1</em>, <em>ac2</em> in <strong>sndwarpst</strong>, are single layer (no overlaps), unwindowed versions of the time and/or pitch altered signal. They are supplied in order to be able to balance the amplitude of the signal output, which typically contains many overlapping and windowed versions of the signal, with a clean version of the time-scaled and pitch-shifted signal. The <strong>sndwarp</strong> process can cause noticeable changes in amplitude, (up and down), due to a time differential between the overlaps when time-shifting is being done. When used with a balance unit, <em>ac</em>, <em>ac1</em>, <em>ac2</em> can greatly enhance the quality of sound. They are optional, but note that in <strong>sndwarpst</strong> they must both be present in the syntax (use both or neither). An example of how to use this is given below.
+</p>
+<p><em>xamp</em> &#8211; the value by which to scale the amplitude (see note on the use of this when using <em>ac</em>, <em>ac1</em>, <em>ac2</em>).
+</p>
+<p><em>xtimewarp</em> &#8211; determines how the input signal will be stretched or shrunk in time. There are two ways to use this argument depending upon the value given for <em>itimemode</em>. When the value of <em>itimemode</em> &#8211; 0, xitimewarp will scale the time of the sound. For example, a value of 2 will stretch the sound by 2 times. When <em>itimemode</em> &#8211; any non-zero value then <em>xtimewarp</em> &#8211; used as a time pointer in a similar way in which the time pointer works in <a href="../sigmod/lpread.htm"><strong>lpread</strong></a> and <a href="adsr.htm"><strong>pvoc</strong></a>. An example below illustrates this. In both cases, the pitch will <em>not</em> be altered by this process. Pitch shifting is done independently using <em>xresample</em>.
+</p>
+<p><em>xresample</em> &#8211; the factor by which to change the pitch of the sound. For example, a value of 2 will produce a sound one octave higher than the original. The timing of the sound, however, will <em>not</em> be altered.
+</p>
+<h3>Example</h3>
+<p>The below example shows a slowing down or stretching of the sound stored in the stored table (<em>ifn1</em>). Over the duration of the note, the stretching will grow from no change from the original to a sound which is ten times &quot;slower&quot; than the original. At the same time the overall pitch will move upward over the duration by an octave.
+</p>
+<pre>
+  iwindfun=1
+  isampfun=2
+  ibeg=0
+  iwindsize=2000
+  iwindrand=400
+  ioverlap=10
+  awarp   <strong>line</strong>    1, p3, 1
+  aresamp <strong>line</strong>    1, p3, 2
+  kenv    <strong>line</strong>    1, p3, .1
+  asig    <strong>sndwarp</strong> kenv, awarp, aresamp, isampfun, ibeg, iwindsize, iwindrand, ioverlap,iwindfun,0
+</pre>
+<p>Now, here's an example using <em>xtimewarp</em> as a time pointer and using stereo:
+</p>
+<pre>
+  itimemode     <strong>=</strong>         1
+  atime         <strong>line</strong>      0, p3, 10
+  ar1, ar2       <strong>sndwarpst</strong> kenv, atime, aresamp, sampfun, ibeg, iwindsize, iwindrand, ioverlap, iwindfun, itimemode
+</pre>
+<p>In the above, atime advances the time pointer used in the <strong>sndwarp</strong> from 0 to 10 over the duration of the note. If p3 is 20 then the sound will be two times slower than the original. Of course you can use a more complex function than just a single straight line to control the time factor.
+</p>
+<p>Now the same as above but using the balance function with the optional outputs:
+</p>
+<pre>
+  asig,acmp   <strong>sndwarp</strong>  1, awarp, aresamp, isampfun, ibeg, iwindsize, iwindrand, ioverlap, iwindfun, itimemode
+  abal        <strong>balance</strong> asig, acmp
+  
+  asig1,asig2,acmp1,acmp2 <strong>sndwarpst</strong> 1, atime, aresamp, sampfun, ibeg, iwindsize, iwindrand, ioverlap, iwindfun, itimemode
+  abal1       <strong>balance</strong> asig1, acmp1
+  abal2       <strong>balance</strong> asig2, acmp2
+</pre>
+<p>In the above two examples notice the use of the balance unit. The output of balance can then be scaled, enveloped, sent to an out or outs, and so on. Notice that the amplitude arguments to <strong>sndwarp</strong> and <strong>sndwarpst</strong> are &quot;1&quot; in these examples. By scaling the signal after the <strong>sndwarp</strong> process, <em>abal</em>, <em>abal1</em>, and <em>abal2</em> should contain signals that have nearly the same amplitude as the original input signal to the <strong>sndwarp</strong> process. This makes it much easier to predict the levels and avoid samples out of range or sample values that are too small.
+</p>
+<p>More advice: Only use the stereo version when you really need to be processing a stereo file. It is somewhat slower than the mono version and if you use the balance function it is slower again. There is nothing wrong with using a mono <strong>sndwarp</strong> in a stereo orchestra and sending the result to one or both channels of the stereo output!<br>
+</p>
+<h3>Author </h3>
+<p>Richard Karpen<br>
+Seattle, Wash<br>
+1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="granule.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="scantop.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#granular" class="toqr">
+Signal Generators: Granular Synthesis</font></a>
+</body>
+
+</html>

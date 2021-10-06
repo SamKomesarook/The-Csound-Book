@@ -1,0 +1,336 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>QuickRef: Orchestra Syntax</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body text="black" link="black" vlink="black" alink="black" bgcolor="white">
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" nowrap width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent">
+      <img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" nowrap width="10">
+    </td>
+    <td class="qr" nowrap width="45" align="right">
+      <img src="../noprev.gif" width="38" height="18" alt="Previous Page" border="0">
+    </td>
+    <td class="qr" nowrap width="45" align="right">
+      <a class="qr" href="instrctl.htm">
+      <img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+<hr size="1" color="#A9A9A9" noshade>
+<h1>Orchestra Syntax</h1>
+
+<a class="qr" name="header"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Orchestra Syntax: Orchestra Header Statements</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="638">
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      <a class="qr" href="../syntax/header.htm">
+      <strong>sr</strong></a>
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <strong>=</strong>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      iarg
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      <a class="qr" href="../syntax/header.htm">
+      <strong>kr</strong></a>
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <strong>=</strong>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      iarg
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      <a class="qr" href="../syntax/header.htm">
+      <strong>ksmps</strong></a>
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <strong>=</strong>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      iarg
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP" height="9">
+      <a class="qr" href="../syntax/header.htm">
+      <strong>nchnls</strong></a>
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP" height="9">
+      <strong>=</strong>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP" height="9">
+      iarg
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/strset.htm">
+      <strong>strset</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      iarg, &quot;stringtext&quot;
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/strset.htm">
+      <h5>pset</h5></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      con1, con2, ...
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/seed.htm">
+      <strong>seed</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      ival
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      gir
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../siggen/ftgen.htm">
+      <strong>ftgen</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      ifn, itime, isize, igen, iarga[, iargb, ...iargz]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/massign.htm">
+      <strong>massign</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      ichnl, insnum
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../midi/massign.htm">
+      <strong>ctrlinit</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      ichnkm, ictlno1, ival1[, ictlno2, ival2[, ictlno3, ival3[, ...ival32]]
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="datatypes"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Orchestra Syntax: Variable Data Types</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP" height="9">
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP" height="9">
+      <a class="qr" href="../syntax/top.htm">
+      <strong>i</strong>name</a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP" height="9">
+      (init variable - initialization only)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP" height="9">
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP" height="9">
+      <a class="qr" href="../syntax/top.htm">
+      <strong>k</strong>name</a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP" height="9">
+      (control signal - performance time, control rate)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP" height="9">
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP" height="9">
+      <a class="qr" href="../syntax/top.htm">
+      <strong>a</strong>name</a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP" height="9">
+      (audio signal - performance time, audio rate)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP" height="9">
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP" height="9">
+      <a class="qr" href="../syntax/kvar.htm">
+      <strong>gi</strong>name</a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP" height="9">
+      (global init variable - initialization only)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP" height="9">
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP" height="9">
+      <a class="qr" href="../syntax/kvar.htm">
+      <strong>gk</strong>name</a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP" height="9">
+      (global control signal - performance time, control rate)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP" height="9">
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP" height="9">
+      <a class="qr" href="../syntax/kvar.htm">
+      <strong>ga</strong>name</a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP" height="9">
+      (global audio signal - performance time, audio rate)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP" height="9">
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP" height="9">
+      <a class="qr" href="../syntax/kvar.htm">
+      <strong>w</strong>name</a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP" height="9">
+      (spectral data - performance time, control rate)
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="iblock"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Orchestra Syntax: Instrument Block Statements</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP" height="9">
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP" height="9">
+      <a class="qr" href="../syntax/iblock.htm">
+      <strong>instr</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP" height="9">
+      <em>NN</em>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" width="11%" valign="TOP" height="9">
+    </td>
+    <td class="qr" width="16%" valign="TOP" height="9">
+      <a class="qr" href="../syntax/iblock.htm">
+      <strong>endin</strong></a>
+    </td>
+    <td class="qr" width="73%" valign="TOP" height="9">
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="varinit"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Orchestra Syntax: Variable Initialization</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      i/k/ar
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/assign.htm">
+      <strong>=</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      iarg
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      i/k/ar
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/assign.htm">
+      <strong>init</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      iarg
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      ir
+    </td>
+    <td class="qr" nowrap width="89%" valign="TOP" colspan="2">
+      <a class="qr" href="../syntax/assign.htm">
+      <strong>tival</strong></a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      i/k/ar
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../syntax/assign.htm">
+      <strong>divz</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      ia, ib, isubst
+    </td>
+  </tr>
+</table>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" nowrap width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent">
+      <img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" nowrap width="10">
+    </td>
+    <td class="qr" nowrap width="45" align="right">
+      <img src="../noprev.gif" width="38" height="18" alt="Previous Page" border="0">
+    </td>
+    <td class="qr" nowrap width="45" align="right">
+      <a class="qr" href="instrctl.htm">
+      <img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+	<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>resonr ,resonz</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="tonex.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="resony.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>resonr, resonz</h2>
+
+<pre>
+  ar      <strong>resonr</strong>    asig, kcf, kbw[,iscl, iskip]
+  ar      <strong>resonz</strong>    asig, kcf, kbw[,iscl, iskip]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Implementations of a second-order, two-pole two-zero bandpass filter with variable frequency response.
+</p>
+<h3>Initialization</h3>
+<p>The optional initialization variables for <strong>resonr</strong> and <strong>resonz</strong> are identical to the i-time variables for <a href="port.htm"><strong>reson</strong></a>.
+</p>
+<p><em>iskip</em> &#8211; initial disposition of internal data space. Since filtering incorporates a feedback loop of previous output, the initial status of the storage space used is significant. A zero value will clear the space; a non-zero value will allow previous information to remain. The default value is 0.
+</p>
+<p><em>iscl</em> &#8211; coded scaling factor for resonators. A value of 1 signifies a peak response factor of 1, i.e.  all frequencies other than <em>kcf</em> are attenuated in accordance with the (normalized) response curve. A value of 2 raises the response factor so that its overall RMS value equals 1. This intended equalization of input and output power assumes all frequencies are physically present; hence it is most applicable to white noise. A zero value signifies no scaling of the signal, leaving that to some later adjustment (see <a href="rms.htm"><strong>balance</strong></a>). The default value is 0.
+</p>
+<h3>Performance</h3>
+<p><strong>resonr</strong> and <strong>resonz</strong> are variations of the classic two-pole bandpass resonator (<a href="port.htm"><strong>reson</strong></a>). Both filters have two zeroes in their transfer functions, in addition to the two poles. <strong>resonz</strong> has its zeroes located at z = 1 and z = -1. <strong>resonr</strong> has its zeroes located at +sqrt(<em>R</em>) and -sqrt(<em>R</em>), where <em>R</em> is the radius of the poles in the complex z-plane. The addition of zeroes to <strong>resonr</strong> and <strong>resonz</strong> results in the improved selectivity of the magnitude response of these filters at cutoff frequencies close to 0, at the expense of less selectivity of frequencies above the cutoff peak.
+</p>
+<p><strong>resonr</strong> and <strong>resonz</strong> are very close to constant-gain as the center frequency is swept, resulting in a more efficient control of the magnitude response than with traditional two-pole resonators such as <strong>reson</strong>.
+</p>
+<p><strong>resonr</strong> and <strong>resonz</strong> produce a sound that is considerably different from <strong>reson</strong>, especially for lower center frequencies; trial and error is the best way of determining which resonator is best suited for a particular application.
+</p>
+<p><em>asig</em> &#8211; input signal to be filtered
+</p>
+<p><em>kcf</em> &#8211; cutoff or resonant frequency of the filter, measured in Hz
+</p>
+<p><em>kbw</em> &#8211; bandwidth of the filter (the Hz difference between the upper and lower half-power points)
+</p>
+<h3>Example</h3>
+
+<pre>
+  ; Orchestra file for resonant filter sweep of a sawtooth-like waveform. 
+  ; The outputs of reson, resonr, and resonz are scaled by coefficients
+  ; specified in the score, so that each filter can be heard on its own
+  ; from the same instrument.
+
+  <strong>sr</strong>       = 44100
+  <strong>kr</strong>       = 4410
+  <strong>ksmps</strong>    = 10
+  <strong>nchnls</strong>   = 1
+  
+<strong>instr</strong> 1
+  
+  idur     =        p3
+  ibegfreq =        p4                              ; beginning of sweep frequency
+  iendfreq =        p5                              ; ending of sweep frequency
+  ibw      =        p6                              ; bandwidth of filters in Hz
+  ifreq    =        p7                              ; frequency of gbuzz that is to be filtered
+  iamp     =        p8                              ; amplitude to scale output by
+  ires     =        p9                              ; coefficient to scale amount of reson in output
+  iresr    =        p10                             ; coefficient to scale amount of resonr in output
+  iresz    =        p11                             ; coefficient to scale amount of resonz in output
+  
+ ; Frequency envelope for reson cutoff
+  kfreq    <strong>linseg</strong>   ibegfreq, idur * .5, iendfreq, idur * .5, ibegfreq
+  
+ ; Amplitude envelope to prevent clicking
+  kenv     <strong>linseg</strong>   0, .1, iamp, idur - .2, iamp, .1, 0
+  
+ ; Number of harmonics for gbuzz scaled to avoid aliasing
+  iharms   =        (sr*.4)/ifreq
+  
+  asig     <strong>gbuzz</strong>    1, ifreq, iharms, 1, .9, 1      ; &quot;Sawtooth&quot; waveform
+  ain      =        kenv * asig                     ; output scaled by amp envelope
+  ares     <strong>reson</strong>    ain, kfreq, ibw, 1
+  aresr    <strong>resonr</strong>   ain, kfreq, ibw, 1
+  aresz    <strong>resonz</strong>   ain, kfreq, ibw, 1
+  
+           <strong>out</strong>      ares * ires + aresr * iresr + aresz * iresz
+  
+endin
+  
+ ; Score file for above
+  f1 0 8192 9 1 1 .25                               ; cosine table for gbuzz generator
+  
+  i1  0 10 1 3000 200 100 4000 1 0 0                ; reson  output with bw = 200
+  i1 10 10 1 3000 200 100 4000 0 1 0                ; resonr output with bw = 200
+  i1 20 10 1 3000 200 100 4000 0 0 1                ; resonz output with bw = 200
+  i1 30 10 1 3000  50 200 8000 1 0 0                ; reson  output with bw = 50
+  i1 40 10 1 3000  50 200 8000 0 1 0                ; resonr output with bw = 50
+  i1 50 10 1 3000  50 200 8000 0 0 1                ; resonz output with bw = 50
+  e
+</pre>
+
+
+
+<h3>Technical History</h3>
+<p><strong>resonr</strong> and <strong>resonz</strong> were originally described in an article by Julius O. Smith and James B. Angell.<small><sup>1</sup></small> Smith and Angell recommended the <strong>resonz</strong> form (zeros at +1 and -1) when computational efficiency was the main concern, as it has one less multiply per sample, while <strong>resonr</strong> (zeroes at + and - the square root of the pole radius R) was recommended for situations when a perfectly constant-gain center peak was required.
+</p>
+<p>Ken Steiglitz, in a later article<small><sup>2</sup></small>, demonstrated that <strong>resonz</strong> had constant gain at the true peak of the filter, as opposed to <strong>resonr</strong>, which displayed constant gain at the pole angle. Steiglitz also recommended <strong>resonz</strong> for its sharper notches in the gain curve at zero and Nyquist frequency. Steiglitz's recent book<small><sup>3</sup></small> features a thorough technical discussion of <strong>reson</strong> and <strong>resonz</strong>, while Dodge and Jerse's textbook<small><sup>4</sup></small> illustrates the differences in the response curves of <strong>reson</strong> and <strong>resonz</strong>.
+</p>
+<h3>References</h3>
+<ol>
+	<li>Smith, Julius O. and Angell, James B., &quot;A Constant-Gain Resonator Tuned by a Single Coefficient,&quot; <em>Computer Music Journal</em>, vol. 6, no. 4, pp. 36-39, Winter 1982.</li>
+	<li>Steiglitz, Ken, &quot;A Note on Constant-Gain Digital Resonators,&quot; <em>Computer Music Journal</em>, vol. 18, no. 4, pp. 8-10, Winter 1994.</li>
+	<li>Ken Steiglitz, <em>A Digital Signal Processing Primer, with Applications to Digital Audio and Computer Music</em>. Addison-Wesley Publishing Company, Menlo Park, CA, 1996.</li>
+	<li>Dodge, Charles and Jerse, Thomas A., <em>Computer Music: Synthesis, Composition, and Performance</em>. New York: Schirmer Books, 1997, 2nd edition, pp. 211-214.</li>
+</ol>
+<h3>Author</h3>
+<p>Sean Costello<br>
+Seattle, Washington<br>
+1999<br>
+New in Csound version 3.55
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="tonex.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="resony.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</font></a>
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>A Csound Primer</title>
+	</head>
+
+	<body bgcolor="white">
+		<h2><font size="6" face="Times New Roman">A Csound Primer</font></h2>
+		<h2><font size="5" face="Times New Roman"><b>Hans Mikelson</b></font></h2>
+		<h2><font face="Times New Roman">Introduction</font></h2>
+		<p><font face="Times New Roman">This article originated as a post to the Csound mailing list. It is my attempt at explaining how to use the basics of Csound to a beginner. To use Csound two different files need to be created. An orchestra file and a score file. These files are text files and are usually called <b>myfile.orc</b> and <b>myfile.sco</b>. If the reader is familiar with MIDI the following analogy may be helpful. The Csound orchestra corresponds to a sound module and the Csound score corresonds to a MIDI file. The orchestra file describes the type of sound to be produced and the score file handles the notes.</font></p>
+		<h3><font face="Times New Roman">The Orchestra</font></h3>
+		<p><font face="Times New Roman">The orchestra starts with a header which is followed by a list of instruments. The header tells what the sample rate of the sound file will be, what the control rate is, how many channels the sound file will have (mono, stereo, quad). Following is a typical header:</font></p>
+		<pre><font face="Courier New" size="4">sr=44100 ; Sample Rate</font>
+<font face="Courier New" size="4">kr=22050 ; Control Rate</font>
+<font face="Courier New" size="4">ksmps=2&nbsp; ; sr/kr As far as I know this is always the case</font>
+<font face="Courier New" size="4">nchnls=2 ; 1=mono, 2=stereo, 4=quad</font></pre>
+		<p><font face="Times New Roman">Everything following a semicolon on the same <a href="../../references/manual_html/siggen/line.htm">line</a> is a comment. The header is followed by one or more instruments. A simple instrument follows:</font></p>
+		<pre><font face="Courier New" size="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../references/manual_html/syntax/iblock.htm">instr</a> 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Instrument 1 begins here</font>
+<font face="Courier New" size="4">aout&nbsp; <a href="../../references/manual_html/siggen/oscil.htm">oscil</a> 10000, 440, 1&nbsp; ; An oscillator</font>
+<font face="Courier New" size="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../references/manual_html/sigio/in.htm">outs</a>&nbsp; aout, aout&nbsp;&nbsp;&nbsp;&nbsp; ; Output the results to a stereo sound file</font>
+<font face="Courier New" size="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../references/manual_html/syntax/iblock.htm">endin</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Instrument 1 ends here</font></pre>
+		<p><font face="Times New Roman">Every instrument starts with <a href="../../references/manual_html/syntax/iblock.htm"><b>instr</b></a><b> #</b> and ends with <a href="../../references/manual_html/syntax/iblock.htm"><b>endin</b></a>. Each line has a single command or <i>opcode</i>. The main command in this instrument is the <a href="../../references/manual_html/siggen/oscil.htm"><b>oscil</b></a> opcode. Every opcode has zero or more variables on the left side of the opcode and zero or more parameters on the right side depending on the opcode. The <a href="../../references/manual_html/siggen/oscil.htm"><b>oscil</b></a> opcode is a simple oscillator. The first parameter for <a href="../../references/manual_html/siggen/oscil.htm"><b>oscil</b></a> tells how loud the signal should be, in this case 10000. (Note that 16 bits of digital audio translates to about +/- 32000 so that's the maximum loudness) The second parameter for <a href="../../references/manual_html/siggen/oscil.htm"><b>oscil</b></a> tells what the frequency of the oscillator is, in this case 440 cycles/sec. The third parameter tells the waveform or table of the oscillator. The waveforms are generated in the score which I will discuss later. The result of the oscillator is stored in the variable aout. The <a href="../../references/manual_html/sigio/in.htm"><b>outs</b></a> opcode takes what is in the variable aout and generates some type of output from it. Output is often generated as a sound file although it is possible to generate output in real time so that an instrument could be played from a MIDI keyboard.</font></p>
+		<p><b><font face="Times New Roman">Variables</font></b></p>
+		<p><font face="Times New Roman">There are several types of variables used in Csound. The above instrument uses one variable &quot;aout&quot;. The first letter of the variable usually tells what kind of variable it is. The letter &quot;a&quot; means audio rate and &quot;k&quot; means control rate. Variables usually start with an &quot;a&quot; or a &quot;k&quot;. Be careful not to give them the same name as an opcode. Variables starting with the letter &quot;i&quot; are initialized to a value when the instrument is started and do not usually change. There are also some special &quot;p&quot; variables or parameters. The &quot;p&quot; values are supplied by the score. The first three p parameters have a special meaning.</font></p>
+		<ul>
+			<p><font face="Times New Roman">p1 is the instrument number.<br>
+			p2 is the time the instrument starts.<br>
+			p3 is the duration of the instrument.<br>
+			p4, p5, p6 etc. can be used for different things. They send values from the score to the orchestra.</font></p>
+		</ul>
+		<p><font face="Times New Roman">Usually an instrument only knows about the variables between the <a href="../../references/manual_html/syntax/iblock.htm"><b>instr</b></a> and the <a href="../../references/manual_html/syntax/iblock.htm"><b>endin</b></a> opcodes. Sometimes you may wish to send a signal from one instrument to another. Global variables are varibles which can be accessed by any instrument.Global variables begin with gi, gk or ga. There are also some special global variables sr, kr, ksmps, nchnls which I described earlier.</font></p>
+		<p><font face="Times New Roman"><b>The Score</b></font></p>
+		<p><font face="Times New Roman">There are two different events typically found in a score. They are the tables and the instrument events. Following is a simple score which could be used with the above orchestra:</font></p>
+		<pre><font face="Courier New" size="4">;Table# Start TableSize TableGenerator Parameter&nbsp; Comment</font>
+<font face="Courier New" size="4">f1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp; 16384&nbsp;&nbsp;&nbsp;&nbsp; 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Sine</font>
+
+<font face="Courier New" size="4">;Instrument# Start Duration</font>
+<font face="Courier New" size="4">i1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp; 1</font></pre>
+		<p><font face="Times New Roman">First I'll discuss the call to the instrument. The i indicates that it is an instrument event. The 1 (p1) means to call instrument number 1. The next number (p2) is 0. This tells when the instrument should start playing. The third number (p3) is the duration in this case 1 second. These values can be accessed in the instrument as p1-p3 respectively.</font></p>
+		<p><font face="Times New Roman">Next consider the waveform function table (f). There are five numbers on this line. The first number is the number the table will be referenced by in the orchestra. The second number is the time at which this table becomes available to the orchestra. The third number tells how many samples are in the table. The fourth number tells which <a href="../../references/manual_html/gen/top.htm"><b>GEN</b></a> routine to use to generate the table. In this case <a href="../../references/manual_html/gen/top.htm"><b>GEN</b></a> routine 10 is selected. Any following numbers on this line are used by the <a href="../../references/manual_html/gen/top.htm"><b>GEN</b></a> routine to control what is generated. <a href="../../references/manual_html/gen/gen09.htm"><b>GEN 10</b></a> with a 1 as its only parameter generates a sine wave. Other <a href="../../references/manual_html/gen/top.htm"><b>GEN</b></a> routines can be used to generate square, triangle or many other shapes, including reading in user supplied samples.</font></p>
+		<p><font face="Times New Roman">Many opcodes make use of tables. The table number is given to the opcode as one of its parameters. In the simple orchestra above the third parameter tells <a href="../../references/manual_html/siggen/oscil.htm"><b>oscil</b></a> which table to use for its waveform. The third parameter is a 1 so table 1 (sine wave) is used.</font></p>
+		<p><font face="Times New Roman">One drawback of this orchestra/score is that it only plays one pitch at one volume. Following is a more versatile orchestra/score.</font></p>
+		<pre><font face="Courier New" size="4">; ORCHESTRA</font>
+
+<font face="Courier New" size="4">sr=44100 ; Sample Rate</font>
+<font face="Courier New" size="4">kr=22050 ; Control Rate</font>
+<font face="Courier New" size="4">ksmps=2&nbsp; ; sr/kr As far as I know this is always the case</font>
+<font face="Courier New" size="4">nchnls=2 ; 1=mono, 2=stereo, 4=quad</font>
+
+<font face="Courier New" size="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../references/manual_html/syntax/iblock.htm">instr</a>&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Instrument 1 begins here</font>
+<font face="Courier New" size="4">iamp&nbsp;&nbsp; =&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; p4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Amplitude</font>
+<font face="Courier New" size="4">ifqc&nbsp;&nbsp; =&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; p5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Frequency</font>
+<font face="Courier New" size="4">itabl1 =&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; p6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Waveform Table</font>
+<font face="Courier New" size="4">aout&nbsp;&nbsp; <a href="../../references/manual_html/siggen/oscil.htm">oscil</a>&nbsp; iamp, ifqc, itabl1&nbsp;&nbsp;&nbsp; ; An oscillator</font>
+<font face="Courier New" size="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../references/manual_html/sigio/in.htm">outs</a>&nbsp;&nbsp; aout, aout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Output the results to a stereo sound file</font>
+<font face="Courier New" size="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../references/manual_html/syntax/iblock.htm">endin</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Instrument 1 ends here</font>
+
+<font face="Courier New" size="4">; SCORE</font>
+<font face="Courier New" size="4">;Table# Start TableSize TableGenerator Parameter Comments</font>
+<font face="Courier New" size="4">f1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp; 16384&nbsp;&nbsp;&nbsp;&nbsp; 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Sine</font>
+
+<font face="Courier New" size="4">;Instrument#(p1) Start(p2) Duration(p3) Amplitude(p4) Frequency(p5) Table(p6)</font>
+<font face="Courier New" size="4">i1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 440&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1</font></pre>
+		<p><font face="Times New Roman">This does the same thing but more control has been moved to the score. That way you can play a variety of notes by just making more &quot;i&quot; entries in the score. For example:</font></p>
+		<pre><font face="Courier New" size="4">; Instr&nbsp; Sta&nbsp; Dur&nbsp; Amp&nbsp; Freq&nbsp; Table</font>
+<font face="Courier New" size="4">i1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp; 2000 330&nbsp;&nbsp; 1</font>
+<font face="Courier New" size="4">i1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp; 4000 440&nbsp;&nbsp; 1</font>
+<font face="Courier New" size="4">i1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp; 6000 600&nbsp;&nbsp; 1</font>
+<font face="Courier New" size="4">i1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp; 8000 660&nbsp;&nbsp; 1</font></pre>
+		<p><font face="Times New Roman">In this case a variety of volumes and pitches are generated. There is one more problem. There is a loud click at the end. That is because there is no amplitude envelope. The sound just ends abruptly rather than ramping down smoothly. To add an envelope use the following instrument:</font></p>
+		<pre><font size="4" face="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../references/manual_html/syntax/iblock.htm">instr</a>&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Instrument 1 begins here</font>
+<font size="4" face="Courier New">idur&nbsp;&nbsp; =&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; p3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Duration</font>
+<font size="4" face="Courier New">iamp&nbsp;&nbsp; =&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; p4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Amplitude</font>
+<font size="4" face="Courier New">ifqc&nbsp;&nbsp; =&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../references/manual_html/pchcnv/octpch.htm">cpspch</a>(p5)&nbsp;&nbsp;&nbsp; ; Frequency</font>
+<font size="4" face="Courier New">itabl1 =&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; p6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Waveform</font>
+
+<font size="4" face="Courier New">; Attack Decay Sustain Release Envelope</font>
+<font size="4" face="Courier New">kamp&nbsp;&nbsp; <a href="../../references/manual_html/siggen/line.htm">linseg</a> 0, .1, 1, .2, .8, p3-.5, .8, .2, 0</font>
+<font size="4" face="Courier New">aout&nbsp;&nbsp; <a href="../../references/manual_html/siggen/oscil.htm">oscil</a>&nbsp; iamp, ifqc, itabl1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; An oscillator</font>
+<font size="4" face="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../references/manual_html/sigio/in.htm">outs</a>&nbsp;&nbsp; aout*kamp, aout*kamp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Output the results to a stereo sound file</font>
+<font size="4" face="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../references/manual_html/syntax/iblock.htm">endin</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Instrument 1 ends here</font></pre>
+		<p><font face="Times New Roman">This uses the <a href="../../references/manual_html/siggen/line.htm"><b>linseg</b></a> opcode to add an envelpe to the sound. The opcode <a href="../../references/manual_html/siggen/line.htm"><b>linseg</b></a> generates a series of line segments defined by a list of levels separated by times. In this example it starts at a zero level then ramps to a level of 1 in the first .1 second. During the next .2 second the level decays to .8. The level stays at .8 until .2 second before the end of the note and then drops to zero. Also introduced in this instrument is a pitch to frequency convertor <a href="../../references/manual_html/pchcnv/octpch.htm"><b>cpspch</b></a>. Rather than specifying the frequencies directly Csound makes use of a system where the whole number portion specifies the octave and the decimal portion specifies the semitone within the octave. The opcode <a href="../../references/manual_html/pchcnv/octpch.htm"><b>cpspch</b></a> converts from this format to the frequency.</font></p>
+		<p><font face="Times New Roman">The following score introduces a shorthand system commonly used in Csound scores. The &quot;<b>.</b>&quot; in the same column under an event field indicates that the current instrument should have the same value as the previous instrument. Note that both events should refer the same instrument. A &quot;<b>+</b>&quot; in the <i>start time</i> column indicates to start this note after the previous note has finished. Dots in the start time column <i>after</i> a plus symbol indicate to play the notes in sequence for example the following score plays four notes in sequence.</font></p>
+		<pre><font size="4" face="Courier New">; Instr Sta Dur&nbsp; Amp&nbsp; Freq&nbsp; Table</font>
+<font size="4" face="Courier New">i1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp; 2000 7.00&nbsp; 1</font>
+<font size="4" face="Courier New">i1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +&nbsp;&nbsp; .&nbsp;&nbsp;&nbsp; 4000 7.02&nbsp; .</font>
+<font size="4" face="Courier New">i1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .&nbsp;&nbsp; .&nbsp;&nbsp;&nbsp; 6000 7.04&nbsp; .</font>
+<font size="4" face="Courier New">i1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .&nbsp;&nbsp; .&nbsp;&nbsp;&nbsp; 8000 7.05&nbsp; .</font></pre>
+		<h3><font face="Times New Roman">Conclusion &amp; More Information</font></h3>
+		<p><font face="Times New Roman">I have introduced some simple orchestra and score files and some simple opcodes and score events. This should be enough information to get a beginner started using the Csound program. Sometimes Csound behaves in a way which you do not expect. This usually requires a deeper understanding of the internal workings of Csound. When I started using Csound I set out to learn one opcode every couple of weeks. Often it would turn out that when I was accomplishing something in a clumsy or difficult fashion there was an opcode that already accomplished this task elegantly. Good luck on your journey into a fascinating world of sound experimentation.&nbsp;</font>
+	</body>
+
+</html>

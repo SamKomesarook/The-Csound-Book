@@ -1,0 +1,290 @@
+// Created by Microsoft (R) C/C++ Compiler Version 12.00.8168.0 (58b7e01d).
+//
+// c:\mkg\csound\axcsoundexe\axcsoundexe___win32_release\JCsound_Csound.tli
+//
+// Wrapper implementations for Win32 type library JCsound_Csound.dll
+// compiler-generated file created 03/09/99 at 23:24:27 - DO NOT EDIT!
+
+#pragma once
+
+//
+// dispinterface _IAXCsoundEvents wrapper method implementations
+//
+
+inline HRESULT _IAXCsoundEvents::UpdateView ( ) {
+    HRESULT _result;
+    _com_dispatch_method(this, 0x1, DISPATCH_METHOD, VT_ERROR, (void*)&_result, NULL);
+    return _result;
+}
+
+//
+// interface IAXCsound wrapper method implementations
+//
+
+inline void IAXCsound::PutAutoSize ( VARIANT_BOOL pbool ) {
+    HRESULT _hr = put_AutoSize(pbool);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline VARIANT_BOOL IAXCsound::GetAutoSize ( ) {
+    VARIANT_BOOL _result;
+    HRESULT _hr = get_AutoSize(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IAXCsound::PutCaption ( _bstr_t pstrCaption ) {
+    HRESULT _hr = put_Caption(pstrCaption);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IAXCsound::GetCaption ( ) {
+    BSTR _result;
+    HRESULT _hr = get_Caption(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline HRESULT IAXCsound::Play ( ) {
+    HRESULT _hr = raw_Play();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::Pause ( ) {
+    HRESULT _hr = raw_Pause();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::Resume ( ) {
+    HRESULT _hr = raw_Resume();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::Stop ( ) {
+    HRESULT _hr = raw_Stop();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::Open ( _bstr_t Filename ) {
+    HRESULT _hr = raw_Open(Filename);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::Import ( _bstr_t Filename ) {
+    HRESULT _hr = raw_Import(Filename);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::Save ( _bstr_t Filename ) {
+    HRESULT _hr = raw_Save(Filename);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::Export ( _bstr_t Filename ) {
+    HRESULT _hr = raw_Export(Filename);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::OpenSound ( ) {
+    HRESULT _hr = raw_OpenSound();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline _bstr_t IAXCsound::GetFilename ( ) {
+    BSTR _result;
+    HRESULT _hr = get_Filename(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IAXCsound::PutFilename ( _bstr_t pVal ) {
+    HRESULT _hr = put_Filename(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IAXCsound::GetCommand ( ) {
+    BSTR _result;
+    HRESULT _hr = get_Command(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IAXCsound::PutCommand ( _bstr_t pVal ) {
+    HRESULT _hr = put_Command(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IAXCsound::GetOrcFilename ( ) {
+    BSTR _result;
+    HRESULT _hr = get_OrcFilename(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline _bstr_t IAXCsound::GetScoFilename ( ) {
+    BSTR _result;
+    HRESULT _hr = get_ScoFilename(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline _bstr_t IAXCsound::GetMidiFilename ( ) {
+    BSTR _result;
+    HRESULT _hr = get_MidiFilename(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline _bstr_t IAXCsound::GetOutputSoundfileName ( ) {
+    BSTR _result;
+    HRESULT _hr = get_OutputSoundfileName(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline _bstr_t IAXCsound::GetScore ( ) {
+    BSTR _result;
+    HRESULT _hr = get_Score(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IAXCsound::PutScore ( _bstr_t pVal ) {
+    HRESULT _hr = put_Score(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IAXCsound::GetScoreLine ( long Index ) {
+    BSTR _result;
+    HRESULT _hr = get_ScoreLine(Index, &_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IAXCsound::PutScoreLine ( long Index, _bstr_t pVal ) {
+    HRESULT _hr = put_ScoreLine(Index, pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline HRESULT IAXCsound::AddScoreLine ( _bstr_t Note ) {
+    HRESULT _hr = raw_AddScoreLine(Note);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::AddNote10 ( double p1, double p2, double p3, double p4, double p5, double p6, double p7, double p8, double p9, double p10 ) {
+    HRESULT _hr = raw_AddNote10(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::AddNote9 ( double p1, double p2, double p3, double p4, double p5, double p6, double p7, double p8, double p9 ) {
+    HRESULT _hr = raw_AddNote9(p1, p2, p3, p4, p5, p6, p7, p8, p9);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::AddNote8 ( double p1, double p2, double p3, double p4, double p5, double p6, double p7, double p8 ) {
+    HRESULT _hr = raw_AddNote8(p1, p2, p3, p4, p5, p6, p7, p8);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::AddNote7 ( double p1, double p2, double p3, double p4, double p5, double p6, double p7 ) {
+    HRESULT _hr = raw_AddNote7(p1, p2, p3, p4, p5, p6, p7);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::AddNote6 ( double p1, double p2, double p3, double p4, double p5, double p6 ) {
+    HRESULT _hr = raw_AddNote6(p1, p2, p3, p4, p5, p6);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::AddNote5 ( double p1, double p2, double p3, double p4, double p5 ) {
+    HRESULT _hr = raw_AddNote5(p1, p2, p3, p4, p5);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::AddNote4 ( double p1, double p2, double p3, double p4 ) {
+    HRESULT _hr = raw_AddNote4(p1, p2, p3, p4);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::AddNote3 ( double p1, double p2, double p3 ) {
+    HRESULT _hr = raw_AddNote3(p1, p2, p3);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline long IAXCsound::GetScoreLineCount ( ) {
+    long _result;
+    HRESULT _hr = get_ScoreLineCount(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _result;
+}
+
+inline void IAXCsound::PutScoreLineCount ( long pVal ) {
+    HRESULT _hr = put_ScoreLineCount(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline _bstr_t IAXCsound::GetOrchestra ( ) {
+    BSTR _result;
+    HRESULT _hr = get_Orchestra(&_result);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _bstr_t(_result, false);
+}
+
+inline void IAXCsound::PutOrchestra ( _bstr_t pVal ) {
+    HRESULT _hr = put_Orchestra(pVal);
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+}
+
+inline HRESULT IAXCsound::RemoveAll ( ) {
+    HRESULT _hr = raw_RemoveAll();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::RemoveCommand ( ) {
+    HRESULT _hr = raw_RemoveCommand();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::RemoveOrchestra ( ) {
+    HRESULT _hr = raw_RemoveOrchestra();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::RemoveScore ( ) {
+    HRESULT _hr = raw_RemoveScore();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::RemoveScoreExceptFunctions ( ) {
+    HRESULT _hr = raw_RemoveScoreExceptFunctions();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}
+
+inline HRESULT IAXCsound::UpdateView ( ) {
+    HRESULT _hr = raw_UpdateView();
+    if (FAILED(_hr)) _com_issue_errorex(_hr, this, __uuidof(this));
+    return _hr;
+}

@@ -1,0 +1,79 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>mclock, mrtmsg</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="mdelay.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="xtratim.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#realtime" class="toqr">
+MIDI Support: Real-time Messages</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>mclock, mrtmsg</h2>
+
+<pre>
+            <strong>mclock</strong>     ifreq
+            <strong>mrtmsg</strong>     imsgtype
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Send system real-time messages to the MIDI OUT port.
+</p>
+<h3>Initialization</h3>
+<p><em>ifreq</em> &#8211; clock message frequency rate in Hz
+</p>
+<p><em>imsgtype</em> &#8211; type of real-time message:
+</p>
+<ul>
+	<li>1 sends a START message (0xFA);</li>
+	<li>2 sends a CONTINUE message (0xFB);</li>
+	<li>0 sends a STOP message (0xFC);</li>
+	<li>-1 sends a SYSTEM RESET message (0xFF);</li>
+	<li>-2 sends an ACTIVE SENSING message (0xFE)</li>
+</ul>
+<h3>Performance</h3>
+<p><strong>mclock</strong> (MIDI clock) sends a MIDI CLOCK message (0xF8) every 1/<em>ifreq</em> seconds. So <em>ifreq</em> is the frequency rate of CLOCK message in Hz.
+</p>
+<p><strong>mrtmsg</strong> (MIDI real-time message) sends a real-time message once, in init stage of current instrument. <em>imsgtype</em> parameter is a flag to indicate the message type (see above).
+</p>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+New in Csound version 3.47
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="mdelay.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="xtratim.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#realtime" class="toqr">
+MIDI Support: Real-time Messages</font></a>
+</body>
+</html>

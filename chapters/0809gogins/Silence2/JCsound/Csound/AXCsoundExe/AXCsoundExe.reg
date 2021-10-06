@@ -1,0 +1,13 @@
+REGEDIT
+; This .REG file may be used by your SETUP program.
+;   If a SETUP program is not available, the entries below will be
+;   registered in your InitInstance automatically with a call to
+;   CWinApp::RegisterShellFileTypes and COleObjectFactory::UpdateRegistryAll.
+
+
+HKEY_CLASSES_ROOT\AXCsoundExe.Application = AXCsoundExe Application
+HKEY_CLASSES_ROOT\AXCsoundExe.Application\CLSID = {018CD12E-20DE-11D2-917D-00A0CC30C276}
+
+HKEY_CLASSES_ROOT\CLSID\{018CD12E-20DE-11D2-917D-00A0CC30C276} = AXCsoundExe Application
+HKEY_CLASSES_ROOT\CLSID\{018CD12E-20DE-11D2-917D-00A0CC30C276}\ProgId = AXCsoundExe.Application
+HKEY_CLASSES_ROOT\CLSID\{018CD12E-20DE-11D2-917D-00A0CC30C276}\LocalServer32 = AXCSOUNDEXE.EXE

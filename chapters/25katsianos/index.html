@@ -1,0 +1,935 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Designing Digital Butterworth and Chebyshev Filters</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">24. Designing Digital Butterworth
+and Chebyshev Filters</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Themis Katsianos</FONT></H2>
+
+<H3><FONT FACE="Times New Roman">Digital Filters: A General Overview</FONT></H3>
+
+</h3>
+
+<P><FONT FACE="Times New Roman">Digital filters are used to modify,
+in any desirable way, the spectrum of a digital signal. We can
+think of them as &quot;black boxes&quot;, having a signal input,
+an in-the-box method used to process the signal, and a signal
+output. The ratio of the amplitude of the output wave to the amplitude
+of the input wave defines what is called the amplitude response
+of the filter, and can be measured using a sample sine wave. The
+four basic types of filters are: low-pass, high-pass, band-pass
+and band-reject, depending on how the in-the-box method affects
+the incoming signal. Low-pass filters will let all frequencies
+below a chosen cutoff frequency&nbsp;<IMG SRC="figures/01.gif"
+HEIGHT="10" WIDTH="13" NATURALSIZEFLAG="0" ALIGN="BOTTOM"> to
+pass through unaffected while attenuating all frequencies above
+it. High-pass filters on the contrary, will let all frequencies
+above a chosen cutoff frequency&nbsp;<IMG SRC="figures/01.gif"
+HEIGHT="10" WIDTH="13" NATURALSIZEFLAG="0" ALIGN="BOTTOM"> to
+pass through unaffected while attenuating all frequencies below
+it. Band-pass filters will let all frequencies within a selected
+band (characterized by an upper and lower limit as well as a center
+frequency) to pass through unaffected while attenuating all frequencies
+outside the band. Finally, band-reject filters will attenuate
+all frequencies within a selected bandwidth while letting through
+unaffected all frequencies outside the bandwidth.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The way the &quot;black box&quot;
+or digital filter operates is described by what is called its
+transfer function. In general, the transfer function will be of
+the form:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/02.gif" HEIGHT="37"
+WIDTH="165" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (1)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">Equation (1) is a representation
+of the function in the z-domain, which can be used to find what
+is called the zeros and poles of the transfer function. By zeros
+we mean any value that will make the numerator, and therefore
+the transfer function, zero, and by poles, any value that will
+zero the denominator and therefore make the transfer function
+infinite. Another way to describe it is to think that zeros and
+poles place valleys and peaks in the amplitude response of the
+filter. In the above formula, the&nbsp;<IMG SRC="figures/03.gif"
+HEIGHT="14" WIDTH="16" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> terms
+are unit sample delay operators, <I>k</I> represents the order
+of the filter, and&nbsp;<IMG SRC="figures/04.gif" HEIGHT="13"
+WIDTH="24" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> are a series of
+coefficients which determine the frequency response of the filter.
+The frequency response of a filter is a measurement of how the
+filter alters the characteristics of the incoming signal.</FONT></P>
+
+<P><FONT FACE="Times New Roman">We can classify digital filters,
+according to the method used in the &quot;black box&quot;, as
+non-recursive and recursive filters. Non-recursive or finite impulse
+response filters (FIR) are described by the formula</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/05.gif" HEIGHT="29"
+WIDTH="78" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (2)</FONT></P>
+
+<P><FONT FACE="Times New Roman">which means that the output signal
+y(n) is calculated based on previous inputs&nbsp;<IMG SRC="figures/06.gif"
+HEIGHT="13" WIDTH="34" NATURALSIZEFLAG="3" ALIGN="BOTTOM">. Recursive
+or infinite impulse response filters (IIR) are described by the
+formula</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/07.gif" HEIGHT="29"
+WIDTH="135" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (3)</FONT></P>
+
+<P><FONT FACE="Times New Roman">As we can see, the current, nth
+sample output&nbsp;<IMG SRC="figures/08.gif" HEIGHT="13" WIDTH="21"
+NATURALSIZEFLAG="3" ALIGN="BOTTOM">, depends on current and previous
+inputs, as well as on previous outputs, hence must be computed
+recursively.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The problem then of designing
+a digital filter, for a given transfer function, is the calculation
+of the coefficients of either (1), (2), or (3). This paper will
+only consider recursive filters using the Butterworth and Chebyshev
+types of responses. We will show how the filter coefficients can
+be calculated for various orders and how this can be used to build
+digital recursive filters using Csound.<BR>
+&nbsp;&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Calculation of Digital Recursive
+Filter Coefficients</FONT></H3>
+
+<P><FONT FACE="Times New Roman">IIR filters can be designed using
+the bilinear transformation method. In simple words, the bilinear
+transformation method provides us the means of describing digital
+filter coefficients in terms of analog filters coefficients. The
+reason we want to do that is because there are well-known formulas
+for calculating analog filter coefficients, and these can be used
+to calculate the &quot;equivalent&quot; digital filter coefficients.
+If the analog transfer function describing the behavior of the
+filter is of the type</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/09.gif" HEIGHT="37"
+WIDTH="146" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (4)</FONT></P>
+
+<P><FONT FACE="Times New Roman">then, we need a method that will
+allow us to relate the analog coefficients of equation (4) with
+the digital coefficients of equation (1) or (3). The relationship
+is</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/10.gif" HEIGHT="30"
+WIDTH="143" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (5)</FONT></P>
+
+<P><FONT FACE="Times New Roman">where C is a constant. Let us
+see now how equation (5) can be used to derive digital filter
+coefficients in terms of analog ones. First, we choose the order
+of the filter we want to design. Let us for example consider the
+case of a 1st order filter. Then , equation (4) becomes</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/11.gif" HEIGHT="30"
+WIDTH="70" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (6)</FONT></P>
+
+<P><FONT FACE="Times New Roman">Now, we substitute (5) to (6).
+We get</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/12.gif" HEIGHT="63"
+WIDTH="138" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (7)</FONT></P>
+
+<P><FONT FACE="Times New Roman">If we compare (7) with the 1st
+order form of (1) we have the digital filter coefficients of a
+1st order filter in terms of their analog counterparts. This method
+can be used for any desired order of filter we want to design.
+We now present the results for the orders through 1 to 5:</FONT></P>
+
+<P><FONT FACE="Times New Roman">TABLE 1 </FONT><TABLE BORDER="0"
+CELLSPACING="2" WIDTH="338" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="3">Digital Filter Coefficients in terms
+      of Analog Coefficients</TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="24%">k=1, 1st order</TD> 
+    <TD VALIGN="TOP" WIDTH="33%">k=2, 2nd order</TD> 
+    <TD VALIGN="TOP" WIDTH="43%">k=3, 3rd order</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="24%"><IMG SRC="figures/13.gif" HEIGHT="61"
+      WIDTH="66" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+    <TD VALIGN="TOP" WIDTH="33%"><IMG SRC="figures/14.gif" HEIGHT="121"
+      WIDTH="90" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><IMG SRC="figures/15.gif" HEIGHT="175"
+      WIDTH="130" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+  </TR>
+</TABLE><FONT FACE="Times New Roman"><BR>
+&nbsp;</FONT></P>
+
+<P><FONT FACE="Times New Roman">TABLE 2 </FONT><TABLE BORDER="0"
+CELLSPACING="2" WIDTH="378" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2">Digital Filter Coefficients in terms
+      of Analog Coefficients</TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="45%">k=4, 4th order</TD> 
+    <TD VALIGN="TOP" WIDTH="55%">k=5, 5th order</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="45%"><IMG SRC="figures/16.gif" HEIGHT="207"
+      WIDTH="146" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+    <TD VALIGN="TOP" WIDTH="55%"><IMG SRC="figures/17.gif" HEIGHT="273"
+      WIDTH="195" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+  </TR>
+</TABLE><BR>
+</P>
+
+<P><FONT FACE="Times New Roman">In order then to calculate the
+filter coefficients, we need the values of&nbsp;<IMG SRC="figures/19.gif"
+HEIGHT="13" WIDTH="26" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> and
+C.<BR>
+&nbsp;&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman">The Butterworth Response</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Butterworth filters are defined
+by the property that the amplitude response is maximally flat
+in the passband. The Butterworth low-pass amplitude-squared function
+is defined by</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/20.gif" HEIGHT="31"
+WIDTH="90" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (8)</FONT></P>
+
+<P><FONT FACE="Times New Roman">where f and&nbsp;<IMG SRC="figures/21.gif"
+HEIGHT="15" WIDTH="11" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> represent
+frequency and cutoff frequency respectively and k is the order
+of the corresponding transfer function. Using the form of the
+Butterworth transfer function, (detailed formulas for which are
+given in the appendix), we can calculate the Butterworth analog
+coefficients&nbsp;<IMG SRC="figures/22.gif" HEIGHT="13" WIDTH="26"
+NATURALSIZEFLAG="3" ALIGN="BOTTOM">. We get:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/23.gif" HEIGHT="13"
+WIDTH="36" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> and&nbsp;<IMG 
+SRC="figures/24.gif" HEIGHT="13" WIDTH="28" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM">, for&nbsp;<IMG SRC="figures/25.gif" HEIGHT="10"
+WIDTH="20" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (9)</FONT></P>
+
+<P><FONT FACE="Times New Roman">Also, the values of the coefficients&nbsp;<IMG 
+SRC="figures/26.gif" HEIGHT="13" WIDTH="11" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM">, for i ranging from 0 to 5 are listed in the following
+table:</FONT></P>
+
+<P><FONT FACE="Times New Roman">TABLE 3 </FONT><TABLE BORDER="0"
+CELLSPACING="2" WIDTH="442" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="7">BUTTERWORTH DENOMINATOR COEFFICIENTS</TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">order</TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><IMG SRC="figures/27.gif" HEIGHT="13"
+      WIDTH="13" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><IMG SRC="figures/28.gif" HEIGHT="13"
+      WIDTH="13" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><IMG SRC="figures/29.gif" HEIGHT="13"
+      WIDTH="14" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><IMG SRC="figures/30.gif" HEIGHT="13"
+      WIDTH="14" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><IMG SRC="figures/31.gif" HEIGHT="13"
+      WIDTH="14" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><IMG SRC="figures/32.gif" HEIGHT="13"
+      WIDTH="14" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">2</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1.4142136</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">3</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">2</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">2</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">4</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">2.6131259</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">3.4142136</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">2.6131259</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">5</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">3.2360680</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">5.2360680</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">5.2360680</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">3.2360680</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+  </TR>
+</TABLE><BR>
+</P>
+
+<P><FONT FACE="Times New Roman">Finally, we give the formulas
+for the constant C:</FONT></P>
+
+<P><FONT FACE="Times New Roman">TABLE 4 </FONT><TABLE BORDER="0"
+CELLSPACING="2" WIDTH="442" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2">Constant C</TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="50%">low-pass</TD> 
+    <TD VALIGN="TOP" WIDTH="50%"><IMG SRC="figures/33.gif" HEIGHT="15"
+      WIDTH="61" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="50%">high-pass</TD> 
+    <TD VALIGN="TOP" WIDTH="50%"><IMG SRC="figures/34.gif" HEIGHT="15"
+      WIDTH="61" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="50%">band-pass</TD> 
+    <TD VALIGN="TOP" WIDTH="50%"><IMG SRC="figures/35.gif" HEIGHT="15"
+      WIDTH="70" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="50%">band-reject</TD> 
+    <TD VALIGN="TOP" WIDTH="50%"><IMG SRC="figures/36.gif" HEIGHT="15"
+      WIDTH="71" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+  </TR>
+</TABLE><BR>
+</P>
+
+<P><FONT FACE="Times New Roman">In Table 4,&nbsp;<IMG SRC="figures/37.gif"
+HEIGHT="12" WIDTH="12" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> is
+the cutoff frequency,&nbsp;<IMG SRC="figures/38.gif" HEIGHT="12"
+WIDTH="11" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> is the sampling
+rate frequency, and BW is the bandwidth. Let us now use all the
+above information to build digital Butterworth filters in Csound.
+Before we start , it is very important to note that the outputs
+will be calculated on every sample. In terms of Csound code, that
+means that it is necessary to have <B>sr = kr</B>, i.e. <B>ksmps
+= 1</B> because we want one sample to be calculated per control
+period. Since we want to use delayed samples, an ideal candidate
+for the job is Csound's signal modifier <B>delay1</B>, which delays
+the signal by 1 sample.</FONT></P>
+
+<P><FONT FACE="Times New Roman">For all instruments use the header:</FONT></P>
+
+<P><FONT FACE="Courier New">sr = 44100<BR>
+kr = 44100<BR>
+ksmps = 1<BR>
+nchnls = 1</FONT></P>
+
+<P><FONT FACE="Times New Roman">All instruments use a test sound
+file as their input. A test score file for all the orchestras
+would be of the form:</FONT></P>
+
+<P><FONT FACE="Courier New">;test score file<BR>
+;for high or low-pass filters use<BR>
+;instr # start duration cutoff frequency<BR>
+;for band-pass or band-reject use<BR>
+;instr # start duration center frequency bandwidth</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Butterworth 3rd Order Low-Pass</FONT></H3>
+
+</h3>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/butter3rd.gif"
+HEIGHT="388" WIDTH="519" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 1 is a realization
+of a Butterworth 3rd order low-pass filter. The order of the filter
+is 3; equation (3) gives:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/39.gif" HEIGHT="13"
+WIDTH="291" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The orchestra follows:</FONT></P>
+
+<P><FONT FACE="Courier New">instr 1<BR>
+idur = p3 ;duration of the sound file<BR>
+icut = p4 ;cutoff frequency<BR>
+iscale = p5 ;scaling factor<BR>
+;Calculate the intermediate coefficient C using Table 4<BR>
+ivar = cos(3.14159*icut/sr)/sin(3.14159*icut/sr)<BR>
+;Calculate the filter coefficients using the data from Tables
+1,3<BR>
+ivarsqrd ipow ivar,2 ;ivar squared<BR>
+ivarcbd ipow ivar,3 ;ivar cubed<BR>
+ia0 = 1/(1+2*ivar+2*ivarsqrd+ivarcbd)<BR>
+ia1 = 3*ia0<BR>
+ia2 = 3*ia0<BR>
+ia3 = ia0<BR>
+ib1 = (3+2*ivar-2*ivarsqrd-3*ivarcbd)*ia0<BR>
+ib2 = (3-2*ivar-2*ivarsqrd+3*ivarcbd)*ia0<BR>
+ib3 = (1-2*ivar+2*ivarsqrd-ivarcbd)*ia0</FONT></P>
+
+<P><FONT FACE="Courier New">;Do the appropriate initializations<BR>
+aout1 init 0<BR>
+aout2 init 0<BR>
+aout3 init 0<BR>
+ainput soundin &quot;test_sound&quot; ;the input signal<BR>
+;Create a 3rd order delay<BR>
+adel1 delay1 ainput<BR>
+adel2 delay1 adel1<BR>
+adel3 delay1 adel2<BR>
+;Calculate the output signal<BR>
+aout = ia0*ainput+ia1*adel1+ia2*adel2+ia3*adel3-ib1*aout1-ib2*aout2-
+ib3*aout3<BR>
+;Apply recursion formula : y(n-1) = y(n), y(n-2) = y(n-1), etc.<BR>
+aout3 = aout2<BR>
+aout2 = aout1<BR>
+aout1 = aout<BR>
+;provide a simple exponential segment envelope to the signal before
+;output<BR>
+aenv expseg 0.1,.1*idur,1,idur*.8,1,idur*.1,.1<BR>
+out aout*aenv*iscale ;output the signal<BR>
+endin</FONT></P>
+
+<P><FONT FACE="Times New Roman">Let us now build a high-pass Butterworth
+filter in Csound. The only difference is that we have to make
+the following substitution in equation (4):</FONT></P>
+
+<P><FONT FACE="Times New Roman">p --&gt; -p (10)</FONT></P>
+
+<P><FONT FACE="Times New Roman">which will result in the changing
+of the sign (from + to -) of the odd coefficients. What that means
+is that we can calculate the filter coefficients using Tables
+1,2 and then change the sign of the odd numbered coefficients,
+i.e.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/40.gif" HEIGHT="13"
+WIDTH="168" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (11)</FONT></P>
+
+<P><FONT FACE="Times New Roman">We will do that building a 5th
+order high-pass Butterworth filter.<BR>
+&nbsp;&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Butterworth 5th Order High-Pass</FONT></H3>
+
+<H3><FONT FACE="Times New Roman"><IMG SRC="figures/butter5th.gif"
+HEIGHT="538" WIDTH="484" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></H3>
+
+<P><FONT FACE="Times New Roman">Instrument 2 is a realization
+of a Butterworth 5th order high-pass filter. The order of the
+filter is 5; equation (3) gives:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/41.gif" HEIGHT="29"
+WIDTH="284" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+&nbsp;&nbsp;</FONT></P>
+
+<P><FONT FACE="Times New Roman">The orchestra follows:<BR>
+&nbsp;&nbsp;</FONT></P>
+
+<P><FONT FACE="Courier New">instr 2<BR>
+idur = p3 ;duration of the sound file<BR>
+icut = p4 ;cutoff frequency<BR>
+iscale = p5 ;scaling factor<BR>
+;Calculate the intermediate coefficient C from Table 4<BR>
+iv = sin(3.14159*icut/sr)/cos(3.14159*icut/sr)<BR>
+;Calculate the filter coefficients using the data from Tables
+2, 3<BR>
+iv2 ipow iv,2 ;iv squared<BR>
+iv3 ipow iv,3 ;iv cubed<BR>
+iv4 ipow iv,4 ;iv to the fourth<BR>
+iv5 ipow iv,5 ;iv to the fifth<BR>
+ia0 = 1/(1+3.2360680*iv+5.2360680*iv2+5.2360680*iv3+3.2360680*iv4+
+iv5)<BR>
+ia1 = -5*ia0<BR>
+ia2 = 10*ia0<BR>
+ia3 = -10*ia0<BR>
+ia4 = 5*ia0<BR>
+ia5 = -ia0<BR>
+ib1 = -(5+3*3.2360680*iv+5.2360680*iv2-5.2360680*iv3- 3*3.2360680*iv4-5*iv5)*ia0<BR>
+ib2 = (10+2*3.2360680*iv-2*5.2360680*iv2-2*5.2360680*iv3+ 2*3.2360680*iv4+10*iv5)*ia0<BR>
+ib3 = -(10-2*3.2360680*iv-2*5.2360680*iv2+2*5.2360680*iv3+ 2*3.2360680*iv4-10*iv5)*ia0<BR>
+ib4 = (5-3*3.2360680*iv+5.2360680*iv2+5.2360680*iv3- 3*3.2360680*iv4+5*iv5)*ia0<BR>
+ib5 = -(1-3.2360680*iv+5.2360680*iv2-5.2360680*iv3+3.2360680*iv4-
+iv5)*ia0<BR>
+;Do the appropriate initializations<BR>
+aout1 init 0<BR>
+aout2 init 0<BR>
+aout3 init 0<BR>
+aout4 init 0<BR>
+aout5 init 0<BR>
+ainput soundin &quot;test_sound&quot; ;the input signal<BR>
+;Create a 5th order delay<BR>
+adel1 delay1 ainput<BR>
+adel2 delay1 adel1<BR>
+adel3 delay1 adel2<BR>
+adel4 delay1 adel3<BR>
+adel5 delay1 adel4<BR>
+;Calculate the output signal<BR>
+aout = ia0*ainput+ia1*adel1+ia2*adel2+ia3*adel3+ia4*adel4+<BR>
+ia5*adel5-ib1*aout1-ib2*aout2-ib3*aout3-ib4*aout4-ib5*aout5<BR>
+;Apply recursion formula :<BR>
+aout5 = aout4<BR>
+aout4 = aout3<BR>
+aout3 = aout2<BR>
+aout2 = aout1<BR>
+aout1 = aout<BR>
+;provide a simple exponential segment envelope to the signal before
+;output<BR>
+aenv expseg 0.1,.1*idur,1,idur*.8,1,idur*.1,.1<BR>
+out aout*aenv*iscale ;output the signal<BR>
+endin<BR>
+</FONT><FONT FACE="Times New Roman">&nbsp;&nbsp;</FONT></P>
+
+<P><FONT FACE="Times New Roman">These techniques for building
+recursive filters can be applied to any order of Butterworth filter
+desired, both high and low-pass. We will now study the case of
+band-pass and band-reject filters. In order to extend our vocabulary
+we introduce the Chebyshev approximation. We will build digital
+Chebyshev band-pass and band-reject filters but the technique
+is the same and can be used to build digital Butterworth band-pass
+and band-reject filters. Furthermore, the techniques and sets
+of equations described above for building digital Butterworth
+low and high-pass filters can be used to build digital Chebyshev
+low and high-pass filters respectively, of any order desired.<BR>
+&nbsp;&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman">The Chebyshev Response</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The basic Chebyshev amplitude
+response is defined as</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/42.gif" HEIGHT="32"
+WIDTH="115" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (12)</FONT></P>
+
+<P><FONT FACE="Times New Roman">where k now is both the order
+of the transfer function and the order of the corresponding Chebyshev
+polynomial,&nbsp;<IMG SRC="figures/43.gif" HEIGHT="14" WIDTH="13"
+NATURALSIZEFLAG="3" ALIGN="BOTTOM"> is a parameter which provides
+the proper passband ripple, and <I>a</I> is a constant which determines
+the proper dc gain level. As opposed to the Butterworth approximation,
+the passband is constrained to oscillate between constant bounds
+(determined by the chosen ripple). Using the form of the Chebyshev
+transfer function, (detailed formulas are given in the appendix),
+we can calculate the Chebyshev analog coefficients&nbsp;<IMG 
+SRC="figures/44.gif" HEIGHT="13" WIDTH="26" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM">. Equation (9) takes care of the coefficients&nbsp;<IMG 
+SRC="figures/45.gif" HEIGHT="13" WIDTH="12" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM">. We now give the low-pass filter denominator coefficients
+or&nbsp;<IMG SRC="figures/46.gif" HEIGHT="13" WIDTH="11" NATURALSIZEFLAG="3"
+ALIGN="BOTTOM"> for Chebyshev 1 dB ripple up to 5th order:</FONT></P>
+
+<P><FONT FACE="Times New Roman">TABLE 5 </FONT><TABLE BORDER="0"
+CELLSPACING="2" WIDTH="442" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="7">CHEBYSHEV 1 dB RIPPLE (<IMG SRC="figures/47.gif"
+      HEIGHT="14" WIDTH="79" NATURALSIZEFLAG="3" ALIGN="BOTTOM">)</TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">order</TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><IMG SRC="figures/27.gif" HEIGHT="13"
+      WIDTH="13" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><IMG SRC="figures/28.gif" HEIGHT="13"
+      WIDTH="13" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><IMG SRC="figures/29.gif" HEIGHT="13"
+      WIDTH="14" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><IMG SRC="figures/30.gif" HEIGHT="13"
+      WIDTH="14" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><IMG SRC="figures/31.gif" HEIGHT="13"
+      WIDTH="14" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+    <TD VALIGN="TOP" WIDTH="14%"><IMG SRC="figures/32.gif" HEIGHT="13"
+      WIDTH="14" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1.9652267</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">2</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1.1025103</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1.0977343</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">3</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">0.4913067</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1.2384092</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">0.9883412</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">4</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">0.2756276</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">0.7426194</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1.4539248</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">0.9528114</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">&nbsp;</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">5</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">0.1228267</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">0.5805342</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">0.9743961</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1.6888160</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">0.9368201</TD> 
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+  </TR>
+</TABLE><BR>
+</P>
+
+<P><FONT FACE="Times New Roman">Table 5 can be used for building
+Chebyshev 1 dB ripple low and high-pass filters in the same way
+as we described for Butterworth filters. In order to use it for
+band-pass and band-reject Chebyshev filters we present it in a
+partially factored form, which is another way to write the denominator
+of equation (4) using the values for the Chebyshev coefficients:</FONT></P>
+
+<P><FONT FACE="Times New Roman">TABLE 6 </FONT><TABLE BORDER="0"
+CELLSPACING="2" WIDTH="450" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">order</TD> 
+    <TD VALIGN="TOP" WIDTH="86%">CHEBYSHEV 1 dB RIPPLE</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">1</TD> 
+    <TD VALIGN="TOP" WIDTH="86%">(1.965267 + s)</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">2</TD> 
+    <TD VALIGN="TOP" WIDTH="86%">(1.1025104 + 1.0977344s +&nbsp;<IMG 
+      SRC="figures/48.gif" HEIGHT="14" WIDTH="10" NATURALSIZEFLAG="0"
+      ALIGN="BOTTOM">)</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">3</TD> 
+    <TD VALIGN="TOP" WIDTH="86%">(0.4941706 + s) (0.9942046 + 0.4941706s
+      +&nbsp;<IMG SRC="figures/49.gif" HEIGHT="14" WIDTH="12" NATURALSIZEFLAG="3"
+      ALIGN="BOTTOM">)</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">4</TD> 
+    <TD VALIGN="TOP" WIDTH="86%">(0.9286753 + 0.2097744s +&nbsp;<IMG 
+      SRC="figures/49.gif" HEIGHT="14" WIDTH="10" NATURALSIZEFLAG="0"
+      ALIGN="BOTTOM">) (0.2215684 + 0.5064404s +&nbsp;<IMG SRC="figures/49.gif"
+      HEIGHT="14" WIDTH="10" NATURALSIZEFLAG="0" ALIGN="BOTTOM">)</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="14%">5</TD> 
+    <TD VALIGN="TOP" WIDTH="86%">(0.2894933 + s) (0.9883149 + 0.1789168s
+      +&nbsp;<IMG SRC="figures/49.gif" HEIGHT="14" WIDTH="10" NATURALSIZEFLAG="0"
+      ALIGN="BOTTOM">) (0.4292978 + 0.46841s +<IMG SRC="figures/49.gif"
+      HEIGHT="14" WIDTH="10" NATURALSIZEFLAG="0" ALIGN="BOTTOM">)</TD> 
+  </TR>
+</TABLE><BR>
+</P>
+
+<P><FONT FACE="Times New Roman">In order to get from low-pass
+to band-pass the following transformation has to be made:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/50.gif" HEIGHT="33"
+WIDTH="91" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (13)</FONT></P>
+
+<P><FONT FACE="Times New Roman">where C is taken from Table 4
+and D is given:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/51.gif" HEIGHT="17"
+WIDTH="72" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (14)</FONT></P>
+
+<P><FONT FACE="Times New Roman">In other words, we have to substitute
+(13) in one of the expressions of Table 6, depending on the order
+of the filter we want to build. Remember that the order of <I>z
+</I>represents the order of the digital filter. Examining equation
+(13), we see that a first order of <I>s </I>will result in a 2nd
+order digital filter, a 2nd order of <I>s </I>will result in a
+4th order digital filter, and so on.</FONT></P>
+
+<P><FONT FACE="Times New Roman">As an example, let us build a
+2nd order Chebyshev band-pass filter. As we said, we have to substitute
+(13) to the 1st order form of Table 6. By doing so we get</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/52.gif" HEIGHT="47"
+WIDTH="227" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (15)</FONT></P>
+
+<P><FONT FACE="Times New Roman">Comparing (15) and (1) we get:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/53.gif" HEIGHT="109"
+WIDTH="74" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (16)</FONT></P>
+
+<P><FONT FACE="Times New Roman">Let us now use the above information
+to build a 2nd order Chebyshev band-pass filter in Csound.<BR>
+&nbsp;&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Chebyshev 2nd order band-pass</FONT></H3>
+
+<H3><FONT FACE="Times New Roman"><IMG SRC="figures/cheby2ndpass.gif"
+HEIGHT="331" WIDTH="487" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></H3>
+
+<P><FONT FACE="Times New Roman">Instrument 3 is a realization
+of a Chebyshev 2nd order band-pass filter. Since the order of
+the filter is 2, equation (3) gives:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/54.gif" HEIGHT="13"
+WIDTH="210" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The orchestra follows:</FONT></P>
+
+<P><FONT FACE="Courier New">instr 3<BR>
+idur = p3 ;duration of the sound file<BR>
+icenter = p4 ;center frequency<BR>
+ibandwth = p5 ;bandwidth<BR>
+iscaling = p6 ;scaling factor<BR>
+;Calculate the intermediate coefficient C using Table 4<BR>
+ivar = cos(3.14159*ibandwth/sr)/sin(3.14159*ibandwth/sr)<BR>
+;Calculate the scaling factor D using eq. (14)<BR>
+iscale = 2*cos(6.28318*icenter/sr)<BR>
+;Calculate the filter coefficients using the set of equations
+(16)<BR>
+ia0 = 1.965267/(1.965267+ivar)<BR>
+ia1 = 0<BR>
+ia2 = -ia0<BR>
+ib1 = -ivar*iscale/(1.965267+ivar)<BR>
+ib2 = (ivar-1.965267)/(1.965267+ivar)<BR>
+;Do the appropriate initializations<BR>
+aout1 init 0<BR>
+aout2 init 0<BR>
+ainput soundin &quot;test_sound&quot; ;the input signal<BR>
+;Create a 2nd order delay<BR>
+adel1 delay1 ainput<BR>
+adel2 delay1 adel1<BR>
+;Calculate the output signal<BR>
+aout = ia0*ainput+ia1*adel1+ia2*adel2-ib1*aout1-ib2*aout2<BR>
+;Apply recursion formula : y(n-1) = y(n), y(n-2) = y(n-1), etc.<BR>
+aout2 = aout1<BR>
+aout1 = aout<BR>
+;provide a simple exponential segment envelope to the signal before
+;output<BR>
+aenv expseg 0.1,.1*idur,1,idur*.8,1,idur*.1,.1<BR>
+out aout*aenv*iscaling ;output the signal<BR>
+endin</FONT></P>
+
+<P><FONT FACE="Times New Roman">In order to get from low-pass
+to band-reject, the following transformation has to be made:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/55.gif" HEIGHT="30"
+WIDTH="75" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (17)</FONT></P>
+
+<P><FONT FACE="Times New Roman">where, again, C is taken from
+Table 4 and D from equation (14). Let us for example build a 2nd
+order Chebyshev 1 dB band-reject filter. Again, because of the
+form of (17) we have to use the 1st order partially factored form
+of Table 6. Substitution of (17) to the 1st order partially factored
+form of Table 6 gives:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/56.gif" HEIGHT="23"
+WIDTH="72" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><IMG SRC="figures/57.gif"
+HEIGHT="47" WIDTH="201" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (18)</FONT></P>
+
+<P><FONT FACE="Times New Roman">Comparing (18) and (1) we get:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/58.gif" HEIGHT="119"
+WIDTH="75" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (19)</FONT></P>
+
+<P><FONT FACE="Times New Roman">Let us now use the set of equations
+(19) to build a 2nd order Chebyshev 1 dB band-reject filter in
+Csound.<BR>
+&nbsp;&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Chebyshev 2nd Order Band-Reject</FONT></H3>
+
+<H3><FONT FACE="Times New Roman"><IMG SRC="figures/cheby2ndreject.gif"
+HEIGHT="331" WIDTH="487" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></H3>
+
+<P><FONT FACE="Times New Roman">Instrument 4 is a realization
+of a Chebyshev 2nd order band-reject filter. Since the order of
+the filter is 2, equation (3) gives:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/59.gif" HEIGHT="13"
+WIDTH="210" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><FONT FACE="Times New Roman">The orchestra follows:</FONT></P>
+
+<P><FONT FACE="Courier New">instr 4<BR>
+idur = p3 ;duration of the sound file<BR>
+icenter = p4 ;center frequency<BR>
+ibandwth = p5 ;bandwidth<BR>
+iscaling = p6 ;scaling factor<BR>
+;Calculate the intermediate coefficient C using Table 4<BR>
+ivar = sin(3.14159*ibandwth/sr)/cos(3.14159*ibandwth/sr)<BR>
+;Calculate the scaling factor D using eq. (14)<BR>
+iscale = 2*cos(6.28318*icenter/sr)<BR>
+;Calculate the filter coefficients using the set of equations
+(19)<BR>
+ia0 = 1.965267/(1.965267+ivar)<BR>
+ia1 = -1.965267*iscale/(1.965267+ivar)<BR>
+ia2 = ia0<BR>
+ib1 = -ivar*iscale/(1.965267+ivar)<BR>
+ib2 = (1.965267-ivar)/(1.965267+ivar)<BR>
+;Do the appropriate initializations<BR>
+aout1 init 0<BR>
+aout2 init 0<BR>
+ainput soundin &quot;test_sound&quot; ;the input signal<BR>
+;Create a 2nd order delay<BR>
+adel1 delay1 ainput<BR>
+adel2 delay1 adel1<BR>
+;Calculate the output signal<BR>
+aout = ia0*ainput+ia1*adel1+ia2*adel2-ib1*aout1-ib2*aout2<BR>
+;Apply recursion formula : y(n-1) = y(n), y(n-2) = y(n-1), etc.<BR>
+aout2 = aout1<BR>
+aout1 = aout<BR>
+;provide a simple exponential segment envelope to the signal before
+;output<BR>
+aenv expseg 0.1,.1*idur,1,idur*.8,1,idur*.1,.1<BR>
+out aout*aenv*iscaling ;output the signal<BR>
+endin</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Conclusion</FONT></H3>
+
+</h3>
+
+<P><FONT FACE="Times New Roman">We have presented a step by step
+method for designing digital Butterworth and Chebyshev filters
+in Csound. The reader/user can choose the kind and order of the
+filter he/she wants to build, depending on the effect desired.
+It should be kept in mind, that computation time and sharpness
+of the filter response increases as the order of the transfer
+function increases, so the choice of the order should be made
+according to the specific need of the application.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Appendix</FONT></H3>
+
+</h3>
+
+<H3><FONT FACE="Times New Roman">The Butterworth Transfer Function</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The complete analog transfer function
+of the Butterworth response is given by:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/60.gif" HEIGHT="55"
+WIDTH="137" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><IMG SRC="figures/61.gif"
+HEIGHT="11" WIDTH="85" NATURALSIZEFLAG="3" ALIGN="BOTTOM">, if
+<I>n</I> even (A.1)<BR>
+&nbsp;<BR>
+&nbsp;</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/62.gif" HEIGHT="55"
+WIDTH="165" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><IMG SRC="figures/63.gif"
+HEIGHT="11" WIDTH="85" NATURALSIZEFLAG="3" ALIGN="BOTTOM">, if
+<I>n</I> odd (A.2)<BR>
+&nbsp;<BR>
+&nbsp;</FONT></P>
+
+<P><FONT FACE="Times New Roman">In the above formulas we have:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/64.gif" HEIGHT="31"
+WIDTH="147" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (A.3)</FONT></P>
+
+<P><FONT FACE="Times New Roman">with</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/65.gif" HEIGHT="84"
+WIDTH="226" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (A.4)</FONT></P>
+
+<P><FONT FACE="Times New Roman">In the above formulas, <I>n </I>is
+the desired order. In order then to get the coefficients of (9)
+and TABLE 3, we have to use (A.1)-(A.4) and compare the results
+with (4).<BR>
+&nbsp;<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman">The Chebyshev Transfer Function</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The complete analog Chebyshev
+transfer function is given by:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/66.gif" HEIGHT="57"
+WIDTH="135" NATURALSIZEFLAG="3" ALIGN="BOTTOM"><IMG SRC="figures/63.gif"
+HEIGHT="11" WIDTH="85" NATURALSIZEFLAG="3" ALIGN="BOTTOM">, if
+<I>n</I> even (A.5)</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/67.gif" HEIGHT="69"
+WIDTH="189" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (A.6)</FONT></P>
+
+<P><FONT FACE="Times New Roman">In the above formulas we have:</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/68.gif" HEIGHT="31"
+WIDTH="210" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (A.7)</FONT></P>
+
+<P><FONT FACE="Times New Roman">with</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/69.gif" HEIGHT="87"
+WIDTH="252" NATURALSIZEFLAG="3" ALIGN="BOTTOM"> (A.8)</FONT></P>
+
+<P><FONT FACE="Times New Roman">In the above formulas, <I>n </I>is
+the desired order. In order then to get the coefficients of (9)
+and TABLE 5, we have to use (A.5)-(A.8) and compare the results
+with (4).</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Further Reading</FONT></H3>
+
+</h3>
+
+<P><FONT FACE="Times New Roman">1. Dodge, Charles &amp; T. A.
+Jerse. &quot;Computer Music. Synthesis, Composition, and Performance.&quot;
+New York: Schirmer Books, A Division of Macmillan, Inc., 1985.</FONT></P>
+
+<P><FONT FACE="Times New Roman">2. Moore, Richard F. &quot;Elements
+of Computer Music.&quot; New Jersey: Prentice Hall, A Division
+of Simon &amp; Schuster, 1990.</FONT></P>
+
+<P><FONT FACE="Times New Roman">3. Oppenheim, Alan V. and Ronald
+W. Schafer. &quot;Digital Signal Processing.&quot; New Jersey:
+Prentice-Hall, Inc., 1975.</FONT></P>
+
+<P><FONT FACE="Times New Roman">4. Stanley, William D. and Gary
+R. Dougherty and Ray R. Dougherty. &quot;Digital Signal Processing.&quot;
+2nd edition. Reston, Virginia: Reston Publishing Company, Inc.,
+A Prentice Hall Company, 1984.</FONT></P>
+
+<P><FONT FACE="Times New Roman">5. Strawn, John, edited by. &quot;Digital
+Audio Signal Processing. An Anthology.&quot; Los Altos, California:
+William Kaufman, Inc., 1985.</FONT></P>
+
+<P><FONT FACE="Times New Roman">6. Thede, Les. &quot;Analog and
+Digital Filter Design using C.&quot; Prentice Hall PTR, Upper
+Sadle River, New Jersey, 1996.</FONT></P>
+
+<P><FONT FACE="Times New Roman">7. Vercoe Barry. &quot;Csound.
+A Manual for the Audio Processing System and Supporting Programs
+with Tutorials.&quot; Media Lab, M.I.T., 1993.</FONT></P>
+
+<P><FONT FACE="Times New Roman">8. Weinberg, Louis. &quot;Network
+Analysis and Synthesis.&quot; McGraw-Hill Book Company, Inc.,
+1962.</FONT>
+
+</BODY>
+</HTML>

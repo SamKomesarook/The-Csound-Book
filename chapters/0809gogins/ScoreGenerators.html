@@ -1,0 +1,2463 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Algorithmic Score Generators</TITLE>
+  <META NAME="Author" CONTENT="Michael Gogins">
+  <!--last modified on Monday, October 18, 1999 12:51 AM -->
+</HEAD>
+<BODY BGCOLOR="#eeeeee" LINK="#0000ee" VLINK="#551a8b" ALINK="#ff0000">
+
+<H1>7. Algorithmic Score Generators</H1>
+
+<H2>Michael Gogins</H2>
+
+<P>Computer music actually began with algorithmic composition,
+not synthesis, and algorithmic composition has remained a focus
+of research throughout the brief history of this field. Thus a
+general survey is beyond the scope of this chapter (some pointers
+to additional resources are provided at the end). The purpose
+of this chapter is to develop a narrow yet deep understanding
+of some basic principles of algorithmic composition, as illustrated
+by sample programs in Java that generate scores for Csound.</P>
+
+<P>The focus is on esthetics and composition, as much as the details
+of software. <I>Why</I> write software to write music, instead
+of just writing music? <I>What</I> compositional techniques might
+be fruitful at this dawn in the history of the field? <I>How</I>
+does one make music with free stuff like Csound and Java?</P>
+
+<P>After working through this chapter, you should be able to write
+your own score generators. The scores produced by the sample programs
+are suitable for synthesis with Csound using either the the plain
+old command-line approach, or the ScoreManager object from the
+chapter &quot;Creating and Using a Platform-Independent Graphical
+User Interface for Csound in Java.&quot;</P>
+
+<H3>A Very Brief Historical Introduction</H3>
+
+<P>Algorithmic composition is not new. It began with the wind
+chimes of the most ancient civilizations, and the Aeolian harp.
+In a more considered sense it it goes back at least as far as
+Mozart&#146;s musical dice game. Similar systems were peddled
+in the 19th century (Scholes 1975). More recently, but predating
+computers, Joseph Schillinger (1946, 1948; DeGazio, no date) worked
+out a system of composition that lends itself to algorithmic score
+generation.</P>
+
+<P>Mozart&#146;s game and Schillinger&#146;s system are informal
+examples of generative grammars. Some music theorists, notably
+Lerdahl and Jackendoff (1983), cast their theories as completely
+formal systems, generative grammars in the mathematical sense.
+It is a natural thought to turn the rules on their head, to use
+theory to synthesize compositions from parts instead of analyzing
+them (Holtzman 1981; Roads 1978, 1985).</P>
+
+<P>In the modern age, yet still predating computers, some composers
+turned to another generative principle, chance. A notable example
+is Iannis Xenakis (1992), who in his later career used computers
+to implement and extend probabilistic algorithms. There is an
+obvious synergy between the grammatical and the probabilistic
+approaches, in that random variables can select structures and
+rules in a generative grammar.</P>
+
+<P>Running alongside the history of compositional algorithms on
+paper or as works of the intellect is a parallel history, of algorithms
+embodied in mechanisms. They range from the Aeolian harp, through
+clockwork and carillons to various gadgets of the Renaissance
+and Enlightenment (Ord-Hume 1973, Buchner 1978, Lyr 1955, Prieberg
+1975), through the electronic fantasias of such inspired eccentrics
+as Raymond Scott (1992) with his Electronium or &quot;instantaneous
+composing machine&quot; of the late 1950&#146;s, to the composing
+machine built by the engineers who made the RCA synthesizer used
+by Milton Babbitt (Olson and Belar 1961, Hiller 1970), and culminate
+in the modular synthesizer, whose oscillators and filters and
+sequencers, patched together with complex nets of cords, burbled
+and whacked their way into unforeseeable progressions and polyrhythms.</P>
+
+<P>Here a theme emerges, to be pursued on the computer down into
+its mathematical basis: the machine becomes unpredictable and
+makes fascinating sounds that the composer attempts to shepherd
+into artful form, not always unsuccessfully, with his or her knobs
+and switches.</P>
+
+<P>But electronic systems, so vigorously proliferating in the
+1970s, have faded in favor of the universal machine: the computer.</P>
+
+<P>The very first piece of computer music was perhaps Hiller and
+Isaacson&#146;s Iliac Suite, for String Quartet (1957a, 1957b).
+It does not involve sound synthesis at all, but is an algorithmic
+composition in which random variables select structures and rules
+for elaborating structures. Hiller invented fundamental concepts
+in algorithmic composition (1970, Hiller and Isaacson 1959), and
+made other important pieces, including The Computer Cantata (Hiller
+and Baker 1964) and HPSCHD, a collaboration with John Cage (Cage
+and Hiller 1969, Hiller and Cage 1968).</P>
+
+<P>An even broader influence upon composition is that of Cage
+himself, who used aleatoric procedures for both composition and
+performance, e.g. in Music of Changes (1961, pp. 57-61), and who
+also mapped natural forms onto musical scores, e.g. the star charts
+in Atlas Eclipticalis (Cage 1992). These works can be considered
+(to some extent, for he also used his own judgment) algorithmic
+compositions, because after chosing source materials and mappings,
+he generated the scores with pre-defined procedures. After all,
+tossing a coin is also a procedure.</P>
+
+<P>That is what an algorithm is: a definite procedure. A recipe.
+Mindless instructions an idiot can follow. But a quick enough
+idiot with clever enough instructions can do a great deal... in
+fact, any single thing...yet, not all things!</P>
+
+<P>If you wish to to grasp algorithmic composition at the deepest
+level, a brief detour to review the fundamental qualities and
+limitations of algorithms may be helpful (this and the following
+two paragraphs may be skipped without harm to your understanding
+of how to write score generators).</P>
+
+<P>The starting point is that any algorithm can be reduced to
+one shortest possible program on a universal computer (Chaitin
+1974a). However, it has been proved that there is no single algorithm
+capable of examining any other algorithm and deciding either (a)
+whether it will halt or, because of some bug or infinite loop,
+run forever, or (b) whether it has been reduced to its shortest
+form. Point (a) is the halting theorem (Turing in Davis 1965).
+Point (b), following from (a), is the incompleteness theorem (G&ouml;del
+in Davis 1965). Readers desiring an introduction to this topic
+are urged to consult Chaitin (1974b); for a historical resume,
+see Davis (1965).</P>
+
+<P>These abstract considerations have a definite musical corrollary.
+There can never, not even in principle, be a &quot;critic algorithm&quot;
+capable of deciding, for any arbitrary score generator, whether
+it will make good music. Proof: the critic can&#146;t decide if
+a given generator will halt, except by simulating its execution;
+so, if the generator doesn&#146;t halt, neither does the critic.
+The only way to tell is to run the generator and listen to the
+music.</P>
+
+<P>In short, score generators are &quot;computationally irreducible&quot;
+(Peitgen, J&uuml;rgens, and Saupe 1990). All score generating
+programs are computationally irreducible - not only those based
+on mathematics, but also those based on music theory. What this
+means is that digital computers are incapable of composing by
+themselves, and that score generators are the instruments of human
+composers, not replacements for them.</P>
+
+<P>Recently, new methods of algorithmic composition have been
+developed using chaotic dynamics and fractal geometry (see &quot;Fractal
+Music,&quot; below). These fields of mathematics are concerned
+with the complex behavior exhibited by simple nonlinear systems.
+Not only can completely deterministic systems produce statistically
+random output (the pseudo-random number generators Hiller and
+Cage used are just such systems), but iterating completely random
+selections from a fixed pool of functions can produce precisely
+determined output (Gogins 1991).</P>
+
+<P>This chapter introduces a compositional program based on chaotic
+dynamics (LogMuse), and concludes with a purely deterministic
+generative grammar working at a specifically musical level of
+abstraction (MinimalMuse). I believe this order of presentation,
+though not historical, best elucidates the esthetic and technical
+issues raised by algorithmic composition. Another fractal music
+generator, which illustrates the compositional use of a variety
+of fractals (GrafMuse), can be found in Appendix C.</P>
+
+<H3>Do You Know How the Music Will Sound?<BR>
+</H3>
+
+<P>The first question non-computer musicians usually ask computer
+musicians is: &quot;Do you know how the music will sound?&quot;
+(that is, before running the score generator). It is a naive question,
+yet a profound and revealing one.</P>
+
+<P>The implication is clear: If one doesn&#146;t hear music in
+one&#146;s head before sitting down at the computer, one can&#146;t
+really be composing.</P>
+
+<P>The answer is: It is impossible in principle to imagine in
+advance, in detail, for most score generators, how the music will
+sound.</P>
+
+<P>That, of course, is exactly why score generators are useful
+for composing in the first place. If they produced only what could
+be imagined in advance, they would be only score transcribers,
+not score generators.</P>
+
+<P>In short, score generators can definitely be used to make music
+that could never be imagined without them. However, is it any
+good, can it be any good, and how does one make it good?</P>
+
+<P>Good music isn&#146;t written merely by tossing coins or inking
+star charts onto staves. Cage didn&#146;t do only that! How can
+an instrument that is more or less unpredictable actually be used?
+Is there any middle path between complete predictability, which
+is redundant, and total randomness, which is a crap shoot? What
+does it mean to say one understands an algorithm? How, in practice,
+are algorithms used to compose? It is helpful to rephrase the
+question in terms of an actual algorithm, a very basic one that
+will clarify the issues. In the Java programming language:</P>
+
+<PRE>y1 = y * c * 4 * (1.0 - y);</PRE>
+
+<P>This is the famous &quot;logistic equation&quot; often used
+to introduce chaos (e.g. Pietgen, J&uuml;rgens and Saupe 1992,
+pp. 585-653). When an equation is iterated, that is, when its
+value at time t is used as an argument to compute its value at
+time t + 1, it is known as a &quot;dynamical system&quot;. The
+logistic equation can be iterated 1,000 times by putting it into
+a loop and re-assigning its value to y, as follows:</P>
+
+<PRE>y = 0.5;
+for(t = 0; t &lt; 1000; t++)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y1 = y * c * 4.0 * (1.0 - y);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y = y1;
+}</PRE>
+
+<P>Obviously this system is controlled by the parameter c. The
+original question, &quot;Do you know how the music will sound?&quot;,
+can now be restated as, &quot;For a given value of c, do you know
+how the value of y will evolve?</P>
+
+<P>I have implemented this loop as a Csound score generator in
+Java (Applet 1 and Listing 1), in Microsoft QuickBASIC, which
+comes with most IBM compatible PCs (Appendix A), and in ANSI C
+(Appendix B). The programs demonstrate, in each language, how
+to open, write to, and close files; how to make a Csound orchestra;
+how to set up a generating loop; how to make a Csound score; how
+to run Csound; and how (on Windows, anyway) to play the generated
+soundfile. These are the basic tasks that any score generator
+for Csound must perform. In each program the most important line
+is the one that writes note statements into the score file, because
+Csound chokes on numbers that are not in just the right format.</P>
+
+<P>Java is a good choice for score generating programs for several
+reasons. It is a complete language, with interfaces, classes,
+file access, and mathematical functions. It is a rapid development
+environment, with GUI generators and integrated debuggers, which
+is important for computer music, where many programs are written
+to run only once or a few times. The syntax of Java is like that
+of C with classes, or a simplified C++, so many programmers will
+be able to use it immediately. Best of all, Java uses a &quot;virtual
+machine&quot; so that not only the source code, but also the compiled
+classes, are portable from one computer architecture to another.
+Last but not least, Java is available for little or nothing on
+the Internet or on CD-ROMs in books about Java. Java is always
+slower than compiled languages such as C or C++, but that is not
+critical for score generators.</P>
+
+<P>Unfortunately, as of the time of writing, Web browsers contain
+security provisions that prevent applets from reading or writing
+files. This keeps applets from writing scores or even running
+Csound. In the future, Web browsers will probably allow users
+to set the level of security they desire so that applets can read
+and write files on their computers.</P>
+
+<P>In the meantime, fortunately, at least on Windows computers
+on which the jview Java virtual machine has been installed (it
+comes with Microsoft Internet Explorer), every applet in this
+chapter can be run in standalone mode from this Web page by clicking
+on the corresponding &quot;standalone mode&quot; link, which opens
+a batch file that runs the applet outside the browser. In this
+mode, every applet is completely functional and can read files,
+write files, and run Csound. On other computers, the applets can
+still be run in standalone mode by setting up the classpath to
+include Silence.ScoreManager, and running the Java virtual machine
+with the applet&#146;s class name (see the appropriate documentation
+for details).</P>
+
+<H4>Applet 1. A Simple Logistic Equation Score Generator.</H4>
+
+<P>
+<APPLET CODE="LogMuse.class" CODEBASE="GoginsChapters/ScoreGenerators/LogMuse/"
+WIDTH="302" HEIGHT="102" ALIGN="BOTTOM">
+</APPLET></P>
+
+<H4><A HREF="LogMuse.bat">Logistic Equation Score Generator in
+Standalone Mode</A><BR>
+</H4>
+
+<H4><EMBED SRC="logmuse.mp3" NAME="LogMuse.mp3" WIDTH="300" HEIGHT="45"
+ALIGN="BOTTOM" autoplay="false"></H4>
+
+<P><A HREF="logmuse.mp3">LogMuse.mp3</A></P>
+
+<P>Note1: When run in standalone mode, these applets can load
+and save files and run Csound.<BR>
+<I>Note 2: These applets require Java Runtime Environment version
+1.2 in order to run</I>.</P>
+
+<H4>Listing 1. A Simple Logistic Equation Score Generator.</H4>
+
+<PRE>//&nbsp; S I L E N C E
+//&nbsp; A system for making music on computers by means of software alone.
+//&nbsp; Copyright (C) 1997 by Michael Gogins. All rights reserved.
+import java.io.*;
+import java.awt.*;
+import java.applet.*;
+//&nbsp; A simple logistic equation score generator.
+public class LogMuse extends Applet
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public String argumentValues[];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; All Java standalone programs must have
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a static main() function.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public static void main(String argv[])
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LogMuse logMuse = new LogMuse();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; logMuse.argumentValues = argv;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Frame frame = new Frame();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; frame.add(logMuse);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; frame.show();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; logMuse.init();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; frame.resize(logMuse.size().width + frame.insets().left * 2, logMuse.size().height + frame.insets().top);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; logMuse.mp3e(frame.insets().left, frame.insets().top);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; logMuse.start();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public void generate()
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Variables for the generator.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double c;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double y;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double y1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int i;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int n;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Variables for music.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The dimensions that are not generated have default values.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double instrument = 1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double start;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double length = 2;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double octave;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double decibels = 70;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double pan = 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mapping coefficients.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double pulse = .25;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double bass = 6;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double range = 4;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Variables for rendering the score.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FileOutputStream fileOutputStream = null;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PrintStream printStream = null;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You can paste a Csound instrument definition right into BASIC code like this.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String orchestra =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;sr =&nbsp;&nbsp;&nbsp; 44100\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;kr =&nbsp;&nbsp;&nbsp; 44100\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;ksmps =&nbsp;&nbsp;&nbsp;&nbsp; 1\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;nchnls =&nbsp;&nbsp;&nbsp; 2\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;; Frequency modulation instrument.\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;instr 1\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;; LOGGING\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;; p1 = Instrument\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;; p2 = Start\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;; p3 = Length\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;; p4 = Octave\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;; p5 = Decibels\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;; p6 = Pan\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;print p2, p3, p4, p5, p6\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;; INITIALIZATION\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;iwavetable = 1\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;imodulator = .5\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;ifmamplitude = 1\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;index = 1.375\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;iattack = .025\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;irelease = .125\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;isustain = p3&nbsp; - (iattack + irelease)\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;if isustain &gt; 0 goto longenvelope\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;isustain = 0.03\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;p3 = iattack + isustain + irelease\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;longenvelope:\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;ifrequency = cpsoct(p4)\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;icarrier =&nbsp; .998\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;icarrierb =&nbsp; 1.002\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;; Normalize to 80 dB = ampdb(80).\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;iamplitude = ampdb(p5) * 15848.926 / 12729.0\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;ileftpan = (0.5 - p6) / 2.0\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;irightpan = (0.5 + p6) / 2.0\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;; KONTROL\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;kindenv expseg .00001, iattack, 1, isustain, .1, irelease, .00001\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;kindex = kindenv * index * ifmamplitude\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;; AUDIO\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;aouta foscili iamplitude, ifrequency, icarrier, imodulator, kindex, iwavetable\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;aoutb foscili iamplitude, ifrequency, icarrierb, imodulator, kindex, iwavetable\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;afmout = (aouta + aoutb) * kindenv * 2.556\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;outs ileftpan * afmout, irightpan * afmout\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &quot;endin\n&quot;;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Try to read c from the command line, otherwise use a default.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Double buffer = new Double(argumentValues[1]);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c = buffer.doubleValue();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; catch(ArrayIndexOutOfBoundsException e)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c = .98473;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; catch(NullPointerException e)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c = .98473;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Try to read n from the command line, otherwise use a default.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Integer buffer = new Integer(argumentValues[2]);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; n = buffer.intValue();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; catch(ArrayIndexOutOfBoundsException e)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; n = 100;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; catch(NullPointerException e)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; n = 100;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Create a score file.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fileOutputStream = new FileOutputStream(&quot;test.sco&quot;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printStream = new PrintStream(fileOutputStream);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Initial value of y.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y = .5;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Write the initial state of the system as a Csound comment.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printStream.println(&quot;; Hello Csound!\n; c = &quot; + c + &quot;\n; y = &quot; + y + &quot;\n; n = &quot; + n);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GENERATE THE SCORE
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Write the function table for the instrument.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printStream.println(&quot;f 1 0 16384 10 1 ; High-fidelity sine wave.&quot;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Iterate to write the notes.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for(i = 0; i &lt; n; ++i)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ////////////////////////////////////////////////////////////////////
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GENERATION
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y1 = y * c * 4 * (1.0 - y);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MAPPING
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; start = i * pulse;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; octave = bass + y1 * range;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Round off to 12 tone equal temperament.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; octave = ((int)(octave * 12.0 + .5)) / 12.0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RENDERING
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Write a note into the Csound score.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printStream.println(&quot;i &quot; + instrument + &quot; &quot; + start + &quot; &quot; + length + &quot; &quot; + octave + &quot; &quot; + decibels + &quot; &quot; + pan);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Iterate.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y = y1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ////////////////////////////////////////////////////////////////////
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RENDER THE SOUNDFILE
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Write the orchestra file.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fileOutputStream = new FileOutputStream(&quot;test.orc&quot;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printStream = new PrintStream(fileOutputStream);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printStream.println(orchestra);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printStream.close();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Render the generated files using Csound.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Runtime runtime = Runtime.getRuntime();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Process process = runtime.exec(&quot;winsound -WsRo LogMuse.wav test.orc test.sco&quot;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; process.waitFor();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; catch(Exception e)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println(e.getMessage());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PLAY THE SOUNDFILE
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; runtime.exec(&quot;MPLAYER LogMuse.wav&quot;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; catch(IOException e)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println(e.getMessage());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public void init()
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; super.init();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //{{INIT_CONTROLS
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; setLayout(null);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; addNotify();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; resize(302,102);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; setFont(new Font(&quot;TimesRoman&quot;, Font.BOLD, 12));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; buttonGenerate = new java.awt.Button(&quot;Generate&quot;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; buttonGenerate.reshape(12,48,276,36);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; buttonGenerate.setFont(new Font(&quot;TimesRoman&quot;, Font.BOLD, 16));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add(buttonGenerate);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; labelScoreGenerator = new java.awt.Label(&quot;Logistic Equation Score Generator version 1&quot;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; labelScoreGenerator.reshape(0,12,300,30);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; labelScoreGenerator.setFont(new Font(&quot;TimesRoman&quot;, Font.BOLD, 14));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add(labelScoreGenerator);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //}}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public boolean handleEvent(Event event)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (event.target == buttonGenerate &amp;&amp; event.id == Event.ACTION_EVENT)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generate();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return true;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return super.handleEvent(event);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //{{DECLARE_CONTROLS
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; java.awt.Button buttonGenerate;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; java.awt.Label labelScoreGenerator;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //}}
+}</PRE>
+
+<P>This program has only enough user interface code to show up
+as an applet on a Web page. This program is completely self-contained
+(except, of course, for Csound). Even the instrument is built
+into the code. This reflects my experience that if more than one
+file is needed to document or recreate a piece, a critical one
+always seems to get lost.</P>
+
+<H2>Generating, Mapping, Rendering</H2>
+
+</h2>
+
+<P>In the sample program I separated the generating equation,
+from the code to map the generated points onto musical dimensions,
+from the rendering. This hierarchy appears over and over again
+in algorithmic composition:</P>
+
+<OL>
+  <LI><I>Generation. </I>The actual compositional algorithm may
+  be borrowed from a non-musical field such as chaotic dynamics,
+  fractal geometry, biology, or linguistics; or it may be a program
+  in a specifically musical composing language.
+  <LI>Unless the generator is specifically musical, there must
+  be a <I>mapping</I> onto a musical space, i.e. dimensions of
+  music theory. This space may be more or less abstract, it can
+  represent times, pitches, chord types, root progressions, rhythmic
+  patterns, collections of motives, tone rows, etc.
+  <LI><I>Rendering</I>, where the physical score and soundfile
+  are produced.
+</OL>
+
+<H2>Parametric Composition</H2>
+
+</h2>
+
+<P>The original question, &quot;Do you know how the music will
+sound?&quot;, has been restated as, &quot;In the logistic dynamical
+system, for a given value of c, do you know how the value of y
+will evolve?&quot;</P>
+
+<P>The system is controlled by the parameter c, ranging from 0
+to 1. In some cases the answer is indeed obvious. If c is 0, then
+after the first iteration y is always 0. For other cases, let
+us generate some experimental scores. For that purpose, we will
+use a more sophisticated yet simpler version of the logistic equation
+score generator that uses a ScoreManager object to hold and render
+the generated score (Applet 2; for code and details see the chapter
+&quot;Implementing and Using a Platform-Independent Graphical
+User Interface for Csound in Java&quot;).</P>
+
+<H4>Applet 2. A Simple Logistic Equation Score Generator with
+Controllable Parameters.</H4>
+
+<P>
+<APPLET CODE="LogMuseDialog.class" CODEBASE="GoginsChapters/ScoreGenerators/LogMuseDialog/"
+WIDTH="400" HEIGHT="201" ALIGN="BOTTOM">
+</APPLET></P>
+
+<H4><A HREF="LogMuseDialog.bat">Logistic Equation Score Generator
+with Controllable Parameters in Standalone Mode</A><BR>
+</H4>
+
+<H4>Set c to .5. The first part of the result is shown in Score
+1.</H4>
+
+<H4>Score 1.</H4>
+
+<P><IMG SRC="SCORE1.GIF" BORDER="0" HEIGHT="130" WIDTH="995" 
+ALIGN="BOTTOM" NATURALSIZEFLAG="3"></P>
+
+<P>Now set c to .75. The first part of the result is shown in
+Score 2. The system oscillates between 2 points, gradually settling
+into a stable orbit. When a dynamical system settles into a stable
+orbit, that orbit is called the &quot;attractor&quot; of the system.</P>
+
+<H4>Score 2.</H4>
+
+<P><IMG SRC="SCORE2.GIF" BORDER="0" HEIGHT="173" WIDTH="993" 
+ALIGN="BOTTOM" NATURALSIZEFLAG="3"></P>
+
+<P>Perhaps as c increases in value, the orbit becomes more complex.
+Try c = .9. The result is shown in Score 3. No matter how many
+times it is iterated, the system never displays a periodic orbit.
+However, the orbit is an attractor, because no matter what value
+initial value of y is used, the same orbit results; it is stable.
+A stable orbit that never repeats seems a bit strange, so this
+is called a &quot;strange attractor&quot; or &quot;chaotic attractor.&quot;</P>
+
+<H4><EMBED SRC="c9.mp3" WIDTH="300" HEIGHT="45" ALIGN="BOTTOM"
+autoplay="false"></H4>
+
+<H4><A HREF="c9.mp3">c9.mp3</A></H4>
+
+<H4>Score 3.</H4>
+
+<P><IMG SRC="SCORE3.GIF" BORDER="0" HEIGHT="355" WIDTH="993" 
+ALIGN="BOTTOM" NATURALSIZEFLAG="3"></P>
+
+<P>Now try c = .95. The result is shown in Score 4. Obviously
+the idea that as c increases, so does complexity, is too simple.</P>
+
+<H4>Score 4.</H4>
+
+<P><IMG SRC="SCORE4.GIF" BORDER="0" HEIGHT="180" WIDTH="995" 
+ALIGN="BOTTOM" NATURALSIZEFLAG="3"></P>
+
+<P>Let us write a program (Applet 3) to increase the value of
+c from 0.66 to 1 in 1000 steps, and iterate 10 notes for each
+step. The generating loop is shown in Listing 2. Instead of writing
+the notes directly into a score file, they are put into a ScoreManager
+object (see the chapter &quot;Creating and Using a Platform-Independent
+Graphical User Interface for Csound in Java&quot;). The result
+is shown, <I>not</I> in 12-tone equal temperament, in ScoreManager&#146;s
+piano-roll display (Figure 1). This is called a &quot;parametric
+map,&quot; because it maps attractors corresponding to many values
+of the parameter c.</P>
+
+<H4>Applet 3. Logistic Map Score Generator.</H4>
+
+<P>
+<APPLET CODE="LogMap.class" CODEBASE="GoginsChapters/ScoreGenerators/LogMap/"
+WIDTH="360" HEIGHT="325" ALIGN="BOTTOM">
+</APPLET></P>
+
+<H4><A HREF="LogMap.bat">Logistic Map Score Generator in Standalone
+Mode.</A><BR>
+</H4>
+
+<H4>Listing 2. Logistic Map Score Generator.</H4>
+
+<PRE>void generate()
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Clear out the old score.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; score.initialize();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Generate a new score.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double cIncrement = (cFinal - cInitial) / cn;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double c = cInitial;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double y1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for(int ci = 0; ci &lt; cn; ci++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Start each increment at the same value of y.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double y = .5;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pre-iterate to find the attractor.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for(int i = 0; i &lt; 100; i++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y1 = y * c * 4.0 * (1.0 - y);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y = y1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Make notes only from the attractor.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for(int i = 0; i &lt; n; i++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ////////////////////////////////////////////
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // GENERATE
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y1 = y * c * 4.0 * (1.0 - y);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // MAP TO MUSIC
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; start = ((ci * n) + i) * pulse;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; octave = bass + y1 * range;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // RENDER THE SCORE
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Store a note in the score manager.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; score.noteAdd(instrument, start, length, octave, decibels, pan);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Iterate n.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y = y1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ////////////////////////////////////////////
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Iterate c to explore chaos.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c += cIncrement;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+}</PRE>
+
+<P><IMG SRC="FIGURE1.GIF" BORDER="0" HEIGHT="768" WIDTH="1024"
+ALIGN="BOTTOM" NATURALSIZEFLAG="3"></P>
+
+<H4>Figure 1.</H4>
+
+<P>As c increases, y tends to settle into an attractor first of
+period 1, then of period 2, then 4, and so on. This is known as
+&quot;bifurcation&quot; or &quot;period doubling.&quot; But note
+the band of attractors with period 3; any quadratic-type dynamical
+system with an attractor of period 3 also has chaotic attractors
+(Li and Yorke 1975).</P>
+
+<P>Feigenbaum (1983) proved that the ratio of proportionality
+between values of c which double in period is a constant, 4.6692...,
+and moreoever that it is a universal constant characterizing all
+&quot;quadratic-like&quot; dynamical systems. Hence the exact
+equation used to generate a score is of secondary importance.
+What is really important is Feigenbaum&#146;s constant, period
+doubling, and chaos.</P>
+
+<P>Note again the bands of periodicity within chaotic regions.
+They suggest it is possible to compose music by exploring the
+map of the system, and selecting parameters near transitions from
+periodicity to chaos. At such points the system oscillates between
+periodicity and chaos as it evolves, manifesting thematic and
+textural contrasts. Score 5, based on a constant of 0.965, is
+an example (note lengths have been increased).</P>
+
+<H4>Score 5.</H4>
+
+<P><IMG SRC="SCORE5.GIF" BORDER="0" HEIGHT="531" WIDTH="1001"
+ALIGN="BOTTOM" NATURALSIZEFLAG="0"></P>
+
+<P>This is somewhat more musical than the first examples, so we
+are getting somewhere. And the period doubling is an infinite
+series, so there is an infinite number of transitions between
+periodicity and chaos, each differing in detail from all others.</P>
+
+<P>Therefore: For arbitrary inputs to a chaotic score generator,
+sometimes the music can be imagined in advance (simple periodicity),
+but much more often it cannot (complex periodicity and chaos),
+and the most interesting music lies on the borderlines of chaos.
+It is possible to compose by exploring this parameter space on
+a computer. In fact, this is an entirely new method of composition
+- one possible only on a computer.</P>
+
+<P>Although the logistic equation is a simple algorithm, a number
+of composers have used it, e.g. Gary Nelson in <B><I>The Voyage
+of the Golah Iota</I></B> (1993).</P>
+
+<H3><EMBED SRC="c965.mp3" WIDTH="300" HEIGHT="45" ALIGN="BOTTOM"
+autoplay="false"></H3>
+
+<H3><A HREF="c965.mp3">c965.mp3</A><BR>
+</H3>
+
+<H3>A &quot;Minimalist&quot; Generative Grammar</H3>
+
+</h3>
+
+<P>Let us now turn to another style of algorithmic composition,
+and one more characteristic of the history of the field, based
+on a generative grammar. Such a grammar (also called a context-free
+language) is a mathematical system (Chomsky 1957). It consists
+of:</P>
+
+<OL>
+  <LI>A <I>vocabulary </I>of symbols (digits, letters, words, or
+  even sentences).
+  <LI>An <I>axiom </I>or initial sequence of one or more symbols.
+  <LI>A set of <I>rewriting rules</I> of the form, &quot;replace
+  symbol x with symbol y.&quot; The rewriting rules are initially
+  applied to the axiom, resulting in a rewritten sequence or production.
+  The rules are then applied to the production, to the production
+  of the production, and so on. The production may grow or shrink
+  as the rewriting is reiterated.
+  <LI>Either some symbols are <I>terminal</I>, and the rewriting
+  ends when all non-terminal symbols have been rewritten as terminal
+  symbols, or the rewriting rules are applied a specified number
+  of times or <I>iterations</I>.
+</OL>
+
+<P>This is a powerful concept, because it completely captures
+the notion of a discrete recursive function. Complex systems modeled
+by generative grammars include English syntax (Chomsky 1957),
+the growth and branching of plants (Prusinkewicz and Lindenmayer,
+1993), and musical tonality (Lerdahl and Jackendoff, 1983).</P>
+
+<H2><FONT SIZE="+1">Minimalist Procedures</FONT></H2>
+
+</h2>
+
+<P>A precise definition of Minimalism is elusive. For present
+purposes, consider it to be music composed of short motives, or
+&quot;cells&quot; (Warburton 1988), repeated and combined in such
+a way that the resulting music is complex and not completely predictable
+(DeLio 1984, Mertens 1983, Nyman 1974). In a piece consisting
+of two cells repeating simultaneously, the two might be identical
+except for total duration; or one might be a note shorter than
+the other; or a third, shorter cell might be inserted into the
+repetitions from time to time, so that when the cells are simultaneously
+repeated, a differential canon evolves. Or a set of cells might
+be played in sequence by a group of players, each choosing in
+aleatoric fashion when to cease repeating one cell and advance
+to the next (Terry Riley&#146;s In C, 1989).<p4>The unpredictability
+of the intervals that result from combining cells in different
+phases is similar to the unpredictability of the sequences that
+arise in a chaotic dynamical system. A similar mechanism is at
+work in both cases: &quot;stretch and fold.&quot; The shift in
+phase is analogous to multiplication by the constant in the dynamical
+system (stretch), and the repetition of the cells is analogous
+to the iteration and reflection of the dynamical system back into
+its attractor (fold).</P>
+
+<H4>Applet 4. A Minimalist Generative Grammar Score Generator.</H4>
+
+<P>
+<APPLET CODE="MinimalMuse.class" CODEBASE="GoginsChapters/ScoreGenerators/MinimalMuse/"
+WIDTH="721" HEIGHT="496" ALIGN="BOTTOM">
+</APPLET></P>
+
+<H4><A HREF="MinimalMuse.bat">Minimalist Generative Grammer in
+Standalone Mode.</A><BR>
+</H4>
+
+<P>Applet 4 presents a simple generative grammar in Java, MinimalMuse,
+that generates scores in a sort of Minimalist style from short
+programs. MinimalMuse is a Lindenmayer system: it has only non-terminal
+symbols, in which the rewriting rules are applied a specified
+number of times. The idea is that a pen moves around on a score,
+obeying a few simple commands. Pen and score have dimensions similar
+to my 6-dimensional Csound score:<instrument, start, length, pitch in semitones (instead of linear octaves), decibels, pan>.
+The pen commands are:</P>
+
+<OL>
+  <LI><B>note</B>: Write a note on the score using the current
+  state of the pen, and advance the current length of the pen in
+  time.
+  <LI><B>instrument <I>number</I></B>: Set the pen&#146;s instrument
+  to number.
+  <LI><B>start <I>seconds</I></B>: Set the pen&#146;s time to seconds.
+  <LI><B>length <I>seconds</I></B>: Set the pen&#146;s length to
+  seconds.
+  <LI><B>advance <I>seconds</I></B>: Move the pen forward seconds
+  in time; can be a negative number.
+  <LI><B>rest</B>: Without writing a note, advance the current
+  length of the pen in time.
+  <LI><B>tempo <I>multiplier</I></B>: Multiply the pen&#146;s length
+  by multiplier.
+  <LI><B>pitch <I>semitones</I></B>: Set the pen&#146;s pitch to
+  semitones (middle C = 60).
+  <LI><B>transpose <I>semitones</I></B>: Transpose the pen&#146;s
+  pitch by semitones (can be a fraction).
+  <LI><B>decibels <I>value</I></B>: Set the pen&#146;s loudness
+  to decibels.
+  <LI><B>dynamics <I>multiplier</I></B>: Multiply the pen&#146;s
+  decibels by multiplier.
+  <LI><B>pan <I>value</I></B>: Set the pen&#146;s pan to value.
+  <LI><B>push</B>: Store the current state of the pen by pushing
+  it on a stack.
+  <LI><B>pop</B>: Restore the earlier state of the pen by popping
+  it from the stack.
+</OL>
+
+<P>MinimalMuse is implemented along the same pattern as most generative
+grammars. It has a lexer that parses symbols out of the axiom
+and intermediate productions (a Java StreamTokenizer object),
+a compiler that rewrites the axiom and intermediate productions
+to generate a final production (the MinimalMuse.generate() function),
+a lexer that parses symbols out of the final production (another
+StreamTokenizer), and a parser that interprets the symbols (MinimalMuse.render())
+to execute score-writing actions. MinimalMuse uses the same tagged
+text file format as ScoreManager or HTML (Listings 3 and 4).</P>
+
+<P>MinimalMuse is a very simple grammar. More sophisticated ones
+include the Java compiler that rewrites source code &quot;java&quot;
+files into object code &quot;class&quot; files; the Java virtual
+machine that interprets object code &quot;class&quot; files to
+execute computational actions; and Csound itself, which has one
+parser for orchestra files and another parser for score files,
+and executes opcode actions to compile soundfiles.</P>
+
+<P>Using MinimalMuse, a two-cell phase canon at the unison can
+be written as shown in Listing 3. Cell0 is the basic motive. Cell1
+simply repeats cell0. Cell2 repeats cell0 also, but adds a rest
+after each repetition. The axiom generates notes by means of Cell1
+, then goes back to the beginning of the score and repeats notes
+using Cell12. This creates phasing.</P>
+
+<H4>Listing 3.</H4>
+
+<PRE>&amp;ltCsMinMuse&gt;
+&amp;ltCsAxiom&gt;
+push instrument 1 cell1 pop instrument 2 cell2
+&lt;/CsAxiom&gt;
+&amp;ltCsRules&gt;
+cell0 = note transpose 2 note transpose 14 note tempo 2 transpose 7 note transpose -6 note tempo .5 transpose -6 note transpose 3 note rest transpose -2 note transpose 12 transpose -3 note transpose -3 note transpose -3 note transpose -3 note note transpose -12 note rest note
+cell1 = cell0 cell0 cell1
+cell2 = cell0 rest cell0 rest cell2
+&lt;/CsRules&gt;
+&amp;ltCsIterations 12&gt;
+&lt;/CsMinMuse&gt;</PRE>
+
+<P>A more elaborate example is shown in MinMuse1 (Listing 4),
+which can be found on the CD-ROM:</P>
+
+<H4>Listing 4.</H4>
+
+<PRE>&amp;lt;CsMinMuse&amp;gt;
+&amp;lt;CsAxiom&amp;gt;
+&nbsp;length .75 push tempo .5 cell6 pop transpose 5 cell6 cell6
+&amp;lt;/CsAxiom&amp;gt;
+&amp;lt;CsRules&amp;gt;
+cell6 = push push push instrument 1 pan -.5 cell5 pop transpose -12 intrument 3 pan 0 cell4 pop instrument 2 pan .5 cell4 pop transpose -12 instrument 3 cell5 transpose 12
+cell5 = cell3 transpose 6 rest cell5 transpose -6 cell3
+cell4 = cell3 transpose 6 advance 1.25 cell4 transpose -6 cell3
+cell3 = cell1 advance .375 transpose 3 cell1 transpose -3 cell3
+cell2 = cell1 transpose -5 cell1 transpose 5 note cell2
+cell1 = cell0 transpose 2 rest cell0 dynamics 0.9090909090909 transpose -2 cell0 transpose -5 dynamics 1.1 note transpose 5 note rest
+cell0 = note transpose 12 transpose -4 note rest dynamics 2 transpose 2 note transpose -5 note note dyanmics .5 transpose -5 note rest
+&amp;lt;/CsRules&amp;gt;
+&amp;lt;CsIterations 7&amp;gt;
+&amp;lt;/CsMinMuse&amp;gt;</PRE>
+
+<P>This piece contains a hierarchy of relationships, which were
+chosen by trying a variety of cells and assembly techniques and
+listening to the results. The basic cell is cell0, a very simple
+and boring little motive. Cell1 assembles a series of cell0s and
+adds a note. Cell2 assembles a series of cell1s and adds a note,
+then specifies itself; this has the effect of invoking a repeat
+of cell1 for every iteration of the generator. cell3 is identical
+to cell2, except that the series of cell1s is in a different pitch
+relationship, and the second repeat is offset by .375 seconds;
+this causes cell2 and cell3, should they play simultaneously,
+to go out of phase and return to phase. Cell4 and cell5 assemble
+repeats of cell3s with a tempo change at the repeat and another
+time offset; this too causes phasing at a higher level of structure.
+Cell6 assembles several cell5s at different stereo positions and
+instrument selections using push and pop; they cause each cell5
+to start at the same instant, after which their elements begin
+to go in and out of phase. Finally, the axiom assembles several
+cell6s at the highest level of structure. One cell6 plays once
+at half tempo, and cell6 also plays twice at normal tempo during
+the same period. Seven iterations of the generator produce 6,144
+notes.</P>
+
+<P><EMBED SRC="minmuse1.mp3" WIDTH="300" HEIGHT="45" ALIGN="BOTTOM"
+autoplay="false"></P>
+
+<P><A HREF="minmuse1.mp3">MinMuse1.mp3</A><BR>
+</P>
+
+<H3>Conclusion</H3>
+
+</h3>
+
+<P>The esthetic and compositional conclusions to be drawn from
+this hasty plunge into score generation are perhaps few, but I
+do not believe they are either vague or trivial. In the first
+place, by resorting to mathematics in general and chaos in particular,
+algorithms can easily be made to generate a truly limitless variety
+of scores that no one could otherwise imagine. Some algorithms
+can in principle generate any possible score (Gogins 1992b).</P>
+
+<P>The problem with algorithmic composition is not lack of talent
+or imagination, or even of skill, but surfeit of material. Furthermore,
+there is no algorithm that can be relied upon to weed through
+this mass of material.</P>
+
+<P>Therefore the methods used to actually compose with score generators
+are not the same as with through-composed music (which is far
+from uniform in method itself). Parametric composition is one
+possibility. Trial and error, leading to familiarity and skill
+with one algorithm or a related family of algorithms, is another.
+Languages designed specifically for composing are also promising,
+especially as they can be used to gain very precise control over
+pitch relationships, which are definitely a weak point in other
+algorithms.</P>
+
+<P>With fractal music in particular, the compositional process
+is a more like sculpture, or better yet photography, than it is
+like writing a narrative, which has been one naive metaphor for
+the act of composing. With a fractal, the composer has a form,
+an object, which he or she may circle, poke at, magnify, twist,
+or otherwise try to obtain a rewarding musical perspective upon.
+Most people who give themselves to this art will discover that,
+at a certain point, a piece becomes interesting; after working
+with an interesting pice for a time, it may (sometimes quite suddenly)
+become music. There was a harmony, a specifically musical justness
+of proportion, hidden in the form, that the work of the musician
+brought to sound.</P>
+
+<P>Should a score that has been generated by an algorithm be treated
+as material for to be edited and reworked on paper, or combined
+with manually composed material? Or if a score is not satisfactory
+as it stands, is it better to change the parameters, or the algorithm
+itself, and regenerate the score as a whole? This is not a matter
+to be decided dogmatically. Yet, for me, a compelling reason to
+use score generators is that their algorithms impose a certain
+formal unity upon the scores. This unity is all too easy to break
+with editing.</P>
+
+<H3>Some Notes on Instrument Design for Score Generators</H3>
+
+</h3>
+
+<P>Csound is not just a software synthesizer, it is a language
+for writing software synthesizers (Vercoe 1984). It can sound
+as good as, or better than, the best hardware. An excellent source
+of Csound instruments is Gather (1995), and The Csound Front Page
+(Leeds University 1996) has links to other instrument and orchestra
+samples.</P>
+
+<P>The usual practice is to make instruments that are exactly
+suited to the requirements of a particular score. This approach
+is completely valid, but it is not best for the kind of algorithmic
+composition discussed here. That requires instruments which can
+be mixed and matched to create ad hoc arrangements. To this end,
+I have defined the following convention for instruments and scores:</P>
+
+<UL>
+  <LI>p1 = instrument number (1 to 200)
+  <LI>p2 = start time in seconds (0 to whatever)
+  <LI>p3 = length in seconds (0 to whatever)
+  <LI>p4 = linear octave (middle C = 8)
+  <LI>p5 = decibels (0 to 84)
+  <LI>p6 = pan (-1 extreme left through 0 at middle to +1 extreme
+  right)
+</UL>
+
+<P>Additional pfields required by an instrument start with p7.
+Using this convention, any instrument can be used with any score.
+In addition, instruments for score generators should work over
+a wide range of pitches, over a wide range of durations, over
+a wide range of dynamic levels, and be dynamically balanced, that
+is, they should produce the same subjective loudness for the same
+numerical loudness in the score. The most important considerations
+are duration and balance.</P>
+
+<P>An instrument has a characteristic timbre that is crucially
+defined by its attack and decay transients. However, a score generator
+may well produce notes shorter than these transients. Those notes
+will sound as nasty clicks in the soundfile. To avoid this, write
+instruments that fix pfield 3, duration, if it is too short. Csound
+will read the new value of p3 and extend the note beyond the scored
+duration. For example:</P>
+
+<PRE>isustain = p3 - (iattack + idecay + irelease)
+if isustain &gt; 0 goto longenvelope
+isustain = 0
+p3 = iattack + idecay + isustain + irelease
+longenvelope:</PRE>
+
+<P>As for balance, the ampdb function in Csound returns an amplitude
+of 15,848.926 for 80 decibels. A start can be made on balancing
+an instrument by compiling a note at 80 decibels and recording
+the amplitude actually synthesized. The instrument can then be
+normalized using the equation</P>
+
+<PRE>iamplitude = ampdb(p5) * 15848.926 / iamplituderecorded</PRE>
+
+<P>However, balance often needs to be refined by trial and error.
+For this purpose, instruments can be tested with a short score
+that contains one long tone at 80 decibels in each octave from
+6 to 12, a sequence of notes over wide range of pitches, durations,
+and dynamics, and notes shorter than any transient. Certain timbres
+work better with score generators than others. In general, neither
+tones that are always short nor those that are always sustained
+work well, but tones with distinctive attacks and long decays
+(like the piano, the general-purpose instrument par excellence)
+tend to be useful. Similarly, tones that are too simple in overtone
+structure sound poor in solo, but tones too busy in overtone structure
+sound awful in tutti.</P>
+
+<P>All such considerations are of course merely suggestions arising
+from experience. The imagination and, above all, the ear must
+rule.</P>
+
+<H3>Additional Resources</H3>
+
+</h3>
+
+<P>For a general survey of algorithmic composition, read chapters
+17, 18, and 19 in The Computer Music Tutorial (Roads 1996), and
+search the World Wide Web. For an annotated catalog of compositional
+algorithms, see Coenen (1994). For an annotated catalog of available
+score generating software, see Hepis (1993). For a discography
+of computer music including many algorithmic compositions, see
+Pope (1993). Two leading software systems for score generation
+are Common Music (Taube 1996) and Symbolic Composer (Stone 1997).
+The hardware-software system Capybara/Kyma must also be noted
+(Symbolic Sound Corporation 1997).</P>
+
+<P>Java is available for free on the Internet (Sun Microsystems
+1997, EarthWeb 1997), and often comes on the CD-ROMs included
+with books on Java. The Java samples in this chapter were tested
+with Microsoft Visual J++ and Version 1.0 of Java, and also with
+Symantec Visual Caf&eacute; version 1.0.</P>
+
+<H3>References Cited</H3>
+
+</h3>
+
+<P>Barnsley, Michael. 1993 [1998]. <B><I>Fractals Everywhere</I></B>,
+Second Edition. Boston: Academic Press. Textbook on fractal geometry
+that provides a unified mathematical treatment of iterated function
+systems, Julia and Mandelbrot sets, and fractals. Invaluable resource
+for the geometric approach to algorithmic composition.</P>
+
+<P>Buchner, A. 1978. <B><I>Mechanical Musical Instruments</I></B>.
+Westport: Greenwood Press. Cage, John. 1973 [1961]. Silence: Lectures
+and Writings by John Cage. Hanover, New Hampshire: Wesleyan University
+Press. A vital resource.</P>
+
+<P>Cage, John. 1992 [1961-1962]. &quot;Atlas Eclipticalis,&quot;
+for flutes, piccolo, bass clarinet, contrabassoon, trombone, contrabass.
+The Barton Workshop Performs John Cage, Etcetera 2 KTC 3002, CD.</P>
+
+<P>Cage, John, and Lejaren Hiller. 1969 [1968-1969]. <B><I>HPSCHD</I></B>.
+Nonesuch H-71224, LP.</P>
+
+<P>Chaitin, Gregory J. 1974a. &quot;Information-Theoretic Limitations
+of Formal Systems,&quot; <B><I>Journal of the Association for
+Computing Machinery</I></B>, Volume 21, pp. 403-424.</P>
+
+<P>Chaitin, Gregory J. 1974b. &quot;Randomness and Mathematical
+Proof,&quot; <B><I>Scientific American</I></B>, Volume 232, Number
+5, pp. 47-52.</P>
+
+<P>Chomsky, Noam. 1957. <B><I>Syntactic Structures</I></B>. The
+Hague: Mouton. The first influential scientific theory (of the
+syntax of natural langauges) cast in the form of a generative
+grammar.</P>
+
+<P>Coenen, Alcedo. 1994. <B><I>Amsterdam Catalogue of Composition
+Algorithms</I></B> (http://mars.let.uva.nl/ACCA/ACCA.html).</P>
+
+<P>Cope, David. 1989. &quot;The Step by Step Simulation of a Mozart
+Sonata,&quot; in <B><I>Proceedings of the European Workshop on
+Artificial Intelligence and Music</I></B>. Genoa: Computer Music
+Laboratory, University of Genoa.</P>
+
+<P>DaGazio, Bruno. No date. <B><I>Nikola Tesla and Joseph Schillinger:
+The Music of NT: The Man Who Invented the Twentieth Century</I></B>
+(http://www-ks.rus.uni-stuttgart.de/people/schulz/fmusic/tesla.html).</P>
+
+<P>Davis, Martin (editor). 1965. <B><I>The Undecidable: Basic
+Papers on Undecidable Propositions, Unsolvable Problems and Computable
+Functions</I></B>. Hewlett, New York: Raven Press.</P>
+
+<P>Dodge, Charles. 1986. &quot;Musical Fractals,&quot; <B><I>Byte
+Magazine</I></B>, Volume 11, Number 6, pp. 185-196.</P>
+
+<P>Dodge, Charles., 1988. &quot;Profile: A Musical Fractal,&quot;
+<B><I>Computer Music Journal</I></B>, Volume 12, Number 3, pp.
+10-14.</P>
+
+<P>Earthweb. 1997. <B><I>Gamelan: The Official Directory for Java</I></B>
+(http://www-b.gamelan.com/index.shtml).</P>
+
+<P>Evans, Brian. 1995. <B><I>Hearing the Mandelbrot Set</I></B>
+(http://www.vanderbilt.edu/VUCC/Misc/Art1/Sonify/Mandi.html).</P>
+
+<P>Feigenbaum, M. J. &quot;Universal Behavior in Nonlinear Systems,&quot;
+<B><I>Physica</I></B> 7D, pp. 16-39.</P>
+
+<P>Gather, John-Philipp. 1995. <B><I>Amsterdam Catalog of Csound
+Computer Instruments 1.1</I></B>. An extremely useful compendium
+of working Csound implementations of classical computer music
+instrument designs.</P>
+
+<P>Giffin, Noel. 1997. <B><I>Welcome to the Fractint WWW Pages</I></B>
+(http://spanky.triumf.ca/www/fractint/fractint.html).</P>
+
+<P>Greenhouse, Robert. 1995. <B><I>The Well-Tempered Fractal v3.0:
+A Composer's Tool for the Derivation of Musical Motifs, Phrases
+and Rhythms From The Beauty and Symmetry of Fractals, Chaotic
+Attractors and Other Mathematical Functions</I></B> (http://www-ks.rus.uni-stuttgart.de/people/schulz/fmusic/wtf/).
+A fractal composing program for IBM compatible PCs.</P>
+
+<P>Gogins, Michael. 1991. &quot;Iterated Function Systems Music,&quot;
+<B><I>Computer Music Journal</I></B>, Volume 15, Number 1, pp.
+40-48.</P>
+
+<P>Gogins, Michael. 1992a. &quot;Fractal Music with String Rewriting
+Grammars,&quot; <B><I>News of Music 13</I></B>, pp. 146-170.</P>
+
+<P>Gogins, Michael. 1992b. &quot;How I Became Obsessed with Finding
+a Mandelbrot Set for Sounds,&quot; <B><I>News of Music 13</I></B>,
+pp. 129-139.</P>
+
+<P>Hepis, Leonidas. 1993. <B><I>List of Tools</I></B> (http://mars.let.uva.nl/ACCA/ACCA.ToolsList.html).
+An extensive annotated list of software for algorithmic composition.</P>
+
+<P>Hiller, Lejaren. 1970. &quot;Music Composed with Computers
+- A Historical Survey,&quot; in H. Lincoln (editor), <B><I>The
+Computer and Music</I></B>. Ithaca: Cornell University Press pp.
+42-96.</P>
+
+<P>Hiller, Lejaren and John Cage. 1968. &quot;HPSCHD: An Interview
+by Larry Austin,&quot; <B><I>Source</I></B>, Volume 2, Number
+2, pp. 10-19.</P>
+
+<P>Hiller, Lejaren Arthur, and L. M. Isaacson. 1957a. <B><I>Illiac
+suite, for String Quartet</I></B>. New York: New Music Edition.</P>
+
+<P>Hiller, Lejaren Arthur, and Isaacson. 1957b. <B><I>Illiac suite,
+for String Quartet</I></B>. Heliodor HS 25053, LP.</P>
+
+<P>Hiller, Lejaren and Isaacson, L. M. (editors). 1959. <B><I>Experimental
+Music: Composition with an Electronic Computer</I></B>. New York:
+McGraw-Hill.</P>
+
+<P>Holtzman, S.R. 1981. &quot;Using Generative Grammars for Music
+Composition,&quot; <B><I>Computer Music Journal</I></B>, Volume
+5, Number 1, pp. 51-64.</P>
+
+<P>Huron, David. 1996. <B><I>The Humdrum Toolkit: Software for
+Music Research </I></B>(http://ccrma-www.stanford.edu/CCRMA/Events/Colloquium/Past/94-11-30.html).
+The Humdrum Toolkit is a set of (UNIX-based) software tools for
+music research. For those who are interested, an extensive FAQ
+(Frequently Asked Questions) document for the Humdrum Toolkit
+is available via ftp (archive@uwaterloo.ca cd uw-data/humdrum)
+or by sending an e-mail request to dhuron@ccrma.</P>
+
+<P>Leeds University. 1996. <B><I>The Csound Front Page </I></B>(http://www.leeds.ac.uk/music/Man/c_front.html).
+The main Web entry point for Csound, including up-to-date builds
+of public-domain Csound for many platforms, and links to tutorials
+and samples.</P>
+
+<P>Lerdahl, F., and R. Jackendoff. 1983. <B><I>A Generative Theory
+of Tonal Music</I></B>. Cambridge, Massachusetts: The MIT Press.</P>
+
+<P>Li, T-Y, and Yorke, J.A. 1985. &quot;Period Three Implies Chaos,&quot;
+<B><I>American Mathematical Monthly</I></B>, Volume 82, pp. 985-992.</P>
+
+<P>Lyr, R. 1955. &quot;Une merveille de cecanisme: le Componium
+de T. N. Winkel,&quot; in A. Chapuis (editor). <B><I>Histoire
+de la boite a musique</I></B>. Lausanne: Edition Scriptar.</P>
+
+<P>Mandelbrot, Benoit. 1983 [1977]. <B><I>The Fractal Geometry
+of Nature </I></B>(Updated and Augmented). New York: W. H. Freeman
+and Company. Seminal work on fractals in many fields of science
+and art.</P>
+
+<P>Mertens, Wim. 1983 [1980]. <B><I>American Minimal Music: La
+Monte Young, Terry Riley, Steve Reich, Philip Glass</I></B>, translated
+from the Dutch by J. Hautekiet with a preface by Michael Nyman.
+London: Kahn and Averill; New York: Alexander Broude.</P>
+
+<P>Millen, Dale. 1990. &quot;Cellular Automata Music,&quot; in
+<B><I>Proceedings of the 16th International Computer Music Conference</I></B>,
+Glasgow. San Francisco: International Computer Music Association,
+p. 314-316.</P>
+
+<P>Mucherino, Nicholas. No date. <B><I>Recursion: A Paradigm for
+Future Music? </I></B>(http://www-ks.rus.uni-stuttgart.de/people/schulz/fmusic/recursion.html).</P>
+
+<P>Nelson, Gary Lee. 1993. <B><I>Wind, Sand, and Sea Voyages:
+An Application of Granular Synthesis and Chaos to Musical Composition
+</I></B>(http://www-ks.rus.uni-stuttgart.de/people/schulz/fmusic/gnelson.html)</P>
+
+<P>Nyman, Michael. 1974. <B><I>Experimental Music: Cage and Beyond</I></B>.
+London: Studio Visa</P>
+
+<P>Olson, H. and H. Belar. 1961. &quot;Aid to Music Composition
+System Employing a Random Probability System,&quot; <B><I>Journal
+of the Acoustic Society of America</I></B>, Volume 33, pp. 1163-1170.</P>
+
+<P>Ord-Hume, A. W. J. G. 1973. <B><I>Clockwork Music</I></B>.
+New York: Crown Publishers.</P>
+
+<P>Peitgen, Heinz-Otto, Hartmut J&uuml;rgens, and Dietmar Saupe.
+1990. &quot;The Language of Fractals,&quot; <B><I>Scientific American</I></B>,
+August 1990, pp. 11-20.</P>
+
+<P>Peitgen, Heinz-Otto, Hartmut J&uuml;rgens, and Dietmar Saupe.
+1992. <B><I>Chaos and Fractals: New Frontiers of Science</I></B>.
+New York: Springer-Verlag, 1992. Probably the best general introduction
+to the field, with sample code for realizing a wide variety of
+fractals. Provides a unifying metaphor for fractal algorithms
+in the form of the &quot;multiple reduction copying machine.&quot;</P>
+
+<P>Pope, Stephen Travis. 1993. &quot;An Incomplete Diskography
+of Computer Music,&quot; <B><I>Computer Music Journal</I></B>,
+Volume 17, Number 4, pp. 5-10.</P>
+
+<P>Pressing, J., 1988. &quot;Nonlinear Maps as Generators of Musical
+Design,&quot; <B><I>Computer Music Journal</I></B>, Volume 12,
+Number 2, pp. 35-46.</P>
+
+<P>Prieberg, F. 1975. <B><I>Musica ex Machina</I></B>. Italian
+edition. Turin: Giulio Einaudi Editore.</P>
+
+<P>Prusinkiewicz, Przemyslaw and Aristid Lindenmayer. 1990. <B><I>The
+Algorithmic Beauty of Plants</I></B>. New York: Springer-Verlag.
+An important, indeed inspiring, use of a generative grammar as
+a theory of plant growth. My Lindenmayer system composing grammar
+is based on concepts developed in this book.</P>
+
+<P>Riley, Terry. 1989 [1964]. <B><I>In C</I></B>. Celestial Harmonies.</P>
+
+<P>Roads, Curtis. 1978. <B><I>Composing Grammars</I></B>. San
+Francisco: International Computer Music Association.</P>
+
+<P>Roads, Curtis (editor). 1985. <B><I>Composers and the Computer</I></B>.
+Madison: A-R Editions.</P>
+
+<P>Roads, Curtis. 1985. &quot;Grammars as Representations for
+Music,&quot; in C. Roads and J. Strawn (editors), <B><I>Foundations
+of Computer Music</I></B>. Cambridge, Massachusetts: The MIT Press,
+pp 403-442.</P>
+
+<P>Roads, Curtis Roads with John Strawn, Curtis Abbott, John Gordon,
+and Philip Greenspun. 1996. <B><I>The Computer Music Tutorial</I></B>.
+Cambridge, Massachusetts: The MIT Press. Currently the best one-volume
+introduction to computer music.</P>
+
+<P>Schillinger, Joseph. 1946 [1941]. <B><I>The Schillinger System
+of Musical Composition</I></B>. New York: C. Fischer, Inc.</P>
+
+<P>Schillinger, Joseph. 1948. <B><I>The Mathematical Basis of
+the Arts</I></B>. New York: Philosophical Library.</P>
+
+<P>Scholes, P. 1975. <B><I>The Oxford Companion to Music</I></B>.
+London: Oxford University press.</P>
+
+<P>Schulz, Claus-Dieter. No date. <B><I>Welcome to the Fractal
+Music Project </I></B>(http://www-ks.rus.uni-stuttgart.de/people/schulz/fmusic/index.html).
+Gathers some other WWW fractal music resources.</P>
+
+<P>Scott, Raymond. 1992. <B><I>Reckless Nights and Turkish Twilights:
+The Music of Raymond Scott</I></B>. Produced by Irwin Chusid,
+with notes by Irwin Chusid. Columbia Records 53028, CD.</P>
+
+<P>Stone, Peter. 1997. <B><I>Symbolic Composer 4.0 - Now Shipping!</I></B>
+(http://www.xs4all.nl/~psto/). A Macintosh-based algorithmic composition
+environment with many score generators and plugin modules.</P>
+
+<P>Sun Microsystems Inc. 1997. <B><I>Javasoft Home Page </I></B>(http://java.sun.com/).</P>
+
+<P>Symbolic Sound Corporation. 1997. <B><I>Symbolic Sound Corporation
+</I></B>(http://www.symbolicsound.com/). Manufactures a hardware-DSP
+based system with its own Kyma language for algorithmic synthesis
+and composition.</P>
+
+<P>Taube, Heinrich. 1996. <B><I>Common Music </I></B>(http://ccrma-www.stanford.edu/CCRMA/Overview/node25.html).
+A widely used LISP composing environment that runs on most platforms.</P>
+
+<P>Vercoe, Barry. 1984. &quot;CSound: A Manual for the Audio Processing
+System and Supporting Programs with Tutorials.&quot; Cambridge,
+Massachusetts: Media Lab, MIT. The user&#146;s guide and reference
+manual for CSound. An essential resource, too bad it&#146;s out
+of date and lacks documentation for new opcodes.</P>
+
+<P>Voss, R.F. and J.R. Clarke. 1978. &quot;1/f Noise in music:
+Music from 1/f noise,&quot; <B><I>Journal of the Acoustical Society
+of America</I></B>, Volume 63, Number 1, pp. 258 - 263.</P>
+
+<P>Xenakis, Iannis. 1992. <B><I>Formalized Music: Thoughts and
+Mathematics in Music</I></B>, Revised Edition. Additional material
+compiled and edited by Sharon Kanach. Harmonologia Series No.
+6. Stuyvesant, New York: Pendragon Press. Great book which intellectually
+grounds the formal, mathematical approach to musical composition.
+Highly relevant to algorithmic composition and granular synthesis.
+Warburton, Dan. 1988. &quot;A Working Terminology for Minimal
+Music,&quot; <B><I>Integral</I></B>, Volume 2, pp. 135-159.</P>
+
+<H3>Appendix A. LogMuse in QBASIC</H3>
+
+</h3>
+
+<PRE>' L O G M U S E
+' A simple algorithmic score generator for Csound in QuickBASIC.
+' Michael Gogins
+' 21 January 1997
+
+' Variables for the generator.
+DIM c AS DOUBLE
+DIM y AS DOUBLE
+DIM y1 AS DOUBLE
+DIM i AS INTEGER
+DIM n AS INTEGER
+' Variables for music.
+' The dimensions that are not generated have default values.
+DIM instrument AS DOUBLE
+instrument = 1#
+DIM start AS DOUBLE
+DIM length AS DOUBLE
+length = 2#
+DIM octave AS DOUBLE
+DIM decibels AS DOUBLE
+decibels = 70#
+DIM pan AS DOUBLE
+pan = 0#
+' Mapping coefficients.
+DIM pulse AS DOUBLE
+pulse = .25#
+DIM bass AS DOUBLE
+bass = 6#
+DIM range AS DOUBLE
+range = 4#
+' Variables for rendering the score.
+DIM file AS INTEGER
+' You can paste a Csound instrument definition right into BASIC code like this.
+DIM orchestra AS STRING
+orchestra = &quot;sr = 44100&quot; + CHR$(10)
+orchestra = orchestra + &quot;kr = 44100&quot; + CHR$(10)
+orchestra = orchestra + &quot;ksmps = 1&quot; + CHR$(10)
+orchestra = orchestra + &quot;nchnls = 2&quot; + CHR$(10)
+orchestra = orchestra + &quot;&quot; + CHR$(10)
+orchestra = orchestra + &quot;; Frequency modulation instrument.&quot; + CHR$(10)
+orchestra = orchestra + &quot;instr 1&quot; + CHR$(10)
+orchestra = orchestra + &quot;; LOGGING&quot; + CHR$(10)
+orchestra = orchestra + &quot;; p1 = Instrument&quot; + CHR$(10)
+orchestra = orchestra + &quot;; p2 = Start&quot; + CHR$(10)
+orchestra = orchestra + &quot;; p3 = Length&quot; + CHR$(10)
+orchestra = orchestra + &quot;; p4 = Octave&quot; + CHR$(10)
+orchestra = orchestra + &quot;; p5 = Decibels&quot; + CHR$(10)
+orchestra = orchestra + &quot;; p6 = Pan&quot; + CHR$(10)
+orchestra = orchestra + &quot;print p2, p3, p4, p5, p6&quot; + CHR$(10)
+orchestra = orchestra + &quot;&quot; + CHR$(10)
+orchestra = orchestra + &quot;; INITIALIZATION&quot; + CHR$(10)
+orchestra = orchestra + &quot;iwavetable = 1&quot; + CHR$(10)
+orchestra = orchestra + &quot;imodulator = .5&quot; + CHR$(10)
+orchestra = orchestra + &quot;ifmamplitude = 1&quot; + CHR$(10)
+orchestra = orchestra + &quot;index = 1.375&quot; + CHR$(10)
+orchestra = orchestra + &quot;iattack = .025&quot; + CHR$(10)
+orchestra = orchestra + &quot;irelease = .125&quot; + CHR$(10)
+orchestra = orchestra + &quot;isustain = p3 - (iattack + irelease)&quot; + CHR$(10)
+orchestra = orchestra + &quot;if isustain &gt; 0 goto longenvelope&quot; + CHR$(10)
+orchestra = orchestra + &quot;isustain = 0.03&quot; + CHR$(10)
+orchestra = orchestra + &quot;p3 = iattack + isustain + irelease&quot; + CHR$(10)
+orchestra = orchestra + &quot;longenvelope:&quot; + CHR$(10)
+orchestra = orchestra + &quot;ifrequency = cpsoct(p4)&quot; + CHR$(10)
+orchestra = orchestra + &quot;icarrier = .998&quot; + CHR$(10)
+orchestra = orchestra + &quot;icarrierb = 1.002&quot; + CHR$(10)
+orchestra = orchestra + &quot;; Normalize to 80 dB = ampdb(80).&quot; + CHR$(10)
+orchestra = orchestra + &quot;iamplitude = ampdb(p5) * 15848.926 / 12729.0&quot; + CHR$(10)
+orchestra = orchestra + &quot;ileftpan = (0.5 - p6) / 2.0&quot; + CHR$(10)
+orchestra = orchestra + &quot;irightpan = (0.5 + p6) / 2.0&quot; + CHR$(10)
+orchestra = orchestra + &quot;&quot; + CHR$(10)
+orchestra = orchestra + &quot;; KONTROL&quot; + CHR$(10)
+orchestra = orchestra + &quot;kindenv expseg .00001, iattack, 1, isustain, .1, irelease, .00001&quot; + CHR$(10)
+orchestra = orchestra + &quot;kindex = kindenv * index * ifmamplitude&quot; + CHR$(10)
+orchestra = orchestra + &quot;&quot; + CHR$(10)
+orchestra = orchestra + &quot;; AUDIO&quot; + CHR$(10)
+orchestra = orchestra + &quot;aouta foscili iamplitude, ifrequency, icarrier, imodulator, kindex, iwavetable&quot; + CHR$(10)
+orchestra = orchestra + &quot;aoutb foscili iamplitude, ifrequency, icarrierb, imodulator, kindex, iwavetable&quot; + CHR$(10)
+orchestra = orchestra + &quot;afmout = (aouta + aoutb) * kindenv * 2.556&quot; + CHR$(10)
+orchestra = orchestra + &quot;outs ileftpan * afmout, irightpan * afmout&quot; + CHR$(10)
+orchestra = orchestra + &quot;endin&quot; + CHR$(10)
+' Buffer for writing note statements.
+DIM buffer AS STRING
+c = .75#
+n = 100
+' Create a score file.
+file = FREEFILE
+OPEN &quot;test.sco&quot; FOR OUTPUT AS file
+' Initial value of y.
+y = .5#
+' Write the initial state of the system as a Csound comment.
+PRINT #file, &quot;; Hello Csound!&quot;
+PRINT #file, &quot;; c = &quot; + STR$(c)
+PRINT #file, &quot;; y = &quot; + STR$(y)
+PRINT #file, &quot;; n = &quot; + STR$(n)
+' GENERATE THE SCORE
+' Write the function table for the instrument.
+PRINT #file, &quot;f 1 0 16384 10 1 ; High-fidelity sine wave.&quot;
+' Iterate to write the notes.
+FOR i = 1 TO n
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' '
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' GENERATION
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y1 = y * c * 4# * (1# - y)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' MAPPING
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; start = i * pulse
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; octave = bass + y1 * range
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' Round off to 12 tone equal temperament.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; octave = INT(octave * 12# + 0.5#) / 12#
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' RENDERING
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' Write a note into the Csound score.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PRINT #file, USING &quot;i #####.###### #####.###### #####.###### #####.###### ####.###### #####.######&quot;; instrument; start; length; octave; decibels; pan
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' Iterate.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y = y1
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' '
+NEXT
+CLOSE #file
+' RENDER THE SOUNDFILE
+' Write the orchestra file.
+file = FREEFILE
+OPEN &quot;test.orc&quot; FOR OUTPUT AS file
+PRINT #file, orchestra
+CLOSE #file
+' Render the generated files using Csound.
+SHELL &quot;Csound -WsRo test.wav test.orc test.sco&quot;
+' PLAY THE SOUNDFILE
+SHELL &quot;MPLAYER test.wav&quot;</PRE>
+
+<H3>Appendix B. LogMuse in ANSI C</H3>
+
+</h3>
+
+<PRE>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; L O G M U S E
+//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A simple algorithmic score generator for Csound in ANSI C.
+//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Michael Gogins
+//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 21 January 1997
+
+//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Almost all C programs include these header files.
+#include&nbsp;<stdlib.h>
+#include&nbsp;<stdio.h>
+
+//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; All C console programs have a main() function.
+int main(int argc, const char *argv[], const char *envp[])
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Variables for the generator.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double c;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double y;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double y1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int i;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int n;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Variables for music.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // The dimensions that are not generated have default values.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double instrument = 1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double start;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double length = 2;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double octave;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double decibels = 70;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double pan = 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Mapping coefficients.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double pulse = .25;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double bass = 6;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double range = 4;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Variables for rendering the score.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FILE *file;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // You can paste a Csound instrument definition right into C code like this.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; char orchestra[] =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;sr = 44100\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;kr = 44100\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;ksmps = 1\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;nchnls = 2\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;; Frequency modulation instrument.\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;instr 1\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;; LOGGING\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;; p1 = Instrument\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;; p2 = Start\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;; p3 = Length\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;; p4 = Octave\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;; p5 = Decibels\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;; p6 = Pan\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;print p2, p3, p4, p5, p6\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;; INITIALIZATION\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;iwavetable = 1\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;imodulator = .5\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;ifmamplitude = 1\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;index = 1.375\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;iattack = .025\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;irelease = .125\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;isustain = p3 - (iattack + irelease)\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;if isustain &gt; 0 goto longenvelope\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;isustain = 0.03\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;p3 = iattack + isustain + irelease\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;longenvelope:\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;ifrequency = cpsoct(p4)\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;icarrier = .998\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;icarrierb = 1.002\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;; Normalize to 80 dB = ampdb(80).\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;iamplitude = ampdb(p5) * 15848.926 / 12729.0\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;ileftpan = (0.5 - p6) / 2.0\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;irightpan = (0.5 + p6) / 2.0\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;; KONTROL\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;kindenv expseg .00001, iattack, 1, isustain, .1, irelease, .00001\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;kindex = kindenv * index * ifmamplitude\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;; AUDIO\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;aouta foscili iamplitude, ifrequency, icarrier, imodulator, kindex, iwavetable\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;aoutb foscili iamplitude, ifrequency, icarrierb, imodulator, kindex, iwavetable\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;afmout = (aouta + aoutb) * kindenv * 2.556\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;outs ileftpan * afmout, irightpan * afmout\n&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;endin\n&quot;;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Try to read c from the command line, otherwise use a default.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(argc &gt; 1)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c = atof(argv[1]);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c = .9;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Try to read n from the command line, otherwise use a default.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(argc &gt; 2)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; n = atoi(argv[2]);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; n = 100;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Create a score file.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file = fopen(&quot;test.sco&quot;, &quot;w+&quot;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Initial value of y.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y = .5;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Write the initial state of the system as a Csound comment.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(file, &quot;; Hello Csound!\n; c = %g\n; y = %g\n; c = %d\n&quot;, c, y, n);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // GENERATE THE SCORE
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Write the function table for the instrument.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(file, &quot;f 1 0 16384 10 1 ; High-fidelity sine wave.\n&quot;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Iterate to write the notes.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for(i = 0; i &lt; n; ++i)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //////////////////////////////////////////////////////
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // GENERATION
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y1 = y * c * 4 * (1.0 - y);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // MAPPING
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; start = i * pulse;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; octave = bass + y1 * range;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Round off to 12 tone equal temperament.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; octave = ((int)(octave * 12.0 + .5)) / 12.0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // RENDERING
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Write a note into the Csound score.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(file, &quot;i %0.9g %0.9g %0.9g %0.9g %0.9g %0.9g\n&quot;, instrument, start, length, octave, decibels, pan);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Iterate.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y = y1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //////////////////////////////////////////////////////
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fclose(file);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // RENDER THE SOUNDFILE
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Write the orchestra file.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file = fopen(&quot;test.orc&quot;, &quot;w+&quot;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(file, orchestra);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fclose(file);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Render the generated files using Csound.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; system(&quot;Csound -WsRo test.wav test.orc test.sco&quot;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // PLAY THE SOUNDFILE
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; system(&quot;MPLAYER test.wav&quot;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 0;
+}</PRE>
+
+<H3>Appendix C. Fractal Music</H3>
+
+</h3>
+
+<P>The logistic equation was discovered early on in chaotic dynamics
+and fractal geometry. These fields have since enjoyed an explosive
+elaboration. Composers have turned to them as a source of material,
+or even of complete compositions. Not only the logistic equation
+(Nelson 1993, Pressing 1988), but also 1/f noise (Voss and Clarke
+1978), the Koch curve (Dodge 1986, 1988), the Henon attractor
+(Greenhouse 1995), cellular automata (Millen 1990), Lindenmayer
+systems (Gogins 1992a, Mucherino), the Mandelbrot set (Evans 1995,
+Gogins 1992b), and iterated function systems (Gogins 1991) have
+been used (the references are exemplary only and quite incomplete).
+This is a broad subject that, again, is far beyond the scope of
+the present chapter. Of course Mandelbrot (1983) is a classic;
+an excellent introduction to the mathematics can be found in Pietgen,
+J&uuml;rgens, and Saupe (1992); a more rigorous treatment is in
+Barnsley (1993). There are many fractal music sites on the Web.
+The Fractal Music Project is a good start (Schulz, no date).</P>
+
+<P>Rather than illustrate a mere one or two fractal score generators,
+the following presents GrafMuse, a Java program that translates
+graphical images into Csound scores (Applet C-1). Fractal generating
+programs save images of their fractals, so such a program, like
+the excellent public-domain FRACTINT (Giffin 1997), as can be
+used as the generator proper. GrafMuse can then be used for mapping
+the saved image onto music and rendering it with Csound. In other
+words, using FRACTINT (or other fractal generator) with GrafMuse,
+you can make music using any fractal you like.</P>
+
+<H4>Applet C-1. Graphics to Music Translator.</H4>
+
+<P>
+<APPLET CODE="GrafMuse.class" CODEBASE="GoginsChapters/ScoreGenerators/GrafMuse/"
+WIDTH="765" HEIGHT="408" ALIGN="BOTTOM">
+</APPLET></P>
+
+<H4><A HREF="GrafMuse.bat">Graphics to Music Translator in Standalone
+Mode</A><BR>
+</H4>
+
+<P>GrafMuse&#146;s rendering algorithm maps the &lt;x, y, hue,
+brightness&gt; dimensions of an image onto the &lt;time, octave,
+instrument, decibels&gt; dimensions of a score. Of course, if
+each pixel in the image were translated into a note, the score
+might be far too busy. Therefore, the image may be filtered for
+brightness, and only the brightest features rendered as notes.</P>
+
+<P>One drawback of this method is that the rendering is somewhat
+approximate and is greatly affected by the colors in the image.
+And of course the composer must have at least a vague notion of
+how the images will be rendered, and how the piano-roll scores
+will sound. This can be developed through practice. On the other
+hand, an advantage of the method is its sheer speed. Dozens of
+images and trial renderings can be created in a single working
+session. A better advantage is the sheer richness and strangeness
+of the forms. This is the real reason for using fractals.</P>
+
+<P>The rest of this section assumes that you have FRACTINT, and
+demonstrates how to translate fractals into music.</P>
+
+<P><IMG SRC="FRACT013.GIF" BORDER="0" HEIGHT="768" WIDTH="1024"
+ALIGN="BOTTOM" NATURALSIZEFLAG="3"></P>
+
+<H4>Figure C-1.</H4>
+
+<P>Figure C-1 shows a twisted magnification of the the attractor
+of a Martin type fractal. The generating equation is:</P>
+
+<PRE>x1 = y - sin(x);
+y1 = a - x;
+x = x1;
+y = y1;</PRE>
+
+<P>The shape of the attractor depends upon a, which in this case
+is 3.1 A number of trial renderings were made. In the end, I chose
+to use 33-tone equal temperament and an orchestra of 5 instruments
+to create a 4 minute soundfile. I also doubled the lengths of
+the notes. The complete FRACTINT parameter file is given in Listing
+C-1.</P>
+
+<H4>Listing C-1.</H4>
+
+<PRE>Martin {
+&nbsp;reset=1950 type=martin
+&nbsp;center-mag=-5.50538/-3.62973/0.1232742/1/-17.5 params=3.1 float=y
+&nbsp;maxiter=32000 inside=0
+&nbsp;colors=00000e0e00eee00e0eeL0eeeLLLLLzLzLLzzzLLzLzzzLzzz000555&lt;3&gt;HHHKKKOO\
+&nbsp;OSSSWWW___ccchhhmmmssszzz00z&lt;3&gt;z0z&lt;3&gt;z00&lt;3&gt;zz0&lt;3&gt;0z0&lt;3&gt;0zz&lt;2&gt;0GzVVz&lt;3&gt;zV\
+&nbsp;z&lt;3&gt;zVV&lt;3&gt;zzV&lt;3&gt;VzV&lt;3&gt;Vzz&lt;2&gt;Vbzhhz&lt;3&gt;zhz&lt;3&gt;zhh&lt;3&gt;zzh&lt;3&gt;hzh&lt;3&gt;hzz&lt;2&gt;hlz00\
+&nbsp;S&lt;3&gt;S0S&lt;3&gt;S00&lt;3&gt;SS0&lt;3&gt;0S0&lt;3&gt;0SS&lt;2&gt;07SEES&lt;3&gt;SES&lt;3&gt;SEE&lt;3&gt;SSE&lt;3&gt;ESE&lt;3&gt;ESS&lt;2\
+&nbsp;&gt;EHSKKS&lt;2&gt;QKSSKSSKQSKOSKMSKK&lt;2&gt;SQKSSKQSKOSKMSKKSK&lt;2&gt;KSQKSSKQSKOSKMS00G&lt;3\
+&nbsp;&gt;G0G&lt;3&gt;G00&lt;3&gt;GG0&lt;3&gt;0G0&lt;3&gt;0GG&lt;2&gt;04G88G&lt;2&gt;E8GG8GG8EG8CG8AG88&lt;2&gt;GE8GG8EG8CG\
+&nbsp;8AG88G8&lt;2&gt;8GE8GG8EG8CG8AGBBG&lt;2&gt;FBGGBGGBFGBDGBCGBB&lt;2&gt;GFBGGBFGBDGBCGBBGB&lt;2\
+&nbsp;&gt;BGFBGGBFGBDGBCGpQX&lt;2&gt;qSUqTTpTR000gUQ
+&nbsp;}</PRE>
+
+<P><IMG SRC="FRACT021.GIF" BORDER="0" HEIGHT="768" WIDTH="1024"
+ALIGN="BOTTOM" NATURALSIZEFLAG="3"></P>
+
+<H4>Figure C-2.</H4>
+
+<P>FRACTINT contains its own formula parser, and Figure 2 shows
+an image generated using it. The generating equation is specified
+in a formula file (Listing C-2).</P>
+
+<H4>Listing C-2.</H4>
+
+<PRE>Real portion of p1 100
+Imaginary portion of p1 0
+Real portion of p2 100
+Imaginary portion of p2 0
+First Function sin
+z = c = pixel, d = fn1(pixel), k = 1 + p1:
+z = z^c * k;
+z = d / z,
+|z| &lt;= (5 + p2)</PRE>
+
+<P>The other FRACTINT parameters are shown in Listing C-3.</P>
+
+<H4>Listing C-3.</H4>
+
+<PRE>{
+&nbsp;reset=1820 type=formula formulafile=gogins.frm formulaname=blinds function=sin
+&nbsp;corners=0.030942785962/0.024646585101/2.4617605813/2.4585704945/0.030207\
+&nbsp;395306/2.4627411022 params=100/0/100/0 float=y potential=255/300/0
+&nbsp;colors=000C0M&lt;2&gt;60NB0BG00L00&lt;40&gt;a00a10b30&lt;2&gt;c91dC4&lt;44&gt;ST0RU0RT0SS0TR0UQ0\
+&nbsp;VP1&lt;2&gt;XM6Yb7&lt;15&gt;kNYlL_lM_&lt;26&gt;cqFbsEbrE&lt;15&gt;WP1WO0WM0VK0&lt;7&gt;S50R30R30&lt;12&gt;K9\
+&nbsp;0KA1JA1JB2IB3&lt;27&gt;3PM&lt;8&gt;ga3kc1pd0uf0uf0te0sdL&lt;6&gt;mZUI0MG0ME0M
+&nbsp;}</PRE>
+
+<P>Because of its regularity, I rendered this image using a chiming,
+shifting wash of sounds. It was necessary to rotate carefully
+through the colors of the image in order to achieve a palette
+that would cause the image to be rendered with neither too many
+nor too few notes.</P>
+
+<P><EMBED SRC="fract021.mp3" WIDTH="300" HEIGHT="45" ALIGN="BOTTOM"
+autoplay="false"></P>
+
+<H3><A HREF="fract021.mp3">Fractal021.mp3</A><BR>
+</H3>
+
+<H3>Appendix D. References Consulted</H3>
+
+</h3>
+
+<P>The following references are garnered not only from my own
+reading but also from many other sources as well. I have appended
+notes on some that I myself have found most useful. The focus
+is on algorithmic composition (primarily) and synthesis (secondarily),
+with an emphasis on non-real-time, software-only systems. Even
+within these limits, the list is far from complete.</P>
+
+<P>Ames, Charles. 1982. &quot;Statistics and Compositional Balance,&quot;
+<B><I>Perspectives of New Music </I></B>, Volume 23, Number 2.</P>
+
+<P>Ames, Charles. 1987. &quot;Automated Composition in Retrospect:
+1956-1986,&quot; <B><I>Leonardo</I></B>, Volume 20, Number 2,
+pp. 169-185.</P>
+
+<P>Ames, Charles. 1989. &quot;The Markov Process as a Compositional
+Model: A Survey and Tutorial,&quot; <B><I>Leonardo Music Journal</I></B>,
+Volume 22, Number 2.</P>
+
+<P>Ames, Charles. 1991a. &quot;Quantifying Musical Merit,&quot;
+<B><I>Interface</I></B>, Volume 20, Number 1.</P>
+
+<P>Ames, Charles. 1991b. &quot;A Catalog of Statistical Distributions:
+Techniques for Transforming Random, Determinate and Chaotic Sequences,&quot;
+<B><I>Leonardo Music Journal</I></B>, Volume. 1, Number. 1.</P>
+
+<P>Ames, Charles. 1992. &quot;A Catalog of Sequence Generators:
+Accounting for Proximity, Pattern, Exclusion, Balance and/or Randomness,&quot;
+<B><I>Leonardo Music Journal</I></B>, Volume 2, Number 1.</P>
+
+<P>Ames, Charles. 1993. &quot;How to Level a Driver Sequence,&quot;
+<B><I>Leonardo Music Journal</I></B>, Volume 3, Number 1.</P>
+
+<P>Ames, Charles. 1985. &quot;Tutorial on Automated Composition,&quot;
+<B><I>Proceedings of the International Computer Music Conference</I></B>,
+1985.</P>
+
+<P>Arfib, Daniel. 1991. &quot;Analysis, Transformation, and Resynthesis
+of Musical Sounds with the Help of a Time-Frequency Representation,&quot;
+in Giovanni De Poli, Aldo Piccialli, and Curtis Roads (ed), <B><I>Representations
+of Musical Signals</I></B>. Cambridge, Massachusetts: The MIT
+Press, 1991, pages 87-118. An overview of time-frequency signal
+transforms, especially the Gabor transform, as representations
+of musical sound. Time-frequency transforms provide the theoretical
+basis for granular synthesis and other time-frequency signal processing
+algorithms.</P>
+
+<P>Baggi, D. (editor) 1992. <B><I>Readings in Computer-Generated
+Music</I></B>. IEEE Computer Society Press.</P>
+
+<P>Barnsley, Michael. 1993 [1998]. <B><I>Fractals Everywhere</I></B>,
+Second Edition. Boston: Academic Press. Textbook on fractal geometry
+that provides a unified mathematical treatment of iterated function
+systems, Julia and Mandelbrot sets, and fractals. Invaluable resource
+for the geometric approach to algorithmic composition.</P>
+
+<P>Bastiaans, Martin J. 1980. &quot;Gabor's Expansion of a Signal
+into Gaussian Elementary Signals,&quot; <B><I>Proceedings of the
+IEEE</I></B>, Volume 68, Number 4, pages 538-539.</P>
+
+<P>Biles, Al. 1997. <B><I>GenJam </I></B>(http://www.it.rit.edu/~jab/GenJam.html).
+An interactive genetic algorithm that learns to play jazz solos.</P>
+
+<P>Brun, Herbert. 1969. &quot;Infraudibles,&quot; in Heinz v.
+Foerster and James W. Beauchamp (editors), <B><I>Music by Computers</I></B>.
+New York, J. Wiley.</P>
+
+<P>Brun, Herbert. 1970. &quot;From Musical Ideas to Computers
+and Back,&quot; in Harry B. Lincoln (editor), <B><I>The Computer
+and Music</I></B>. Ithaca, Cornell University Press.</P>
+
+<P>Beman, Jeffrey C. No date. <B><I>Minor Research Project One:
+A Survey of Algorithmic Composition Techniques with an Examination
+of the Potential use of Algorithmic Composition Techniques in
+Multi-Media Software</I></B>. Submitted in partial fulfillment
+of the requirements for the degree of Master of Music in Electronic
+and Computer Music Research at the Peabody Conservatory of Music
+The Peabody Institute of The Johns Hopkins University. Baltimore,
+Maryland (http://www.peabody.jhu.edu/artists/composers/beman/minorProject_1.text).</P>
+
+<P>Bidlack, R. 1992. &quot;Chaotic Systems as Simple (But Complex)
+Compositional Algorithms,&quot; <B><I>Computer Music Journal</I></B>,
+Volume 16, Number 3, pp. 34-47.</P>
+
+<P>Bolognesi, T. 1983. &quot;Automatic Composition: Experiments
+with Self-Similar Music,&quot; <B><I>Computer Music Journal</I></B>,
+Volume 7, Number 1, pp. 25-36.</P>
+
+<P>Braut, Christian. 1994. <B><I>The Musician's Guide to MIDI</I></B>.
+Paris: Sybex. An exhaustive consideration of the current state
+of the MIDI standard, with sample code and extensive tables. Marred
+by some typos, but get it if you plan to do any MIDI programming.</P>
+
+<P>Buchner, A. 1978. <B><I>Mechanical Musical Instruments</I></B>.
+Westport: Greenwood Press.</P>
+
+<P>Cage, John. 1973 [1961]. <B><I>Silence: Lectures and Writings
+by John Cage</I></B>. Hanover, New Hampshire: Wesleyan University
+Press. A vital resource.</P>
+
+<P>Cage, John. 1992 [1961-1962]. &quot;Atlas Eclipticalis,&quot;
+for flutes, piccolo, bass clarinet, contrabassoon, trombone, contrabass.
+<B><I>The Barton Workshop Performs John Cage</I></B>, Etcetera
+2 KTC 3002, CD.</P>
+
+<P>Cage, John, and Lejaren Hiller. 1969 [1968-1969]. <B><I>HPSCHD</I></B>.
+Nonesuch H-71224, LP.</P>
+
+<P>Center for Complex Systems Research (CCSR) of the Beckman Institute
+(BI) and the Physics Department of the University of Illinois
+at Urbana Champaign (UIUC) and of the Virtual Environment Group
+(VEG) of the National Center for Supercomputing Applications (NCSA).
+1995. <B><I>Chua&#146;s Oscillator: Applications of Chaos to Sound
+and Music </I></B>(http://www.ccsr.uiuc.edu/People/gmk/Projects/ChuaSoundMusic/ChuaSoundMusic.html)</P>
+
+<P>Chaitin, Gregory J. 1974a. &quot;Information-Theoretic Limitations
+of Formal Systems,&quot; <B><I>Journal of the Association for
+Computing Machinery</I></B>, Volume 21, pp. 403-424.</P>
+
+<P>Chaitin, Gregory J. 1974b. &quot;Randomness and Mathematical
+Proof,&quot; <B><I>Scientific American</I></B>, Volume 232, Number
+5, pp. 47-52.</P>
+
+<P>Chomsky, Noam. 1957. <B><I>Syntactic Structures</I></B>. The
+Hague: Mouton. The first influential scientific theory (of the
+syntax of natural langauges) cast in the form of a generative
+grammar.</P>
+
+<P>Coenen, Alcedo. 1994. <B><I>Amsterdam Catalogue of Composition
+Algorithms </I></B>(http://mars.let.uva.nl/ACCA/ACCA.html).</P>
+
+<P>Cope, David. 1969. <B><I>Towers</I></B>. Champaign, Illinois:
+Media Press.</P>
+
+<P>Cope, David. 1971. <B><I>New Directions in Music</I></B>. Dubuque,
+Iowa: W.C. Brown Co.</P>
+
+<P>Cope, David. 1976. <B><I>New Music Notation</I></B>. Dubuque,
+Iowa: Kendall/Hunt Publishing Co.</P>
+
+<P>Cope, David. 1977. <B><I>New Music Composition</I></B>. New
+York: Schirmer Books.</P>
+
+<P>Cope, David. 1987. &quot;An Expert System for Computer-Aided
+Composition,&quot; <B><I>Computer Music Journal</I></B>, Volume
+11, Number 4.</P>
+
+<P>Cope, David. 1989. &quot;The Step by Step Simulation of a Mozart
+Sonata,&quot; in <B><I>Proceedings of the European Workshop on
+Artificial Intelligence and Music</I></B>. Genoa: Computer Music
+Laboratory, University of Genoa.</P>
+
+<P>Cope, David. 1991. <B><I>Computers and Musical Style</I></B>,
+The Computer Music and Digital Audio Series, Volume 6. Madison,
+Wisconsin: A-R Editions.</P>
+
+<P>Cope, David. 1992. &quot;Computer Modeling of Musical Intelligence
+in EMI,&quot; <B><I>Computer Music Journal</I></B>, Volume 16,
+Number 2.</P>
+
+<P>Conger, Jim. 1989. <B><I>Midi Sequencing in C</I></B>. Redwood
+City, California: M &amp; T Books, 1989. Portions of the code
+for reading and writing MIDI files in Silence are based on ideas
+in this book.</P>
+
+<P>Michael Cziesperger. 1989. &quot;Introducing Standard MIDI
+Files,&quot; <B><I>Electronic Musician</I></B>, Volume 5, Number
+4, pp. 49 ff.</P>
+
+<P>Dannenberg, R.B. 1989. &quot;The Canon Score Language,&quot;
+<B><I>Computer Music Journal</I></B>. Volume 13, Number 1, pp.
+47-56.</P>
+
+<P>DaGazio, Bruno. No date. <B><I>Nikola Tesla and Joseph Schillinger:
+The Music of NT: The Man Who Invented the Twentieth Century </I></B>(http://www-ks.rus.uni-stuttgart.de/people/schulz/fmusic/tesla.html).</P>
+
+<P>DeLio, Thomas. 1984. <B><I>Circumscribing the Open Universe:
+Essays on John Cage, Morton Feldman, Christiann Wolff, Robert
+Ashley, and Alvien Lucier</I></B>. Lanham and London: University
+Press of America.</P>
+
+<P>Davis, Martin (editor). 1965. <B><I>The Undecidable: Basic
+Papers on Undecidable Propositions, Unsolvable Problems and Computable
+Functions</I></B>. Hewlett, New York: Raven Press.</P>
+
+<P>De Poli, Giovanni, Aldo Piccialli, and Curtis Roads (editors).
+1991. <B><I>Representations of Musical Signals</I></B>. Cambridge,
+Massachusetts: The MIT Press. Important technical reference to
+alternative representations of musical sound, not limited to digitized
+waveforms or the Fourier transform.</P>
+
+<P>De Poli, Giovanni and Aldo Piccialli. 1991. &quot;Pitch-Synchronous
+Granular Synthesis.&quot; Giovanni De Poli, Aldo Piccialli, and
+Curtis Roads (editors), <B><I>Representations of Musical Signals</I></B>.
+Cambridge, Massachusetts: The MIT Press, 1991, pages 187-219.Devaney,
+R.L., 1988. &quot;Fractal Patterns Arising in Chaotic Dynamical
+Systems,&quot; in H.-O. Peitgein and P.H. Richter (editors), The
+Science of Fractal Images. New York: Springer-Verlag.</P>
+
+<P>DiScipio, A., 1990. &quot;Composition by Exploration of Nonlinear
+Dynamical Systems,&quot; in S. Arnold and G. Hair (editors), <B><I>Proceedings
+of the 1990 International Computer Music Conference</I></B>. San
+Francisco: International Computer Music Association, pp. 324-327.</P>
+
+<P>DiScipio, Agostino. 1995. &quot;Inseparable Models of Materials
+and of Musical Design in Electroacoustic and Computer Music,&quot;
+<B><I>Interface</I></B>, Volume 24.</P>
+
+<P>Earthweb. 1997. <B><I>Gamelan: The Official Directory for Java
+</I></B>(http://www-b.gamelan.com/index.shtml).</P>
+
+<P>Essl, K@rlheinz. 1996. <B><I>Real Time Composition Library
+2.3 for MAX (1993-96) Software-Environment for Computer Aided
+Composition </I></B>(http://www.ping.at/users/essl/works/rtc.html).</P>
+
+<P>Dodge, Charles. 1986. &quot;Musical Fractals,&quot; <B><I>Byte
+Magazine</I></B>, Volume 11, Number 6, pp. 185-196.</P>
+
+<P>Dodge, Charles., 1988. &quot;Profile: A Musical Fractal,&quot;
+<B><I>Computer Music Journal</I></B>, Volume 12, Number 3, pp.
+10-14.</P>
+
+<P>Dodge, Charles and Thomas A. Jerse. 1985. <B><I>Computer Music:
+Synthesis, Composition, and Performance</I></B>. New York: Schirmer
+Books. A standard reference in the field, with illuminating discussions
+of classic software instruments for which there exist CSound implementations
+on various anonymous FTP sites.</P>
+
+<P>Dunn, John. No date. <B><I>Algorithmic DNA Music by John Dunn
+</I></B>(http://www.algoart.com/dnamusic).</P>
+
+<P>Embree, Paul M. and Bruce Kimble. 1991. <B><I>C Language Algorithms
+for Digital Signal Processing</I></B>. Englewood Cliffs, New Jersey:
+Prentice-Hall.</P>
+
+<P>Evans, Brian. 1995. <B><I>Hearing the Mandelbrot Set </I></B>(http://www.vanderbilt.edu/VUCC/Misc/Art1/Sonify/Mandi.html).</P>
+
+<P>Feigenbaum, M. J. &quot;Universal Behavior in Nonlinear Systems,&quot;
+<B><I>Physica 7D</I></B>, pp. 16-39.</P>
+
+<P>Foley, James D., Andries van Dam, Steven K. Feiner, and John
+F. Hughes. 1991 [1990]. <B><I>Computer Graphics: Principles and
+Practice</I></B>, Second Edition. Reading, Massachusetts: Addison-Wesley
+Publishing Company. Standard text in the field of computer graphics.
+The six-dimensional representation of note space is based on concepts
+expounded in this book for the purposes of image manipulation
+and three-dimensional rendering in computer graphics. The color
+model for note space is also based on ideas in this book.</P>
+
+<P>Allen Forte. 1973. <B><I>The Structure of Atonal Music</I></B>.
+New Haven: Yale University Press. Explains the hierarchy of pitch
+relationships in atonal music.</P>
+
+<P>Gabor, D. 1946. &quot;Theory of Communication,&quot; <B><I>The
+Journal of the Institution of Electrical Engineers</I></B>, Part
+III, Volume 93, pages 429-457. The original article setting forth
+the time-frequency representation of sound.</P>
+
+<P>Gabor, D. 1947. &quot;New Possibilities in Speech Transmission,&quot;
+<B><I>The Journal of the Institution of Electrical Engineers</I></B>,
+Part III, Volume 94, Number 32, pages 369-387.</P>
+
+<P>Gabor, D. 1947. &quot;Acoustical Quanta and the Theory of Hearing,&quot;
+<B><I>Nature</I></B>, Volume 159, Number 1044, pages 591-594.
+Discusses experimental measurements of human hearing and their
+relevance for the time-frequency representation of sound.</P>
+
+<P>Gardner, Martin. 1980. &quot;White and brown melodies, fractals
+and 1/f fluctuations,&quot; <B><I>Scientific American</I></B>,
+Volume 5. This article is what started me thinking I could compose
+by means of mathematics.</P>
+
+<P>Gather, John-Philipp. 1995. <B><I>Amsterdam Catalog of Csound
+Computer Instruments 1.1</I></B>. An extremely useful compendium
+of working Csound implementations of classical computer music
+instrument designs.</P>
+
+<P>Giffin, Noel. 1997. <B><I>Welcome to the Fractint WWW Pages
+</I></B>(http://spanky.triumf.ca/www/fractint/fractint.html).</P>
+
+<P>Gogins, Michael. 1992a. &quot;Fractal Music with String Rewriting
+Grammars,&quot; <B><I>News of Music 13</I></B>, pp. 146-170.</P>
+
+<P>Gogins, Michael. 1992b. &quot;How I Became Obsessed with Finding
+a Mandelbrot Set for Sounds,&quot; <B><I>News of Music 13</I></B>,
+pp. 129-139.</P>
+
+<P>Gogins, Michael. 1991. &quot;Iterated Function Systems Music,&quot;
+<B><I>Computer Music Journal</I></B>, Volume 15, Number 1, pp.
+40-48.</P>
+
+<P>Gogins, Michael. 1995. &quot;Gabor Synthesis of Recurrent Iterated
+Function Systems&quot;, <B><I>Proceedings of the International
+Computer Music Conference</I></B>. San Francisco: International
+Computer Music Association.</P>
+
+<P>Graves, David Thomas. 1981. &quot;The Use of Mathematics in
+Selected Aspects of Music&quot;, Ph.D. dissertation, The Union
+for Experimenting Colleges and Universities. Useful compendium
+of references for mathematical analysis of tuning systems and
+serial music.</P>
+
+<P>Greenhouse, Robert. 1995. <B><I>The Well-Tempered Fractal v3.0:
+A Composer's Tool for the Derivation of Musical Motifs, Phrases
+and Rhythms From The Beauty and Symmetry of Fractals, Chaotic
+Attractors and Other Mathematical Functions </I></B>(http://www-ks.rus.uni-stuttgart.de/people/schulz/fmusic/wtf/).
+A fractal composing program for IBM compatible PCs.</P>
+
+<P>Harley, James. 1995. &quot;Generative Processes in Algorithmic
+Composition: Chaos and Music,&quot; <B><I>Leonardo</I></B>, Volume
+28, Number 3. Correlations between chaos theory and music are
+described, and serve as the basis for the computer program CHAOTICS,
+a set of modules which serve as tools for composition.</P>
+
+<P>Hiller, L. 1970. &quot;Music Composed with Computers - A Historical
+Survey,&quot; in H. Lincoln (editor), <B><I>The Computer and Music</I></B>.
+Ithaca: Cornell University Press pp. 42-96.</P>
+
+<P>Hiller, Lejaren. 1996 [1957]. &quot;Iliac Suite for String
+Quartet,&quot; <B><I>Lejaren Hiller Retrospective</I></B>. Wergo
+WE124, CD.</P>
+
+<P>Hiller, L. and Baker, R. &quot;Computer Cantata: A Study in
+Compositional Method,&quot; <B><I>Perspectives of New Music</I></B>,
+Volume 3, pp. 62-90.</P>
+
+<P>Hiller, L. and John Cage. 1968. &quot;HPSCHD: An Interview
+by Larry Austin,&quot; <B><I>Source</I></B>, Volume 2, Number
+2, pp. 10-19.</P>
+
+<P>Hiller, Lejaren Arthur, and L.M. Isaacson. 1957a. <B><I>Illiac
+suite, for String Quartet</I></B>. New York: New Music Edition.</P>
+
+<P>Hiller, Lejaren Arthur, and Isaacson. 1957b. <B><I>Illiac suite,
+for String Quartet</I></B>. Heliodor HS 25053, LP.</P>
+
+<P>Hiller, Lejaren and Isaacson, L. M. (editors). 1959. <B><I>Experimental
+Music: Composition with an Electronic Computer</I></B>. New York:
+McGraw-Hill.</P>
+
+<P>Holtzman, S.R. 1981. &quot;Using Generative Grammars for Music
+Composition,&quot; <B><I>Computer Music Journal</I></B>, Volume
+5, Number 1, pp. 51-64.</P>
+
+<P>Holm, Frode. 1992. &quot;Understanding FM implementation: A
+Call for Common Standards,&quot; <B><I>Computer Music Journal</I></B>,
+Volume 16, Number 1, Spring 1992, pages 34-42.</P>
+
+<P>Honing, H., 1990. &quot;POCO: An Environment for Analysing,
+Modifying, and Generating Expression in Music,&quot; in S. Arnold
+and G. Hair (editors), <B><I>Proceedings of the 1990 Interational
+Computer Music Conference</I></B>. International Computer Music
+Association: San Francisco, pp. 364-368.</P>
+
+<P>Howe, Hubert S., Jr. 1975. <B><I>Electronic Music Synthesis:
+Concepts, Facilities, Techniques</I></B>. New York: W.W. Norton
+&amp; Co.</P>
+
+<P>Huron, David. 1996. <B><I>The Humdrum Toolkit: Software for
+Music Research </I></B>(http://ccrma-www.stanford.edu/CCRMA/Events/Colloquium/Past/94-11-30.html).
+The Humdrum Toolkit is a set of (UNIX-based) software tools for
+music research. For those who are interested, an extensive FAQ
+(Frequently Asked Questions) document for the Humdrum Toolkit
+is available via ftp (archive@uwaterloo.ca cd uw-data/humdrum)
+or by sending an e-mail request to dhuron@ccrma.</P>
+
+<P>Jacobs, Bruce L. No date. <B><I>VARIATIONS: Algorithmic Composition
+for Acoustic Instruments </I></B>(http://www.eecs.umich.edu/~blj/algorithmic_composition).</P>
+
+<P>Johnson-Laird, P.N., 1991. &quot;Jazz Improvisation: A Theory
+at the Computational Level,&quot; in <B><I>Representing Musical
+Structure</I></B>. New York: Academic Press, p. 291-323. Jones,
+M.R. 1993. &quot;Dynamics of Musical Patterns: How do Melody and
+Rhythm Fit Together?,&quot; in T.J. Tighe and W.J. Dowling (editors),
+<B><I>Psychology and Music: The Understanding of Melody and Rhythm</I></B>.
+London: Academic Press, pp. 67-92.</P>
+
+<P>Kindermann, Lars. 1996. <B><I>MusiNum - The Music in the Numbers
+</I></B>(http://www.forwiss.uni-erlangen.de/~kinderma/musinum.html).</P>
+
+<P>Koenig, Gottfried Michael. 1970a. &quot;Project 1: A Programme
+for Musical Composition,&quot; <B><I>Electronic Music Report</I></B>,
+Volume 2, pp. 32-34 (reprinted Amsterdam: Swets and Zeitlinger,
+1977).</P>
+
+<P>Koenig, Gottfried Michael. 1970b. &quot;Project 2: A Programme
+for Musical Composition,&quot; <B><I>Electronic Music Report</I></B>,
+Volume 3, pp. 1-16 (reprinted Amsterdam: Swets and Zeitlinger,
+1977).</P>
+
+<P>Koenig, Gottfried Michael. &quot;Genesis of Form in Technically
+Conditioned Environments,&quot; <B><I>Interface</I></B>, Volume
+16, Number 3.</P>
+
+<P>Koenig, Gottfried Michael. &quot;Aesthetic Integration of Computer-Composed
+Scores,&quot; <B><I>Computer Music Journal</I></B>, Volume 7,
+Number 4.</P>
+
+<P>Koza, J.R. 1992. <B><I>Genetic Programming</I></B>. Cambridge,
+Massachusetts: The MIT Press.</P>
+
+<P>Laske, Otto. 1981. &quot;Composition Theory in Koenig's Project
+One and Project Two,&quot; <B><I>Computer Music Journal</I></B>,
+Volume 5, Number 4, pp. 54-65.</P>
+
+<P>Laske, Otto. 1992. &quot;A Conversation with Marvin Minsky,&quot;
+<B><I>AI Magazine</I></B>. 1992, p. 31-45.</P>
+
+<P>Laske, Otto and Minsky, Marvin (editors). 1992. <B><I>Understanding
+Music with AI: Perspectives on Music Cognition</I></B>. Menlo
+Park, California: The AAAI Press.</P>
+
+<P>Leach, J.F. 1995. &quot;Nature, Music, and Algorithmic Composition,&quot;
+<B><I>Computer Music Journal</I></B>, Volume 19, Number 2, pp.
+23-33.</P>
+
+<P>Leach, J. L. and J. P. Fitch. 1996. <B><I>The Algorithmic Composition
+Home Page </I></B>(http://www2.bath.ac.uk/~mapjll/algo-comp.html).
+Leeds University. 1996. The Csound Front Page (http://www.leeds.ac.uk/music/Man/c_front.html).
+The main Web entry point for Csound, including up-to-date builds
+of public-domain Csound for many platforms, and links to tutorials
+and samples.</P>
+
+<P>Lerdahl, F., and R. Jackendoff. 1983. <B><I>A Generative Theory
+of Tonal Music</I></B>. Cambridge, Massachusetts: The MIT Press.</P>
+
+<P>Hepis, Leonidas. 1993. <B><I>List of Tools </I></B>(http://mars.let.uva.nl/ACCA/ACCA.ToolsList.html).
+An extensive annotated list of software for algorithmic composition.</P>
+
+<P>Li, T-Y, and Yorke, J.A. 1985. &quot;Period Three Implies Chaos,&quot;
+<B><I>American Mathematical Monthly</I></B>, Volume 82, pp. 985-992.</P>
+
+<P>Little, David Clark. No date. <B><I>Composing with Chaos; Applications
+of a New Science for Music </I></B>(http://www-ks.rus.uni-stuttgart.de/people/schulz/fmusic/index.html).</P>
+
+<P>Lyr, R. 1955. &quot;Une merveille de cecanisme: le Componium
+de T. N. Winkel,&quot; in A. Chapuis (editor). <B><I>Histoire
+de la boite a musique</I></B>. Lausanne: Edition Scriptar.</P>
+
+<P>Mandelbrot, Benoit. 1983 [1977]. <B><I>The Fractal Geometry
+of Nature </I></B>(Updated and Augmented). New York: W. H. Freeman
+and Company. Seminal work on fractals in many fields of science
+and art.</P>
+
+<P>Mayer-Kress, G., I. Choi, R. Bargar. 1993. &quot;Sound Synthesis
+and Music Composition using Chua's Oscillator ,&quot; <B><I>Proc,
+NOLTA93</I></B>, Hawaii.</P>
+
+<P>Mayer-Kress, G., I. Choi, N. Weber, R. Bargar, A. Hpbler. 1993.
+&quot;Musical Signals from Chua's Circuit,&quot; <B><I>IEEE Transactions
+on Circuits and Systems</I></B>, Volume 40, special issue on &quot;Chaos
+in Nonlinear Electric Circuits&quot;, pp. 688-695.</P>
+
+<P>Mayer-Kress., G., R. Bargar, I. Choi. 1994. &quot;Musical Structures
+in Data From Chaotic Attractors,&quot; <B><I>Technical Report
+CCSR-92-14</I></B>, Proceedings of the International Symposium
+on the Auditory Display (ICAD92), Santa Fe, Volume XVIII, Santa
+Fe Institute Series in the Sciences of Complexity. Reading: Addison
+Wesley.</P>
+
+<P>Mathews, Max V., with Joan E. Miller, F.R. Moore, J.R. Pierce
+and J.C. Risset. 1969. <B><I>The Technology of Computer Music</I></B>.
+Cambridge, Massachusetts: The MIT Press. Clearly outlines the
+author's ground-breaking basic engineering for digital sound synthesis,
+now taken for granted by most software sound synthesis systems.</P>
+
+<P>Matsuba, Stephen N. and Bernie Roehl. 1996. <B><I>Special Edition:
+Using VRML</I></B>. Indianapolis: Que. There is a considerable
+similarity in underlying philosophy and mathematical application
+between Virtual Reality Modeling Language and generative grammars.</P>
+
+<P>Mertens, Wim. 1983 [1980]. <B><I>American Minimal Music: La
+Monte Young, Terry Riley, Steve Reich, Philip Glass</I></B>, translated
+from the Dutch by J. Hautekiet with a preface by Michael Nyman.
+London: Kahn and Averill; New York: Alexander Broude.</P>
+
+<P>Microsoft Corporation. 1991. <B><I>Microsoft Windows Multimedia
+Programmer&#146;s Reference</I></B>. Redmond, Washington: Microsoft
+Press.</P>
+
+<P>Millen, Dale. 1990. &quot;Cellular Automata Music,&quot; in
+<B><I>Proceedings of the 16th International Computer Music Conference</I></B>,
+Glasgow. San Francisco: International Computer Music Association,
+p. 314-316.</P>
+
+<P>Moore, F. Richard. 1990. <B><I>Elements of Computer Music</I></B>.
+Englewood Cliffs, New Jersey. A standard reference for software
+synthesis and signal processing.</P>
+
+<P>Mucherino, Nicholas. No date. <B><I>Recursion: A Paradigm for
+Future Music?</I></B> (http://www-ks.rus.uni-stuttgart.de/people/schulz/fmusic/recursion.html).</P>
+
+<P>Nelson, Gary Lee. 1993. <B><I>Wind, Sand, and Sea Voyages:
+An Application of Granular Synthesis and Chaos to Musical Composition
+</I></B>(http://www-ks.rus.uni-stuttgart.de/people/schulz/fmusic/gnelson.html)</P>
+
+<P>Nyman, Michael. 1974. <B><I>Experimental Music: Cage and Beyond</I></B>.
+London: Studio Visa</P>
+
+<P>Olafsson, Kjartan. 1997. <B><I>Calmus: Calculated Music </I></B>(1988-1997)
+(http://rvik.ismennt.is/~kjol/).</P>
+
+<P>Olson, H. and H. Belar. 1961. &quot;Aid to Music Composition
+System Employing a Random Probability System,&quot; <B><I>Journal
+of the Acoustic Society of America</I></B>, Volume 33, pp. 1163-1170.</P>
+
+<P>Ord-Hume, A. W. J. G. 1973. <B><I>Clockwork Music</I></B>.
+New York: Crown Publishers.</P>
+
+<P>Peitgen, Heinz-Otto, Hartmut J&uuml;rgens, and Dietmar Saupe.
+1990. &quot;The Language of Fractals,&quot; <B><I>Scientific American</I></B>,
+August 1990, pp. 11-20.</P>
+
+<P>Peitgen, Heinz-Otto, Hartmut J&uuml;rgens, and Dietmar Saupe.
+1992. <B><I>Chaos and Fractals: New Frontiers of Science</I></B>.
+New York: Springer-Verlag, 1992. Probably the best general introduction
+to the field, with sample code for realizing a wide variety of
+fractals. Provides a unifying metaphor for fractal algorithms
+in the form of the &quot;multiple reduction copying machine.&quot;</P>
+
+<P>Peitgen, Heinz-Otto and Dietmar Saupe (editors). 1988. <B><I>The
+Science of Fractal Images</I></B>. New York: Springer-Verlag.
+Sample code for Lindenmayer systems, iterated function systems,
+and Julia and Mandelbrot sets.</P>
+
+<P>Pierce, John R. 1992 [1983]. <B><I>The Science of Musical Sound</I></B>,
+Revised Edition. New York: W. H Freeman and Company. An introduction
+to musical hearing and musical acoustics.</P>
+
+<P>Pope, Stephen Travis. 1993. &quot;An Incomplete Diskography
+of Computer Music,&quot; <B><I>Computer Music Journal</I></B>,
+Volume 17, Number 4, pp. 5-10.</P>
+
+<P>Pope, Stephen Travis. 1995. <B><I>Musical Object Development
+Environment </I></B>(http://datura.cerl.uiuc.edu/netStuff/mode.html).
+The Musical Object Development Environment (MODE) is a general-purpose
+music description and composition system written in the Smalltalk-80
+language using the ParcPlace Systems, Inc. Visualworks\Smalltalk
+libraries and run-time system.</P>
+
+<P>Press, William H., Saul A. Teukolsky, William T. Vetterling,
+and Brian P. Flannery. 1992 [1988]. <B><I>Numerical Recipes in
+C: The Art of Scientific Computing</I></B>, Second Edition. Cambridge:
+The Cambridge University Press.</P>
+
+<P>Pressing, J., 1988. &quot;Nonlinear Maps as Generators of Musical
+Design,&quot; <B><I>Computer Music Journal</I></B>, Volume 12,
+Number 2, pp. 35-46.</P>
+
+<P>Prieberg, F. 1975. <B><I>Musica ex Machina</I></B>. Italian
+edition. Turin: Giulio Einaudi Editore.</P>
+
+<P>Prusinkiewicz, Przemyslaw and Aristid Lindenmayer. 1990. <B><I>The
+Algorithmic Beauty of Plants</I></B>. New York: Springer-Verlag.
+An important, indeed inspiring, use of a generative grammar as
+a theory of plant growth. My Lindenmayer system composing grammar
+is based on concepts developed in this book.</P>
+
+<P>Rahn, John. 1980. <B><I>Basic Atonal Theory</I></B>. New York:
+Schirmer Books. A very clear introduction to what one hears, and
+why, in atonally composed music.</P>
+
+<P>Reid, Christopher E. and Thomas B. Passin. 1992. <B><I>Signal
+Processing in C</I></B>. New York: John Wiley &amp; Sons, Inc.,
+1992.</P>
+
+<P>Riley, Terry. 1989 [1964]. <B><I>In C</I></B>. Celestial Harmonies.</P>
+
+<P>Roads, Curtis. 1978. <B><I>Composing Grammars</I></B>. San
+Francisco: International Computer Music Association.Roads, Curtis
+(editor). 1985. Composers and the Computer. Madison: A-R Editions.</P>
+
+<P>Roads, Curtis. 1985. &quot;Grammars as Representations for
+Music,&quot; in C. Roads and J. Strawn (editors), <B><I>Foundations
+of Computer Music</I></B>. Cambridge, Massachusetts: The MIT Press,
+pp 403-442.</P>
+
+<P>Roads, Curtis (editor). 1989. <B><I>The Music Machine: Selected
+Readings from Computer Music Journal</I></B>. Cambridge, Massachussetts:
+The MIT Press.</P>
+
+<P>Roads, Curtis Roads with John Strawn, Curtis Abbott, John Gordon,
+and Philip Greenspun. 1996. <B><I>The Computer Music Tutorial</I></B>.
+Cambridge, Massachusetts: The MIT Press. Currently the best one-volume
+introduction to computer music.</P>
+
+<P>Roads, Curtis and John Strawn (editors). 1988 [1985]. <B><I>Foundations
+of Computer Music</I></B>. Cambridge, Massachusetts: The MIT Press.
+Reproduces seminal articles in the field.</P>
+
+<P>Schillinger, Joseph. 1946 [1941]. <B><I>The Schillinger System
+of Musical Composition</I></B>. New York: C. Fischer, Inc.</P>
+
+<P>Schillinger, Joseph. 1948. <B><I>The Mathematical Basis of
+the Arts</I></B>. New York: Philosophical Library.</P>
+
+<P>Scholes, P. 1975. <B><I>The Oxford Companion to Music</I></B>.
+London: Oxford University press.</P>
+
+<P>Schulz, Claus-Dieter. No date. <B><I>Welcome to the Fractal
+Music Project </I></B>(http://www-ks.rus.uni-stuttgart.de/people/schulz/fmusic/index.html).
+Gathers some other WWW fractal music resources.</P>
+
+<P>Schwanauer, Stephan and Levitt, David A. (editors). 1993. <B><I>Machine
+Models of Music</I></B>. Cambridge, Massachussetts: The MIT Press.</P>
+
+<P>Scott, Raymond. 1992. <B><I>Reckless Nights and Turkish Twilights:
+The Music of Raymond Scott</I></B>. Produced by Irwin Chusid,
+with notes by Irwin Chusid. Columbia Records 53028, CD.</P>
+
+<P>Spector, L., and Alpern, Adam. 1994. &quot;Criticism, Culture,
+and the Automatic Generation of Artworks,&quot; in <B><I>Proceedings
+of the Twelfth National Conference on Artificial Intelligence</I></B>,
+AAAI-94, 1994. : p. 3-8.</P>
+
+<P>Spector, L., and Alpern, Adam, 1995. &quot;Induction and Recapitulation
+of Deep Musical Structure,&quot; in <B><I>Proceedings of the IJCAI-95
+Workshop On Arificial Intelligence and Music</I></B>.</P>
+
+<P>Stone, Peter. 1997. <B><I>Symbolic Composer 4.0 - Now Shipping!</I></B>
+(http://www.xs4all.nl/~psto/). A Macintosh-based algorithmic composition
+environment with many score generators and plugin modules.</P>
+
+<P>Sun Microsystems Inc. 1997<B><I>. Javasoft Home Page </I></B>(http://java.sun.com/).</P>
+
+<P>Symbolic Sound Corporation. 1997. <B><I>Symbolic Sound Corporation
+</I></B>(http://www.symbolicsound.com/). Manufactures a hardware-DSP
+based system with its own Kyma language for algorithmic synthesis
+and composition.</P>
+
+<P>Taube, Heinrich. 1991. &quot;Common Music: A Music Composition
+Language in Common Lisp and CLOS,&quot; <B><I>Computer Music Journal</I></B>,
+Volume 15, Number 2, pp. 21-32.</P>
+
+<P>Taube, Heinrich. 1996. <B><I>Common Music </I></B>(http://ccrma-www.stanford.edu/CCRMA/Overview/node25.html).
+A widely used LISP composing environment that runs on most platforms.</P>
+
+<P>Taube, Heinrich and Tobias Kunze. 1996. <B><I>Capella: A Graphical
+Interface for Algorithmic Composition </I></B>(http://ccrma-www.stanford.edu/CCRMA/Overview/node26.html).
+This is a Macintosh graphical front end for Common Music.</P>
+
+<P>Todd, Peter M. and D.G. Loy (editors). 1991. <B><I>Music and
+Connectionism</I></B>. Cambridge, Massachussetts: The MIT Press</P>
+
+<P>Truax, Barry. 1990. &quot;Chaotic Non-Linear Systems and Digital
+Synthesis: An Exploratory Study,&quot; in <B><I>Proceedings of
+the 16th International Computer Music Conference</I></B>, Glasgow.
+San Francisco: International Computer Music Association, pp. 100-103.</P>
+
+<P>Vercoe, Barry. 1984. &quot;CSound: A Manual for the Audio Processing
+System and Supporting Programs with Tutorials.&quot; Cambridge,
+Massachusetts: Media Lab, MIT. The user&#146;s guide and reference
+manual for CSound. An essential resource, too bad it&#146;s out
+of date and lacks documentation for new opcodes.</P>
+
+<P>Voss R.F. 1988. &quot;Fractal Music,&quot; in Peitgen, Heinz-Otto
+and Dietmar Saupe (editors), <B><I>The Science of Fractal Images</I></B>.
+New York: Springer-Verlag.</P>
+
+<P>Voss, R.F., and J. Clarke. 1975. &quot;1/f noise in music and
+speech,&quot; <B><I>Nature</I></B>, Volume 258 , pp. 317-318.</P>
+
+<P>Voss, R.F. and J.R. Clarke. 1978. &quot;1/f Noise in music:
+Music from 1/f noise,&quot; <B><I>Journal of the Acoustical Society
+of America</I></B>, Volume 63, Number 1, pp. 258 - 263.</P>
+
+<P>Xenakis, Iannis. 1992. <B><I>Formalized Music: Thoughts and
+Mathematics in Music</I></B>, Revised Edition. Additional material
+compiled and edited by Sharon Kanach. Harmonologia Series No.
+6. Stuyvesant, New York: Pendragon Press. Great book which intellectually
+grounds the formal, mathematical approach to musical composition.
+Highly relevant to algorithmic composition and granular synthesis.</P>
+
+<P>Wagon, Stan. 1991. <B><I>Mathematica in Action</I></B>. New
+York: W. H. Freeman and Company. Unusually clear book on Mathematica
+programming that provides sample programs which can be adapted
+for musical composition.</P>
+
+<P>Warburton, Dan. 1988. &quot;A Working Terminology for Minimal
+Music,&quot; <B><I>Integral</I></B>, Volume 2, pp. 135-159.</P>
+
+<P>Wegner, Tim and Bert Tyler. 1993. <B><I>Fractal Creations</I></B>,
+Second Edition. Corte Madera. Documents FRACTINT and provides
+many sample fractals and simplified explanations of the underlying
+mathematics.</P>
+
+<P>Wishart, Trevor. 1994. <B><I>Audible Design: A Plain and Easy
+Introduction to Practical Sound Composition</I></B>. York: Orpheus
+the Pantomime. Interesting discussion of compositional techniques
+for sound considered as such.</P>
+
+<P>Winsor, Phil. 1978. <B><I>Computer-Assisted Music Composition</I></B>.
+Princeton: Petrocelli Books.</P>
+
+<P>Winsor, Phil and Gene DeLisa. 1991. <B><I>Computer Music in
+C</I></B>. Blue Ridge Summit, Pennsylvania: Windcrest Books.</P>
+
+<P>Wolfram, Stephen. 1996 [1988]. <B><I>The Mathematica Book</I></B>,
+Third Edition.. Reading, Massachusetts: Wolfram Media. The primary
+reference for Mathematica.</P>
+
+<P>Wolfram Research, &quot;MathLink Reference Guide, Mathematica
+Version 2.2&quot;, Mathematica Technical Report, 1993.
+
+</BODY>
+</HTML>

@@ -1,0 +1,91 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>loscil, loscil3</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="fmbell.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="lposcil.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#sample" class="toqr">
+Signal Generators: Sample Playback</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>loscil, loscil3</h2>
+
+<pre>
+  ar      <strong>loscil</strong>     xamp, kcps, ifn[, ibas[, imod1, ibeg1, iend1[, imod2, ibeg2, iend2]]]
+  [,ar2]
+
+  ar      <strong>loscil3</strong>    xamp, kcps, ifn[, ibas[, imod1, ibeg1, iend1[, imod2, ibeg2, iend2]]]
+  [,ar2]
+
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Read sampled sound (mono or stereo) from a table, with optional sustain and release looping.
+</p>
+<h3>Initialization</h3>
+<p><em>ifn</em> &#8211; function table number, typically denoting an AIFF sampled sound segment with prescribed looping points. The source file may be mono or stereo.
+</p>
+<p><em>ibas</em> (optional) &#8211; base frequency in <strong>Hz</strong> of the recorded sound. This optionally overrides the frequency given in the AIFF file, but is required if the file did not contain one. The default value is 261.626 Hz, i.e. middle C. (New in Csound 4.03). 
+</p>
+<p><em>imod1, imod2</em> (optional) &#8211; play modes for the sustain and release loops. A value of 1 denotes normal looping, 2 denotes forward &amp; backward looping, 0 denotes no looping. The default value (-1) will defer to the mode and the looping points given in the source file.
+</p>
+<p><em>ibeg1, iend1, ibeg2, iend2</em> (optional, dependent on <em>mod1, mod2</em>) &#8211; begin and end points of the sustain and release loops. These are measured in <strong>sample frames</strong> from the beginning of the file, so will look the same whether the sound segment is monaural or stereo.
+</p>
+<h3>Performance</h3>
+<p><strong>loscil</strong> samples the ftable audio at a-rate determined by <em>kcps</em>, then multiplies the result by <em>xamp</em>. The sampling increment for <em>kcps</em> is dependent on the table's base-note frequency <em>ibas</em>, and is automatically adjusted if the orchestra <strong>sr</strong> value differs from that at which the source was recorded. In this unit, ftable is always sampled with interpolation.
+</p>
+<p>If sampling reaches the <em>sustain loop</em> endpoint and looping is in effect, the point of sampling will be modified and loscil will continue reading from within that loop segment. Once the instrument has received a <em>turnoff</em> signal (from the score or from a MIDI <a href="../midi/noteon.htm"><strong>noteoff</strong></a> event), the next sustain endpoint encountered will be ignored and sampling will continue towards the <em>release loop</em> end-point, or towards the last sample (henceforth to zeros).
+</p>
+<p><strong>loscil</strong> is the basic unit for building a sampling synthesizer. Given a sufficient set of recorded piano tones, for example, this unit can resample them to simulate the missing tones. Locating the sound source nearest a desired pitch can be done via table lookup. Once a sampling instrument has begun, its <em>turnoff</em> point may be unpredictable and require an external <em>release</em> envelope; this is often done by gating the sampled audio with <a href="../sigmod/linen.htm"><strong>linenr</strong></a>, which will extend the duration of a turned-off instrument by a specific period while it implements a decay.
+</p>
+<p><strong>loscil3</strong> is experimental. It is identical to <strong>loscil</strong>, except that it uses cubic interpolation. New in Csound version 3.50.
+</p>
+<h3>Example</h3>
+
+
+<pre>   inum   <strong>notnum
+</strong>   icps   <strong>cpsmidi
+</strong>   iamp   <strong>ampmidi</strong>   3000, 1
+   ifno   <strong>table</strong>     inum, 2       ;notnum to choose an audio sample
+   ibas   <strong>table</strong>     inum, 3
+   kamp   <strong>linenr</strong>    iamp, 0, .05, .01 ;at noteoff, extend by 50 ms.
+   asig   <strong>loscil</strong>    kamp, icps, ifno, cpsoct(ibas/12. + 3)
+ </pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="fmbell.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="lposcil.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#sample" class="toqr">
+Signal Generators: Sample Playback</font></a>
+</body>
+
+</html>

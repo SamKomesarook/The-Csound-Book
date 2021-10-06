@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>seed</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="strset.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../siggen/ftgen.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm#header">Orchestra Syntax: Orchestra Header Statements</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>seed</h2>
+<pre>
+          <strong>seed</strong>       ival
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Sets the global seed value for all <strong>x-class noise generators</strong>, as well as other opcodes that use a random call, such as <strong>grain</strong>. <strong>rand</strong>, <strong>randi</strong>, <strong>randh</strong>, <strong>rnd</strong>(x), and <strong>birnd</strong>(x) are not affected by seed.</p>
+<h3>Initialization</h3>
+<p><em>ival</em> &#8211; value to be used as the random generator(s) seed value</p>
+<h3>Performance</h3>
+<p>Use of <strong>seed</strong> will provide predictable results from an orchestra using with random generators, when required from multiple performances.</p>
+<p>When specifying a seed value, <em>ival</em> should be an integer between 0 and 2<sup>32</sup>. If <em>ival</em> = 0, the value of <em>ival</em> will be derived from the system clock.</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="strset.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../siggen/ftgen.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm#header">Orchestra Syntax: Orchestra Header Statements</font></a>
+</body>
+
+</html>

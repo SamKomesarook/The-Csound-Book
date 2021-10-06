@@ -1,0 +1,152 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>x-class noise generators</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="rand.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pinkish.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#noise" class="toqr">
+Signal Generators: Random (Noise) Generators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>x-class noise generators</h2>
+
+
+<pre>  ir      <strong>linrand    </strong>krange 
+  ir      <strong>linrand</strong>    krange
+  kr      <strong>linrand</strong>    krange
+  ar      <strong>linrand</strong>    krange
+
+  ir      <strong>trirand</strong>    krange
+  kr      <strong>trirand</strong>    krange
+  ar      <strong>trirand</strong>    krange
+  
+  ir      <strong>exprand</strong>    krange
+  kr      <strong>exprand</strong>    krange
+  ar      <strong>exprand</strong>    krange
+
+  ir      <strong>bexprnd</strong>    krange
+  kr      <strong>bexprnd</strong>    krange
+  ar      <strong>bexprnd</strong>    krange
+
+  ir      <strong>cauchy</strong>     kalpha
+  kr      <strong>cauchy</strong>     kalpha
+  ar      <strong>cauchy</strong>     kalpha
+
+  ir      <strong>pcauchy</strong>    kalpha
+  kr      <strong>pcauchy</strong>    kalpha
+  ar      <strong>pcauchy</strong>    kalpha
+
+  ir      <strong>poisson</strong>    klambda
+  kr      <strong>poisson</strong>    klambda
+  ar      <strong>poisson</strong>    klambda
+
+  ir      <strong>gauss</strong>      krange
+  kr      <strong>gauss</strong>      krange
+  ar      <strong>gauss</strong>      krange
+
+  ir      <strong>weibull</strong>    ksigma, ktau
+  kr      <strong>weibull</strong>    ksigma, ktau
+  ar      <strong>weibull</strong>    ksigma, ktau
+
+  ir      <strong>betarand</strong>   krange, kalpha, kbeta
+  kr      <strong>betarand</strong>   krange, kalpha, kbeta
+  ar      <strong>betarand</strong>   krange, kalpha, kbeta
+
+  ir      <strong>unirand</strong>    krange
+  kr      <strong>unirand</strong>    krange
+  ar      <strong>unirand</strong>    krange</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>All of the following opcodes operate in i-, k- and a-rate.
+</p>
+<p><strong>linrand</strong> <em>krange</em> &#8211; Linear distribution random number generator. <em>krange</em> is the range of the random numbers (0 - <em>krange</em>). Outputs only positive numbers.
+</p>
+<p><strong>trirand</strong> <em>krange</em> &#8211; Same as above only outputs both negative and positive numbers.
+</p>
+<p><strong>exprand</strong> <em>krange</em> &#8211; Exponential distribution random number generator. <em>krange</em> is the range of the random numbers (0 - <em>krange</em>). Outputs only positive numbers.
+</p>
+<p><strong>bexprnd</strong> <em>krange</em> &#8211; Same as above, only extends to negative numbers too with an exponential distribution.
+</p>
+<p><strong>cauchy</strong> <em>kalpha</em> -Cauchy distribution random number generator. <em>kalpha</em> controls the spread from zero (big <em>kalpha</em> = big spread). Outputs both positive and negative numbers.
+</p>
+<p><strong>pcauchy</strong> <em>kalpha</em> &#8211; Same as above, outputs positive numbers only.
+</p>
+<p><strong>poisson</strong> <em>klambda</em> &#8211; Poisson distribution random number generator. <em>klambda</em> is the mean of the distribution. Outputs only positive numbers.
+</p>
+<p><strong>gauss</strong> <em>krange</em> &#8211; Gaussian distribution random number generator. <em>krange</em> is the range of the random numbers (-<em>krange</em> &#8211; 0 - <em>krange</em>). Outputs both positive and negative numbers.
+</p>
+<p><strong>weibull</strong> <em>ksigma</em>, <em>ktau</em> &#8211; Weibull distribution random number generator. <em>ksigma</em> scales the spread of the distribution and <em>ktau</em>, if greater than one numbers near <em>ksigma</em> are favored, if smaller than one small values are favored and if t equals 1 the distribution is exponential. Outputs only positive numbers.
+</p>
+<p><strong>betarand</strong> <em>krange</em>, <em>kalpha</em>, <em>kbeta</em> &#8211; Beta distribution random number generator. <em>krange</em> is the range of the random numbers (0 - <em>krange</em>). If <em>kalpha</em> is smaller than one, smaller values favor values near 0. If <em>kbeta</em> is smaller than one, smaller values favor values near <em>krange</em>. If both <em>kalpha</em> and <em>kbeta</em> equal one we have uniform distribution. If both <em>kalpha</em> and <em>kbeta</em> are greater than one we have a sort of Gaussian distribution. Outputs only positive numbers.
+</p>
+<p><strong>unirand</strong> <em>krange</em> &#8211; Uniform distribution random number generator. <em>krange</em> is the range of the random numbers (0 - <em>krange</em>).
+</p>
+<p>For more detailed explanation of these distributions, see:
+</p>
+<ol>
+	<li>C. Dodge - T.A. Jerse 1985. Computer music. Schirmer books. pp.265 - 286</li>
+	<li>D. Lorrain. A panoply of stochastic cannons. In C. Roads, ed. 1989. Music machine . Cambridge, Massachusetts: MIT press, pp. 351 - 379.</li>
+</ol>
+<h3>Example</h3>
+
+
+
+
+
+
+
+
+
+<pre>a1  <strong>trirand</strong>    32000         ; Audio noise with triangle distribution
+k1  <strong>cauchy</strong>     10000         ; Control noise with Cauchy dist.
+i1  <strong>betarand</strong>   30000, .5, .5 ; i-time random value, beta dist.</pre>
+
+
+
+
+<h3>Deprecated Names</h3>
+<p>These opcode names originally started with i, k, or a to denote the rate at which the opcode operated. These names are deprecated as of Csound version 3.49. The current form should now be used; the previous form will not work.
+</p>
+<h3>Author </h3>
+<p>Paris Smaragdis<br>
+MIT, Cambridge<br>
+1995
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="rand.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pinkish.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#noise" class="toqr">
+Signal Generators: Random (Noise) Generators</font></a>
+</body>
+
+</html>

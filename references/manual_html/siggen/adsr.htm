@@ -1,0 +1,81 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>adsr, madsr, xadsr, mxadsr</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="line.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="transeg.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#linear" class="toqr">
+Signal Generators: Linear and Exponential Generators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>adsr, madsr, xadsr, mxadsr</h2>
+
+<pre>
+  kr      <strong>adsr</strong>       iatt, idec, islev, irel[, idel]
+  kr      <strong>madsr</strong>      iatt, idec, islev, irel[, idel]
+  kr      <strong>xadsr</strong>      iatt, idec, islev, irel[, idel]
+  kr      <strong>mxadsr</strong>     iatt, idec, islev, irel[, idel]
+  ar      <strong>adsr</strong>       iatt, idec, islev, irel[, idel]
+  ar      <strong>madsr</strong>      iatt, idec, islev, irel[, idel]
+  ar      <strong>xadsr</strong>      iatt, idec, islev, irel[, idel]
+  ar      <strong>mxadsr</strong>     iatt, idec, islev, irel[, idel]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Calculates the classical ADSR envelope
+</p>
+<h3>Initialization</h3>
+<p><em>iatt</em> &#8211; duration of attack phase
+</p>
+<p><em>idec</em> &#8211; duration of decay
+</p>
+<p><em>islev</em> &#8211; level for sustain phase
+</p>
+<p><em>irel</em> &#8211; duration of release phase
+</p>
+<p><em>idel</em> &#8211; period of zero before the envelope starts
+</p>
+<h3>Performance</h3>
+<p>The envelope is the range 0 to 1 and may need to be scaled further. The envelope may be described as:
+</p>
+<img src="adsr.gif" width="528" height="195" alt="" border="0">
+<p>The length of the sustain is calculated from the length of the note. This means <strong>adsr</strong> is not suitable for use with MIDI events. The opcode <strong>madsr</strong> uses the <a href="line.htm"><strong>linsegr</strong></a> mechanism, and so can be used in MIDI applications. The opcodes <strong>xadsr</strong> and <strong>mxadsr</strong> are identical to <strong>adsr</strong> and <strong>madsr</strong>, respectively, except they use exponential, rather than linear, line segments. <strong>adsr</strong> and <strong>madsr</strong> new in Csound version 3.49. <strong>xadsr</strong> and <strong>mxadsr</strong> new in Csound version 3.51.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="line.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="transeg.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#linear" class="toqr">
+Signal Generators: Linear and Exponential Generators</font></a>
+</body>
+
+</html>

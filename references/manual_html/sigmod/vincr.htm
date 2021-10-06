@@ -1,0 +1,87 @@
+
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+
+<head>
+
+	
+<title>vincr, clear</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigio/fin.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../valcnv/filefax.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#fileio" class="toqr">
+Signal Input and Output: File I/O</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>vincr, clear</h2>
+<pre>
+          <strong>vincr</strong>     asig, aincr 
+          <strong>clear</strong>     avar1[,avar2, avar3,...,avarN]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+
+<p><strong>vincr</strong> increments an audio variable of another signal, i.e. accumulates output. <strong>clear</strong> zeroes a list of audio signals.</p>
+
+
+
+<h3>Performance</h3>
+
+<p><em>asig</em> &#8211; audio variable to be incremented </p>
+
+<p><em>aincr</em> &#8211; incrementing signal </p>
+
+<p><em>avar1 [,avar2, avar3,...,avarN]</em> &#8211; signals to be zeroed</p>
+
+
+<strong>vincr</strong> (variable increment) and <strong>clear</strong> are intended to be used together. <strong>vincr</strong> stores the result of the sum of two audio variables into the first variable itself (which is intended to be used as an accumulator in polyphony). The accumulator variable can be used for output signal by means of <strong>fout</strong> opcode. After the disk writing operation, the accumulator variable should be set to zero by means of <strong>clear</strong> opcode (or it will explode).
+
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+1999<br>
+New in Csound version 3.56
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigio/fin.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../valcnv/filefax.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#fileio" class="toqr">
+Signal Input and Output: File I/O</font></a>
+</body>
+
+
+</html>
+

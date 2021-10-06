@@ -1,0 +1,98 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>comb, alpass, reverb</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="deltapx.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="reverb2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#reverb" class="toqr">
+Signal Modifiers: Reverberation</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>comb, alpass, reverb</h2>
+
+<pre>
+  ar      <strong>comb</strong>       asig, krvt, ilpt[, iskip][, insmps]
+  ar      <strong>alpass</strong>     asig, krvt, ilpt[, iskip][, insmps]
+  ar      <strong>reverb</strong>     asig, krvt[, iskip]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>An input signal is reverberated for krvt seconds with &quot;colored&quot; (comb), flat (alpass), or &quot;natural room&quot; (reverb) frequency response.
+</p>
+<h3>Initialization</h3>
+<p><em>ilpt</em> &#8211; loop time in seconds, which determines the &quot;echo density&quot; of the reverberation. This in turn characterizes the &quot;color&quot; of the <strong>comb</strong> filter whose frequency response curve will contain <em>ilpt</em> * <strong>sr</strong>/2 peaks spaced evenly between 0 and <strong>sr</strong>/2 (the Nyquist frequency). Loop time can be as large as available memory will permit. The space required for an <em>n</em> second loop is 4<em>n</em>*<strong>sr</strong> bytes. <strong>comb</strong> and <strong>alpass</strong> delay space is allocated and returned as in <strong>delay</strong>.
+</p>
+<p><em>iskip</em> (optional) &#8211; initial disposition of delay-loop data space ( cf. <a href="port.htm"><strong>reson</strong></a>). The default value is 0.
+</p>
+<p><em>insmps</em> (optional) &#8211; if non-zero, loop time is in samples instead of seconds. Default is zero. New in Csound Version 4.16.</p>
+<h3>Performance</h3>
+<p>These filters reiterate input with an echo density determined by loop time <em>ilpt</em>. The attenuation rate is independent and is determined by <em>krvt</em>, the reverberation time (defined as the time in seconds for a signal to decay to 1/1000, or 60dB down from its original amplitude). Output from a comb filter will appear only after <em>ilpt</em> seconds; <strong>alpass</strong> output will begin to appear immediately.
+</p>
+<p>A standard <strong>reverb</strong> unit is composed of four <strong>comb</strong> filters in parallel followed by two <strong>alpass</strong> units in series. Loop times are set for optimal &quot;natural room response.&quot; Core storage requirements for this unit are proportional only to the sampling rate, each unit requiring approximately 3K words for every 10KC. The <strong>comb, alpass, delay, tone </strong>and other Csound units provide the means for experimenting with alternate reverberator designs
+</p>
+<p>Since output from the standard <strong>reverb</strong> will begin to appear only after 1/20 second or so of delay, and often with less than three-fourths of the original power, it is normal to output both the source and the reverberated signal. If <em>krvt</em> is inadvertently set to a non-positive number, <em>krvt</em> will be reset automatically to 0.01. (New in Csound version 4.07.) Also, since the reverberated sound will persist long after the cessation of source events, it is normal to put <strong>reverb</strong> in a separate instrument to which sound is passed via a <em>global variable</em>, and to leave that instrument running throughout the performance.
+</p>
+<h3></h3>
+
+<h3>Example</h3>
+
+
+
+
+
+
+
+
+<pre>
+  ga1     <strong>init</strong> 0                          ; init an audio receiver/mixer
+  
+<strong>instr</strong>     1                               ; instr (there may be many copies)
+  a1      <strong>oscili</strong>    8000, cpspch(p5), 1   ; generate a source signal
+          <strong>out</strong>       a1                    ; output the direct sound
+  ga1     =         ga1 + a1              ; and add to audio receiver
+<strong>endin</strong>
+
+<strong>instr</strong>     99                              ; (highest instr number executed last)
+  a3   <strong>reverb</strong>       ga1, 1.5              ; reverberate whatever is in ga1
+       <strong>out</strong>          a3                    ; and output the result
+  ga1  =            0                     ; empty the receiver for the next pass
+<strong>endin</strong>
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="deltapx.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="reverb2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#reverb" class="toqr">
+Signal Modifiers: Reverberation</font></a>
+</body>
+
+</html>

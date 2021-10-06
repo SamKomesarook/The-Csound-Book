@@ -1,0 +1,72 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN02</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen01.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen03.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#numeric" class="toqr">
+<strong>GEN</strong> Routines: Numeric Value Access</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN02</h2>
+
+<pre>
+  <strong>f</strong>  #  time  size  2  v1  v2  v3  .  .  .   
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This subroutine transfers data from immediate pfields into a function table.
+</p>
+<h3>Initialization</h3>
+<p><em>size</em> &#8211; number of points in the table. Must be a power of 2 or a power-of-2 plus 1 ( see <a href="../score/f.htm"><strong>f statement</strong></a>). The maximum tablesize is 16777216 (2<sup><small>24</small></sup>) points.
+</p>
+<p><em>v1, v2, v3,</em> ... - values to be copied directly into the table space. The number of values is limited by the compile-time variable PMAX, which controls the maximum pfields (currently 150). The values copied may include the table guard point; any table locations not filled will contain zeros.
+</p>
+<h3>Note </h3>
+<p>If p4 is positive, the table will be post-normalized (rescaled to a maximum absolute value of 1 after generation). A negative p4 will cause rescaling to be skipped.
+</p>
+<h3>Example</h3>
+
+<pre>
+  <strong>f</strong>   1  0  16  -2  0  1  2  3  4  5  6  7  8  9  10  11  0 </pre>
+<p>This calls upon <strong>GEN02</strong> to place 12 values plus an explicit wrap-around guard value into a table of size next-highest power of 2. Rescaling is inhibited.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen01.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen03.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#numeric" class="toqr">
+<strong>GEN</strong> Routines: Numeric Value Access</font></a>
+</body>
+
+</html>

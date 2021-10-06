@@ -1,0 +1,131 @@
+to cardioid :a :b :loops
+
+penup
+setxy (:a*sin (:a + :b*sin 1) * cos 1) ((:a + :b*sin 1) * sin 1)
+pendown
+
+repeat 360*:loops [
+   setxy (:a*((repcount/3600)+1)*sin (:a + :b*sin repcount) * cos repcount)
+         (:a*((repcount/3600)+1)*sin (:a + :b*sin repcount) * sin repcount)]
+
+end
+
+to greytorus :minr :majr :loops :angle
+
+perspective
+setturtle -1
+setposxyz [400 400 600]
+setturtle 0
+
+penup
+   make "min0 (:minr*(sin 1+1.1))
+   make "maj0 :min0 + :majr
+   make "sin1 (:min0*sin 1)
+   make "cos1 (:min0*cos 1)
+   make "sin2 (:maj0*sin 1*:angle)
+   make "cos2 (:maj0*cos 1*:angle)
+   make "grey1   (int ((:min0+:minr)/:minr*10)+200)
+   setxyz (:sin1 + :cos2) :cos1 :sin2
+pendown
+
+repeat 360*:loops [
+   make "min0 (:minr*(sin repcount+1.1))
+   make "maj0 :min0 + :majr
+   make "sin1 (:min0*sin repcount)
+   make "cos1 (:min0*cos repcount)
+   make "sin2 (:maj0*sin repcount*:angle)
+   make "cos2 (:maj0*cos repcount*:angle)
+   make "grey1   (int ((:min0+:minr)/:minr*10)+200)
+   setpencolor (list :grey1 :grey1 :grey1)
+   setxyz (:sin1 + :cos2) :cos1 :sin2]
+
+end
+
+to redtorus :minr :majr :loops :angle
+
+perspective
+setturtle -1
+setposxyz [400 400 600]
+setturtle 0
+
+penup
+   make "min0 (:minr*(sin 1+1.1))
+   make "maj0 :min0 + :majr
+   make "sin1 (:min0*sin 1)
+   make "cos1 (:min0*cos 1)
+   make "sin2 (:maj0*sin 1*:angle)
+   make "cos2 (:maj0*cos 1*:angle)
+   make "red1   (int ((:min0+:minr)/:minr*100))
+   make "blue1 (int ((:maj0+:majr+:minr)/(:majr+:minr)*100))
+   setxyz (:sin1 + :cos2) :cos1 :sin2
+pendown
+
+repeat 360*:loops [
+   make "min0 (:minr*(sin repcount+1.1))
+   make "maj0 :min0 + :majr
+   make "sin1 (:min0*sin repcount)
+   make "cos1 (:min0*cos repcount)
+   make "sin2 (:maj0*sin repcount*:angle)
+   make "cos2 (:maj0*cos repcount*:angle)
+   make "red1   (int ((:min0+:minr)/:minr*100))
+   make "blue1 (int ((:maj0+:majr+:minr)/(:majr+:minr)*100))
+   setpencolor (list :red1 0 :blue1)
+   setxyz (:sin1 + :cos2) :cos1 :sin2]
+
+end
+
+to rose :size :petals :loops
+
+penup
+setxy (:size*(sin 1) * cos 1) (:size*(sin 1) * sin 1)
+pendown
+
+repeat 360*:loops [
+   setxy (:size*(sin (:petals*repcount)) * cos repcount)
+         (:size*(sin (:petals*repcount)) * sin repcount)]
+
+end
+
+to torus :minr :majr :loops :angle
+
+perspective
+setturtle -1
+setposxyz [400 400 600]
+setturtle 0
+
+penup
+   make "min0 (:minr*(sin 1+1.1))
+   make "maj0 :min0 + :majr
+   make "sin1 (:min0*sin 1)
+   make "cos1 (:min0*cos 1)
+   make "sin2 (:maj0*sin 1*:angle)
+   make "cos2 (:maj0*cos 1*:angle)
+   make "red1   (int ((:min0+:minr)/:minr*100))
+   make "blue1 (int ((:maj0+:majr+:minr)/(:majr+:minr)*100))
+   setxyz (:sin1 + :cos2) :cos1 :sin2
+pendown
+
+repeat 360*:loops [
+   make "min0 (:minr*(sin repcount+1.1))
+   make "maj0 :min0 + :majr
+   make "sin1 (:min0*sin repcount)
+   make "cos1 (:min0*cos repcount)
+   make "sin2 (:maj0*sin repcount*:angle)
+   make "cos2 (:maj0*cos repcount*:angle)
+   make "red1   (int ((:min0+:minr)/:minr*100))
+   make "blue1 (int ((:maj0+:majr+:minr)/(:majr+:minr)*100))
+   setpencolor (list :red1 0 :blue1)
+   setxyz (:sin1 + :cos2) :cos1 :sin2]
+
+end
+
+Make "blue1 182
+Make "cos1 1.05585933198285
+Make "cos2 15.7639278383186
+Make "green1 111
+Make "grey1 219
+Make "maj0 251.055859331983
+Make "min0 1.05585933198285
+Make "red1 101
+Make "sin1 1.65505541976172e-14
+Make "sin2 250.560457941848

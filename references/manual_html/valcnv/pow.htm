@@ -1,0 +1,101 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>pow</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="product.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="taninv2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/math.htm#opcode" class="toqr">
+Mathematical Functions: Opcode Equivalents of Functions</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>pow</h2>
+
+<pre>
+  ir      <strong>pow</strong>        iarg, ipow
+  kr      <strong>pow</strong>        karg, kpow[, inorm]
+  ar      <strong>pow</strong>        aarg, kpow[, inorm]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Computes <em>xarg</em> to the power of <em>kpow</em> (or <em>ipow</em>) and scales the result by <em>inorm</em>.
+</p>
+<h3>Initialization</h3>
+<p><em>inorm</em> &#8211; The number to divide the result (default to 1). This is especially useful if you are doing powers of a- or k- signals where samples out of range are extremely common!
+</p>
+<p><em>iarg</em> &#8211; i-rate  base.
+</p>
+<p><em>ipow</em> &#8211; i-rate exponent</p>
+<h3>Performance</h3>
+<p><em>karg</em> &#8211; k-rate base.
+</p>
+<p><em>kpow</em> &#8211; k-rate exponent</p>
+<p><em>aarg</em> &#8211; a-rate base.
+</p>
+<h3>Examples</h3>
+
+
+<pre>
+  i2t2    <strong>pow</strong>        2,2      ; Computes 2^2.
+  kline   <strong>line</strong>       0, 1, 4
+  kexp    <strong>pow</strong>        kline, 2, 4
+</pre>
+<p>This feeds a linear function to <strong>pow</strong> and scales that to the line's peak value. The output will be an exponential curve with the same range as the input line.
+</p>
+<pre>
+  iamp    <strong>pow</strong>        0, 2
+  a1      <strong>oscil</strong>      iamp, 100, 1
+  a2      <strong>pow</strong>        a1, 2, iamp
+          <strong>out</strong>        a2
+</pre>
+<p>This will output a sine with its negative part folded over the amplitude axis. The peak value will be <em>iamp</em> = 10^2 = 100.
+</p>
+<p>The first line could also be written:
+</p>
+<pre>
+  i2t2    <strong>=</strong>  2<strong>^</strong>2</pre>
+<p>Use <strong>^</strong> with caution in arithmetical statements, as the precedence may not be correct. New in Csound version 3.493.
+</p>
+<h3>Deprecated Names</h3>
+<p><strong>pow</strong> was originally three opcodes called <strong>ipow</strong>, <strong>kpow</strong>, and <strong>apow</strong>. As of Csound version 3.48 those names are deprecated, and the three seperate opcodes replaced by <strong>pow</strong>.</p>
+<h3>Author</h3>
+<p>Paris Smaragdis<br>
+MIT, Cambridge<br>
+1995
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="product.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="taninv2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/math.htm#opcode" class="toqr">
+Mathematical Functions: Opcode Equivalents of Functions</font></a>
+</body>
+</html>

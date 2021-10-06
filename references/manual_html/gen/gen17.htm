@@ -1,0 +1,72 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN17</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen16.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen20.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#numeric" class="toqr">
+<strong>GEN</strong> Routines: Numeric Value Access</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN17</h2>
+
+<pre>
+  <strong>f</strong>  #    time    size    17    x1  a  x2  b  x3  c  .  .  . 
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This subroutine creates a step function from given x-y pairs.
+</p>
+<h3>Initialization</h3>
+<p><em>size</em> &#8211; number of points in the table. Must be a power of 2 or a power-of-2 plus 1 (see <a href="../score/f.htm"><strong>f statement</strong></a>). The normal value is power-of-2 plus 1.
+</p>
+<p><em>x1, x2, x3,</em> etc. &#8211; x-ordinate values, in ascending order, 0 first.
+</p>
+<p><em>a, b, c,</em> etc. &#8211; y-values at those x-ordinates, held until the next x-ordinate.
+</p>
+<h3>Note </h3>
+<p>This subroutine creates a step function of x-y pairs whose y-values are held to the right. The right-most y-value is then held to the end of the table. The function is useful for mapping one set of data values onto another, such as MIDI note numbers onto sampled sound ftable numbers ( see <a href="../siggen/loscil.htm"><strong>loscil</strong></a>).
+</p>
+<h3>Example</h3>
+
+<pre>  <strong>f</strong>  1  0  128  -17   0  1   12  2   24  3   36  4   48  5  60  6   72  7   84  8 </pre>
+<p>This describes a step function with 8 successively increasing levels, each 12 locations wide except the last which extends its value to the end of the table. Rescaling is inhibited. Indexing into this table with a MIDI note-number would retrieve a different value every octave up to the eighth, above which the value returned would remain the same.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen16.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen20.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#numeric" class="toqr">
+<strong>GEN</strong> Routines: Numeric Value Access</font></a>
+</body>
+
+</html>

@@ -1,0 +1,125 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>lineto, tlineto</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="tbvcf.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="nlfilt.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>lineto, tlineto</h2>
+
+<pre>
+  kr      <strong>lineto</strong>     ksig, ktime
+  kr      <strong>tlineto</strong>    ksig, ktime, ktrig
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Generate glissandos to a stepped a control signal. New in Csound 4.14</p>
+
+<h3>Performance</h3>
+<p><em>ksig</em> &#8211; input signal to which glissando is to be added</p>
+<p><em>ktime</em> &#8211; duration of glissando in seconds</p>
+<p><em>ktrig</em> &#8211; trigger signal</p>
+
+<p><strong>lineto</strong> adds glissando (straight lines) to a stepped-value input signal, produced, for example, by <a href="../siggen/rand.htm"><strong>randh</strong></a> or <a href="../siggen/loopseg.htm"><strong>lpshold</strong></a>.  <strong>lineto</strong> generates a straight line from the first value of <em>ksig</em>, to the next stepped value of <em>ksig</em> in <em>ktime</em> seconds. When that value is reached, it is held until a new step occurs. <em>ktime</em> should be smaller than the time interval between two consecutive steps of <em>ksig</em>, otherwise discontinuities will occur in the output. When used together with the output of <strong>lpshold</strong>, <strong>lineto</strong> emulates the glissando effect of an analog sequencer.</p>
+
+<p><strong>tlineto</strong> is similar to <strong>lineto</strong>, except it is not limited to stepped-value signals. <strong>tlineto</strong> can be applied to any kind of signal without producing discontinuities in the output. <em>ksig</em> is sampled and the value held until <em>ktrig</em> is a non-zero value. At that point, <em>ksig</em> is sampled again and the new value is held. Glissando is applied as a transition between the two values. The second value is held until <em>ktrig</em> again becomes non-zero, and the process is repeated. Normally, <em>ktrig</em> should consist of a sequence of zeroes with occasional non-zero values, such as would be produced by <a href="../siggen/trigger.htm"><strong>trigger</strong></a>.</p>
+
+
+<h3>Example</h3>
+<p>Orchestra:</p>
+<pre>
+;lineto_test.orc
+  <strong>sr</strong>      =  44100
+  <strong>kr</strong>      =  4410
+  <strong>ksmps</strong>   =  10
+  <strong>nchnls</strong>  =  2
+
+          <strong>instr</strong> 01   ;demonstrate <strong>lineto</strong>
+  krand   <strong>randh</strong>      1, 1/p4, .125, 1, 1.25    ;control source
+  kctrl   <strong>lineto</strong>     krand, p4*.5              ;add glissando
+
+  abfor   <strong>oscil3</strong>     15000, 500*krand, 1       ;audio before <strong>lineto</strong>
+  after   <strong>oscil3</strong>     15000, 500*kctrl, 1       ;audio after <strong>lineto</strong>
+
+;dclick
+  abfor   <strong>linen</strong>      abfor, .2*p4, p3, .2*p4
+  after   <strong>linen</strong>      after, .2*p4, p3, .2*p4
+
+          <strong>outs</strong>       abfor, after
+          <strong>endin</strong>
+
+
+          <strong>instr</strong> 02   ;demonstrate <strong>tlineto</strong>
+  krand   <strong>randh</strong>      1, 1/p4, .125, 1, 1.25    ;control source
+
+;trigger <strong>tlineto</strong> 5 times
+  iseg    =          .2*p3
+  ksaw    <strong>linseg</strong>     0, iseg, 1, iseg, 0, iseg, 1, iseg, 0, iseg, 1
+  ktrig   <strong>trigger</strong>    ksaw, .5, 2
+
+  kctrl   <strong>tlineto</strong>    krand, p4*.5, ktrig       ;add glissando
+
+  abfor   <strong>oscil3</strong>     15000, 500*krand, 1       ;audio before <strong>lineto</strong>
+  after   <strong>oscil3</strong>     15000, 500*kctrl, 1       ;audio after <strong>lineto</strong>
+
+;dclick
+  abfor   <strong>linen</strong>      abfor, .2*p4, p3, .2*p4
+  after   <strong>linen</strong>      after, .2*p4, p3, .2*p4
+
+          <strong>outs</strong>       abfor, after
+          <strong>endin</strong>
+</pre>
+<p>Score:</p>
+
+<pre>
+;lineto_test.sco
+
+  f1 0 1024 10 1
+
+  i1 0  10 .25
+  i2 11 10 .25
+  e
+</pre>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="tbvcf.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="nlfilt.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</font></a>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<html>
+<head>
+<title>cSounds.com - error</title>
+<meta http-Equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<style type="text/css">
+	<!--
+		body { margin: 0 px, 0 px, 0 px, 0 px } 
+	-->
+	</style>
+	
+	</head>
+	<body topmargin="0" leftmargin="0" marginwidth="0" marginheight="0" bgcolor="#ffffff"
+		text="#333333" link="#333333" vlink="#333333" alink="#999999"> 
+<table border=0 cellPadding=0 cellSpacing=0>
+	<tr>
+		<td>
+			<img src="http://csounds.com/images/error01_01.gif" width=205 height=111></td>
+		<td>
+			<img src="http://csounds.com/images/error01_02.gif" width=145 height=111></td>
+		<td>
+			<img src="http://csounds.com/images/error01_03.gif" width=250 height=111></td>
+	</tr>
+</table>
+<br>
+<table border=0 cellPadding=0 cellSpacing=0>
+<tr>
+	<td width=70>&nbsp;</td>
+	<td valign=top>
+	
+		<img src="http://csounds.com/images/logo_xtsm02.gif" width=43 height=48></td>
+	<td width=8>&nbsp;</td>
+	<td align=left>
+	
+			<font face="Geneva, Verdana, Helvetica, Arial" size="1">
+			
+			
+			cSounds.com - <b>404 Error</b> File not found<br><br>
+			
+			The file or directory you are trying to access does not exist or<br>
+			is unavailable at the moment.
+			
+			<br><br><br><br>
+		
+			<a href="http://csounds.com/index.html"
+			onMouseOver="window.status='cSounds.com - home';
+			return true" onMouseOut="window.status=' '; return true"><b>[home]</b></a><a href="http://csounds.com/book/index.html"
+			onMouseOver="window.status='cSounds.com - csound book';
+			return true" onMouseOut="window.status=' '; return true">[book]</a><a href="http://csounds.com/catalog/index.html"
+			onMouseOver="window.status='cSounds.com - csound catalog';
+			return true" onMouseOut="window.status=' '; return true">[catalog]</a><a href="http://csounds.com/ezine/"
+			onMouseOver="window.status='cSounds.com - csound magazine';
+			return true" onMouseOut="window.status=' '; return true">[magazine]</a><a a href="http://csounds.com/scanned/index.html"
+			target="_top" onMouseOver="window.status='cSounds.com - scanned synthesis';
+			return true" onMouseOut="window.status=' '; return true">[scanned]</a><a a href="http://csounds.com/resources/index.html"
+			target="_top" onMouseOver="window.status='cSounds.com - resources';
+			return true" onMouseOut="window.status=' '; return true">[resources]</a><a a href="http://csounds.com/faq/index.html"
+			target="_top" onMouseOver="window.status='cSounds.com - faq';
+			return true" onMouseOut="window.status=' '; return true">[faq]</a>
+	
+		<br><br>
+	
+			<a href="mailto:webmaster@csounds.com?subject=cSounds.com - error"
+			onMouseOver="window.status='cSounds.com - E-mail The WebMaster';return true"
+			onMouseOut="window.status=' '; return true">
+			webmaster@csounds.com</a><br><br>
+			
+
+	</td>
+	<td width=12>&nbsp;</td>
+	
+</tr>
+</table>
+						
+
+</body>
+</html>

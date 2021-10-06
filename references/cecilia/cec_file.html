@@ -1,0 +1,69 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>CEC_filein</title>
+	</head>
+
+	<body>
+		&nbsp;
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="editor.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="cec_togg.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<h2>The&nbsp; cfilein object</h2>
+		</center>
+		<center>
+			<a href="#NAME">Name</a></center>
+		<center>
+			<a href="#SYNOPSIS">Synopsis</a></center>
+		<center>
+			<a href="#OPTIONS">Options</a></center>
+		<center>
+			<a href="#DESCRIPTION">Description</a></center>
+		<center>
+			<a href="#SUBSTITUTION">Substitution</a></center>
+		<center>
+			<a href="#EXAMPLES">Examples</a><br>
+			<br>
+		</center>
+		<center>
+			<hr>
+		</center>
+		<h4><a name="NAME"></a><u>NAME</u></h4>
+		<b>cfilein </b>- Creation of interface objects for the selection of audio and analysis input files.
+		<h4><a name="SYNOPSIS"></a><u>SYNOPSIS</u></h4>
+		<tt><b>cfilein</b> name ?option?</tt>
+		<h4><a name="OPTIONS"></a><u>OPTIONS</u></h4>
+		<tt><b>-label</b>&nbsp;&nbsp;&nbsp; value</tt><br>
+		<tt><b>-type&nbsp;&nbsp;&nbsp;&nbsp; </b>value</tt>
+		<h4><a name="DESCRIPTION"></a><u>DESCRIPTION</u></h4>
+		The <b>cfilein</b> command creates interface objects to handle input file selection via a fileselector.
+		<p>Additionally, the<b> cfilein </b>object packs a small slider allowing the user to define an offset into the selected soundfile.
+		<p>For a module to work, all <b>cfilein</b> objects present must be selected. The user is warned if this is not the case.&nbsp; The label besides the fileselection button can optionally be replaced with the option <b>-label.</b>
+		<p>CECILIA supports wave, aiff and SDII soundfile types. Files in the aifc and next formats will be optionally converted when chosen in the file selector.
+		<p>Analysis files can also make use of the <b>cfilein </b>object. It is however suggested that analysis file names carry an extension indicating the type of analysis the file contains. <b>.lpc</b> indicates an lpc analysis, <b>.pv</b> an fft analysis,<b> .hetro </b>an heterodyne analysis and <b>.cv</b> a convolution analysis. CECILIA's built-in audio analysis interface automatically extends the name of the analysis files with the appropriate suffix.
+		<p>The <b>cfilein</b> object can also be used to select midifiles for the score. In this case the <b>-type</b> MIDI needs to be specified.
+		<h4><a name="SUBSTITUTION"></a><u>SUBSITUTION</u></h4>
+		When the orchestra and score are compiled, all instances of &quot;[name]&quot; (note the quote marks) are substituted with full path name of the file selected with the objects button. The offset is substituted, at the appropriate place, with the use of [off<i>name_of_variable</i>].<br>
+		&nbsp;
+		<h4><a name="EXAMPLES"></a><u>EXAMPLES</u></h4>
+		<tt>cfilein source -label &quot;Sound to Process&quot; -type audio</tt>
+		<p>would define a fileselection button in the Main window. In the orchestra, the selected file (and its offset time) would substituted wherever the following line is encountered:
+		<p><tt>asig, asid&nbsp;&nbsp;&nbsp;&nbsp; soundin&nbsp;&nbsp;&nbsp; &quot;[source]&quot;,[offsource]</tt>
+		<p>
+		<hr>
+		<pre>Copyright &copy; Jean Pich&eacute; and Alexandre Burton, 1995-98</pre>
+		&nbsp;
+	</body>
+
+</html>

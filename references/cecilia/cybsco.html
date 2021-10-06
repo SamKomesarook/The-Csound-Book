@@ -1,0 +1,70 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>The Cybil compositional language</title>
+	</head>
+
+	<body>
+		&nbsp;
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="cybil.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="gensyn.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<h2>A simple Cybil score</h2>
+		</center>
+		<center>
+			<a href="cybil.html">The Cybil composition language</a></center>
+		<center>
+			<a href="gensyn.html">Cybil general syntax</a></center>
+		<center>
+			<a href="commands.html">Cybil commands</a></center>
+		<center>
+			<a href="funcs.html">Cybil functions</a></center>
+		<center>
+			<a href="oper.html">Operations</a></center>
+		<center>
+			<a href="examp.html">Examples of Cybil command lines</a>&nbsp;<br>
+			<br>
+		</center>
+		<center>
+		</center>
+		<center>
+			<hr>
+		</center>
+		<h4>A simple Cybil score:</h4>
+		<pre><b>#cyb
+
+</b>;Cybil code to generate a note list for instrument 1.
+;Anything between &quot;#cyb&quot; and the first &quot;instr&quot; will be&nbsp;
+;passed on as a regular Csound score header.
+
+f1 0 8192 10 1 0 0 .5 0 1
+f2 0 8192 7&nbsp; 0 4096 1 4096 0
+t 0 120
+
+<b>instr</b> 1 ; a comment
+&nbsp;p2 {<b>sq</b> 0 0 1 .5 .5 30s}{<b>sq</b> .1 .3 50};
+&nbsp;p3 {<b>sq</b> {<b>ran</b> f .09 1.2}30s}*{<b>pa</b> 2} {<b>sq</b> 2 50} ;
+&nbsp;p4 {<b>ma</b> f 5.5 5.8 6.0 12.3 30s} {<b>sq</b> 7.8 7.10 50} ;
+&nbsp;p5 {<b>li</b> 50 80 30s} {<b>lo</b> 80 30 50}; this is amother comment
+&nbsp;p6 {<b>sq</b> {<b>pik</b> 3 4 5 6} 2{<b>ran</b> i 1 10} 5 4 30s} {<b>sq</b> 3 50} ;
+&nbsp;; this a comment line.
+<b>e</b></pre>
+		Cybil scores are entered in the score panel and should start with: <b>#cyb</b> on the first line. The <b>#cyb</b> keyword is followed by any regular Csound score header definitions such as functions, tempos etc. The Cybil score events proper start with the instrument definition <b>instr # </b>.
+		<p>Time references in Cybil are always taken from the calculation of p2. All commands that use durations in time, are mapped to the time contents of p2. P2 is therefor the first parameter to be computed. Durations in seconds are also legal for P2 definitions.
+		<p>
+		<hr>
+		<p>&nbsp;
+	</body>
+
+</html>

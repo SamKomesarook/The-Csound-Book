@@ -1,0 +1,106 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>delayr, delayw, delay, delay1</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="limit.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="deltap.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#delay" class="toqr">
+Signal Modifiers: Delay</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>delayr, delayw, delay, delay1</h2>
+
+<pre>
+  ar      <strong>delayr</strong>     idlt[, iskip]
+          <strong>delayw</strong>     asig
+  ar      <strong>delay</strong>      asig, idlt[, iskip]
+  ar      <strong>delay1</strong>     asig[, iskip]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>A signal can be read from or written into a delay path, or it can be automatically delayed by some time interval.
+</p>
+<h3>Initialization</h3>
+<p><em>idlt</em> &#8211; requested delay time in seconds. This can be as large as available memory will permit. The space required for n seconds of delay is 4n * <strong>sr</strong> bytes. It is allocated at the time the instrument is first initialized, and returned to the pool at the end of a score section.
+</p>
+<p><em>iskip</em> (optional) &#8211; initial disposition of delay-loop data space ( see <a href="port.htm"><strong>reson</strong></a>). The default value is 0.
+</p>
+<h3>Performance</h3>
+<p><strong>delayr</strong> reads from an automatically established digital delay line, in which the signal retrieved has been resident for <em>idlt</em> seconds. This unit must be paired with and precede an accompanying <strong>delayw</strong> unit. Any other Csound statements can intervene.
+</p>
+<p><strong>delayw</strong> writes <em>asig</em> into the delay area established by the preceding <strong>delayr</strong> unit. Viewed as a pair, these two units permit the formation of modified feedback loops, etc. However, there is a lower bound on the value of <em>idlt</em>, which must be at least 1 control period (or 1/<strong>kr</strong>).
+</p>
+<p><strong>delayr</strong>/<strong>delayw</strong> pairs may be  interleaved. Beginning another <strong>delayr</strong>/<strong>delayw</strong> pair before terminating a previous pair is no longer excluded.  For the interleaved pairs, the first <strong>delayr</strong> unit is associated with the first <strong>delayw</strong> unit, the second <strong>delayr</strong> unit with the second <strong>delayw</strong> unit, and so on. In this way, it is possible to implement cross-coupled feedback that is completed within the same control-rate cycle. See Example 2. (This feature added in Csound version 3.57 by Jens Groh and John ffitch).
+</p>
+<p><strong>delay</strong> is a composite of the above two units, both reading from and writing into its own storage area. It can thus accomplish signal time-shift, although modified feedback is not possible. There is no minimum delay period.
+</p>
+<p><strong>delay1</strong> is a special form of delay that serves to delay the audio signal <em>asig</em> by just one sample. It is thus functionally equivalent to &quot;<strong>delay</strong>&quot; asig, 1/<strong>sr</strong> but is more efficient in both time and space. This unit is particularly useful in the fabrication of generalized non-recursive filters.
+</p>
+<h3>Example</h3>
+<p><strong>Example 1</strong></p>
+<pre>
+          <strong>tigoto</strong>    contin         ; except on a tie,
+  a2      <strong>delay</strong>     a1, .05, 0     ; begin 50 msec clean delay of sig
+contin:
+ </pre>
+ <p><strong>Example 2</strong></p>
+ <pre>
+  ainput1 =     ..... 
+  ainput2 =     .....
+
+;Read delayed signal, first delayr instance: 
+  adly1  <strong>delayr</strong>  0.11
+
+;Read delayed signal, second delayr instance:
+  adly2  <strong>delayr</strong>  0.07
+
+;Do some cross-coupled manipulation: 
+  afdbk1  =      0.7 * adly1 + 0.7 * adly2 + ainput1 
+  afdbk2  =      -0.7 * adly1 + 0.7 * adly2 + ainput2 
+
+;Feed back signal associated with first delayr instance:
+          <strong>delayw</strong> afdbk1
+
+;Feed back signal associated with second delayr instance:
+          <strong>delayw</strong> afdbk2
+          <strong>outs</strong>   adly1, adly2
+ 
+ </pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="limit.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="deltap.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#delay" class="toqr">
+Signal Modifiers: Delay</font></a>
+</body>
+
+</html>

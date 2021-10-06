@@ -1,0 +1,71 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>Next-P and Previous-P Symbols</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="top.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="ramp.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#pfield" class="toqr">
+Score Syntax: P-field Substitution</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>Next-P and Previous-P Symbols</h2>
+<hr size="2" color="#A9A9A9" noshade>
+<p>At the close of any of the operations <a href="top.htm#carry">Carry</a>, <a href="top.htm#tempo">Tempo</a>, and <a href="top.htm#sort">Sort</a>, three additional score features are interpreted during file writeout: next-p, previous-p, and <strong>ramping</strong>.
+</p>
+<p><a href="i.htm"><strong>i statement</strong></a> pfields containing the symbols <strong>np</strong><em>x</em> or <strong>pp</strong><em>x</em> (where <em>x</em> is some integer) will be replaced by the appropriate pfield value found on the next i statement (or previous i statement) that has the same p1. For example, the symbol <strong>np</strong>7 will be replaced by the value found in p7 of the next note that is to be played by this instrument. <strong>np</strong> and <strong>pp </strong>symbols are recursive and can reference other <strong>np</strong> and <strong>pp</strong> symbols which can reference others, etc. References must eventually terminate in a real number or a <strong>ramp symbol</strong>. Closed loop references should be avoided. <strong>np</strong> and <strong>pp</strong> symbols are illegal in p1, p2 and p3 (although they may reference these). <strong>np</strong> and <strong>pp</strong> symbols may be Carried. <strong>np</strong> and <strong>pp</strong> references cannot cross a Section boundary. Any forward or backward reference to a non-existent note-statement will be given the value zero.
+</p>
+<p>E.g.: the statements
+</p>
+<pre>
+  i1   0    1    10   np4  pp5 
+  i1   1    1    20
+  i1   1    1    30
+</pre>
+<p>will result in
+</p>
+<pre>
+  i1   0    1    10   20   0 
+  i1   1    1    20   30   20 
+  i1   2    1    30   0    30
+</pre>
+<p><strong>np</strong> and <strong>pp</strong> symbols can provide an instrument with contextual knowledge of the score, enabling it to glissando or crescendo, for instance, toward the pitch or dynamic of some future event (which may or may not be immediately adjacent). Note that while the <a href="top.htm#carry"><strong>Carry</strong></a> feature will propagate <strong>np</strong> and <strong>pp</strong> through unsorted statements, the operation that interprets these symbols is acting on a time-warped and fully sorted version of the score.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="top.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="ramp.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#pfield" class="toqr">
+Score Syntax: P-field Substitution</font></a>
+</body>
+
+</html>

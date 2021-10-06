@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>mac, maca</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="taninv2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../pchcnv/octpch.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/math.htm#opcode" class="toqr">
+Mathematical Functions: Opcode Equivalents of Functions</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>mac, maca</h2>
+<pre>
+  ar      <strong>mac</strong>       asig1, ksig1, asig2[, ksig2, asig3, ...asigN, ksigN]
+  ar      <strong>maca</strong>      asig1, asig2[, asig3, asig4, asig5, ...asigN]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+
+<p>Multiply and accumulate k- and/or a-rate signals.</p>
+
+<h3>Performance</h3>
+
+<p><em>ksig1,</em> etc. &#8211; k-rate input signals</p>
+<p><em>asig1,</em> etc. &#8211; a-rate input signals</p>
+
+<p><strong>mac</strong> multiplies and accumulates a- and k-rate signals. It is equivalent to:</p>
+<pre>  ar = asig1 + ksig1*asig2 + ksig2+asig3 + ...</pre>
+<p><strong>maca</strong> multiplies and accumulates a-rate signals only. It is equivalent to:</p>
+<pre>  ar = asig1 + asig2*asig3 + asig4+asig5 + ...</pre>
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath, Codemist, Ltd.<br>
+Bath, UK<br>
+May, 1999<br>
+New in Csound version 3.54</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="taninv2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../pchcnv/octpch.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/math.htm#opcode" class="toqr">
+Mathematical Functions: Opcode Equivalents of Functions</font></a>
+</body>
+</html>

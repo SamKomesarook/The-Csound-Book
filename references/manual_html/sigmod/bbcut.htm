@@ -1,0 +1,212 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>bbcutm, bbcuts</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="waveset.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="vibrato.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#effects" class="toqr">
+Signal Modifiers: Special Effects</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>bbcutm, bbcuts</h2>
+
+<pre>
+  ar          <strong>bbcutm</strong>   asig, ibps, isubdiv, ibarlength, iphrasebars, inumrepeats[, istutterspeed, istutterchance, ienvchoice]
+  ar1, ar2    <strong>bbcuts</strong>   asig1, asig2, ibps, isubdiv, ibarlength, iphrasebars, inumrepeats[, istutterspeed, istutterchance, ienvchoice]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>The &quot;Breakbeat Cutter&quot; generates cutups of the source audio stream(s) for breakbeat manipulations. Output is rendered as phrases, a sequence of cuts starting at a new bar.</p>
+
+<h3>Initialization</h3>
+<p><em>ibps</em> &#8211; tempo of the cuts, in beats per second</p>
+<p><em>isubdiv</em> &#8211; number of subdivisions in one bar. For example, 8 would represent eight notes in a 4/4 bar.</p>
+<p><em>ibarlength</em> &#8211; number of beats in one bar. For example, 4 would represent a 4/4 bar.</p>
+<p><em>iphrasebars</em> &#8211; the output cuts are generated in phrases, each phrase is up to iphrasebars long.  </p>
+<p><em>inumrepeats</em> &#8211; number of repetitions of a cut. Maximum is 1.</p>
+<ul>
+	<li>1 = one extra repetition
+	<li>0 = no repetition. Output is the original source with envelope and stuttering.
+</ul>
+
+<p><em>istutterspeed</em> (optional) &#8211; sets the speed of stuttering. Must be an integer multiple of isubdiv. For example, if isubdiv = 8 and istutterspeed = 2, then the stutter is in sixteenth notes. The default is 1.</p>
+<p><em>istutterchance</em> (optional) &#8211; sets the probablity that the end of a phrase will be repeated as a single, one unit stutter. Must be in the range 0 - 1. The default is 0.</p>
+<p><em>ienvchoice</em> (optional) &#8211; a value of 1 causes the cut unit to be passed through an exponential gain envelope. A value of 0 turns enveloping off. Turning enveloping off will cause clicking, but may give good results, especially for percussive sources. The default is 1.</p>
+
+
+<h3>Performance</h3>
+
+<p>asig, asi1, asig2 - source signal to undergo breakbeat manipulation</p>
+<p>A typical cut sequence derived from one bar with eighth note subdivisions would be:</p>
+<pre>   3+ 3R + 2</pre>
+<p>A block of three eight notes is taken from the source's start, then repeated. The cutup ends with a block consisting of the eighth notes seven and eight from the source.</p>
+
+<h3>Examples</h3>
+
+<p>Simple mono and stereo versions:</p>
+<pre>
+&lt;CsoundSynthesizer&gt;
+&lt;CsInstruments&gt;
+  <strong>sr</strong>     = 44100
+  <strong>kr</strong>     = 4410
+  <strong>ksmps</strong>  = 10
+  <strong>nchnls</strong> = 2
+
+          <strong>instr</strong> 1
+  asource <strong>diskin</strong>     &quot;break7.wav&quot;, 1, 0, 1    ; a source breakbeat sample
+                                              ; wraparound lest it stop!
+; cuts in eighth notes per 4/4 bar, up to 4 bar phrases, up to 1
+; repeat in total (standard use) rare stuttering at 16 note speed,
+; no enveloping  
+
+  asig    <strong>bbcutm</strong>     asource, 2.6937, 8, 4, 4, 1, 2,0.1, 0
+          <strong>outs</strong>       asig,asig
+          <strong>en</strong>din
+
+          <strong>instr</strong> 2   ;stereo version
+   a1,a2  <strong>diskin</strong>    &quot;break7stereo.wav&quot;, 1, 0, 1    ; a source breakbeat sample
+                                                   ; wraparound lest it stop!
+; cuts in eighth notes per 4/4 bar, up to 4 bar phrases, up to 1
+; repeat in total (standard use) rare stuttering at 16 note speed,
+; no enveloping  
+
+   a3,a4  <strong>bbcuts</strong>     a1, a2, 2.6937, 8, 4, 4, 1, 2, 0.1, 0
+          <strong>outs</strong>       a3, a4
+          <strong>endin</strong>
+&lt;/CsInstruments&gt;
+
+&lt;CsScore&gt; 
+  i1 0 10 
+  i2 11 10
+  e
+&lt;/CsScore&gt;
+&lt;/CsoundSynthesizer&gt;
+</pre>
+
+<p>Multiple simultaneous synchronised breaks:</p>
+<pre>
+&lt;CsoundSynthesizer&gt;
+&lt;CsInstruments&gt;
+  <strong>sr</strong>     = 44100
+  <strong>kr</strong>     = 4410
+  <strong>ksmps</strong>  = 10
+  <strong>nchnls</strong> = 1
+
+          <strong>instr</strong> 1
+   ibps  = 2.6937
+   iplaybackspeed = ibps/p5
+
+   a1     <strong>diskin</strong>    p4, iplaybackspeed, 0, 1	
+   asig   <strong>bbcutm</strong>    a1, 2.6937, p6, 4, 4, p7, 2, 0.1, 1
+          <strong>out</strong>       asig
+          <strong>endin</strong>
+
+&lt;/CsInstruments&gt;
+
+&lt;CsScore&gt; 
+;         source       bps cut repeats
+   i1 0 10 &quot;break1.wav&quot; 2.3 8   2	;2.3 is the source original tempo
+   i1 0 10 &quot;break2.wav&quot; 2.4 8   3
+   i1 0 10 &quot;break3.wav&quot; 2.5 16  4
+e
+&lt;/CsScore&gt;
+&lt;/CsoundSynthesizer&gt;
+</pre>
+ 
+<p>Cutting up any old audio - much more interesting noises than this should be possible!</p>
+<pre>
+&lt;CsoundSynthesizer&gt;
+&lt;CsInstruments&gt;
+  <strong>sr</strong>     = 44100
+  <strong>kr</strong>     = 4410
+  <strong>ksmps</strong>  = 10
+  <strong>nchnls</strong> = 1
+
+          <strong>instr</strong> 1
+   a1     <strong>oscil</strong>      20000, 70, 1
+   asig   <strong>bbcutm</strong>     a1, 2, 32, 1, 1, 2, 4, 0.6, 1
+          <strong>outs</strong>       asig
+          <strong>endin</strong>
+&lt;/CsInstruments&gt;
+
+&lt;CsScore&gt; 
+   f1 0 256 10 1
+   i1 0 10 
+   e
+&lt;/CsScore&gt;
+&lt;/CsoundSynthesizer&gt;
+</pre>
+
+<p>Constant stuttering, faked. Stuttering is not possible since stuttering can occur only in the last half of the bar. </p>
+<pre>
+&lt;CsoundSynthesizer&gt;
+&lt;CsInstruments&gt;
+   <strong>sr</strong>     = 44100
+   <strong>kr</strong>     = 4410
+   <strong>ksmps</strong>  = 10
+   <strong>nchnls</strong> = 1
+
+          <strong>instr</strong> 1
+  a1      <strong>diskin</strong>     &quot;break7.wav&quot;, 1, 0, 1
+
+;16th note cuts- but cut size 2 over half a beat.
+;each half beat will eiather survive intact or be turned into 
+;the first sixteenth played twice in succession
+
+   asig   <strong>bbcutm</strong>     asource, 2.6937, 2, 0.5, 1, 2, 2, 1.0, 0
+          <strong>outs</strong>       asig
+          <strong>endin</strong>
+&lt;/CsInstruments&gt;
+
+&lt;CsScore&gt; 
+   i1 0 30 
+   e
+&lt;/CsScore&gt;
+&lt;/CsoundSynthesizer&gt;
+</pre>
+
+
+<h3>Author</h3>
+<p>Nick Collins<br>
+August, 2001<br>
+New in Csound 4.16
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="waveset.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="vibrato.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#effects" class="toqr">
+Signal Modifiers: Special Effects</font></a>
+</body>
+
+</html>

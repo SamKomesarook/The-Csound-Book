@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>60-over.txt.html</title>
+		<header></header>
+		<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+	</head>
+
+	<body stylesrc="../admin/adpchtxt.html" bgcolor="white">
+		<h3>Overview</h3>
+		<pre>
+The phase vocoder analyzes and resynthesizes audio signals.  The
+underlying analysis-synthesis model assumes in this case that the
+signal is well represented by a sum of sinusoids.  Wind, brass,
+string, speech and a number of percussive sounds are well
+represented by the phase vocoding technique.  Some other
+percussive sounds like clicks, or certain signal-to-noise sound
+combinations are not well represented as a sum of sinusoids.
+(Dolson 1987)
+</pre>
+		<h4>Analysis</h4>
+		<pre>
+The program pvanal performs an analysis of a soundfile and writes
+the result to an analysis file.  The analysis basically consists
+of an FFT, where framesize of the window (a number of consecutive
+audio samples) and window overlap factor are optional CL
+arguments.  The analysis file will be at least twice as big as the
+soundfile and contains alternating magnitude and frequency
+values.  This data can be interpreted as sequence of short time
+Fourier transforms (per frame) or as the time-varying response of
+a bank of narrow bandpass filters (per channel). 
+</pre>
+		<h4>Modification</h4>
+		<pre>
+Software can modify frequency and/or amplitude data over the
+whole or a partial range of analyzed data. Moore gives a thorough
+exposition of programs to implement these possibilities. (Moore
+1990: pp.227-263)
+  </pre>
+		<h4>Synthesis</h4>
+		<pre>
+The synthesis is done by Csound's unit generator PVOC.  The
+original sound can be resynthesized with high fidelity.  More
+commonly time and/or frequency modifications are performed during
+resynthesis.  In this case, the PVOC unit will interpolate between
+given 'stable' points.
+</pre>
+	</body>
+
+</html>

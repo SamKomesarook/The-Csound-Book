@@ -1,0 +1,79 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>-&nbsp;,&nbsp;+&nbsp;,&nbsp;&amp;&amp;&nbsp;,&nbsp;||&nbsp;,&nbsp;*&nbsp;,&nbsp;/&nbsp;,&nbsp;^&nbsp;,&nbsp;%</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../pgmctl/reinit.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../valcnv/int.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/math.htm#logic">Mathematical Operations: Arithmetic and Logic Operators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>-&nbsp;,&nbsp;+&nbsp;,&nbsp;&amp;&amp;&nbsp;,&nbsp;||&nbsp;,&nbsp;*&nbsp;,&nbsp;/&nbsp;,&nbsp;^&nbsp;,&nbsp;%</h2>
+<pre>
+       <strong>-</strong> a  (no rate restriction)
+       <strong>+</strong> a  (no rate restriction)
+    a <strong>&amp;&amp;</strong> b  (logical AND; not audio-rate)
+    a <strong>||</strong> b  (logical OR; not audio-rate)
+    a <strong>+</strong>  b  (no rate restriction)
+    a <strong>-</strong>  b  (no rate restriction)
+    a <strong>*</strong>  b  (no rate restriction)
+    a <strong>/</strong>  b  (no rate restriction)
+    a <strong>^</strong>  b  (b not audio-rate)
+    a <strong>%</strong>  b  (no rate restriction)
+	</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>where the arguments <em>a</em> and <em>b</em> may be further expressions.</p>
+<p>Arithmetic operators perform operations of change-sign (negate), don't-change-sign, logical AND logical OR, add, subtract, multiply and divide. Note that a value or an expression may fall between two of these operators, either of which could take it as its left or right argument, as in</p>
+<pre>  a + b * c.</pre>
+<p>In such cases three rules apply:</p>
+<p>1. * and <strong>/</strong> bind to their neighbors more strongly than + and -. Thus the above expression is taken as</p>
+<pre>  a + (b * c)</pre>
+<p>with * taking b and c and then + taking a and b * c.</p>
+<p>2. <strong>+</strong> and <strong>-</strong> bind more strongly than &amp;&amp;, which in turn is stronger than ||:</p>
+<pre>  a &amp;&amp; b - c || d</pre>
+<p>is taken as</p>
+<pre>  (a &amp;&amp; (b - c)) || d</pre>
+<p>3. When both operators bind equally strongly, the operations are done left to right:</p>
+<pre>  a - b - c </pre>
+<p>is taken as</p>
+<pre>  (a - b) - c</pre>
+<p>Parentheses may be used as above to force particular groupings.</p>
+<p>The operator <strong>^ </strong>raises <em>a</em> to the <em>b</em> power. <em>b</em> may not be audio-rate. Use with caution as precedence may not work correctly. See <a href="../valcnv/pow.htm">pow</a>. New in Csound version 3.493.</p>
+<p>The operator <strong>% </strong>returns the value of <em>a</em> reduced by <em>b</em>, so that the result, in absolute value, is that of the absolute value of <em>b</em>, by repeated subtraction. This is the same as modulus function in integers. New in Csound version 3.50.</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../pgmctl/reinit.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../valcnv/int.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/math.htm#logic">Mathematical Operations: Arithmetic and Logic Operators</font></a>
+</body>
+</html>

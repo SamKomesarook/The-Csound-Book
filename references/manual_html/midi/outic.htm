@@ -1,0 +1,110 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>outic, outkc, outic14, outkc14, outipb, outkpb, outiat, outkat, outipc, outkpc, outipat, outkpat</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="midion2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="nrpn.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#message" class="toqr">
+MIDI Support: MIDI Message Output</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>outic, outkc, outic14, outkc14, outipb, outkpb, outiat, outkat, outipc, outkpc, outipat, outkpat</h2>
+
+<pre>
+          <strong>outic</strong>      ichn, inum, ivalue, imin, imax
+          <strong>outkc</strong>      kchn, knum, kvalue, kmin, kmax
+          <strong>outic14</strong>    ichn, imsb, ilsb, ivalue, imin, imax
+          <strong>outkc14</strong>    kchn, kmsb, klsb, kvalue, kmin, kmax
+
+          <strong>outipb</strong>     ichn, ivalue, imin, imax
+          <strong>outkpb</strong>     kchn, kvalue, kmin, kmax
+          <strong>outiat</strong>     ichn, ivalue, imin, imax
+          <strong>outkat</strong>     kchn, kvalue, kmin, kmax
+          <strong>outipc</strong>     ichn, iprog, imin, imax
+          <strong>outkpc</strong>     kchn, kprog, kmin, kmax
+
+          <strong>outipat</strong>    ichn, inotenum, ivalue, imin, imax
+          <strong>outkpat</strong>    kchn, knotenum, kvalue, kmin, kmax
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Send a single channel message to the MIDI OUT port.
+</p>
+<h3>Performance</h3>
+<p><em>ichn</em>, <em>kchn</em> &#8211; MIDI channel number (0-15)
+</p>
+<p><em>inum</em>, <em>knum</em> &#8211; controller number (0-127 for example 1 = ModWheel; 2 = BreathControl etc.)
+</p>
+<p><em>ivalue</em>, <em>kvalue</em> &#8211; floating point value
+</p>
+<p><em>imin</em>, <em>kmin</em> &#8211; minimum floating point value (converted in MIDI integer value 0)
+</p>
+<p><em>imax</em>, <em>kmax</em> &#8211; maximum floating point value (converted in MIDI integer value 127 (7 bit) or 16383 (14 bit))
+</p>
+<p><em>imsb</em>, <em>kmsb</em> &#8211; most significant byte controller number when using 14 bit parameters
+</p>
+<p><em>ilsb</em>, <em>klsb</em> &#8211; least significant byte controller number when using 14 bit parameters
+</p>
+<p><em>iprog</em>, <em>kprog</em> &#8211; program change number in floating point
+</p>
+<p><em>inotenum</em>, <em>knotenum</em> &#8211; MIDI note number (used in polyphonic aftertouch messages)
+</p>
+<p><strong>outic</strong> and <strong>outkc</strong> (i- and k-rate MIDI controller output) send controller messages to MIDI OUT device. <strong>outic14</strong> and <strong>outkc14</strong> (i and k-rate MIDI 14 bit controller output) send a pair of controller messages. These opcodes can drive 14 bit parameters on MIDI instruments that recognize them. The first control message contains the most significant byte of <em>i(k)value</em> argument while the second message contains the less significant byte. <em>i(k)msb</em> and <em>i(k)lsb</em> are the number of the most and less significant controller.
+</p>
+<p><strong>outipb</strong> and <strong>outkpb</strong> (i- and k-rate pitch bend output) send pitch bend messages.
+</p>
+<p><strong>outiat</strong> and <strong>outkat</strong> (i- and k-rate aftertouch output) send aftertouch messages. <strong>outiat</strong> and <strong>outkat</strong> (i- and k-rate aftertouch output) send aftertouch messages.
+</p>
+<p><strong>outipc</strong> and <strong>outkpc</strong> (i- and k-rate program change output) send program change messages.
+</p>
+<p><strong>outipat</strong> and <strong>outkpat</strong> (i- and k-rate polyphonic aftertouch output) send polyphonic aftertouch messages.
+</p>
+<p>These opcodes can drive a different value of a parameter for each note currently active. They work only with MIDI instruments which recognize them.
+</p>
+<p>N.B. All these opcodes can scale the i-(k-)value floating-point argument according with <em>i(-)max</em> and <em>i(k)min</em> values. For example, setting <em>i(k)min</em> = 1.0 and <em>i(k)max</em> = 2.0, when <em>i(k)value</em> argument receives a 2.0 value, the opcode will send a 127 value to MIDI OUT device, while when receiving a 1.0 it will send a 0 value. i-rate opcodes send their message once during instrument initialization. k-rate opcodes send a message each time the MIDI converted value of argument <em>i(k)value</em> changes.
+</p>
+<h3>Deprecated Names</h3>
+<p>Prior to Csound version 3.52, these opcodes were named <strong>ioutc</strong>, <strong>koutc</strong>, <strong>ioutc14</strong>, <strong>koutc14</strong>, <strong> ioutpb, koutpb</strong>, <strong>ioutat</strong>, <strong>koutat</strong>,<strong> ioutpc</strong>, <strong>koutpc</strong>, <strong>ioutpat</strong>, and <strong>koutpat</strong>. The current names were adopted with version 3.52 (February, 1999) to avoid name space pollution.
+</p>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+New in Csound version 3.47
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="midion2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="nrpn.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#message" class="toqr">
+MIDI Support: MIDI Message Output</font></a>
+</body>
+</html>

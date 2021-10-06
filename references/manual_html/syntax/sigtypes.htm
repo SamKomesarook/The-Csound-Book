@@ -1,0 +1,69 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>Orchestra Signal Types</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="statemnt.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="kvar.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm#datatypes"><font size="-2" color="#000000" face="Verdana, Arial, Helvetica, Century Gothic">
+Syntax of the Orchestra</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>Orchestra Signal Types</h2>
+<hr size="2" color="#A9A9A9" noshade>
+
+<p>Csound instruments use five different types of signals, which opcodes can establish, write to, read from, and output. These signals are i-rate (initialization), k-rate (control), a-rate (audio), <em>wsig</em> (spectral or frequency-domain), and <em>fsig</em> (streaming frequency-domain or pvoc). Each signal operates at a specific rate. In some cases, one type of signal may be translated into another, through the use of various opcodes. See, for example, <a href="assign.htm"><strong>init</strong></a>, <a href="../sigmod/follow.htm"><strong>follow</strong></a>.</p>
+
+<h3>Initialization Rate</h3>
+<p>Initialization rate, referred to as i-rate signals, run at instrument initialization. Their values are established when the instrument is initialized, and remain so, unless reinitialized. See <a href="../pgmctl/reinit.htm"><strong>reinit</strong></a>.</p>
+
+<h3>Control Rate</h3>
+<p>Control rate, referred to as k-rate signals, run at the control rate established by the kr statement in the orchestra header. This signal type is used primarily for control (non-audio) signals. Since k-rate is often lower than a-rate, valuable processor power can be preserved.</p>
+
+<h3>Audio Rate</h3>
+<p>Audio rate, referred to as a-rate signals, run at the audio sample rate established by the sr statement in the orchestra header. This signal type is used to carry audio signals produced and modified by the Csound instruments.</p>
+
+<h3>W Signals</h3>
+<p>The <em>wsig</em> type is a frequency-domain signal used exclusively by the spectral family of opcodes (<a href="../spectral/spectrum.htm"><strong>spectrum</strong></a>, <a href="../spectral/specaddm.htm"><strong>specaddm</strong></a>, etc.) They can run at k- or a-rate, depending on usage.</p>
+
+<h3><a class="nolin" name="fsig">F Signals</a></h3>
+<p>The <em>fsig</em> type is a frequency-domain signal used for streaming phase vocoder analysis and resynthesis.  It is used by a family of streaming pvoc opcodes (<a href="../siggen/pvsanal.htm"><strong>pvsanal</strong></a>, <a href="../siggen/pvsynth.htm"><strong>pvsynth</strong></a>, etc.) introduced in Csound version 4.14. This signal type runs at an analysis rate which is independent of the control rate, but must be lower than or equal to the k-rate.</p>
+<p>The <em>fsig</em> enables the separation between the analysis and resynthesis stages of the phase vocoder to be exposed to the Csound programmer. Thus, alternatives be employed for either or both of these stages, such as oscillator-bank resynthesis or generation of synthetic <em>fsig</em> streams. In addition, opcodes operating on the <em>fsig</em> stream, can themselves become more elemental. In this way, the <em>fsig</em> enables the creation of a true streaming plug-in framework for frequency domain signals. With the old <a href="../siggen/pvoc.htm"><strong>pvoc</strong></a> opcodes, each opcode is required to act as a resynthesizer, so that facilities such as pitch scaling are duplicated in each opcode. The separation of analysis and synthesis stages by means of the <em>fsig</em> encourages the development of a wide range of simple building-block opcodes implementing one or two functions, with which more elaborate processes can be constructed.</p>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="statemnt.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="kvar.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm#datatypes"><font size="-2" color="#000000" face="Verdana, Arial, Helvetica, Century Gothic">
+Syntax of the Orchestra</font></a>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>CECILIA CONCEPTS</title>
+	</head>
+
+	<body>
+		&nbsp;
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="setup.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="jump.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			<h2><b>CONCEPTS</b></h2>
+		</center>
+		<center>
+			<a href="#modes">CECILIA Modes</a></center>
+		<center>
+			<a href="#files">CECILIA File System</a></center>
+		<center>
+			<a href="#inter">CECILIA Interface Builder</a></center>
+		<center>
+			<a href="#happens">What Happens</a></center>
+		<center>
+			<h2>
+			<hr>
+			</h2>
+		</center>
+		<a name="modes"></a><b><u>Modes of CECILIA</u></b>&nbsp; <b><font size="-2"><a href="#">top</a></font></b>
+		<ul>
+			<li><b>Production mode.</b> In this mode, you use CECILIA with precompiled &quot;<b>modules</b>&quot; (any given orc/sco pair performing a sound-processing function) where any number of parameters are controlled via CECILIA's graphic interface objects (graphs, sliders, toggles, etc.). These modules can be your own or any of the built-in set available under the &quot;New...&quot; menu cascade under the &quot;File&quot; menu. Production mode does not require Csound programming to produce sound.<br>
+			<br>
+			<li><b>Program mode.</b> In this mode, you work with CECILIA's text editor to produce the usual orc and sco documents. This is also where you build CECILIA graphic interfaces to your orchestra. The interface builder does not have to be used. In this case, CECILIA becomes very similar to its predecessor CYNTHIA.
+		</ul>
+		<hr>
+		<h4><a name="files"></a><u>The CECILIA file system</u>&nbsp; <b><font size="-2"><a href="#">top</a></font></b></h4>
+		<ul>
+			<li><b>The module file. </b>CECILIA opens, saves and creates documents as single &quot;myfile&quot; files. Orchestra, score and interface definitions reside in the same text file. These are called &quot;<b>modules</b>&quot;. An orc/sco pair, with or without interface objects is always considered a &quot;module&quot; by CECILIA whatever its function and whether it contains interface objects or not. These files are what the programming mode generate and are identified (on the IRIX platform) by their own&nbsp; icon on the desktop.<br>
+			&nbsp;
+			<li><b>The snapshot file. </b>CECILIA can save and recall snapshot files of the interface objects of a given module. These files contain only the module's name and the state of its various interface objects. Presets if you will. Snapshot files only make sense when there are interface objects in a given module. Production mode is where snapshot files are handy and are identified (on the IRIX platform) by a their own icon on the desktop.<br>
+			&nbsp;
+		</ul>
+		<hr>
+		<h4><a name="inter"></a><u>The CECILIA interface builder</u>&nbsp; <font size="-2"><a href="#">top</a></font></h4>
+		Building new CECILIA modules requires that you be familiar with the Csound programming language. CECILIA brings to Csound a set of interface objects for various types of control in the orchestra and the score. There are advantages for the beginner with Csound in using the CECILIA interface objects, as they make testing much more productive.
+		<p>When objects are defined using CECILIA's syntax in the interface window of the editor, new windows are created showing the objects. There are two different windows depending on the nature of the object. Objects are added to the appropriate window and aranged geographically to present a coherent whole.
+		<p>Each new object is linked in its definition to a user-defined variable name and/or function number. This variable gets plugged into the regular orchestra or score via Csound global variables or via direct substitution according to a simple syntax. There are five types of objects:
+		<ul>
+			<li><b><a href="cec_grap.html">Graphs</a>.</b> These are graphical breakpoint functions that will automatically generate function tables in the score using a gen05, gen07 or gen08 method. How these functions are used in the orchestra is up to the module's programmer. By default these are transfered into the orchestra via a global Csound variable in the form : <b><i>gk</i>name_of_variable</b>. They can also be used in a table indexed by a phasor or they can be used to define a waveshape for an oscillator or an envelope.
+			<li><b><a href="cec_rsli.html">Sliders</a></b>. These are evaluated at irate or krate with the current value of the variable plugged in the orchestra or score in the via global Csound variables in the form: <b><i>gk</i>name_of_variable</b>. Sliders can run at init-rate or control-rate. Real-time interaction is possible with control-rate sliders.
+			<li><b><a href="cec_popu.html">Pop-ups</a>.</b> List of choices. Useful for multiple choices and &quot;if&quot; control structures. Pop-up objects only run at k-rate. Same form and evaluation as above.
+			<li><b><a href="cec_togg.html">Toggles</a>.</b> Useful as a switch. Toggle objects only run at k-rate. Same form and evaluation as above.<br>
+			&nbsp;
+			<li><b><a href="cec_file.html">Filein</a>.</b> These objects are presented in the Main window of CECILIA. The buttons open a fileselector to choose sounds and/or analysis files. This object also provides some information about the files currently loaded. The <b>filein</b> object is essentially used to plug in any filename anywhere Csound expects a filename such as the soundin, lpread, pvoc unit generators. The filein object can be used for any type of file required by Csound unit generators, including analysis files.
+		</ul>
+		<hr>
+		<h4><a name="happens"></a><b><u>What happens when you push &quot;Play&quot; in the Main CECILIA window</u>&nbsp; <font size="-2"><a href="#">top</a></font></b></h4>
+		<ul>
+			<li>The editor pane corresponding to the channels selected in the Main window is read. For each interface variable, a new invisible instrument is created and its value is passed on via the global name.
+			<li>Sampling rate, ksmps and number of channels are read in the Main window and substituted at the top of the orchestra section.
+			<li>Temporary files are written and Csound is called with all the selected options and the two temp files.
+			<li>The sound is written to the &quot;named&quot; file or previewed in real-time to DACs.
+		</ul>
+	</body>
+
+</html>

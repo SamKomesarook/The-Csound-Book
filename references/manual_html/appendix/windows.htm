@@ -1,0 +1,113 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>Window Functions</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="formants.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="sf2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>			
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Appendix: Window Functions</font>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2 align="center">Window Functions</h2>
+<hr size="2" color="#A9A9A9" noshade>
+<p>Windowing functions are used for analysis, and as waveform envelopes, particularly in granular synthesis. Window functions are built in to some opcodes, but others require a function table to generate the window. <a href="../gen/GEN20.htm"><strong>GEN20</strong></a> is used for this purpose. The diagram of each window below, is accompanied by the f statement used to generate the it.
+</p>
+<hr align="LEFT" size="1">
+<h3>Hamming</h3>
+
+<pre>   f81   0   8192   20   1   1
+</pre>
+<p align="center"><img src="image1.gif" alt="Hamming Window Function" width="429" height="213">
+</p>
+<hr align="LEFT" size="1">
+<h3>Hanning</h3>
+
+<pre>   f82   0   8192   20   2   1
+</pre>
+<p align="center"><img src="image2.gif" alt="Hanning Window Function" width="430" height="214">
+</p>
+<hr align="LEFT" size="1">
+<h3>Bartlett</h3>
+
+<pre>   f83   0   8192   20   3   1
+</pre>
+<p align="center"><img src="image3.gif" alt="Bartlett Window Function" width="430" height="214">
+</p>
+<hr align="LEFT" size="1">
+<h3>Blackman</h3>
+
+<pre>    f84   0   8192   20   4   1
+</pre>
+<p align="center"><img src="image4.gif" alt="Blackman Window Function" width="430" height="214">
+</p>
+<hr align="LEFT" size="1">
+<h3>Blackman-Harris</h3>
+
+<pre>   f85   0   8192   20   5   1
+</pre>
+<p align="center"><img src="image5.gif" alt="Blackman-Harris Window Function" width="430" height="214">
+</p>
+<hr align="LEFT" size="1">
+<h3>Gaussian</h3>
+
+<pre>   f86   0   8192   20   6   1
+</pre>
+<p align="center"><img src="image6.gif" alt="Gaussian Window Function" width="430" height="214">
+</p>
+<hr align="LEFT" size="1">
+<h3>Rectangle</h3>
+
+<pre>   f88   0   8192   -20   8   .1
+</pre>
+<p><em>Note</em>: Vertical scale is exaggerated in this diagram.
+</p>
+<p align="center"><img src="image7.gif" alt="Rectangle Window Function" width="438" height="222">
+</p>
+<hr align="LEFT" size="1">
+<h3>Sync</h3>
+
+
+
+<pre>   f89   0   4096   -20   9   .75
+</pre>
+<p align="center"><img src="image8.gif" alt="Sync Window Function" width="430" height="214">
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="formants.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="sf2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>			
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Appendix: Window Functions</font>
+</body>
+
+</html>

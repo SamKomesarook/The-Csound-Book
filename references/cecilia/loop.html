@@ -1,0 +1,38 @@
+<html>
+
+	<head>
+		<title>UTILITIES</title>
+	</head>
+
+	<body>
+		<center>
+			<br>
+			<img src="help.gif"> <a href="index.html">
+			<h6><b>HELP INDEX</h6>
+			</b></a>
+			<hr>
+		</center>
+		<br>
+		<br>
+		<b>Looper!<br>
+		Quick and dirty recording utility</b><br>
+		You must first give a name to the sound file to record with the &quot;Record to&quot; button. The loudspeaker button next to the new name is enabled and pressing it will start recording an aiff sound file from the port and the rate selected in the audiopanel application and for the duration entered with the Looper duration slider.
+		<p>A source sound file can be selected with the &quot;Pick Source&quot; button. Looper will start playing that file 1 second after the recording has started. This is useful for putting an existing sound on the computer through an external effects device and re-recording it. In the course of the recording, you can stop the playback of the source sound by pressing the loudspeaker icon next to the sound source name. The recording will, however, continue for the duration specified.
+		<p>The scisors bring up the SoundEditor application with the source or target file.
+		<p>Remember that the AD converters on the Indy induce a dc-shift in the signal. The &quot;remove-dc&quot; toggle will indicate wether you want this done automatically after recording.<br>
+		<hr>
+		<br>
+		<b>Normalize </b><br>
+		Normalize will call Dan Ellis' scale program and bring the signal to full amplitude for the duration of the file. Scale must have been placed somewhere inyour executable paths. Normalize only works with aiff files.<br>
+		<hr>
+		<br>
+		<b>Analysis </b><br>
+		All Csound analysis programs are available under Cecilia. Aiff files are needed. For linear prediction analysis, it is highly recommended to use MixViews' facilities instead as they are more complete and will yield better results. Pole stabilization is recommended.
+		<p>After you choose a sound file for analysis, a box will appear allowing you to graphically set the analysis parameters.<br>
+		<hr>
+		<br>
+		<b>Transpose </b><br>
+		Transpose will call Dan Ellis' <b>res</b> and<b> sndrfmt</b> programs and offer a transposition factor (+/- 10 octaves) for the complete file. The sampling rate remains the same as the original. Res and Sndrfmt must have been placed somewhere in your executable paths. Transpose only works with aiff files.
+		<p>
+		<hr>
+		Copyright 1996  

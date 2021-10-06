@@ -1,0 +1,107 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>CEC_slider</title>
+	</head>
+
+	<body>
+		&nbsp;
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="cec_popu.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="cec_grap.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<h2>The&nbsp; cslider object</h2>
+		</center>
+		<center>
+			<a href="#NAME">Name</a></center>
+		<center>
+			<a href="#SYNOPSIS">Synopsis</a></center>
+		<center>
+			<a href="#OPTIONS">Options</a></center>
+		<center>
+			<a href="#DESCRIPTION">Description</a></center>
+		<center>
+			<a href="#SUBSTITUTION">Substitution</a></center>
+		<center>
+			<a href="#EXAMPLE">Examples</a><br>
+			<br>
+			<br>
+		</center>
+		<center>
+			<hr>
+		</center>
+		<h4><a name="NAME"></a><u>NAME</u>&nbsp; <font size="-2"><a href="#">top</a></font></h4>
+		<b>cslider</b> - Creation of input control slider.
+		<h4><a name="SYNOPSIS"></a><u>SYNOPSIS</u>&nbsp; <font size="-2"><a href="#">top</a></font></h4>
+		<pre><b>cslider</b> name ?options?</pre>
+		<h4><a name="OPTIONS"></a><u>OPTIONS</u>&nbsp; <font size="-2"><a href="#">top</a></font></h4>
+		<tt><b>-label</b>&nbsp;&nbsp; <i>character string</i></tt><br>
+		<i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i>will replace the name label besides or underneath the slider.<i> ;<b>default&nbsp;&nbsp;&nbsp;&nbsp; none</b></i>
+		<p><tt><b>-min</b>&nbsp;&nbsp;&nbsp;&nbsp; <i>int | float</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the minimum value of te slider&nbsp;<i> ;<b>default&nbsp;&nbsp;&nbsp;&nbsp; 0</b></i>
+		<p><tt><b>-max</b>&nbsp;&nbsp;&nbsp;&nbsp; <i>int | float</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the maximum value of te slider&nbsp;<i> ;<b>default&nbsp;&nbsp;&nbsp;&nbsp; 100</b></i>
+		<p><tt><b>-rate</b>&nbsp;&nbsp;&nbsp; <i>k | i</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines whether the slider is k-rate or i-rate&nbsp;<i> ;<b>default&nbsp;&nbsp;&nbsp;&nbsp; k</b></i><br>
+		&nbsp;
+		<p><tt><b>-res</b>&nbsp;&nbsp;&nbsp;&nbsp; <i>int | float</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the resolution of the slider&nbsp;<i>&nbsp; ;<b>default&nbsp;&nbsp;&nbsp;&nbsp; .01</b></i>
+		<p><tt><b>-orient&nbsp; </b><i>h / v</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the vertical or horizontal orientation of the slider&nbsp;<i> ;<b>default&nbsp;&nbsp;&nbsp;&nbsp; horizontal</b></i><br>
+		&nbsp;<br>
+		<tt><b>-unit</b>&nbsp;&nbsp;&nbsp; <i>character string</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dtermines the unit of measurement for the slider&nbsp;&nbsp;<i> ;<b>default&nbsp;&nbsp;&nbsp;&nbsp; x</b></i>
+		<p><tt><b>-rel</b>&nbsp;&nbsp;&nbsp;&nbsp; <i>log / lin</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines whether the slider will issues its values according to a linear or logarithmic function&nbsp;&nbsp;<i> ;<b>default&nbsp;&nbsp;&nbsp;&nbsp; lin</b></i>
+		<p><tt><b>-color</b>&nbsp;&nbsp; <i>color</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the color of the through of the slider&nbsp;&nbsp;<i>&nbsp; ;<b>default&nbsp;&nbsp;&nbsp;&nbsp; gray</b></i>
+		<p><tt><b>-width</b>&nbsp;&nbsp; <i>int</i></tt><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the width of the display for the slider value&nbsp;&nbsp;<i> ;<b>default&nbsp;&nbsp;&nbsp;&nbsp; automatic</b></i>
+		<p><tt><b>-init</b>&nbsp;&nbsp;&nbsp; <i>int | float</i></tt><br>
+		<i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i>determines the initial value of the slider.<i>&nbsp; ;<b>default&nbsp;&nbsp;&nbsp;&nbsp; 0 | -min</b></i><br>
+		&nbsp;
+		<h4><a name="DESCRIPTION"></a><u>DESCRIPTION</u>&nbsp; <font size="-2"><a href="#">top</a></font></h4>
+		The <b>cslider</b> command creates a slider. There are two types of sliders: the i-rate slider and the k-rate slider.
+		<p>The i-rate slider is evaluated at init-time only. Its value at compile time is substituted into the orchestra and/or score with <i>giname </i>The k-rate slider is usable at performance time and values are passed to the orchestra via a global <i>gkname</i> variable. The k-rate <b>cslider</b> is implemented with a special Csound routine that handles values though console-driven events.&nbsp; The initial value of the variable is set at the current value of the slider.
+		<p>For k-rate sliders, an option menu is also produced with the options: <b>k-rate, record, playback, load and save</b>. The user can record slider events with <b>record</b> and replay them with <b>playback</b>. A given stream can be saved under any name with <b>save</b> and recalled with <b>load</b>. <b>k-rate</b> allows to simply play the slider without recording.
+		<p>When the orchestra and score are compiled, the <b>clider </b>object creates its own instruments to direct slider information to Csound. This is not normally seen by the user.
+		<p>To obtain better slider resolution, it is advisable to size the interface window to a convenient height and/or width.
+		<p><b><i>CAVEATS:</i></b>
+		<p>1-&nbsp; It is <b>compulsory</b>, when using the k-rate slider object, to also declare a &quot;total_time/duree_totale&quot; i-rate slider, <b>unless </b>there is a <b>cfilein</b> object present (in which case the sliders will be in function for the duration of the longest sound selected).
+		<p>2 - The k-rate slider will not transfer values to the orchestras during performance if the Csound console is open.<br>
+		&nbsp;
+		<h4><a name="SUBSTITUTION"></a><u>SUBSTITUTION</u>&nbsp; <font size="-2"><a href="#">top</a></font></h4>
+		At compilation, any instance of<i> gkname or giname</i> in the orchestra, will be replaced by the current value of the slider. The user determines the propriety of an i-rate or k-rate usage in a given context. The <b>i-rate </b>cslider object can also be used in the score by using the replacement string : <b>[name]</b><br>
+		&nbsp;
+		<h4><a name="EXAMPLE"></a><u>EXAMPLES</u>&nbsp; <font size="-2"><a href="#">top</a></font></h4>
+		<pre>The definition:&nbsp;
+
+<b>cslider</b> pit -label pitch -ra k -unit Hz -res .01&nbsp; -min 50 -colo red -max 4500 -init 2000</pre>
+		sets up a k-rate slider named <i>pitch </i>in the interface window. Values are passed with a global variable named <i>&quot;gkpit&quot;</i>. The data will be scaled to a value between 50 and 4500 with a resolution of 0.01 in a linear relationship. The trough of the slider will be red.<br>
+		&nbsp;
+		<pre>The definition:&nbsp;
+
+<b>cslider</b> amp -ra i -unit db -rel log -res .01&nbsp; -min 30 -max 90 -init 40</pre>
+		sets up a i-rate slider in the interface window. The value of the slider at init time will pass through any <i>giamp</i> in the orchestra .&nbsp; The slider will issue values through a logarithmic function. The label for the slider will be the same as the name.<br>
+		&nbsp;
+		<pre>The definition:&nbsp;
+
+<b>cslider</b> freq</pre>
+		sets up a k-rate slider in the interface window. The value of the slider at init time will pass through any <i>gkfreq</i> in the orchestra .&nbsp; The slider will issue values through a linear function between a minimum of 0 and a maximum of 100 with a resolution of .01. The label for the slider will be <i>freq</i>.<br>
+		&nbsp;<br>
+		<hr>
+		<br>
+		Copyright 1996 - 97
+	</body>
+
+</html>

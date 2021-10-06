@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>phasorbnk</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="phasor.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="oscil.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#phasors" class="toqr">
+Signal Generators: Phasors</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>phasorbnk</h2>
+<pre>
+  kr      <strong>phasorbnk</strong>  kcps, kndx, icnt[, iphs]
+  ar      <strong>phasorbnk</strong>  xcps, kndx, icnt[, iphs]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Produce an arbitrary number of normalized moving phase values, accessable by an index.</p>
+
+<h3>Initialization</h3>
+<p><em>icnt</em> &#8211; maximum number of phasors to be used.</p>
+<p><em>iphs</em> &#8211; initial phase, expressed as a fraction of a cycle (0 to 1). If -1 initialization is skipped. If <em>iphas</em>&gt;1 each phasor will be initialized with a random value.</p>
+
+<h3>Performance</h3>
+<p><em>kndx</em> &#8211; index value to access individual phasors</p>
+<p>For each independent phasor, an internal phase is successively accumulated in accordance with the <em>kcps</em> or <em>xcps</em> frequency to produce a moving phase value, normalized to lie in the range 0 &lt;= phs &lt; 1. Each individual phasor is accessed by index <em>kndx</em>.</p>
+<p>This phasor bank can be used inside a k-rate loop to generate multiple independent voices, or together with the <strong>adsynt</strong> opcode to change parameters in the tables used by <strong>adsynt</strong>.</p>
+
+<h3>Example</h3>
+<p>Generate multiple voices with independent partials. This example is better with <strong>adsynt</strong>. See also the example under <strong>adsynt</strong>, for k-rate use of <strong>phasorbnk</strong>.</p>
+<pre>
+  giwave  <strong>ftgen</strong>     1, 0, 1024, 10, 1       ; generate a sinewave table
+
+          <strong>instr</strong> 1
+  icnt    =         10                      ; generate 10 voices
+  asum    =         0                       ; empty output buffer
+  kindex  =         0                       ; reset loop index
+
+loop:                                       ; loop executed every k-cycle
+
+  kcps    =         (kindex+1)*100 + 30     ; non-harmonic partials
+  aphas   <strong>phasorbnk</strong> kcps, kindex, icnt      ; get phase for each voice
+  asig    <strong>table</strong>     aphas, giwave, 1        ; and read wave from table
+  asum    =         asum + asig             ; accumulate output
+
+  kindex  =         kindex + 1
+  <strong>if</strong> (kindex &lt; icnt) <strong>kgoto</strong> loop             ; do loop
+
+          <strong>out</strong>       asum*3000
+          <strong>endin</strong>
+</pre>
+
+<h3>Author</h3>
+<p>Peter Neub&auml;cker<br>
+Munich, Germany<br>
+August, 1999<br>
+New in Csound version 3.58</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="phasor.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="oscil.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#phasors" class="toqr">
+Signal Generators: Phasors</font></a>
+</body>
+
+</html>

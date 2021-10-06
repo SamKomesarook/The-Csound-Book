@@ -1,0 +1,72 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN12</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen11.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen13.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#amp" class="toqr">
+<strong>GEN</strong> Routines: Amplitude Scaling</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN12</h2>
+
+<pre>
+  <strong>f</strong>  #    time    size    -12    xint   
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This generates the log of a modified Bessel function of the second kind, order 0, suitable for use in amplitude-modulated FM.
+</p>
+<h3>Initialization</h3>
+<p><em>size </em> &#8211; number of points in the table. Must be a power of 2 or a power-of-2 plus 1 (see <a href="../score/f.htm"><strong>f statement</strong></a>). The normal value is power-of-2 plus 1.
+</p>
+<p><em>xint</em> &#8211; specifies the <em>x</em> interval [0 to <em>+xint</em>] over which the function is defined.
+</p>
+<h3>Note </h3>
+<p>This subroutine draws the natural log of a modified Bessel function of the second kind, order 0 (commonly written as <strong>I</strong> subscript 0), over the x-interval requested. The call should have rescaling inhibited.
+</p>
+<p>The function is useful as an amplitude scaling factor in cycle-synchronous amplitude-modulated FM. (See Palamin &amp; Palamin, <em>J. Audio Eng. Soc., 36/9</em>, Sept. 1988, pp.671-684.) The algorithm is interesting because it permits the normally symmetric FM spectrum to be made asymmetric around a frequency other than the carrier, and is thereby useful for formant positioning. By using a table lookup index of <strong>I</strong>(r - 1/r), where <strong>I</strong> is the FM modulation index and <strong>r</strong> is an exponential parameter affecting partial strengths, the Palamin algorithm becomes relatively efficient, requiring only oscil's, table lookups, and a single <strong>exp</strong> call.
+</p>
+<h3>Example</h3>
+
+<pre>  <strong>f</strong> 1 0 2049 -12 20 </pre>
+<p>This draws an unscaled <em>ln(I0(x))</em> from 0 to 20.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen11.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen13.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#amp" class="toqr">
+<strong>GEN</strong> Routines: Amplitude Scaling</font></a>
+</body>
+
+</html>

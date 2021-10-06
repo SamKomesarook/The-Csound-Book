@@ -1,0 +1,291 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Physical Models of Strings and Plates Using a Simplified Mass-string Method</TITLE>
+  <META NAME="Author" CONTENT="Josep M Comajuncosas">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">20. Physical Models of Strings
+and Plates Using a Simplified Mass-string Method</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Josep M. Comajuncosas</FONT></H2>
+
+<H3><FONT FACE="Times New Roman">Introduction</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The next set of orchestras are
+based on the documentation included in the freely available Demo-version
+of <I>PhyMod V2.0</I>., a nice program to design physical models
+simply by linking masses in a graphical environment. In fact I
+liked so much the simplicity of the approach that I decided to
+port some instruments to Csound. Thus, though the powerful graphycal
+interface is lost (and the ease to make complex structures without
+virtually any effort), you can use the designs directly to make
+music, and not only to generate sound samples. You can always
+make the design quickly with PhyMod, test it and, if you like
+the sound obtained, code it to Csound. The instruments included
+here should help you to do it. You are warned, though. Don&acute;t
+expect the elegance and computational efficiency of Waveguide
+synthesis here. The models compile incredibly slowly, and the
+implementation is extremely crude.&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman">The Mass-Spring Paradigm</FONT></H3>
+
+<P><I><FONT FACE="Times New Roman">The term physical modeling
+is applied liberally to all the hardware or software devoted to
+the simulation of mechanical events, however elegantly or inelegantly
+this is achieved.</FONT></I><FONT FACE="Times New Roman"><BR>
+(From PhyMod manual)</FONT></P>
+
+<P><FONT FACE="Times New Roman">Here the implementation is rather
+basic. Next is a summary of the <I>Principles</I> in the help
+file of PhyMod. Consider a mass m tied to a spring whose damping
+is z and whose restoring force is k.&nbsp; The sum of all forces
+must be zero, then we have</FONT></P>
+
+<P><I><FONT FACE="Times New Roman">Force of inertia + Restoring
+force + Friction force = 0</FONT></I></P>
+
+<P><FONT FACE="Courier New">-mx&acute;&acute;-kx - zx&acute; =
+0 (x being the displacement)<BR>
+x&acute;&acute;+(k/m)x+(z/m)x&acute;= 0 being w=sqrt(k/m) = oscil.
+frequency<BR>
+then of course x&acute;&acute;= -F/m</FONT></P>
+
+<P><FONT FACE="Times New Roman">To discretize the system, let&acute;s
+suppose sr&lt;&lt;w and then the following approximations are
+reasonable</FONT></P>
+
+<P><FONT FACE="Courier New">x ~ x(n)<BR>
+x&acute;~ x(n)-x(n-1)<BR>
+x&acute;&acute;~ x(n)-2x(n-1)-x(n-2)</FONT></P>
+
+<P><FONT FACE="Times New Roman">Then, for example, after some
+substitutions you get (for 2 masses m1 and m2 , tied with a string;
+force from mass 2 to mass 1)</FONT></P>
+
+<P><FONT FACE="Courier New">F1(n) = k(x2-x1) +z(x2(n)-x2(n-1)-x1(n)-x1(n-1))
+= -F2(n)</FONT></P>
+
+<P><FONT FACE="Courier New">x1(n+1) = F1(n)/m1 + 2x(n-2) -x(n-1)</FONT></P>
+
+<P><FONT FACE="Times New Roman">To sum up, you must calculate
+all the forces that act on masses, summate them and then use the
+forces to calculate the new positions x(n+1) for every mass. If
+you don&acute;t see clearly how the stuff works, please look at
+PhyMod help.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Implementation<BR>
+</FONT></H3>
+
+<P><FONT FACE="Times New Roman">In the simplest cases (dealing
+with 1 or 2 masses only) a direct implementation will be enough.
+For an arbitrary number of masses in a simple relationship (a
+string or a plate), I used the <I>zak system</I> to allocate all
+the variables needed (previous, actual and next positions of masses
+and actual forces, so you&acute;ll need 4*n variables, being n
+the number of masses in the system). However, for arbitrarily
+complex structures the necessarily direct implementation can lead
+to an incredibly messy code. Anyway, some designs are a good practice
+to get used to the new <I>zak</I> opcodes.<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Examples</FONT></H3>
+
+<UL>
+  <LI><A HREF="instruments/pm1.orc"><FONT FACE="Times New Roman">pm1.orc</FONT></A><FONT
+   FACE="Times New Roman"> <A HREF="instruments/pm1.sco">pm1.sco</A></FONT>
+</UL>
+
+<P><CENTER><FONT FACE="Times New Roman"><IMG SRC="figures/sinus.jpg"
+WIDTH="260" HEIGHT="235" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></CENTER></P>
+
+<P><FONT FACE="Times New Roman">A damped sine wave can be generated
+simply by linking a mass with some energy (initial position and/or
+velocity different from 0) to the ground. The ground is effectively
+considered as an infinite mass, and keeps the system from becoming
+unstable. You can choose the initial position to be 0 (but some
+initial velocity) to avoid that click at the beginning. The first
+5 notes show the effect of varying the damping, the 5 next show
+how varying the restoring force k leads to different vibration
+frequencies. This could also be done with a different mass. In
+real string instruments a combination of different linear density
+(<I>mass</I>) and tension (<I>k</I>) is normally used, and fine
+tuning is done with slight adjustements of <I>k.<BR>
+</I></FONT></P>
+
+<P><FONT FACE="Times New Roman">Notice also that this is a way
+to obtain extremely pure sine waves without table look-up. It
+is slower but much better, specially at low frequencies.<BR>
+&nbsp;</FONT></P>
+
+<UL>
+  <LI><A HREF="instruments/pm2.orc"><FONT FACE="Times New Roman">pm2.orc</FONT></A><FONT
+   FACE="Times New Roman"> <A HREF="instruments/pm2.sco">pm2.sco</A></FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">The next example is very similar
+to the previous one, except that here we have 2 identical masses,
+one tied to the other and the second one grounded. The sound has
+now 2 main frequencies (it may be easy to predict them exactly).<BR>
+&nbsp;</FONT></P>
+
+<UL>
+  <LI><A HREF="instruments/pm3.orc"><FONT FACE="Times New Roman">pm3.orc</FONT></A><FONT
+   FACE="Times New Roman"> <A HREF="instruments/pm3.sco">pm3.sco</A></FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">Two masses linked, and each one
+respectively grounded can be seen as an oversimplification of
+a real plucked string tied at both ends, like the real ones. Don&acute;t
+expect a plucked string sound, though. It is more similar to a
+hammered metallic bar (?)<BR>
+&nbsp;</FONT></P>
+
+<UL>
+  <LI><A HREF="instruments/pm4.orc"><FONT FACE="Times New Roman">pm4.orc</FONT></A><FONT
+   FACE="Times New Roman"> <A HREF="instruments/pm4.sco">pm4.sco</A></FONT>
+</UL>
+
+<P><CENTER><FONT FACE="Times New Roman"><IMG SRC="figures/string.jpg"
+WIDTH="438" HEIGHT="139" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></CENTER></P>
+
+<P><FONT FACE="Times New Roman">After hearing the previous instrument,
+I thought what would happen if the number of masses of the simulated
+string was enough large. Maybe the resulting sound could approach
+more convincingly that of an ideal string. The instrument makes
+use of the zak system and, for simplicity, I initialized all the
+positions to 0 except for one mass. This should be like plucking
+the string at that point. You could even simulate the pluck and
+pick-up positions, though I&acute;ve not implemented this possibility.
+The instrument sets a rich pattern of vibrations, and sounds cool
+at low damping values.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">A problem in the design of the
+instrument was to clear the <I>zak</I> space at init time, because
+the values are otherwise kept from note to note. The opcode that
+should do this, <I>zicl</I>, doesn&acute;t exist yet. I wasn&acute;t
+sure if <I>igoto + zkcl</I> worked okay for this purpose. So (forgive
+me) I clear manually the <I>zak</I> space with a second instrument
+between notes. Other tricks like this could work as well. In particular
+I thing it would be very elegant to activate an intermediate instrument
+which could clear the <I>zak</I> space, pick up all the p-fields
+and store them as global variables, activate a second instrument
+with the string model via<I> turnon</I> which would pick up those
+global variables and then quit (<I>turnoff</I>), like<BR>
+</FONT></P>
+
+<P><FONT FACE="Courier New">instr 1<BR>
+gip3 = p3; and all the remaining fields<BR>
+;here clear the zak space (zkcl)<BR>
+turnon 2,0; trigger instr 2<BR>
+turnoff; then quit<BR>
+endin</FONT></P>
+
+<P><FONT FACE="Courier New">instr 2<BR>
+p3 = gip3<BR>
+;all the stuff here<BR>
+endin</FONT></P>
+
+<P><FONT FACE="Times New Roman">but it seems more difficult in
+practice. However, you can keep the mass distribution at your
+own risk, that would be more <I>physical </I>maybe. Forget to
+use this instrument in polyphonic works, because the zak system
+would interfere completely, unless you reserve different locations
+for each overlapped note.<BR>
+&nbsp;</FONT></P>
+
+<UL>
+  <LI><A HREF="instruments/pm5.orc"><FONT FACE="Times New Roman">pm5.orc</FONT></A><FONT
+   FACE="Times New Roman"> <A HREF="instruments/pm5.sco">pm5.sco</A></FONT>
+</UL>
+
+<P><CENTER><FONT FACE="Times New Roman"><IMG SRC="figures/3dstring.jpg"
+WIDTH="635" HEIGHT="267" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></CENTER></P>
+
+<P><FONT FACE="Times New Roman">Now suppose the string has a non
+uniform lynear density, which can be simulated simply by setting
+arbitrary values from a table to the masses of the system. The
+same thing can be done initialising the positions to some values
+derived from another table, something like the Karplus-Strong
+algorithm, but here with a <I>brute-force</I> method. This is
+by far one of the most complex instruments I&acute;ve ever written.
+Notice that, though richly inharmonic, the timbre obtained is
+perfectly bandlimited, because there aren&acute;t non-linearities
+in the system.<BR>
+</FONT></P>
+
+<P><A HREF="audio/pm5.mp3"><FONT FACE="Times New Roman">pm5.mp3</FONT></A><FONT
+ FACE="Times New Roman"> : just with arbitrary initial positions<BR>
+<A HREF="audio/pm5b.mp3">pm5b.mp3</A> : also with arbitrary masses
+(this is what you&acute;ll get compiling pm5)<BR>
+<I>(both rendered at 44100 Hz and then compressed to mpeg layer
+3)</I><BR>
+&nbsp;</FONT></P>
+
+<UL>
+  <LI><A HREF="instruments/pm6.orc"><FONT FACE="Times New Roman">pm6.orc</FONT></A><FONT
+   FACE="Times New Roman"> <A HREF="instruments/pm6.sco">pm6.sco</A></FONT>
+</UL>
+
+<P><CENTER><FONT FACE="Times New Roman"><IMG SRC="figures/plate.jpg"
+WIDTH="346" HEIGHT="239" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></CENTER></P>
+
+<P><FONT FACE="Times New Roman">Let&acute;s try now a different
+configuration of the masses. In the next dessign I used a plate
+structure (see fig.). The same could be done with an arbitrary
+number of masses but it could be too complicated. The sound can
+range from drum to bells like timbres very convincing.<BR>
+</FONT></P>
+
+<UL>
+  <LI><A HREF="instruments/pm7.orc"><FONT FACE="Times New Roman">pm7.orc</FONT></A><FONT
+   FACE="Times New Roman"> <A HREF="instruments/pm7.sco">pm7.sco</A></FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">We can introduce some non-linearities
+in the system to get a richer sound. What in PhyMod is called
+a simulation of <I>hammer action</I> is merely a conditional statement
+which bypasses the link (that is, considers two masses phisically
+independent) when the position of one mass becomes higher (or
+lower) than the adjacent one. This is supposed to emulate a structure
+(periodically?) struck (?). Of course introducing a conditional
+statement causes the generation of massive inharmonic components
+even in a very simple structure. This is just what I was looking
+for.<BR>
+</FONT></P>
+
+<UL>
+  <LI><A HREF="instruments/pm8.orc"><FONT FACE="Times New Roman">pm8.orc</FONT></A><FONT
+   FACE="Times New Roman"> <A HREF="instruments/pm8.sco">pm8.sco</A></FONT>
+</UL>
+
+<P><FONT FACE="Times New Roman">Like the previous one but using
+the string structure of pm5. A cool sound.<BR>
+</FONT></P>
+
+<P><A HREF="audio/pm8.mp3"><FONT FACE="Times New Roman">pm8.mp3</FONT></A><FONT
+ FACE="Times New Roman"><BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Conclusion<BR>
+</FONT></H3>
+
+<P><I><FONT FACE="Times New Roman">Much more interesting than
+simulating instruments that have worked perfectly well for tens
+or even hundreds of years is to play around with the parameter
+sets to create instruments that no one has ever heard before.</FONT></I><FONT
+ FACE="Times New Roman"> (From PhyMod manual)<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">This could be true. In fact, the
+sounds I got from those designs are certainly realistic, but I
+didn&acute;t expect that sometimes metallic quality. May be the
+result of an oversimplification of the problem, or maybe a complete
+erroneus formulation, it doen&acute;t matter.&nbsp; They are wonderful
+sounds. Very <I>physical </I>;-)</FONT>
+
+</BODY>
+</HTML>

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+	<title>transeg</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="adsr.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="loopseg.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#linear" class="toqr">
+Signal Generators: Linear and Exponential Generators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>transeg</h2>
+<pre>
+  kr      <strong>transeg</strong>    ibeg, idur, itype, ival
+  ar      <strong>transeg</strong>    ibeg, idur, itype, ival
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Constructs a user-definable envelope.</p>
+
+<h3>Initialization</h3>
+<p><em>ibeg</em> &#8211; starting value
+</p>
+<p><em>ival</em> &#8211; value after <em>dur</em> seconds
+</p>
+<p><em>idur</em> &#8211; duration in seconds of segment
+</p>
+<p><em>itype</em> &#8211; if 0, a straight line is produced. If non-zero, then <strong>transeg</strong> creates the following curve, for <em>n</em> steps:<br>
+</p>
+<pre>   ibeg + (ivalue - ibeg) * (1 - exp( i*itype/(n-1) )) / (1 - exp(itype))</pre>
+
+
+<h3>Performance</h3>
+<p>If <em>itype</em> &gt; 0, there is a slowly rising, fast decaying (convex)
+curve, while if <em>itype</em> &lt; 0, the curve is fast rising, slowly decaying
+(concave). See also <a href="../gen/gen16.htm"><strong>GEN16</strong></a>.
+</p>
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath, Codemist. Ltd.<br>
+Bath, UK<br>
+October, 2000<br>
+New in Csound version 4.09
+</p>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="adsr.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="loopseg.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#linear" class="toqr">
+Signal Generators: Linear and Exponential Generators</font></a>
+</body>
+
+</html>

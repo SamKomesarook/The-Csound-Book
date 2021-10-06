@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>QuickRef: The Zak Patch System</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body text="black" link="black" vlink="black" alink="black" bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td class="qr" width="10"></td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="sigmod.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="spectral.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<a class="qr" href="../zak/top.htm"><h1>The Zak Patch System</h1></a>
+
+<hr size="2" color="#A9A9A9" noshade>
+
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/zakinit.htm"><strong>zakinit</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+isizea, isizek</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/ziw.htm"><strong>ziw</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+isig, indx</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/ziw.htm"><strong>zkw</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig, kndx</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/ziw.htm"><strong>zaw</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kndx</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/ziw.htm"><strong>ziwm</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+isig, indx[, imix]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/ziw.htm"><strong>zkwm</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig, kndx[, kmix]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/ziw.htm"><strong>zawm</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kndx[, kmix]</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ir</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/zir.htm"><strong>zir</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+indx</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/zir.htm"><strong>zkr</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+kndx</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/zir.htm"><strong>zar</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+kndx</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/zir.htm"><strong>zarg</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+kndx, kgain</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+kr</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/zkmod.htm"><strong>zkmod</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+ksig, kzkmod</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">
+ar</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/zkmod.htm"><strong>zamod</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+asig, kzamod</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/zkmod.htm"><strong>zkcl</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+kfirst, klast</td>
+</tr>
+<tr><td class="qr" nowrap width="12%" valign="TOP">&nbsp;</td>
+<td class="qr" nowrap width="16%" valign="TOP">
+<a class="qr" href="../zak/zkmod.htm"><strong>zacl</strong></a></td>
+<td class="qr" nowrap width="72%" valign="TOP">
+kfirst, klast</td>
+</tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td class="qr" width="10"></td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="sigmod.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td class="qr" width="45" align="right">
+			<a class="qr" href="spectral.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+</body>
+</html>

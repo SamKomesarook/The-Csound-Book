@@ -1,0 +1,39 @@
+{; masktest3.sco
+ ; © Dami‡n Keller. November 1998. 
+ ; Using CMask in ecological modeling.
+ 
+f1 0 512 7 0 256 1 256 0
+f2 0 65536 1 "metal.sd2" 0 4 1 
+f3 0 65536 1 "metal.sd2" 0 4 2
+
+}
+
+
+f 0 3  
+
+p1 	const 1
+
+p2 	const .05		; grain rate 	
+	prec 5
+	
+p3 	rnd uni						; grain duration 
+	mask [.01 .01] [.1 1] map 1	; exponential map: 1.	
+	prec 5
+					
+p4	const 1			; grain amplitude
+	prec 3
+
+p5 	const .005		; grain frequency
+	accum on
+	prec 5
+
+p6 	const .005		; grain frequency
+	accum on
+	prec 5
+
+p7	range 2 3		; sound file
+	prec 0
+
+p8	range 2 3		; sound file
+	prec 0
+

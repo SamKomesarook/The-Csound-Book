@@ -1,0 +1,724 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: CsoundLib - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "c:\windows\TEMP\RSP9092.TMP" with contents
+[
+/G5 /MTd /W3 /GX /Z7 /Od /I "../Maldonado" /I ".." /D "_DEBUG" /D "AXCSOUND" /D "RESET" /D "CSOUND_REENTRANT_API" /D "GAB_RT" /D "_CONSOLE" /D "SFIRCAM" /D "PIPES" /D "MACROS" /D "RTAUDIO" /D "MSVC" /D "MBCS" /D "WIN32" /D "GOGINS" /D "_ATL_STATIC_REGISTRY" /Fo"Debug/" /Fd"Debug/" /FD /c 
+"C:\mkg\Csound\Maldonado\argdecode.c"
+"C:\mkg\Csound\Maldonado\biquad.c"
+"C:\mkg\Csound\Maldonado\ConsoleGab.c"
+"C:\mkg\Csound\Maldonado\DirectX.c"
+"C:\mkg\Csound\Maldonado\fof3.C"
+"C:\mkg\Csound\Maldonado\foldover.c"
+"C:\mkg\Csound\Maldonado\foscili2.c"
+"C:\mkg\Csound\Maldonado\fout.c"
+"C:\mkg\Csound\Maldonado\gab_osc.c"
+"C:\mkg\Csound\Maldonado\gabWaveCaps.c"
+"C:\mkg\Csound\Maldonado\gabWinMIDI.cpp"
+"C:\mkg\Csound\Maldonado\InstrCall.c"
+"C:\mkg\Csound\Maldonado\loscil2.c"
+"C:\mkg\Csound\Maldonado\lowPassRes.c"
+"C:\mkg\Csound\Maldonado\midi_cs_gab.cpp"
+"C:\mkg\Csound\Maldonado\midiops3.c"
+"C:\mkg\Csound\Maldonado\one_file.c"
+"C:\mkg\Csound\Maldonado\opcLoad.c"
+"C:\mkg\Csound\Maldonado\physGab.c"
+"C:\mkg\Csound\Maldonado\pvocext.c"
+"C:\mkg\Csound\Maldonado\rtaudio2.c"
+"C:\mkg\Csound\Maldonado\timer.c"
+"C:\mkg\Csound\Maldonado\wrap.c"
+"C:\mkg\Csound\Maldonado\aifc.c"
+"C:\mkg\Csound\Maldonado\Aiff.c"
+"C:\mkg\Csound\Maldonado\aops.c"
+"C:\mkg\Csound\Maldonado\Aoscilx.c"
+"C:\mkg\Csound\Maldonado\Auxfd.c"
+"C:\mkg\Csound\Maldonado\butter.c"
+"C:\mkg\Csound\Maldonado\cmath.c"
+"C:\mkg\Csound\Maldonado\Complex.c"
+"C:\mkg\Csound\Maldonado\Cross2.c"
+"C:\mkg\Csound\Maldonado\Cscore.c"
+"C:\mkg\Csound\Maldonado\cscorfns.c"
+"C:\mkg\Csound\Maldonado\Cvanal.c"
+"C:\mkg\Csound\Maldonado\Dam.c"
+"C:\mkg\Csound\Maldonado\dcblockr.c"
+"C:\mkg\Csound\Maldonado\Diskin.c"
+"C:\mkg\Csound\Maldonado\Disprep.c"
+"C:\mkg\Csound\Maldonado\dsputil.c"
+"C:\mkg\Csound\Maldonado\Dumpf.c"
+"C:\mkg\Csound\Maldonado\Entry.c"
+"C:\mkg\Csound\Maldonado\Express.c"
+"C:\mkg\Csound\Maldonado\Extract.c"
+"C:\mkg\Csound\Maldonado\Fft.c"
+"C:\mkg\Csound\Maldonado\Fgens.c"
+"C:\mkg\Csound\Maldonado\Filopen.c"
+"C:\mkg\Csound\Maldonado\Filter.c"
+"C:\mkg\Csound\Maldonado\Fm4op.c"
+"C:\mkg\Csound\Maldonado\Follow.c"
+"C:\mkg\Csound\Maldonado\Grain.c"
+"C:\mkg\Csound\Maldonado\Grain4.c"
+"C:\mkg\Csound\Maldonado\Hetro.c"
+"C:\mkg\Csound\Maldonado\Hrtferx.c"
+"C:\mkg\Csound\Maldonado\Ieee80.c"
+"C:\mkg\Csound\Maldonado\Insert.c"
+"C:\mkg\Csound\Maldonado\linevent.c"
+"C:\mkg\Csound\Maldonado\locsig.c"
+"C:\mkg\Csound\Maldonado\Lpanal.c"
+"C:\mkg\Csound\Maldonado\Lptrkfns.c"
+"C:\mkg\Csound\Maldonado\Main.c"
+"C:\mkg\Csound\Maldonado\Mandolin.c"
+"C:\mkg\Csound\Maldonado\Memalloc.c"
+"C:\mkg\Csound\Maldonado\Memfiles.c"
+"C:\mkg\Csound\Maldonado\Midiops.c"
+"C:\mkg\Csound\Maldonado\Midiops2.c"
+"C:\mkg\Csound\Maldonado\Midiout.c"
+"C:\mkg\Csound\Maldonado\Midirecv.c"
+"C:\mkg\Csound\Maldonado\Midisend.c"
+"C:\mkg\Csound\Maldonado\Modal4.c"
+"C:\mkg\Csound\Maldonado\moog1.c"
+"C:\mkg\Csound\Maldonado\Musmon.c"
+"C:\mkg\Csound\Maldonado\Nlfilt.c"
+"C:\mkg\Csound\Maldonado\Oload.c"
+"C:\mkg\Csound\Maldonado\Opcode.c"
+"C:\mkg\Csound\Maldonado\Otran.c"
+"C:\mkg\Csound\Maldonado\physmod.c"
+"C:\mkg\Csound\Maldonado\physutil.c"
+"C:\mkg\Csound\Maldonado\Pluck.c"
+"C:\mkg\Csound\Maldonado\pvadd.c"
+"C:\mkg\Csound\Maldonado\Pvanal.c"
+"C:\mkg\Csound\Maldonado\Pvinterp.c"
+"C:\mkg\Csound\Maldonado\Pvoc.c"
+"C:\mkg\Csound\Maldonado\Pvread.c"
+"C:\mkg\Csound\Maldonado\Rdorch.c"
+"C:\mkg\Csound\Maldonado\Rdscor.c"
+"C:\mkg\Csound\Maldonado\Repluck.c"
+"C:\mkg\Csound\Maldonado\Rtaudio.c"
+"C:\mkg\Csound\Maldonado\schedule.c"
+"C:\mkg\Csound\Maldonado\Scot.c"
+"C:\mkg\Csound\Maldonado\Scsort.c"
+"C:\mkg\Csound\Maldonado\Scxtract.c"
+"C:\mkg\Csound\Maldonado\Sfheader.c"
+"C:\mkg\Csound\Maldonado\shaker.c"
+"C:\mkg\Csound\Maldonado\singwave.c"
+"C:\mkg\Csound\Maldonado\Sndinfo.c"
+"C:\mkg\Csound\Maldonado\Sndwarp.c"
+"C:\mkg\Csound\Maldonado\Sort.c"
+"C:\mkg\Csound\Maldonado\Soundin.c"
+"C:\mkg\Csound\Maldonado\soundio.c"
+"C:\mkg\Csound\Maldonado\space.c"
+"C:\mkg\Csound\Maldonado\Spectra.c"
+"C:\mkg\Csound\Maldonado\Sread.c"
+"C:\mkg\Csound\Maldonado\Swrite.c"
+"C:\mkg\Csound\Maldonado\Twarp.c"
+"C:\mkg\Csound\Maldonado\Ugens1.c"
+"C:\mkg\Csound\Maldonado\Ugens2.c"
+"C:\mkg\Csound\Maldonado\Ugens3.c"
+"C:\mkg\Csound\Maldonado\Ugens4.c"
+"C:\mkg\Csound\Maldonado\Ugens5.c"
+"C:\mkg\Csound\Maldonado\Ugens6.c"
+"C:\mkg\Csound\Maldonado\Ugens7.c"
+"C:\mkg\Csound\Maldonado\Ugens8.c"
+"C:\mkg\Csound\Maldonado\Ugens9.c"
+"C:\mkg\Csound\Maldonado\Ugensa.c"
+"C:\mkg\Csound\Maldonado\Ugrw1.c"
+"C:\mkg\Csound\Maldonado\Ugrw2.c"
+"C:\mkg\Csound\Maldonado\Ulaw.c"
+"C:\mkg\Csound\Maldonado\Vdelay.c"
+"C:\mkg\Csound\Maldonado\Vpvoc.c"
+"C:\mkg\Csound\Maldonado\Wave.c"
+"C:\mkg\Csound\Maldonado\Wavegde.c"
+"C:\mkg\Csound\Maldonado\Winascii.c"
+"C:\mkg\Csound\Maldonado\Windin.c"
+"C:\mkg\Csound\Maldonado\Window.c"
+"C:\mkg\Csound\Maldonado\wineps.c"
+"C:\mkg\Csound\Csound.cpp"
+"C:\mkg\Csound\CsoundFile.cpp"
+]
+Creating command line "cl.exe @c:\windows\TEMP\RSP9092.TMP" 
+Creating temporary file "c:\windows\TEMP\RSP9093.TMP" with contents
+[
+/out:"../Debug\CsoundLib.lib" 
+.\Debug\argdecode.obj
+.\Debug\biquad.obj
+.\Debug\ConsoleGab.obj
+.\Debug\DirectX.obj
+.\Debug\fof3.obj
+.\Debug\foldover.obj
+.\Debug\foscili2.obj
+.\Debug\fout.obj
+.\Debug\gab_osc.obj
+.\Debug\gabWaveCaps.obj
+.\Debug\gabWinMIDI.obj
+.\Debug\InstrCall.obj
+.\Debug\loscil2.obj
+.\Debug\lowPassRes.obj
+.\Debug\midi_cs_gab.obj
+.\Debug\midiops3.obj
+.\Debug\one_file.obj
+.\Debug\opcLoad.obj
+.\Debug\physGab.obj
+.\Debug\pvocext.obj
+.\Debug\rtaudio2.obj
+.\Debug\timer.obj
+.\Debug\wrap.obj
+.\Debug\aifc.obj
+.\Debug\Aiff.obj
+.\Debug\Aops.obj
+.\Debug\Aoscilx.obj
+.\Debug\Auxfd.obj
+.\Debug\Butter.obj
+.\Debug\Cmath.obj
+.\Debug\Complex.obj
+.\Debug\Cross2.obj
+.\Debug\Cscore.obj
+.\Debug\Cscorfns.obj
+.\Debug\Cvanal.obj
+.\Debug\Dam.obj
+.\Debug\dcblockr.obj
+.\Debug\Diskin.obj
+.\Debug\Disprep.obj
+.\Debug\Dsputil.obj
+.\Debug\Dumpf.obj
+.\Debug\Entry.obj
+.\Debug\Express.obj
+.\Debug\Extract.obj
+.\Debug\Fft.obj
+.\Debug\Fgens.obj
+.\Debug\Filopen.obj
+.\Debug\Filter.obj
+.\Debug\Fm4op.obj
+.\Debug\Follow.obj
+.\Debug\Grain.obj
+.\Debug\Grain4.obj
+.\Debug\Hetro.obj
+.\Debug\Hrtferx.obj
+.\Debug\Ieee80.obj
+.\Debug\Insert.obj
+.\Debug\Linevent.obj
+.\Debug\locsig.obj
+.\Debug\Lpanal.obj
+.\Debug\Lptrkfns.obj
+.\Debug\Main.obj
+.\Debug\Mandolin.obj
+.\Debug\Memalloc.obj
+.\Debug\Memfiles.obj
+.\Debug\Midiops.obj
+.\Debug\Midiops2.obj
+.\Debug\Midiout.obj
+.\Debug\Midirecv.obj
+.\Debug\Midisend.obj
+.\Debug\Modal4.obj
+.\Debug\Moog1.obj
+.\Debug\Musmon.obj
+.\Debug\Nlfilt.obj
+.\Debug\Oload.obj
+.\Debug\Opcode.obj
+.\Debug\Otran.obj
+.\Debug\Physmod.obj
+.\Debug\Physutil.obj
+.\Debug\Pluck.obj
+.\Debug\Pvadd.obj
+.\Debug\Pvanal.obj
+.\Debug\Pvinterp.obj
+.\Debug\Pvoc.obj
+.\Debug\Pvread.obj
+.\Debug\Rdorch.obj
+.\Debug\Rdscor.obj
+.\Debug\Repluck.obj
+.\Debug\Rtaudio.obj
+.\Debug\schedule.obj
+.\Debug\Scot.obj
+.\Debug\Scsort.obj
+.\Debug\Scxtract.obj
+.\Debug\Sfheader.obj
+.\Debug\Shaker.obj
+.\Debug\Singwave.obj
+.\Debug\Sndinfo.obj
+.\Debug\Sndwarp.obj
+.\Debug\Sort.obj
+.\Debug\Soundin.obj
+.\Debug\Soundio.obj
+.\Debug\Space.obj
+.\Debug\Spectra.obj
+.\Debug\Sread.obj
+.\Debug\Swrite.obj
+.\Debug\Twarp.obj
+.\Debug\Ugens1.obj
+.\Debug\Ugens2.obj
+.\Debug\Ugens3.obj
+.\Debug\Ugens4.obj
+.\Debug\Ugens5.obj
+.\Debug\Ugens6.obj
+.\Debug\Ugens7.obj
+.\Debug\Ugens8.obj
+.\Debug\Ugens9.obj
+.\Debug\Ugensa.obj
+.\Debug\Ugrw1.obj
+.\Debug\Ugrw2.obj
+.\Debug\Ulaw.obj
+.\Debug\Vdelay.obj
+.\Debug\Vpvoc.obj
+.\Debug\Wave.obj
+.\Debug\Wavegde.obj
+.\Debug\Winascii.obj
+.\Debug\Windin.obj
+.\Debug\Window.obj
+.\Debug\Wineps.obj
+.\Debug\Csound.obj
+.\Debug\CsoundFile.obj
+]
+Creating command line "link.exe -lib @c:\windows\TEMP\RSP9093.TMP"
+<h3>Output Window</h3>
+Compiling...
+Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 12.00.8168 for 80x86
+Copyright (C) Microsoft Corp 1984-1998. All rights reserved.
+
+cl /G5 /MTd /W3 /GX /Z7 /Od /I "../Maldonado" /I ".." /D "_DEBUG" /D "AXCSOUND" /D "RESET" /D "CSOUND_REENTRANT_API" /D "GAB_RT" /D "_CONSOLE" /D "SFIRCAM" /D "PIPES" /D "MACROS" /D "RTAUDIO" /D "MSVC" /D "MBCS" /D "WIN32" /D "GOGINS" /D "_ATL_STATIC_REGISTRY" /Fo"Debug/" /Fd"Debug/" /FD /c 
+   "C:\mkg\Csound\Maldonado\argdecode.c"
+   "C:\mkg\Csound\Maldonado\biquad.c"
+   "C:\mkg\Csound\Maldonado\ConsoleGab.c"
+   "C:\mkg\Csound\Maldonado\DirectX.c"
+   "C:\mkg\Csound\Maldonado\fof3.C"
+   "C:\mkg\Csound\Maldonado\foldover.c"
+   "C:\mkg\Csound\Maldonado\foscili2.c"
+   "C:\mkg\Csound\Maldonado\fout.c"
+   "C:\mkg\Csound\Maldonado\gab_osc.c"
+   "C:\mkg\Csound\Maldonado\gabWaveCaps.c"
+   "C:\mkg\Csound\Maldonado\gabWinMIDI.cpp"
+   "C:\mkg\Csound\Maldonado\InstrCall.c"
+   "C:\mkg\Csound\Maldonado\loscil2.c"
+   "C:\mkg\Csound\Maldonado\lowPassRes.c"
+   "C:\mkg\Csound\Maldonado\midi_cs_gab.cpp"
+   "C:\mkg\Csound\Maldonado\midiops3.c"
+   "C:\mkg\Csound\Maldonado\one_file.c"
+   "C:\mkg\Csound\Maldonado\opcLoad.c"
+   "C:\mkg\Csound\Maldonado\physGab.c"
+   "C:\mkg\Csound\Maldonado\pvocext.c"
+   "C:\mkg\Csound\Maldonado\rtaudio2.c"
+   "C:\mkg\Csound\Maldonado\timer.c"
+   "C:\mkg\Csound\Maldonado\wrap.c"
+   "C:\mkg\Csound\Maldonado\aifc.c"
+   "C:\mkg\Csound\Maldonado\Aiff.c"
+   "C:\mkg\Csound\Maldonado\aops.c"
+   "C:\mkg\Csound\Maldonado\Aoscilx.c"
+   "C:\mkg\Csound\Maldonado\Auxfd.c"
+   "C:\mkg\Csound\Maldonado\butter.c"
+   "C:\mkg\Csound\Maldonado\cmath.c"
+   "C:\mkg\Csound\Maldonado\Complex.c"
+   "C:\mkg\Csound\Maldonado\Cross2.c"
+   "C:\mkg\Csound\Maldonado\Cscore.c"
+   "C:\mkg\Csound\Maldonado\cscorfns.c"
+   "C:\mkg\Csound\Maldonado\Cvanal.c"
+   "C:\mkg\Csound\Maldonado\Dam.c"
+   "C:\mkg\Csound\Maldonado\dcblockr.c"
+   "C:\mkg\Csound\Maldonado\Diskin.c"
+   "C:\mkg\Csound\Maldonado\Disprep.c"
+   "C:\mkg\Csound\Maldonado\dsputil.c"
+   "C:\mkg\Csound\Maldonado\Dumpf.c"
+   "C:\mkg\Csound\Maldonado\Entry.c"
+   "C:\mkg\Csound\Maldonado\Express.c"
+   "C:\mkg\Csound\Maldonado\Extract.c"
+   "C:\mkg\Csound\Maldonado\Fft.c"
+   "C:\mkg\Csound\Maldonado\Fgens.c"
+   "C:\mkg\Csound\Maldonado\Filopen.c"
+   "C:\mkg\Csound\Maldonado\Filter.c"
+   "C:\mkg\Csound\Maldonado\Fm4op.c"
+   "C:\mkg\Csound\Maldonado\Follow.c"
+   "C:\mkg\Csound\Maldonado\Grain.c"
+   "C:\mkg\Csound\Maldonado\Grain4.c"
+   "C:\mkg\Csound\Maldonado\Hetro.c"
+   "C:\mkg\Csound\Maldonado\Hrtferx.c"
+   "C:\mkg\Csound\Maldonado\Ieee80.c"
+   "C:\mkg\Csound\Maldonado\Insert.c"
+   "C:\mkg\Csound\Maldonado\linevent.c"
+   "C:\mkg\Csound\Maldonado\locsig.c"
+   "C:\mkg\Csound\Maldonado\Lpanal.c"
+   "C:\mkg\Csound\Maldonado\Lptrkfns.c"
+   "C:\mkg\Csound\Maldonado\Main.c"
+   "C:\mkg\Csound\Maldonado\Mandolin.c"
+   "C:\mkg\Csound\Maldonado\Memalloc.c"
+   "C:\mkg\Csound\Maldonado\Memfiles.c"
+   "C:\mkg\Csound\Maldonado\Midiops.c"
+   "C:\mkg\Csound\Maldonado\Midiops2.c"
+   "C:\mkg\Csound\Maldonado\Midiout.c"
+   "C:\mkg\Csound\Maldonado\Midirecv.c"
+   "C:\mkg\Csound\Maldonado\Midisend.c"
+   "C:\mkg\Csound\Maldonado\Modal4.c"
+   "C:\mkg\Csound\Maldonado\moog1.c"
+   "C:\mkg\Csound\Maldonado\Musmon.c"
+   "C:\mkg\Csound\Maldonado\Nlfilt.c"
+   "C:\mkg\Csound\Maldonado\Oload.c"
+   "C:\mkg\Csound\Maldonado\Opcode.c"
+   "C:\mkg\Csound\Maldonado\Otran.c"
+   "C:\mkg\Csound\Maldonado\physmod.c"
+   "C:\mkg\Csound\Maldonado\physutil.c"
+   "C:\mkg\Csound\Maldonado\Pluck.c"
+   "C:\mkg\Csound\Maldonado\pvadd.c"
+   "C:\mkg\Csound\Maldonado\Pvanal.c"
+   "C:\mkg\Csound\Maldonado\Pvinterp.c"
+   "C:\mkg\Csound\Maldonado\Pvoc.c"
+   "C:\mkg\Csound\Maldonado\Pvread.c"
+   "C:\mkg\Csound\Maldonado\Rdorch.c"
+   "C:\mkg\Csound\Maldonado\Rdscor.c"
+   "C:\mkg\Csound\Maldonado\Repluck.c"
+   "C:\mkg\Csound\Maldonado\Rtaudio.c"
+   "C:\mkg\Csound\Maldonado\schedule.c"
+   "C:\mkg\Csound\Maldonado\Scot.c"
+   "C:\mkg\Csound\Maldonado\Scsort.c"
+   "C:\mkg\Csound\Maldonado\Scxtract.c"
+   "C:\mkg\Csound\Maldonado\Sfheader.c"
+   "C:\mkg\Csound\Maldonado\shaker.c"
+   "C:\mkg\Csound\Maldonado\singwave.c"
+   "C:\mkg\Csound\Maldonado\Sndinfo.c"
+   "C:\mkg\Csound\Maldonado\Sndwarp.c"
+   "C:\mkg\Csound\Maldonado\Sort.c"
+   "C:\mkg\Csound\Maldonado\Soundin.c"
+   "C:\mkg\Csound\Maldonado\soundio.c"
+   "C:\mkg\Csound\Maldonado\space.c"
+   "C:\mkg\Csound\Maldonado\Spectra.c"
+   "C:\mkg\Csound\Maldonado\Sread.c"
+   "C:\mkg\Csound\Maldonado\Swrite.c"
+   "C:\mkg\Csound\Maldonado\Twarp.c"
+   "C:\mkg\Csound\Maldonado\Ugens1.c"
+   "C:\mkg\Csound\Maldonado\Ugens2.c"
+   "C:\mkg\Csound\Maldonado\Ugens3.c"
+   "C:\mkg\Csound\Maldonado\Ugens4.c"
+   "C:\mkg\Csound\Maldonado\Ugens5.c"
+   "C:\mkg\Csound\Maldonado\Ugens6.c"
+   "C:\mkg\Csound\Maldonado\Ugens7.c"
+   "C:\mkg\Csound\Maldonado\Ugens8.c"
+   "C:\mkg\Csound\Maldonado\Ugens9.c"
+   "C:\mkg\Csound\Maldonado\Ugensa.c"
+   "C:\mkg\Csound\Maldonado\Ugrw1.c"
+   "C:\mkg\Csound\Maldonado\Ugrw2.c"
+   "C:\mkg\Csound\Maldonado\Ulaw.c"
+   "C:\mkg\Csound\Maldonado\Vdelay.c"
+   "C:\mkg\Csound\Maldonado\Vpvoc.c"
+   "C:\mkg\Csound\Maldonado\Wave.c"
+   "C:\mkg\Csound\Maldonado\Wavegde.c"
+   "C:\mkg\Csound\Maldonado\Winascii.c"
+   "C:\mkg\Csound\Maldonado\Windin.c"
+   "C:\mkg\Csound\Maldonado\Window.c"
+   "C:\mkg\Csound\Maldonado\wineps.c"
+   "C:\mkg\Csound\Csound.cpp"
+   "C:\mkg\Csound\CsoundFile.cpp"
+
+argdecode.c
+biquad.c
+ConsoleGab.c
+DirectX.c
+C:\mkg\Csound\Maldonado\DirectX.c(142) : warning C4133: 'function' : incompatible types - from 'struct pcmwaveformat_tag *' to 'const struct tWAVEFORMATEX *'
+C:\mkg\Csound\Maldonado\DirectX.c(240) : warning C4090: 'function' : different 'const' qualifiers
+C:\mkg\Csound\Maldonado\DirectX.c(240) : warning C4028: formal parameter 2 different from declaration
+C:\mkg\Csound\Maldonado\DirectX.c(240) : warning C4090: 'function' : different 'const' qualifiers
+C:\mkg\Csound\Maldonado\DirectX.c(240) : warning C4028: formal parameter 3 different from declaration
+C:\mkg\Csound\Maldonado\DirectX.c(240) : warning C4024: 'DirectSoundEnumerateA' : different types for formal and actual parameter 1
+fof3.C
+foldover.c
+foscili2.c
+fout.c
+gab_osc.c
+gabWaveCaps.c
+Generating Code...
+Compiling...
+gabWinMIDI.cpp
+C:\mkg\Csound\Maldonado\argdecode.c(654) : warning C4715: 'argdecode' : not all control paths return a value
+Generating Code...
+Compiling...
+InstrCall.c
+loscil2.c
+lowPassRes.c
+Generating Code...
+Compiling...
+midi_cs_gab.cpp
+Generating Code...
+Compiling...
+midiops3.c
+one_file.c
+opcLoad.c
+physGab.c
+pvocext.c
+rtaudio2.c
+timer.c
+wrap.c
+aifc.c
+Aiff.c
+aops.c
+Aoscilx.c
+Auxfd.c
+butter.c
+cmath.c
+Complex.c
+Cross2.c
+Cscore.c
+cscorfns.c
+C:\mkg\Csound\Maldonado\cscorfns.c(42) : warning C4133: '=' : incompatible types - from 'struct INFILE *' to 'struct event *'
+C:\mkg\Csound\Maldonado\cscorfns.c(42) : warning C4133: '=' : incompatible types - from 'struct event *' to 'struct EVENT *'
+C:\mkg\Csound\Maldonado\cscorfns.c(42) : warning C4133: '=' : incompatible types - from 'struct EVENT *' to 'struct cshdr *'
+C:\mkg\Csound\Maldonado\cscorfns.c(44) : warning C4133: '=' : incompatible types - from 'struct event *' to 'struct EVENT *'
+Cvanal.c
+Generating Code...
+Compiling...
+Dam.c
+dcblockr.c
+Diskin.c
+Disprep.c
+dsputil.c
+Dumpf.c
+Entry.c
+Express.c
+Extract.c
+Fft.c
+Fgens.c
+C:\mkg\Csound\Maldonado\Fgens.c(49) : warning C4133: '=' : incompatible types - from 'struct event *' to 'struct FUNC *'
+C:\mkg\Csound\Maldonado\Fgens.c(45) : warning C4101: 'i' : unreferenced local variable
+Filopen.c
+Filter.c
+Fm4op.c
+Follow.c
+Grain.c
+Grain4.c
+Hetro.c
+Hrtferx.c
+Ieee80.c
+Generating Code...
+Compiling...
+Insert.c
+C:\mkg\Csound\Maldonado\Insert.c(511) : warning C4013: '_endthread' undefined; assuming extern returning int
+linevent.c
+locsig.c
+Lpanal.c
+Lptrkfns.c
+Main.c
+Mandolin.c
+Memalloc.c
+Memfiles.c
+Midiops.c
+Midiops2.c
+Midiout.c
+Midirecv.c
+Midisend.c
+Modal4.c
+moog1.c
+Musmon.c
+Nlfilt.c
+Oload.c
+C:\mkg\Csound\Maldonado\Oload.c(48) : warning C4101: 'i' : unreferenced local variable
+Opcode.c
+Generating Code...
+Compiling...
+Otran.c
+C:\mkg\Csound\Maldonado\Otran.c(66) : warning C4133: '=' : incompatible types - from 'struct argoffs *' to 'struct arglst *'
+physmod.c
+physutil.c
+Pluck.c
+pvadd.c
+Pvanal.c
+Pvinterp.c
+Pvoc.c
+Pvread.c
+Rdorch.c
+Rdscor.c
+Repluck.c
+Rtaudio.c
+schedule.c
+Scot.c
+Scsort.c
+Scxtract.c
+Sfheader.c
+shaker.c
+singwave.c
+Generating Code...
+Compiling...
+Sndinfo.c
+Sndwarp.c
+Sort.c
+Soundin.c
+soundio.c
+C:\mkg\Csound\Maldonado\soundio.c(138) : warning C4028: formal parameter 1 different from declaration
+space.c
+Spectra.c
+Sread.c
+Swrite.c
+Twarp.c
+Ugens1.c
+Ugens2.c
+Ugens3.c
+Ugens4.c
+Ugens5.c
+Ugens6.c
+Ugens7.c
+Ugens8.c
+Ugens9.c
+Ugensa.c
+Generating Code...
+Compiling...
+Ugrw1.c
+C:\mkg\Csound\Maldonado\Ugrw1.c(1041) : warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+C:\mkg\Csound\Maldonado\Ugrw1.c(1106) : warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
+Ugrw2.c
+Ulaw.c
+Vdelay.c
+Vpvoc.c
+Wave.c
+Wavegde.c
+Winascii.c
+Windin.c
+Window.c
+wineps.c
+Generating Code...
+Compiling...
+Csound.cpp
+C:\mkg\Csound\Csound.h(15) : warning C4005: 'CSOUND_REENTRANT_API' : macro redefinition
+        unknown(0) : see previous definition of 'CSOUND_REENTRANT_API'
+C:\mkg\Csound\Csound.cpp(580) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+CsoundFile.cpp
+C:\mkg\Csound\CsoundFile.cpp(582) : warning C4786: 'std::reverse_iterator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const *,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> > const &,std::basic_string<char,std::char_traits<char>,std::allocator<char> > const *,int>' : identifier was truncated to '255' characters in the debug information
+Generating Code...
+C:\VStudio\VC98\INCLUDE\vector(39) : warning C4786: 'std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >' : identifier was truncated to '255' characters in the debug information
+C:\VStudio\VC98\INCLUDE\vector(60) : warning C4786: 'std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >::~vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >' : identifier was truncated to '255' characters in the debug information
+Creating library...
+Microsoft (R) Library Manager Version 6.00.8168
+Copyright (C) Microsoft Corp 1992-1998. All rights reserved.
+
+"/out:../Debug\CsoundLib.lib" 
+.\Debug\argdecode.obj 
+.\Debug\biquad.obj 
+.\Debug\ConsoleGab.obj 
+.\Debug\DirectX.obj 
+.\Debug\fof3.obj 
+.\Debug\foldover.obj 
+.\Debug\foscili2.obj 
+.\Debug\fout.obj 
+.\Debug\gab_osc.obj 
+.\Debug\gabWaveCaps.obj 
+.\Debug\gabWinMIDI.obj 
+.\Debug\InstrCall.obj 
+.\Debug\loscil2.obj 
+.\Debug\lowPassRes.obj 
+.\Debug\midi_cs_gab.obj 
+.\Debug\midiops3.obj 
+.\Debug\one_file.obj 
+.\Debug\opcLoad.obj 
+.\Debug\physGab.obj 
+.\Debug\pvocext.obj 
+.\Debug\rtaudio2.obj 
+.\Debug\timer.obj 
+.\Debug\wrap.obj 
+.\Debug\aifc.obj 
+.\Debug\Aiff.obj 
+.\Debug\Aops.obj 
+.\Debug\Aoscilx.obj 
+.\Debug\Auxfd.obj 
+.\Debug\Butter.obj 
+.\Debug\Cmath.obj 
+.\Debug\Complex.obj 
+.\Debug\Cross2.obj 
+.\Debug\Cscore.obj 
+.\Debug\Cscorfns.obj 
+.\Debug\Cvanal.obj 
+.\Debug\Dam.obj 
+.\Debug\dcblockr.obj 
+.\Debug\Diskin.obj 
+.\Debug\Disprep.obj 
+.\Debug\Dsputil.obj 
+.\Debug\Dumpf.obj 
+.\Debug\Entry.obj 
+.\Debug\Express.obj 
+.\Debug\Extract.obj 
+.\Debug\Fft.obj 
+.\Debug\Fgens.obj 
+.\Debug\Filopen.obj 
+.\Debug\Filter.obj 
+.\Debug\Fm4op.obj 
+.\Debug\Follow.obj 
+.\Debug\Grain.obj 
+.\Debug\Grain4.obj 
+.\Debug\Hetro.obj 
+.\Debug\Hrtferx.obj 
+.\Debug\Ieee80.obj 
+.\Debug\Insert.obj 
+.\Debug\Linevent.obj 
+.\Debug\locsig.obj 
+.\Debug\Lpanal.obj 
+.\Debug\Lptrkfns.obj 
+.\Debug\Main.obj 
+.\Debug\Mandolin.obj 
+.\Debug\Memalloc.obj 
+.\Debug\Memfiles.obj 
+.\Debug\Midiops.obj 
+.\Debug\Midiops2.obj 
+.\Debug\Midiout.obj 
+.\Debug\Midirecv.obj 
+.\Debug\Midisend.obj 
+.\Debug\Modal4.obj 
+.\Debug\Moog1.obj 
+.\Debug\Musmon.obj 
+.\Debug\Nlfilt.obj 
+.\Debug\Oload.obj 
+.\Debug\Opcode.obj 
+.\Debug\Otran.obj 
+.\Debug\Physmod.obj 
+.\Debug\Physutil.obj 
+.\Debug\Pluck.obj 
+.\Debug\Pvadd.obj 
+.\Debug\Pvanal.obj 
+.\Debug\Pvinterp.obj 
+.\Debug\Pvoc.obj 
+.\Debug\Pvread.obj 
+.\Debug\Rdorch.obj 
+.\Debug\Rdscor.obj 
+.\Debug\Repluck.obj 
+.\Debug\Rtaudio.obj 
+.\Debug\schedule.obj 
+.\Debug\Scot.obj 
+.\Debug\Scsort.obj 
+.\Debug\Scxtract.obj 
+.\Debug\Sfheader.obj 
+.\Debug\Shaker.obj 
+.\Debug\Singwave.obj 
+.\Debug\Sndinfo.obj 
+.\Debug\Sndwarp.obj 
+.\Debug\Sort.obj 
+.\Debug\Soundin.obj 
+.\Debug\Soundio.obj 
+.\Debug\Space.obj 
+.\Debug\Spectra.obj 
+.\Debug\Sread.obj 
+.\Debug\Swrite.obj 
+.\Debug\Twarp.obj 
+.\Debug\Ugens1.obj 
+.\Debug\Ugens2.obj 
+.\Debug\Ugens3.obj 
+.\Debug\Ugens4.obj 
+.\Debug\Ugens5.obj 
+.\Debug\Ugens6.obj 
+.\Debug\Ugens7.obj 
+.\Debug\Ugens8.obj 
+.\Debug\Ugens9.obj 
+.\Debug\Ugensa.obj 
+.\Debug\Ugrw1.obj 
+.\Debug\Ugrw2.obj 
+.\Debug\Ulaw.obj 
+.\Debug\Vdelay.obj 
+.\Debug\Vpvoc.obj 
+.\Debug\Wave.obj 
+.\Debug\Wavegde.obj 
+.\Debug\Winascii.obj 
+.\Debug\Windin.obj 
+.\Debug\Window.obj 
+.\Debug\Wineps.obj 
+.\Debug\Csound.obj 
+.\Debug\CsoundFile.obj 
+
+
+
+<h3>Results</h3>
+CsoundLib.lib - 0 error(s), 24 warning(s)
+</pre>
+</body>
+</html>

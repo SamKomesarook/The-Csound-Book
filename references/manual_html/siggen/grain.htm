@@ -1,0 +1,123 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>grain</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="fog.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="grain2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#granular" class="toqr">
+Signal Generators: Granular Synthesis</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>grain</h2>
+
+<pre>
+  ar      <strong>grain</strong>      xamp, xpitch, xdens, kampoff, kpitchoff, kgdur, igfn, iwfn, imgdur[, igrnd]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Generates granular synthesis textures.
+</p>
+<h3>Initialization</h3>
+<p><em>igfn</em> &#8211; The ftable number of the grain waveform. This can be just a sine wave or a sampled sound.
+</p>
+<p><em>iwfn</em> &#8211; Ftable number of the amplitude envelope used for the grains (see also <a href="../gen/GEN20.htm"><strong>GEN20</strong></a>).
+</p>
+<p><em>imgdur</em> &#8211; Maximum grain duration in seconds. This the biggest value to be assigned to <em>kgdur</em>.
+</p>
+<p><em>igrn</em> (optional) &#8211; if non-zero, turns off grain offset randomness. This means that all grains will begin reading from the beginning of the <em>igfn</em> table. If zero (the default), grains will start reading from random <em>igfn</em> table positions.
+</p>
+<h3>Performance</h3>
+<p><em>xamp</em> &#8211; Amplitude of each grain.
+</p>
+<p><em>xpitch</em> &#8211; Grain pitch. To use the original frequency of the input sound, use the formula:
+</p>
+<pre>
+   sndsr / ftlen(<em>igfn</em>)
+</pre>
+<p>where sndsr is the original sample rate of the <em>igfn</em> sound.
+</p>
+<p><em>xdens</em> &#8211; Density of grains measured in grains per second. If this is constant then the output is synchronous granular synthesis, very similar to <strong>fof</strong>. If <em>xdens</em> has a random element (like added noise), then the result is more like asynchronous granular synthesis.
+</p>
+<p><em>kampoff</em> &#8211; Maximum amplitude deviation from <em>kamp</em>. This means that the maximum amplitude a grain can have is <em>kamp</em> + <em>kampoff</em> and the minimum is <em>kamp</em>. If <em>kampoff</em> is set to zero then there is no random amplitude for each grain.
+</p>
+<p><em>kpitchoff</em> &#8211; Maximum pitch deviation from <em>kpitch</em> in Hz. Similar to <em>kampoff</em>.
+</p>
+<p><em>kgdur</em> &#8211; Grain duration in seconds. The maximum value for this should be declared in <em>imgdur</em>. If <em>kgdur</em> at any point becomes greater than <em>imgdur</em>, it will be truncated to <em>imgdur</em>.
+</p>
+<p>The grain generator is based primarily on work and writings of Barry Truax and Curtis Roads.
+</p>
+<h3></h3>
+
+<h3>Example</h3>
+<p>A texture with gradually shorter grains and wider amp and pitch spread
+</p>
+<pre>;;;;;;;;;;;;;;; graintest.orc
+instr 1
+    insnd = 10
+    ibasfrq = 32000 / ftlen(insnd)   ; Use original sample rate of insnd file
+    kamp   <strong>expseg</strong> 8000, p3/2, 8000, p3/2, 16000
+    kpitch <strong>line</strong> ibasfrq, p3, ibasfrq * .8
+    kdens  <strong>line</strong> 600, p3, 200
+    kaoff  <strong>line</strong> 0, p3, 5000
+    kpoff  <strong>line</strong> 0, p3, ibasfrq * .5
+    kgdur  <strong>line</strong> .4, p3, .1
+    imaxgdur =  .5
+  ar  <strong>grain</strong> kamp, kpitch, kdens, kaoff, kpoff, kgdur, insnd, 5, imaxgdur, 0.0
+ out ar
+endin
+;;;;;;;;;;;;;;; graintest.sco
+f5  0 512  20 2                  ; Hanning window
+f10 0 65536 1  &quot;Sound.wav&quot; 0 0 0
+i1 0 10
+e</pre>
+
+
+
+
+
+
+
+
+<h3>Author </h3>
+<p>Paris Smaragdis<br>
+MIT<br>
+May 1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="fog.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="grain2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#granular" class="toqr">
+Signal Generators: Granular Synthesis</font></a>
+</body>
+
+</html>

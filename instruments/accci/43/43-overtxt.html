@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>43-over.txt.html</title>
+		<header></header>
+		<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+	</head>
+
+	<body stylesrc="../admin/adpchtxt.html" bgcolor="white">
+		<h3>Overview</h3>
+		<pre>
+BUZZ and GBUZZ are pulse generators and provide yet another means
+of effectively generating a complex audio signal. Using the
+closed form of a sum of sinusoids, only two oscillators are able
+to produce a complex wave of N partials. In the case of BUZZ, it
+is a set of harmonically related cosine partials of the
+fundamental frequency ifqc. For their spectral richness, pulse
+generators are particularly useful as sources in subtractive
+synthesis designs.
+
+BUZZ is a special case of the more general GBUZZ in which all
+harmonics are equally strong, and the series starts with the
+fundamental. 
+
+In GBUZZ one can chose an exponential coefficient multiplier
+'kratio' to envelope the harmonic spectrum (One cannot use the
+variable 'kr' for this ratio, as suggested in the Csound manual;
+'kr' is a reserved symbol) of the output. Also GBUZZ allows to
+specify a lowest harmonic 'klh' different from the fundamental
+frequency. 
+
+A pulse train is obtained by extending the number of harmonics up
+to the Nyquist frequency. This is done by making the number of
+harmonics frequency dependent: 
+
+                  knh = int (sr/2/ifqc).
+
+In general pulse waveforms have a significant amplitude only
+during a short interval of time (pulse width).
+Repeated periodically, the pulse waveform yields rich spectra,
+depending on period and shape of the pulse. The pulse width gets
+narrower with increasing number of harmonics in the spectrum.
+</pre>
+	</body>
+
+</html>

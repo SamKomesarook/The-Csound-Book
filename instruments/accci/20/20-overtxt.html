@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>20-over.txt.html</title>
+		<header></header>
+		<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+	</head>
+
+	<body stylesrc="../admin/adpchtxt.html" bgcolor="white">
+		<h3>Overview</h3>
+		<pre>
+</pre>
+		<h4>Modulation Index and Sideband Amplitudes</h4>
+		<pre>
+The modulation index I is defined by amplitude and frequency of
+the modulating oscillator: I = amp/fq.
+
+The integer k depends on the modulation index and defines the
+highest-ordered sideband with a significant amplitude: k = I+1,
+with I rounded to the nearest integer value.
+
+The spectrum of FM is thus composed of the sum of components: 
+ifqc +- k*ifqm. 
+
+The amplitudes of all components are determined by Bessel
+functions. 
+</pre>
+		<h4>Negative frequencies</h4>
+		<pre>
+Negative frequencies are reflected into the positive frequency
+domain by multiplying their amplitude with -1 (effect of -&atilde;).
+Then all components with the same frequency are added. 
+
+                           c:m ratio
+
+1) fundamental
+One can compute the fundamental from the lowest possible c:m
+ratio (composed of integers with no common factors):
+
+                 fqc:fqm = N1:N2
+
+Then: fqc/N1 = fqm/N2 = fundamental.
+
+2) spectrum
+let N1=1, then:
+
+          N2=1   spectrum with all harmonics
+
+          N2=M   every mth harmonic is missing
+
+For N2=1, N2=2 there is a strong effect of overlapping negative
+and positive components.
+
+Irrational or large N2 and/or N1 values in the c:m ratios lead to
+inharmonic spectra.
+
+example: 5:7  (1:1.4)  sounds close to 
+         1:square root of 2 (1:1.4142...)
+
+</pre>
+	</body>
+
+</html>

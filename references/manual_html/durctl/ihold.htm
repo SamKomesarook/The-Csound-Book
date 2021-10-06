@@ -1,0 +1,75 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>ihold, turnoff</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+		<a href="turnon.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../control/active.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#duration" class="toqr">
+Orchestra Synatx: Duration Control Statements</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>ihold, turnoff</h2>
+
+
+<pre>
+           <strong>ihold</strong>
+           <strong>turnoff</strong>
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>These statements permit the current note to modify its own duration.
+</p>
+<p><strong>ihold</strong> &#8211; this i-time statement causes a finite-duration note to become a &quot;held&quot; note. It thus has the same effect as a negative p3 ( see score <a href="../score/i.htm"><strong>i Statement</strong></a>), except that p3 here remains positive and the instrument reclassifies itself to being held indefinitely. The note can be turned off explicitly with <strong>turnoff</strong>, or its space taken over by another note of the same instrument number (i.e. it is tied into that note). Effective at i-time only; no-op during a <strong>reinit</strong> pass.
+</p>
+<p><strong>turnoff</strong> &#8211; this p-time statement 
+enables an instrument to turn itself off. Whether of finite duration or &quot;held&quot;, 
+the note currently being performed by this instrument is immediately removed 
+from the active note list. No other notes are affected.
+</p>
+<h3>Example</h3>
+<p>The following statements will cause a note to terminate when a control signal passes a certain threshold (here the Nyquist frequency).
+</p>
+<pre>
+  k1  <strong>expon</strong>  440, p3/10,880       ; begin gliss and continue
+  if  k1 <strong>&lt;</strong> sr/2  <strong>kgoto</strong> contin     ; until Nyquist detected
+      <strong>turnoff</strong>                     ; then quit
+contin:
+  a1  <strong>oscil</strong>  a1, k1, 1
+  </pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+		<a href="turnon.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../control/active.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#duration" class="toqr">
+Orchestra Synatx: Duration Control Statements</font></a>
+</body>
+</html>

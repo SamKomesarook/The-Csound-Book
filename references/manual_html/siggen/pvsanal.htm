@@ -1,0 +1,111 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>pvsanal</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvadd.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvsread.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#vocoding" class="toqr">
+Signal Generators: STFT Resynthesis (Vocoding)</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>pvsanal</h2>
+
+<pre>
+  fr      <strong>pvsanal</strong>    asig, ifftsize, ioverlap, iwinsize, iwintype[,iformat, init]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Generate an <em>fsig</em> from a mono sound source.</p>
+
+
+
+<h3>Initialization</h3>
+<p><em>ifftsize</em> &#8211; the FFT size in samples. Need not be a power-of-two, although these are especially efficient. <em>ifftsize</em> must be even, however. Odd numbers are rounded up internally. <em>ifftsize</em> determines the number of analysis bins in the output <em>fsig</em>, according to the formula <em>ifftsize</em>/2 + 1.</p>
+
+<p><em>ioverlap</em> &#8211; the distance in samples (&quot;hop size&quot;) between overlapping analysis frames. This should be at least <em>ifftsize</em>/4. <em>ioverlap</em> determines the underlying analysis rate according to the formula <strong>sr</strong>/<em>ioverlap</em>. <em>ioverlap</em> is not required to be a simple factor of <em>ifftsize</em>.</p>
+
+<p><em>iwinsize</em> &#8211; the size in samples of the analysis window filter, as set by <em>iwintype</em>. This must be at least <em>ifftsize</em>, and can be larger. Though other proportions are permitted, it is recommended that <em>iwinsize</em> always be an integral multiple of <em>ifftsize</em>.</p>
+
+<p><em>iwintype</em> &#8211; the shape of the analysis window. Possible values (also supported by PVOC-EX) are:</p>
+		<ul>
+			<li>0 = Hamming window
+			<li>1 = von Hann window.
+		</ul>
+
+<p><em>iformat</em> &#8211; the analysis format. Of three possible types, currently only type 0 is implemented.</p>
+			<ul>
+				<li>0 = amplitude + frequency
+				<li>1 = amplitude + phase. Not currently implemented in <strong>pvsanal</strong>. Supported only in PVOC-EX file format.
+				<li>2 = complex (real + imaginary). Not currently implemented in <strong>pvsanal</strong>. Supported only in PVOC-EX file format.
+			</ul>
+
+<p><em>init</em> &#8211; skip reinitialzation. Not currently implemented for any of the streaming <strong>pvoc</strong> opcodes. </p>
+
+<h3>Performance</h3>
+
+<p>The primary reason to use a non-power-of-two value for <em>ifftsize</em> would be to match the known fundamental frequency of a strongly pitched source. Values with many small factors can be almost as efficient as power-of-two sizes. For example, 384 for a source pitched at around low A = 110 Hz.</p>
+
+<p>The choice of <em>ioverlap</em> may be dictated by the degree of pitch modification applied to the <em>fsig</em>, if any. The more extreme the pitch shift, the higher the analysis rate should be, and hence the smaller the value for <em>ioverlap</em>. A higher analysis rate can also be advantageous with broadband transient sounds, such as drums, where a small analysis window would give less temporal smearing, but more frequency-related errors.</p>
+
+<p>Internally, the analysis window (Hamming, von Hann) is multiplied by a sinc function, so that amplitudes are zero at the boundaries between frames. The larger analysis window size has been found to be especially important for oscillator bank resynthesis (using <a href="pvsynth.htm"><strong>pvsadsyn</strong></a>), as it has the effect of increasing the frequency resolution of the analysis, and hence the accuracy of the resynthesis. As noted above, <em>iwinsize</em> determines the overall latency of the analysis/resynthesis system. In many cases, and especially in the absence of pitch modifications, it will be found that setting <em>iwinsize</em> = <em>ifftsize</em> works very well, and offers the lowest latency.</p>
+
+<p>The window type is stored as an internal attribute of the <em>fsig</em>, together with the other parameters (see <a href="pvsinfo.htm"><strong>pvsinfo</strong></a>). Both window types (Hamming, von Hanning) are supported by the PVOC-EX file format. Other types may be implemented at a later date, for example the Kaiser window, which is supported by PVOC-EX.</p>
+
+<p>When <em>iformat</em> = 0 (currently the only option with <strong>pvsanal</strong>) the classic phase vocoder format is implemented. This format is easy to process and a natural format for oscillator-bank resynthesis. Although it is possible to use an <em>fsig</em> frame not as a phase vocoder frame but as a generic additive synthesis frame, the two are not directly equivalent.</p>
+
+<p><em>iformat</em> is provided in case it proves useful later to add support for these other formats. Formats 0 and 1 are very closely related, since the phase is wrapped in both cases. It is a trivial matter to convert from one to the other.</p>
+
+
+<h3>Example</h3>
+<pre>
+  ain     <strong>in</strong>                                  ; live source
+  fin     <strong>pvsanal</strong>    ain, 1024, 256, 2048, 0  ; analyse, using Hamming
+  fout    <strong>pvsmaska</strong>   fin, 1, 0.75             ; apply eq from ftable
+  aout    <strong>pvsynth</strong>    fout                     ; and resynthesize
+</pre>
+
+<h3>Author</h3>
+<p>Richard Dobson<br>
+Somerset, England<br>
+August, 2001<br>
+New in Csound 4.14</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvadd.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvsread.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#vocoding" class="toqr">
+Signal Generators: STFT Resynthesis (Vocoding)</font></a>
+</body>
+
+</html>

@@ -1,0 +1,495 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>An Introduction to Sound Sunthesis with Wavelet Packets [Math Code]</title>
+		<meta name="Version" content="8.0.3612">
+		<meta name="Date" content="2/24/97">
+		<meta name="Template" content="C:\PROGRAMAS\MICROSOFT OFFICE\OFFICE\html.dot">
+	</head>
+
+	<body text="black" link="blue" vlink="purple" bgcolor="white">
+		<font face="Times New Roman"><b>0. </b></font><a href="index.html"><font face="Times New Roman">Index</font></a><font face="Times New Roman"><b> 1. </b><a href="WAVELET.html">Intro</a> <b>2. </b><u>Mathematica code</u> <b>3. </b><a href="WPT.html">WPT</a> <b>4.</b> <a href="FWT.html">FWT</a> <b>5. </b><a href="REF.html">References</a></font>
+		<p><font face="Times New Roman">
+		<hr>
+		</font></p>
+		<h3><font face="Times New Roman"><b>2. The Wave Packet Code by M. V. Wickerhauser</b></font></h3>
+		<p><font face="Times New Roman">This is the direct transcription of a message that appeared on <a href="http://www.wavelet.org/wavelet/digest_02/digest_02.14.html#2">The Wavelet Digest - Volume 2, Issue 14 (October 5, 1993)</a>. It contains M. V. Wickerhauser's <i>Mathematica</i> code to generate wave packets. I transcribe the full message here because, besides from being the basic inspiration I used for the programming, it contains everything that is needed to recreate the same results, once you translate to whatever programming language.</font></p>
+		<p><font face="Times New Roman">From: Mladen Victor Wickerhauser, Washington University.</font></p>
+		<p><font face="Times New Roman">Subject: Mathematica wavelet packets programs.</font></p>
+		<p><font face="Times New Roman">Here are some old Mathematica programs to generate individual wavelet packets and to calculate inner products with individual wavelet packets. The one example I have provided is intended to be a template: change the relevant parameters, or the sequence of filters, to get any wavelet packet you wish.</font></p>
+		<p><font face="Times New Roman">I hereby put this code into the public domain.</font></p>
+		<p><font face="Times New Roman">Cheers, Victor</font></p>
+		<p><font face="Times New Roman">Professor Mladen Victor Wickerhauser &lt;victor@math.wustl.edu&gt;</font></p>
+		<p><font face="Times New Roman">Department of Mathematics, Campus Box 1146, One Brookings Drive,</font></p>
+		<p><font face="Times New Roman">Washington University in Saint Louis, Missouri 63130 USA</font></p>
+		<p><font face="Times New Roman">Telephone: USA+(314)935-6771; Facsimile: USA+(314)935-5799</font></p>
+		<p><font face="Times New Roman">(* Wave Packets and Modulated Pulses *)</font></p>
+		<p><font face="Times New Roman">(* M. Victor Wickerhauser *)</font></p>
+		<p><font face="Times New Roman">(* 21 May 1990 *)</font></p>
+		<p><font face="Times New Roman">(* FILTER COEFFICIENTS *)</font></p>
+		<p><font face="Times New Roman">(* We start with some standard conjugate quadrature filters: *)</font></p>
+		<p><font face="Times New Roman">
+		<table cellspacing="0" border="0" width="633">
+			<tr>
+				<td valign="top" colspan="2">stdH[10] = {0.160102397974, 0.603829269797, 0.724308528438,</td>
+			</tr>
+			<tr>
+				<td width="14%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="86%" valign="top">0.138428145901, -0.242294887066, -0.032244869585,</td>
+			</tr>
+			<tr>
+				<td width="14%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="86%" valign="top">0.077571493840, -0.006241490213, -0.012580751999,</td>
+			</tr>
+			<tr>
+				<td width="14%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="86%" valign="top">0.003335725285};</td>
+			</tr>
+		</table>
+		</font></p>
+		<p><font face="Times New Roman">
+		<table cellspacing="0" border="0" width="633">
+			<tr>
+				<td valign="top" colspan="2">std[12] = { 0.111540743350, 0.494623890398, 0.751133908021, 0.315250351709,</td>
+			</tr>
+			<tr>
+				<td width="14%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="86%" valign="top">-0.226264693965, -0.129766867567, 0.097501605587, 0.027522865530,</td>
+			</tr>
+			<tr>
+				<td width="14%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="86%" valign="top">-0.031582039318, 0.000553842201, 0.004777257511, -0.001077301085};</td>
+			</tr>
+		</table>
+		&nbsp;</font></p>
+		<p><font face="Times New Roman">
+		<table cellspacing="0" border="0" width="633">
+			<tr>
+				<td valign="top" colspan="2">coif[12] = {1.15875967387, -.02932013798, -.04763959031,</td>
+			</tr>
+			<tr>
+				<td width="14%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="86%" valign="top">.273021046535, .574682393857, .294867193696, -.0540856070917,</td>
+			</tr>
+			<tr>
+				<td width="14%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="86%" valign="top">-.0420264804608, .0167444101633, .00396788361296,-.00128920335614,</td>
+			</tr>
+			<tr>
+				<td width="14%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="86%" valign="top">-.000509505399};</td>
+			</tr>
+		</table>
+		&nbsp;</font></p>
+		<p><font face="Times New Roman">sr15 = Sqrt[15.0];</font></p>
+		<p><font face="Times New Roman">
+		<table cellspacing="0" border="0" width="633">
+			<tr>
+				<td valign="top" colspan="2">coif[6] = {(sr15-3.0)/32.0,(1.0-sr15)/32.0,(3.0-sr15)/16.0,(sr15+3.0)/16.0,</td>
+			</tr>
+			<tr>
+				<td width="14%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="86%" valign="top">(sr15+13.0)/32.0,(9.0-sr15)/32.0};</td>
+			</tr>
+		</table>
+		</font></p>
+		<p></p>
+		<p><font face="Times New Roman">
+		<table cellspacing="0" border="0" width="585">
+			<tr>
+				<td valign="top" colspan="3">mirrorFilter[ filter_ ] :=</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="2">Block[{len},</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="83%" valign="top">len = Length[filter];</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="83%" valign="top">Table[ (-1)^n filter[[len+1-n]], {n,1,len}]</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top">]</td>
+				<td width="83%" valign="top"><font size="4">&nbsp;</font></td>
+			</tr>
+		</table>
+		</font></p>
+		<p><font face="Times New Roman">&nbsp;</font></p>
+		<p><font face="Times New Roman">(* CONVOLUTION AND DECIMATION *)</font></p>
+		<p><font face="Times New Roman">(* Define the convolution decimation operators convolveDecimate as a function of two arguments: filter list, and vector list: *)&nbsp;</font></p>
+		<p><font face="Times New Roman">
+		<table cellspacing="0" border="0" width="633">
+			<tr>
+				<td valign="top" colspan="5">convolveDecimate[filter_, vector_]:=</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="4">Block[{vectorLength,filterRange},</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="7%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="3">vectorLength = Length[vector];</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="7%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="3">filterRange = Length[filter];</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="7%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="3">Table[</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="7%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="7%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="2">Sum[ filter[[j]] vector[[Mod[2i+j-3,vectorLength]+1]],</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="7%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="7%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="7%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="70%" valign="top">{i,1,filterRange}</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="7%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="7%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="7%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="70%" valign="top">],</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="7%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="7%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="2">{i,1,vectorLength/2}</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="7%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="3">]</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="4">]</td>
+			</tr>
+		</table>
+		</font></p>
+		<p><font face="Times New Roman">(* The adjoint of this operation is similarly defined: *)&nbsp;</font></p>
+		<p><font face="Times New Roman">
+		<table cellspacing="0" border="0" width="618">
+			<tr>
+				<td valign="top" colspan="4">antiConvolve[filter_, vector_]:=</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="3">Block[{tempVec, newLength, filterRange, vectorLength},</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="2">vectorLength = Length[vector];</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="2">filterRange = Length[filter];</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="2">newLength = 2 vectorLength;</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="2">tempVec = Table[0,{i,1, newLength}]; (* initialize output *)</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="2">Do[</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="76%" valign="top">tempVec[[ Mod[2j+i-3,newLength]+1 ]] += vector[[j]] filter[[i]],</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="76%" valign="top">{j,1,vectorLength},</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="76%" valign="top">{i,1,filterRange}</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="76%" valign="top">];</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="2">tempVec</td>
+			</tr>
+			<tr>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="2">]</td>
+			</tr>
+		</table>
+		&nbsp;</font></p>
+		<p><font face="Times New Roman">(* MAKING WAVELETS AND WAVELET PACKETS *)</font></p>
+		<p><font face="Times New Roman">(* Now we can anticonvolve a wavelet of length 512: *)</font></p>
+		<p><font face="Times New Roman">H = coif[6]; G = mirrorFilter[H];</font></p>
+		<p><font face="Times New Roman">
+		<table cellspacing="0" border="0" width="585">
+			<tr>
+				<td valign="top" colspan="6">w1 = antiConvolve[ H,</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="5">antiConvolve[ H,</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="4">antiConvolve[ H,</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="3">antiConvolve[ H,</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="2">antiConvolve[ H,</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="59%" valign="top">antiConvolve[ G,{1,0,0,0,0,0,0,0}]</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="2">]</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="3">]</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="4">]</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="5">]</td>
+			</tr>
+			<tr>
+				<td valign="top" colspan="6">];</td>
+			</tr>
+		</table>
+		</font></p>
+		<p><font face="Times New Roman">ListPlot[w1,PlotRange-&gt;{-.05,.05},PlotJoined-&gt;True]</font></p>
+		<p><font face="Times New Roman">(* Wavelet packets are similarly made with other sequences of filters: *)</font></p>
+		<p><font face="Times New Roman">
+		<table cellspacing="0" border="0" width="585">
+			<tr>
+				<td valign="top" colspan="6">wp1 = antiConvolve[ H,</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="5">antiConvolve[ G,</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="4">antiConvolve[ H,</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="3">antiConvolve[ G,</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="2">antiConvolve[ G,</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="59%" valign="top">antiConvolve[ G,{1,0,0,0,0,0,0,0}]</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="2">]</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="3">]</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td width="8%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="4">]</td>
+			</tr>
+			<tr>
+				<td width="9%" valign="top"><font size="4">&nbsp;</font></td>
+				<td valign="top" colspan="5">]</td>
+			</tr>
+			<tr>
+				<td valign="top" colspan="6">];</td>
+			</tr>
+		</table>
+		</font></p>
+		<p><font face="Times New Roman">ListPlot[wp1,PlotRange-&gt;{-.05,.05},PlotJoined-&gt;True]&nbsp;</font></p>
+		<h3><font face="Times New Roman"><b>Translating to C...</b></font></h3>
+		<p><font face="Times New Roman">Since I'm not fluent in Mathematica, I took the liberty of translating the code to C. Mind you, I didnt compile the routines to see if they work (although they should work); I merely used them as a support while coding the Csound instructions. That settled, heres the informal C code for the ConvolveDecimate and AntiConvolve routines. I dont know about you, but this sure makes it more readable to me... Please notice that I've switched from the original 1-based arrays to the C flavored 0-based arrays (for non-programmers, a zero based array has its index ranging from 0 to <i>length-1</i>).</font></p>
+		<p><font face="Times New Roman">
+		<table cellspacing="0" border="0" width="633">
+			<tr>
+				<td valign="top" colspan="4">float *ConvolveDecimate(float *filter, float *vector)</td>
+			</tr>
+			<tr>
+				<td valign="top" colspan="4">{</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td valign="top" colspan="3">vectorLen=length(vector);</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td valign="top" colspan="3">filterRng=length(filter);</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td valign="top" colspan="3">for(i=0; i&lt;vectorLen/2; ++i) {</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td width="9%" valign="top">&nbsp;</td>
+				<td valign="top" colspan="2">For(j=0,soma=0; j&lt;filterRng; j++)</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td width="9%" valign="top">&nbsp;</td>
+				<td width="9%" valign="top">&nbsp;</td>
+				<td width="72%" valign="top">Soma+=filter[j]*vector[(2*i+j)%vectorLen];</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td width="9%" valign="top">&nbsp;</td>
+				<td valign="top" colspan="2">TmpVec[i]=soma;</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td valign="top" colspan="3">}</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td valign="top" colspan="3">return tmpVec;</td>
+			</tr>
+			<tr>
+				<td valign="top" colspan="4">}</td>
+			</tr>
+		</table>
+		&nbsp;</font></p>
+		<p><font face="Times New Roman">
+		<table cellspacing="0" border="0" width="633">
+			<tr>
+				<td valign="top" colspan="4">float *AntiConvolve(float *filter, float *vector)</td>
+			</tr>
+			<tr>
+				<td valign="top" colspan="4">{</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td valign="top" colspan="3">vectorLen=length(vector);</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td valign="top" colspan="3">filterRng=length(filter);</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td valign="top" colspan="3">newLen=2*vectorLen;</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td valign="top" colspan="3">for(i=0; i&lt;newLen; ++i) tmpVec[i] = 0.0;</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td valign="top" colspan="3">for(j=0; j&lt;vectorLen; ++j)</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td width="9%" valign="top">&nbsp;</td>
+				<td valign="top" colspan="2">for(i=0; i&lt;filterRng; i++)</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td width="9%" valign="top">&nbsp;</td>
+				<td width="9%" valign="top">&nbsp;</td>
+				<td width="72%" valign="top">tmpVec[(2*j+i)%newLen]+=vector[j]*filter[i];</td>
+			</tr>
+			<tr>
+				<td width="10%" valign="top">&nbsp;</td>
+				<td valign="top" colspan="3">return tmpVec;</td>
+			</tr>
+			<tr>
+				<td valign="top" colspan="4">}</td>
+			</tr>
+		</table>
+		</font></p>
+		<p><font face="Times New Roman">
+		<hr>
+		</font></p>
+		<p><font face="Times New Roman"><b>0. </b><a href="index.html">Index</a><b> 1. </b><a href="WAVELET.html">Intro</a> <b>2. </b><u>Mathematica code</u> <b>3. </b><a href="WPT.html">WPT</a> <b>4.</b> <a href="FWT.html">FWT</a> <b>5. </b><a href="REF.html">References</a></font>
+	</body>
+
+</html>

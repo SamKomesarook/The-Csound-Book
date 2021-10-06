@@ -1,0 +1,47 @@
+<CsSample2>
+cInitial 0.0001
+cFinal 0.9999
+cn 100
+n 10
+<CsScoreManager>
+<CsFunctions>
+
+</CsFunctions>
+<CsInstruments>
+</CsInstruments>
+<CsArrangement>
+</CsArrangement>
+<CsNotes>
+</CsNotes>
+<CsScaleTargetMinima>
+i 1 0 0.5 6 50 -0.25
+</CsScaleTargetMinima>
+<CsScaleTargetRanges>
+i 4 240 4 6 20 0.5
+</CsScaleTargetRanges>
+<CsScaleActualMinima>
+i 0 0 0 0 0 0
+</CsScaleActualMinima>
+<CsScaleActualRanges>
+i 0 0 0 0 0 0
+</CsScaleActualRanges>
+<CsSoundfileOptions>
+Sample=s
+Format=A
+R=R
+SoundPlayer=MPLAYER
+nchnls=2
+kr=441
+sr=44100
+ksmps=10
+g=g
+</CsSoundfileOptions>
+<CsScoreOptions>
+UseEqualTemperament=true
+DivisionsPerOctave=12
+</CsScoreOptions>
+<CsTestScore>
+
+</CsTestScore>
+</CsScoreManager>
+</CsSample2>

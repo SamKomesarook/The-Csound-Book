@@ -1,0 +1,82 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>pvscross</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvsmaska.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvsinfo.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#vocoding" class="toqr">
+Signal Generators: STFT Resynthesis (Vocoding)</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>pvscross</h2>
+
+<pre>
+  fr      pvscross   fsig1, fsig2, kamp1, kamp2
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Perform cross-synthesis between two <em>fsigs</em>.</p>
+
+<h3>Performance</h3>
+
+<p><em>fsig1</em>, <em>fsig2</em> &#8211; input <em>fsigs</em> to be cross-synthesized</p>
+
+<p><em>kamp1</em>, <em>kamp2</em> &#8211; scaling factors for <em>fsig1</em> and <em>fsig2</em> respectively. Must be in the range 0 to 1.</p>
+
+<p>The operation of this opcode is identical to that of <a href="pvread.htm"><strong>pvcross</strong></a>, except that <strong>pvscross</strong> uses <em>fsigs</em> rather than analysis files. <strong>pvscross</strong> also lacks spectral envelope preservation, as in <strong>pvcross</strong>. The amplitudes from <em>fsig1</em> are applied to <em>fsig2</em>, using scaling factors <em>kamp1</em> and <em>kamp2</em> respectively.</p>
+
+<p>With this opcode, cross-synthesis can be performed on real-time audio input, by using <a href="pvsanal.htm"><strong>pvsanal</strong></a> to generate <em>fsig1</em> and <em>fsig2</em>. These must have the same format.</p>
+
+<h3>Example</h3>
+
+<pre>
+  kcross  <strong>linseg</strong>     0, p3/3, 0, p3/3, 1, p3/3, 1 ; progressive cross-synthesis
+  fcross  <strong>pvscross</strong>   fsig1, fsig2, 1-kcross, kcross
+  across  <strong>pvsynth</strong>    fcross
+</pre>
+
+<h3>Author</h3>
+<p>Richard Dobson<br>
+Somerset, England<br>
+August, 2001<br>
+New in Csound 4.14</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvsmaska.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvsinfo.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#vocoding" class="toqr">
+Signal Generators: STFT Resynthesis (Vocoding)</font></a>
+</body>
+
+</html>

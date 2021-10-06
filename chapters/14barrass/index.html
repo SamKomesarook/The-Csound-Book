@@ -1,0 +1,1410 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Some &quot;Golden Rules&quot; for Designing Auditory Displays</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" LINK="#0000ff">
+
+<H1><FONT COLOR="#000000" FACE="Times New Roman">13. Some &quot;Golden
+Rules&quot; for Designing Auditory Displays</FONT></H1>
+
+<H2><FONT COLOR="#000000" FACE="Times New Roman">Stephen Barrass</FONT></H2>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">Information sizzles
+and rustles, it can whooosh or splash, or rumble. You can hear
+information in the natural environment, but can you hear information
+in digital data? The soundtracks of computer games demonstrate
+that synthetic sounds can provide information that may be difficult
+to see, and that sounds may enhance enjoyment and performance
+in an activity. However game design is not driven by issues of
+faithful representation that are primary for the designer of an
+auditory display of data structure. The design of sounds to support
+information processing activities is a new challenge because of
+the types of information involved, and the need for a consistent
+understanding by a cross-section of people. This chapter introduces
+some principles for designing auditory information that address
+these challenges. These principles are demonstrated by individual
+examples, and then applied as a whole to the design of an auditory
+display that can allow a listener to quickly answer the question
+&quot;is there gold in this pile of dirt?&quot;</FONT></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Principles for
+Information Design</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">Yes, people can
+hear information about data that is mapped into sounds. This conclusion
+is based on the results of a series of formal experiments carried
+out by Sarah Bly in the early 1980&#146;s. In one of her experiments
+she asked participants to sort gold from dirt by listening to
+a six dimensional mapping of soil measurements into sounds. Most
+listeners were able to correctly identify more than half the samples.
+However the ability to hear this information depends critically
+upon how the data is mapped into sound. The lack of a systematic
+approach to designing the data-to-sound mapping was identified
+by Bly as a &quot;gaping hole&quot; impeding progress in auditory
+display [Bly S. 1994]. Perhaps we can look to methods of graphic
+display that involve similar issues of representation to bridge
+this gap. Some principles of information design that have been
+consistently identified, and broadly applied, are summarised in
+Figure 1.</FONT></P>
+
+<P><FONT FACE="Courier New"></FONT><TABLE BORDER="0" CELLPADDING="3"
+CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="23%" HEIGHT="1"><B><FONT COLOR="#000000"
+       SIZE="-1" FACE="Book Antiqua,Palatino">Directness</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="77%" HEIGHT="1">The most direct representation
+      is the one with the shortest psychological description [Norman
+      D.A. (1991)]</TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="23%" HEIGHT="1"><B>Appropriateness</B></TD> 
+    <TD VALIGN="TOP" WIDTH="77%" HEIGHT="1">An appropriate representation
+      provides the information required by the task: neither more nor
+      less [Norman D.A. (1991)]</TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="23%" HEIGHT="1"><B>Range</B></TD> 
+    <TD VALIGN="TOP" WIDTH="77%" HEIGHT="1">Any undetectable element
+      is useless. Utilise the entire range of variation [Bertin J.
+      (1981)]</TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="23%" HEIGHT="1"><B>Level</B></TD> 
+    <TD VALIGN="TOP" WIDTH="77%" HEIGHT="1">The power of a graphical
+      display is that it allows us to summarise general behaviour and
+      at the same time to examine details [Cleveland W.S. (1985)]</TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="23%" HEIGHT="1"><B>Organisation</B></TD> 
+    <TD VALIGN="TOP" WIDTH="77%" HEIGHT="1">Useful information involves
+      regrouping. The interactive reorganisation of relations between
+      elements can uncover information in the interplay of the data
+      [Bertin J. (1981)]</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><BR>
+      <B>Figure 1: Some principles for information design</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Principles for
+Auditory Information Design</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">The marriage of
+principles for information design with observations about auditory
+perception may produce the systematic approach to auditory display
+called for by Bly. In the following sections each of the principles
+is related to auditory perception. A small auditory example of
+each principle is provided to help get a feel for how it might
+apply in practice. The principles are then tried out on a design
+of an auditory display for Bly&#146;s dirt and gold scenario..
+The examples and final display can be generated with Csound.</FONT></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Principle of
+Directness</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">The most direct
+representation is the one with the shortest psychological description.
+A less direct scheme exacts a penalty in mental workload that
+will become apparent by poorer performance under stress [Norman
+D.A. (1991)]. A direct representation can be understood with little
+training, can be understood almost immediately, and allows judgements
+that are not readily swayed by the opinions of others. [Ware C.
+(1993)]. Some examples of direct representations are scatterplots,
+satellite images, and geiger counters. On the other hand, conventional
+symbols need to be learnt or looked up in a legend, are usually
+read one at a time, and operations with them may be limited by
+the 7 item limit of human short term memory. Conventional symbols
+have the advantage that they can carry complex concepts built
+upon on layers of learnt reference.</FONT></P>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">Different degrees
+of directness are demonstrated by the displays that may be generated
+from Figure 2 and Figure 3. The scenario is a mine rescue in which
+you might imagine that you have an instrument that measures the
+level of a dangerous gas as a reading between 0 and 9. The more
+direct display is a geiger counter-like granular synthesis where
+the density of grains increases with the level of gas. The other
+display is a morse code signal that taps out the level as a series
+of long and short tones. A short walk along the mineshaft is simulated
+by a set of instrument readings. Generate and listen to each walk-through.
+You can tell immediately when there is more gas with the geiger
+counter. The morse code is exact, but has to be looked up or learnt.
+It is suited to robust communications of more complex messages.</FONT></P>
+
+<P><FONT FACE="Courier New"></FONT><TABLE BORDER="0" CELLPADDING="3"
+WIDTH="817" CELLSPACING="2">
+  <TR HEIGHT="16">
+    <TD VALIGN="TOP" WIDTH="46%" HEIGHT="16"><B><FONT FACE="Courier New">geiger.orc</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="54%" HEIGHT="16"><B><FONT FACE="Courier New">geiger.sco</FONT></B></TD> 
+  </TR>
+  <TR HEIGHT="152">
+    <TD VALIGN="TOP" WIDTH="46%" HEIGHT="152"><FONT FACE="Courier New">sr
+      = 8000<BR>
+      kr = 800<BR>
+      ksmps = 10<BR>
+<BR>
+      instr 1<BR>
+      idens tablei p4*12.7, 3<BR>
+      ar grain idens*400,600,idens,1000,100,0.01,2,2,0.03<BR>
+      out ar<BR>
+      endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="54%" HEIGHT="152"><FONT FACE="Courier New">f2
+      0 128 7 1 128 0 ; ramp 1 to 0<BR>
+      f3 0 128 -5 1 128 100 ; exponential 1 to 100<BR>
+      ; walk = 0 2 4 5 3 7 8<BR>
+      ; instr start dur reading 0-9<BR>
+      i1 0 1 0<BR>
+      i1 + . 2<BR>
+      i1 + . 4<BR>
+      i1 + . 5<BR>
+      i1 + . 3<BR>
+      i1 + . 7<BR>
+      i1 + . 8</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><BR>
+      <B>Figure 2: Example of direct representation</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><BR>
+<TABLE BORDER="0" CELLPADDING="3" WIDTH="817" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="46%" HEIGHT="1"><B><FONT FACE="Courier New">morse.orc</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="54%" HEIGHT="1"><B><FONT FACE="Courier New">morse.sco</FONT></B></TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="46%" HEIGHT="1"><FONT FACE="Courier New">sr
+      = 8000<BR>
+      kr = 800<BR>
+      ksmps = 10<BR>
+<BR>
+      instr 1<BR>
+      ion = (p4&gt;0 ? 0.9*p3 : 0.1*p3)<BR>
+      iof = (p4&gt;0 ? 0.1*p3 : 0.9*p3)<BR>
+      kamp linseg 0,0.01,10000,ion,8000,0.01,0,iof-0.02,0<BR>
+      aout buzz kamp, 440, 5, 1<BR>
+      out aout<BR>
+      endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="54%" HEIGHT="1"><FONT FACE="Courier New">f1
+      0 8193 10 1 ; sine<BR>
+      t 0 300 ; tempo<BR>
+      ; 1 .---- 2 ..--- 3 ...-- 4 ....- 5 .....<BR>
+      ; 6 -.... 7 --... 8 ---.. 9 ----. 0 -----<BR>
+      ; walk = 0 2 4 5 3 7 8<BR>
+      ;instr start dur bit<BR>
+      ; 0 = ----<BR>
+      f0 6 ; each number is 5 beats + 1 gap<BR>
+      i1 0 1 1 ; -<BR>
+      i1 + . 1 ; -<BR>
+      i1 + . 1 ; -<BR>
+      i1 + . 1 ; -<BR>
+      i1 + . 1 ; -<BR>
+      s<BR>
+      ; 2 = ..---, etc.</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><BR>
+      <B>Figure 3: Example of conventional representation</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Principle of
+Appropriateness</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">A representation
+should provide the information required by the task: neither more
+nor less [Norman D.A. (1991)]. If the task requires qualitative
+information then use a qualitative representation. If the task
+requires quantitative information then use a quantitative representation.
+For example you can support the task of finding a country on a
+globe by colouring the countries in qualitatively different hues.
+If the task is to find the country with the highest rainfall then
+hues would make this difficult because they do not look ordered
+and you cannot compare them. To design an appropriate representation
+you need to be able to describe the information that is required.
+Information can be described as one of four types - nominal, ordinal,
+interval and ratio, shown in Figure 4.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="2"
+CELLSPACING="2">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="16%"><B>nominal</B></TD> 
+    <TD VALIGN="TOP" WIDTH="84%">qualitative difference e.g. countries</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="16%"><B>ordinal</B></TD> 
+    <TD VALIGN="TOP" WIDTH="84%">qualitative difference and order
+      e.g. fine, fair, foul weather</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="16%"><B>interval</B></TD> 
+    <TD VALIGN="TOP" WIDTH="84%">quantitative difference, order and
+      metric e.g. temperature</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="16%"><B>ratio</B></TD> 
+    <TD VALIGN="TOP" WIDTH="84%">quantitative difference, order,
+      metric and a zero e.g. rainfall</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><BR>
+      <B>Figure 4: Information types</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">The information
+types are further characterised by elementary relations of difference,
+order, metric and zero that are the building blocks of more complex
+information structures. Order is a directed difference, which
+might be expressed as more or less, or low and high. Metric is
+an equal unit of difference that is consistent, for example a
+1 degree rise in temperature is the same no matter what the current
+temperature is. Zero is a point of correspondence between all
+scales independent of unit, so for example zero rainfall is the
+same whether your rain gauge is in mm or inches. The elementary
+information relations are described in Figure 5.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="2"
+CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B>difference</B></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1">qualitative or quantitative</TD>
+     
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B>order</B></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1">directed difference</TD>
+     
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B>metric</B></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1">equal units of difference
+      throughout the range of variation</TD>
+     
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B>zero&nbsp;</B></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1">a point of correspondence
+      between all scales independent of unit</TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="4"><BR>
+      <B>Figure 5: Elementary information relations</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">The information
+building blocks can be aligned with perceptual building blocks
+that have similar properties. Gibson describes perception as the
+obtaining of information about the environment from higher order
+invariants such as stimulus energy, ratios and proportions [Gibson
+J.J. (1966)]. Sebba found that subjects made consistent judgements
+of similarity between music and colour structure due to correspondences
+in perceived order, contrast and ratios [Sebba R. 1991]. A characterisation
+of elementary perceptual relations is shown in Figure 6.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="2"
+WIDTH="344" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B>difference</B></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1">all perceptual elements
+      are detectably different</TD>
+     
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B>order</B></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1">the perceptual elements
+      have a discernable order</TD>
+     
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B>metric</B></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1">there is a unit of equal
+      perceptual difference</TD>
+     
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B>zero&nbsp;</B></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1">an absolute point of
+      reference for variations at any scale</TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="4"><BR>
+      <B>Figure 6: Elementary perceptual relations</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">To recap - we
+started with a description of four types of information characterised
+by lower level building blocks of difference, order, metric and
+zero. These building blocks were also used to describe perceptual
+relations with similar properties. This gives us the opportunity
+to construct a faithful mapping of an information type to a perceptual
+representation. If we can realise the perceptual building blocks
+as auditory relations then the process can be used to design faithful
+auditory representations for a general range of information types.
+The following examples demonstrate that the perceptual building
+blocks can be heard in auditory relations, as required by this
+process. The demonstrations can be generated with Csound. To save
+some space the headers in Figure 7 are common to all the following
+orchestras and scores.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="3"
+WIDTH="820" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="49%" HEIGHT="1"><B><FONT FACE="Courier New">header.orc</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="51%" HEIGHT="1"><B><FONT FACE="Courier New">header.sco</FONT></B></TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="49%" HEIGHT="1"><FONT FACE="Courier New">sr
+      = 8000<BR>
+      kr = 800<BR>
+      ksmps = 10</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%" HEIGHT="1"><FONT FACE="Courier New">f1
+      0 8193 10 1 ; sine</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><BR>
+      <B>Figure 7: Common headers for the demonstration orchestras
+      and scores</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Difference</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">Qualitatively
+different sounds can be easily generated by plugging in parameters
+to a synthesis instrument. The demonstration is an fm instrument
+and a score that generates a sequence of three different sounds,
+shown in Figure 8. You can hear that the sounds are different
+by listening to the sequence in a loop. It can take some fiddling
+with parameters to ensure that the sounds are more than a little
+different from one another. When the sounds are not very different
+you can hear a double sound in the loop. As you adjust the parameters
+you may get a feel for the folds, flat regions and non-linearities
+in the mapping from synthesis parameters to perceived sounds.
+This can be a problem if a display simply connects data values
+to synthesis parameters, because some differences may be undetectable,
+and others may be exaggerated.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="3"
+WIDTH="815" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="46%" HEIGHT="1"><B><FONT FACE="Courier New">fm.orc</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="54%" HEIGHT="1"><B><FONT FACE="Courier New">diff.sco</FONT></B></TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="46%" HEIGHT="1"><FONT FACE="Courier New">gir
+      = 100<BR>
+      gis = 1000<BR>
+<BR>
+      instr 1<BR>
+      kamp linen 10000, 0.01, p3, 0.1<BR>
+      ao0 oscili gir, gis*p4, 1<BR>
+      ao1 oscili gir, gis*p5+ao0, 1<BR>
+      ao2 oscili gir, gis*p6+ao1, 1<BR>
+      ao3 oscili gir, gis*p7+ao2, 1<BR>
+      ao4 oscili gir, gis*p8+ao3, 1<BR>
+      aout oscili kamp, gis*p9+ao4,1<BR>
+      out aout<BR>
+      endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="54%" HEIGHT="1"><FONT FACE="Courier New">t
+      0 60 ; 1 beat per second<BR>
+<BR>
+      ;instr start dur p4 p5 p6 p7 p8 p9<BR>
+<BR>
+      i1 0 1 0.333 0.692 0.176 0.138 0.354 0.058<BR>
+      i1 + 1 1.028 0.576 0.070 0.077 2.401 0.162<BR>
+      i1 + 1 0.217 0.885 0.259 1.087 0.739 1.005</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><BR>
+      <B>Figure 8: Auditory difference</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Order</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">Changes in a sound
+are sometimes described by words like buzziness, or squelchiness
+or heaviness that indicate a degree of order in the sounds. The
+demonstration, shown in Figure 8, is a vibrato at three different
+rates. When you listen to the sequence in a repeating loop it
+is easy to hear an ordered change in the sound. Try to pick the
+middle sound, the one that lies between the other two. Even if
+the middle sound is closer to one side or the other the sequence
+is ordered.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="3"
+WIDTH="817" CELLSPACING="2">
+  <TR HEIGHT="12">
+    <TD VALIGN="TOP" WIDTH="51%" HEIGHT="12"><B><FONT FACE="Courier New">vibrato.orc</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="49%" HEIGHT="12"><B><FONT FACE="Courier New">order.sco</FONT></B></TD> 
+  </TR>
+  <TR HEIGHT="12">
+    <TD VALIGN="TOP" WIDTH="51%" HEIGHT="12"><FONT FACE="Courier New">instr
+      1<BR>
+      k1 oscil 50, p4*10, 1<BR>
+      aout pluck 10000, 220+k1 ,220, 0, 1<BR>
+      out aout<BR>
+      endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="49%" HEIGHT="12"><FONT FACE="Courier New">;instr
+      start dur param 0.0-1.0<BR>
+<BR>
+      i1 0 1 0.67<BR>
+      i1 + . 0.10<BR>
+      i1 + . 0.23</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><BR>
+      <B>Figure 9: Auditory order</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Metric</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">A metric variation
+has a unit of equal perceptual difference. This can be heard by
+a unit step in difference no matter where the step occurs. The
+units that are available in Csound are semitones and decibels.
+The example below demonstrates equal steps in pitch. The size
+of the steps can be heard by listening to the sequence in a loop.
+The difference between the middle sound and those on either side
+should seem equal.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="3"
+WIDTH="819" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="48%" HEIGHT="1"><B><FONT FACE="Courier New">pluck.orc</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="52%" HEIGHT="1"><B><FONT FACE="Courier New">metric.sco</FONT></B></TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="48%" HEIGHT="1"><FONT FACE="Courier New">instr
+      1<BR>
+      icps = cpsoct(6.0+p4)<BR>
+      aout pluck 10000 ,icps, icps, 0, 1<BR>
+      out aout<BR>
+      endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%" HEIGHT="1"><FONT FACE="Courier New">;instr
+      start dur param 0.0-1.0<BR>
+<BR>
+      i1 0 1 0.0<BR>
+      i1 + . &gt;<BR>
+      i1 + . 1.0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><BR>
+      <B>Figure 10: Auditory metric</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Zero</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">A zero can be
+detected no matter where it occurs in a sequence, and no matter
+what the scale of variation. There are two types of zero that
+can be heard</FONT></P>
+
+<UL>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">a natural zero
+  which causes the sound to disappear</FONT>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">an original
+  zero which causes an observable aspect of the sound to disappear.</FONT>
+</UL>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">The natural zero
+is demonstrated by varying the density of grains in the geiger
+counter, from Figure 2, with nat0.sco from Figure 11. Generate
+the sequence and listen to it in a loop. As the density goes to
+zero the sound disappears. The zero can be detected anywhere in
+the sequence and at any scale of variation.</FONT></P>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">The original zero
+is demonstrated with the vibrato instrument, from Figure 9, and
+orig0.sco from Figure 11. The vibrato disappears at both the lower
+and upper extremes of its range, although the sound remains. The
+lower point is the zero because timbre of an upper extrema can
+be heard to change with scaling.</FONT></P>
+
+<P><FONT FACE="Times New Roman">&nbsp; </FONT><TABLE BORDER="0"
+CELLPADDING="2" WIDTH="845" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="43%" HEIGHT="1"><B><FONT FACE="Courier New">nat0.sco
+      for geiger.orc</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="57%" HEIGHT="1"><B><FONT FACE="Courier New">orig0.sco
+      for vibrato.orc</FONT></B></TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="43%" HEIGHT="1"><FONT FACE="Courier New">;instr
+      start dur par 0..9<BR>
+<BR>
+      i1 0 1 4<BR>
+      i1 + . 0<BR>
+      i1 + . 8</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="57%" HEIGHT="1"><FONT FACE="Courier New">;instr
+      start dur par 0.0-1.0<BR>
+<BR>
+      i1 0 1 0.4<BR>
+      i1 + . 0.0<BR>
+      i1 + . 0.8</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><BR>
+      <B>Figure 11: Auditory zeros</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Principle of
+Range</FONT></H3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">Any undetectable
+element is useless. Utilise the entire range of variation [Bertin
+J. (1981)] The number of differentiated elements that can be obtained
+from a display depends on the available range of variation. People
+can&#146;t hear the pitch of frequencies below 20 Hz in which
+case human hearing is the limiting factor. Some devices can&#146;t
+play frequencies above 4 kHz, in which case the device is the
+limiting factor. The range of perceptual variation available on
+a given device can be measured and represented by a display gamut
+[Barrass S. (1994a)]. The knowledge of a gamut allows the designer
+to maximise the difference between display elements. If the display
+is to be transported to other devices the intersection of the
+gamuts may be factored into the display design to ensure the capability
+to reproduce information relations. The effect of available range
+is demonstrated by the orchestra and score in Figure 12. The sequence
+consists of 4 levels of rainfall {none, light, medium, heavy}
+mapped to loudnesses of (0, 40,60,80} dB. This demonstration assumes
+that you can easily change the loudness setting of your audio
+equipment. Generate the sequence and turn the loudness knob down
+low to avoid the risk of an uncomfortably loud sound. Start playing
+the sequence in a loop and adjust the loudness knob to a comfortable
+level. Can you hear the 3 sounds that correspond with light, medium
+and heavy rain? You might notice that the equal differences in
+dB of loudness do not really sound equal at all, an observation
+that lead Stevens to propose a new law of psychophysics which
+states that psychological judgements are based on ratios in stimulus,
+rather than differences [Stevens S.S. (1962)]. Turn the loudness
+knob down until the light rain can no longer be heard. If the
+display were used in this condition there would be no way to hear
+information about periods of light rain. A display that relies
+on loudness will need to be calibrated to ensure the that all
+the elements are discriminable. Some attributes, like duration
+are not so susceptible to device settings or characteristics,
+and may be a better option for a portable display.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="3"
+WIDTH="851" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B><FONT FACE="Courier New">range.orc</FONT></B></TD>
+     
+    <TD VALIGN="TOP" WIDTH="49%" HEIGHT="1"><B><FONT FACE="Courier New">range.sco</FONT></B></TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><FONT FACE="Courier New">instr
+      1<BR>
+      kamp linen ampdb(20+p4*20), 0.01, p3, 0.01<BR>
+      k1 rand 1600<BR>
+      aout oscil kamp, 400+k1, 1<BR>
+      out aout<BR>
+      endin</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="49%" HEIGHT="1"><FONT FACE="Courier New">;instr
+      start dur answer<BR>
+<BR>
+      i1 0 1 1 ; light<BR>
+      i1 + . 2 ; medium<BR>
+      i1 + . 3 ; heavy</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="3"><BR>
+      <B>Figure 12: Auditory range</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Principle of
+Level</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">The power of a
+graphical display is that it allows us to summarise general behaviour
+and at the same time to examine details [Cleveland W.S. (1985)].
+Higher level information is contained in the groupings, clusters,
+trends, correlations, outliers and other relations between data
+elements. The level of the display can be determined by the level
+of question that can be immediately answered from the display.
+A poor display can only answer questions about individual elements
+[Bertin J. (1981)].</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="2"
+WIDTH="407" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B>local</B></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1">can answer questions
+      about a single element</TD>
+     
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B>intermediate</B></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1">can answer questions
+      about subsets and groups of elements</TD>
+     
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B>global</B></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1">can answer questions
+      about the entire set of elements as a whole</TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="4"><BR>
+      <B>Figure 13: Levels of information</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">The different
+levels of information defined by Bertin correspond well with the
+description of acoustic grouping used by Bregman in his theory
+of auditory scene analysis [Bregman A.S. (1990)]. This theory
+has two levels of listening processes- a global level of overall
+analysis, and a local level of attention to details. These processes
+group and segregate acoustic elements into coherent sounds or
+&quot;streams&quot;. Levels of information may be linked with
+levels of auditory scene analysis as shown in Figure 12.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="2"
+WIDTH="344" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B>local</B></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="3" HEIGHT="1">answered by listening
+      to an element within a stream</TD>
+     
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B>intermediate</B></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="3" HEIGHT="1">answered by listening
+      to a stream</TD>
+     
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B>global</B></TD>
+     
+    <TD VALIGN="TOP" COLSPAN="3" HEIGHT="1">answered by listening
+      to an auditory scene</TD>
+     
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="5" HEIGHT="1"><BR>
+      <B>Figure 14: Levels of auditory information</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">Bregman first
+noticed streams whilst investigating phonemes in speech. He wondered
+whether non-speech sounds would hold together the way spoken phonemes
+do. To find out he concatenated 26 sounds such as water splashing
+in a sink, a doorbell, and a dentist&#146;s drill to form a sentence
+of mock phonemes. He found that the sentence did not sound like
+speech at all, even when it was played at speech rates of 10 phonemes
+per second. Parts of the sentence seemed to pop-out, and the order
+of the phonemes was disrupted. We can repeat this experiment with
+the fm sounds from Figure 8. Play the looped sequence at the slow
+rate of 1 sound per second and notice that you can easily write
+down the order of the three sounds. Now speed it up to 10 sounds
+per second by changing the tempo in diff.sco from 60 beats per
+minute (t 0 60) to 600 beats per minute (t 0 600). Play the loop
+and try to write down the order again - this time it will be very
+difficult to tell which sound comes after which. This is because
+the sounds have segregated into different auditory streams. The
+segregation of elements into streams can make simple tasks like
+counting much harder. Some consequences of streaming for auditory
+display are</FONT></P>
+
+<UL>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">streams are
+  categorical and exclusive</FONT>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">judgements involving
+  elements in the same stream are easy</FONT>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">judgements involving
+  elements in different streams are difficult</FONT>
+</UL>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">An understanding
+of the factors that influence streams can guide the design of
+a higher level display. As mentioned earlier, there is a global
+level and a local level. The global level, or primitive process,
+is a default bottom up grouping by acoustic factors such as spectral
+similarity. The local level, or schema process, allows the listener
+to alter the default grouping by mental effort. Mental schemas
+detect familiar acoustic patterns and draw attention to them.
+These Schemas are a top down process that explains why what we
+hear depends so much on attention and previous listening experience.
+In this view, the characteristics of sounds are calculated from
+streams, not directly from the acoustic array. This is very different
+from a straight forward signal processing model of auditory perception.</FONT></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Primitive Grouping
+in Auditory Displays</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">The factors that
+influence the primitive process operate sequentially across time,
+and simultaneously across the spectrum. The perception of a new
+sound depends on the streams that exist when it is introduced.
+Parts that are acoustically similar to an existing stream will
+be grouped with it, leaving the residue to be heard as the new
+sound. This is called the old-plus-new heuristic, and it implies
+that the sequential factors that capture recent auditory context
+tend to override the moment to moment spectral factors. A listing
+of factors in order of influence can be made from results of experiments
+that have placed various factors in competition. The sequential
+factors are toward the top of the list. This listing may provide
+a basis for controlling the primitive grouping of elements in
+a higher level auditory display.</FONT></P>
+
+<UL>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">temporal rate
+  measured by the separation of onsets in the range 60-150 ms</FONT>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">the difference
+  between spectral centroids</FONT>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">difference in
+  fundamental frequency in the range 4-13 semitones</FONT>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">binaural harmonic
+  correlation</FONT>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">correlated frequency
+  modulations</FONT>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">correlated amplitude
+  modulations</FONT>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">harmonic relations</FONT>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">parallel spectral
+  movement</FONT>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">synchronous
+  onsets</FONT>
+</UL>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Schemas in Auditory
+Displays</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">Schemas are important
+in auditory design because attention and previous learning have
+a marked influence on what is heard. We can take advantage of
+familiar patterns to improve the detection of information elements,
+and to improve the coherence of information in a mixture. The
+semantics of familiar sounds can also be used to improve the interpretation
+of the display in a particular task - for example rain sounds
+can be easily related to rainfall records [Barrass S. (1994b)].
+Some consequences of schemas in auditory display include</FONT></P>
+
+<UL>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">improved coherence
+  and separation of figure from ground</FONT>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">the selection
+  of streams and material from streams</FONT>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">recognition
+  of familiar patterns</FONT>
+  <LI><FONT COLOR="#000000" FACE="Times New Roman">restoration
+  of hidden material</FONT>
+</UL>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">The effects of
+a schema can be demonstrated by the restoration of a damaged tune.
+Generate the example from the orchestra and scores in Figure 14,
+and listen to the sequence in a loop. Can you identify the tune,
+despite all the noise and interference? Some notes are actually
+missing, can you tell which ones? To find out uncomment the &quot;e&quot;
+in schema.sco so that the noises aren&#146;t included when you
+generate the sequence again. The interesting thing is that the
+noises don&#146;t provide any acoustic clues, yet you can hear
+the correct notes! If you can&#146;t hear the tune then it may
+be because it isn&#146;t familiar (hint: 3 blind mice), and you
+could try again with one that is.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="3"
+WIDTH="871" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="46%" HEIGHT="1"><B><FONT FACE="Courier New">schema.orc</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="54%" HEIGHT="1"><B><FONT FACE="Courier New">schema.sco</FONT></B></TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="46%" HEIGHT="1"><FONT FACE="Courier New">;
+      tone<BR>
+      instr 1<BR>
+      kamp linen 3000, 0.05, p3, 0.01<BR>
+      aout oscil kamp, cpspch(p4), 1<BR>
+      out aout<BR>
+      endin<BR>
+<BR>
+      ; noise<BR>
+      instr 2<BR>
+      kamp linen 5000, 0.01, p3, 0.01<BR>
+      i1 = cpspch(p4)<BR>
+      k1 rand i1<BR>
+      aout oscil kamp, k1+i1, 1<BR>
+      out aout<BR>
+      endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="54%" HEIGHT="1"><FONT FACE="Courier New">t
+      0 200 ; tune with missing notes<BR>
+      i1 0 1 8.04<BR>
+      i1 2 2 8.00<BR>
+      i1 4 1 8.04<BR>
+      i1 6 2 8.00<BR>
+      i1 9 0.5 8.05<BR>
+      i1 9.5 0.5 8.05<BR>
+      i1 12 1 8.07<BR>
+      i1 13.5 0.5 8.05<BR>
+      i1 14 2 8.04<BR>
+      ; uncomment next line to remove noise<BR>
+      ; e<BR>
+      i2 1 1 8.00 ; missing<BR>
+      i2 3.5 1 8.00 ; interference<BR>
+      i2 5 1 8.00 ; missing<BR>
+      i2 8 1 8.00 ; missing<BR>
+      i2 9 0.5 8.00 ; interference<BR>
+      i2 10 2 8.00 ; missing<BR>
+      i2 13 0.5 8.00 ; missing</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><BR>
+      <B>Figure 15: Restoration of a tune by a schema</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Principle of
+Organisation</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">Useful information
+involves regrouping. The interactive reorganisation of relations
+between elements can uncover information in the interplay of the
+data [Bertin J. (1981)]. Bertin demonstrates by permuting matrices
+of visual elements so they group in different ways to reveal information
+about the peak booking periods in a hotel. The useful information
+does not correspond with the values of the individual elements
+(such as age, profession etc.) but with the structures formed
+by the interplay of these elements with each other as a whole.
+Bertin&#146;s display consisted of cards with simple marks on
+them, such as dots that vary in size, that could be moved around
+on a table top. Only the spatial organisation of the elements
+is permuted, not any of the other visual variables such as lightness
+or size. This is because you can only see two distinct cards if
+they have different positions on the table, or are in the same
+place at different times. This is why space and time are called
+the &quot;indispensable&quot; dimensions of a visual display..
+Elements that use up an indispensable dimension constrict the
+options for permutation. For example a time series plot uses up
+the horizontal dimension, leaving only the vertical for permutation.
+A map uses up both the horizontal and vertical dimensions and
+so cannot be permuted.</FONT></P>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">Streaming experiments
+have shown two sounds can occupy the same space and time but still
+be heard as separate identities when they occupy different parts
+of the spectrum. It seems that the auditory display designer has
+a great deal of freedom to organise and reorganise display elements.
+The degree of freedom rests upon the capabilities of the display
+device. A display that uses Csound may employ multiple synthesis
+parameters to reorganise spectral relations. The score events
+can be organised to separate elements in time. A quadraphonic
+pan is available that can provide a degree of separation in space.
+Interactive permutation and exploration is supported by real-time
+input sensors. A limiting factor is the amount of computation
+required to generate the sounds in real time. Any apparent lag
+in reaction can compromise the usability of an interactive display.
+One way to address this problem is to design the synthesis to
+be as computationally simple as possible. Another way is to take
+advantage of fast hardware for audio synthesis.</FONT></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Putting the Principles
+to Work</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">So far we&#146;ve
+borrowed some principles of information design from graphic designers,
+and tried some simple demonstrations to get a feel that they may
+be of benefit in the design of auditory displays as well. The
+next step is to try them out in the design of an actual display.
+In this instance I have chosen Bly&#146;s dirt and gold scenario
+because it is a good example of the type of activity where sounds
+may provide information that is difficult to obtain visually,
+and it is a reference for other investigators. Here is the problem
+scenario described by Bly ...</FONT></P>
+
+<P><I><FONT COLOR="#000000" FACE="Times New Roman">&quot;Can you
+find the gold ?&quot; It is hypothesised that six different aspects
+of the land in which gold may be found are determinative of whether
+or not gold is there. The first 20 data variables (each 6-d) are
+from sites known to have gold; the second 20 data variables are
+from sites known not to have gold. For each of the remaining 10
+data variables, decide for each whether or not it is from a site
+with gold.</FONT></I></P>
+
+<P><I><FONT COLOR="#000000" FACE="Times New Roman">The data set
+consists of 100 samples generated from a normal random deviate
+generator and then separated into two distinct sets. Only samples
+in which all six variables had positive values between 0.0 and
+3.5 were included. A sample s=(x21,x2,x3,x4,x5,x6) belongs to
+Set 2 (dirt) if</FONT></I></P>
+
+<UL>
+  <DIR>
+    <P><FONT COLOR="#000000" FACE="Courier New">x2*x2+x3*x3+x4*x4+x5*x5+x6*x6
+    &lt;= 1.5*1.5 or<BR>
+    x1*x1+x3*x3+x4*x4+x5*x5+x6*x6 &lt;= 1.5*1.5 or<BR>
+    x1*x1+x2*x2+x4*x4+x5*x5+x6*x6 &lt;= 1.5*1.5</FONT>
+  </DIR>
+</UL>
+
+<P><I><FONT COLOR="#000000" FACE="Times New Roman">At least five
+of the six variables in each sample of Set 2 have a value less
+than 1.5 and at most one of x1,x2,x3 have a value greater than
+1.5. The 2 sets are completely distinct only in six-space; any
+representation in fewer dimensions will overlap Set 1 and Set
+2.</FONT></I></P>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">Before we begin
+the design we must be clear about the information that is required
+by the task, and the data elements that are involved. A task analysis
+and data characterisation can help specify the design of a useful
+display [Barrass S. (1996c)]. Bertin observes that &quot;useful
+information is the answer to a question&quot; [Bertin J. (1981)].
+The question in the scenario is &quot;can you find the gold?&quot;,
+which has the useful answers {yes, no}. A direct display will
+allow the listener to give one of these answers almost immediately,
+without extensive training, and with confidence to resist instructional
+bias. The first step in the design of the direct display is an
+appropriate representation of the display elements. Each sample
+is comprised of 6 ratio variables that are characterised by quantitative
+difference, order, metric and a zero. We could map these to perceptual
+building blocks with the same characteristics. However it is not
+the individual measurements that are of interest, but the samples
+themselves. The appropriate display is one that allows the difference
+between gold and dirt to be heard by an auditory difference, not
+one that allows us to hear measurements that are part of the samples.
+In the demonstration of the principle of difference we found that
+the fm algorithm in Figure 8 could produce quite different sounds
+and hence may be appropriate for a display of difference between
+the dirt and gold elements. Of course there are many other synthesis
+algorithms that could also be tried, the important point is that
+they have 6 parameters that cause perceptual difference. Having
+selected a synthesis mapping we need to check the range on the
+display device. In this case the number of differential elements
+is only two - yes and no. The scaling of the parameters needs
+to be adjusted to ensure that representative pairs of gold and
+dirt can be discriminated in the display. The orchestra has a
+global scaling factor gis, but individual elements may also be
+adjusted if necessary. Some representative pairs to tune the range
+against are in rangeok.sco shown in Figure 17. Different pairs
+are selected by uncommenting them in the score file.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="3"
+WIDTH="409" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B><FONT FACE="Courier New">rangeok.sco
+      - goes with fm.orc</FONT></B></TD>
+     
+    <TD VALIGN="TOP" WIDTH="16%" HEIGHT="1"><B><FONT FACE="Courier New">identity</FONT></B></TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><FONT FACE="Courier New">;
+      uncomment dirt and gold pairs<BR>
+      ;i1 0 1 0.554 1.232 0.074 0.198 0.358 0.065<BR>
+      i1 0 1 0.292 0.699 0.076 0.153 0.303 0.064<BR>
+      ;i1 0 1 0.462 1.383 0.047 1.059 0.344 0.798<BR>
+      ;i1 1 1 0.130 0.096 1.686 0.108 1.020 1.198<BR>
+      i1 1 1 0.886 0.366 0.570 1.571 2.040 1.357<BR>
+      ;i1 1 1 1.224 1.481 1.835 0.318 0.510 1.500</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="16%" HEIGHT="1"><BR>
+      <FONT FACE="Courier New">; dirt01<BR>
+      ; dirt02<BR>
+      ; dirt03<BR>
+      ; gold01<BR>
+      ; gold02<BR>
+      ; gold03</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="3"><BR>
+      <B>Figure 17: Range calibration</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">It is easy to
+tell the pairs of sounds apart with this display, which indicates
+that the range is ok. It is also easy to tell different gold samples
+apart, which is not such good news because this is more information
+than we need to answer the question. Although the display enables
+people to answer the question &quot;is this sample gold?&quot;
+quite accurately, it only answers a question about a local element.
+A more useful higher level display would enable the listener to
+answer the question &quot;is there any gold in all this dirt?&quot;
+quickly and directly. The principle of level raised the possibility
+of streaming as a way to construct a higher order auditory display.
+In the demonstration we found that the fm sounds tend to segregate
+if they are played at speech rates of 10 per second. Perhaps we
+can calibrate the fm parameters so that gold tends to segregate
+from the dirt. This can be done using a sequence of dirt-gold-dirt-silence,
+shown in levelok.sco in Figure 19. If you listen to this sequence
+in a loop you will hear the gold as a high stream that is distinctly
+separate from the low stream made of the two different dirt samples.
+The gold clearly segregates for these samples, but should this
+not be the case then the fm parameters may be tuned to cause segregation.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="3"
+WIDTH="431" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B><FONT FACE="Courier New">levelok.sco
+      - goes with fm.orc</FONT></B></TD>
+     
+    <TD VALIGN="TOP" WIDTH="21%" HEIGHT="1"><B>identity</B></TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><FONT FACE="Courier New">t
+      0 600 ; tempo<BR>
+      f0 4 ; 1 beat of silence at the end<BR>
+      i1 0 1 0.554 1.232 0.074 0.198 0.358 0.065<BR>
+      i1 1 1 0.130 0.096 1.686 0.108 1.020 1.198<BR>
+      i1 2 1 0.292 0.699 0.076 0.153 0.303 0.064</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="21%" HEIGHT="1"><FONT FACE="Courier New"><BR>
+<BR>
+      ; dirt01<BR>
+      ; gold01<BR>
+      ; dirt02</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="3"><BR>
+      <B>Figure 19: Level calibration</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">According to the
+principle of organisation we may also take advantage of spare
+indispensable dimensions to improve the separation of the answers.
+At the moment we are only using the spectral dimension of the
+display. However the soil samples have no intrinsic order in space
+or time, leaving these indispensable dimensions spare. The Csound
+pan command can provide spatial separation for two data measurements.
+The temporal separation is not so easy in Csound because a start
+and duration for each event has to be specified up front in the
+score, and cannot be varied by the measurement fields. My solution
+was to copy one of the measurements into the start field. The
+result is a redundant mapping of 3 of the 6 measurements in the
+samples to spare indispensable dimensions which may improve the
+perception of the answer categories. The display is presented
+as a Csound instrument called gold.orc in Figure 20. You can listen
+to a handful of dirt and a handful of gold (which are in fact
+Bly&#146;s training sets) with the scores in Figure21. Listen
+to each to get a feel for how some typical dirt and gold samples
+sound. The try listening to the mixture of dirt and gold from
+Bly&#146;s first test set that is listed in goldtest1.sco in Figure
+22. You can immediately tell that there is gold in this test set,
+demonstrating that the display answers the question at a high
+level. The local question can be answered by slowing down the
+display rate, either by editing the tempo in the score, or playing
+the sequence with a tool that allows variable rate playback. Intermediate
+structure may be heard by altering the rate of presentation so
+that different streams pop-out. As the rate slows the streams
+become broader and encompass more elements. This effect is akin
+to a visual zoom that shows detail at different scales. If you
+have an ear for gold you can mix up your own sets from the training
+sets, or you can generate new samples from the equations. The
+orchestra may be simple enough to allow real-time interaction
+from score statements generated on the fly.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="3"
+WIDTH="864" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><B><FONT FACE="Courier New">gold.orc</FONT></B></TD>
+     
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" COLSPAN="2" HEIGHT="1"><FONT FACE="Courier New">nchnls
+      = 2<BR>
+      gir = 100<BR>
+      gis = 1000<BR>
+<BR>
+      instr 1<BR>
+      kamp linen 10000, 0.01, p3, 0.1<BR>
+      ao0 oscili gir, gis*p4, 1<BR>
+      ao1 oscili gir, gis*p5+ao0, 1<BR>
+      ao2 oscili gir, gis*p6+ao1, 1<BR>
+      ao3 oscili gir, gis*p7+ao2, 1<BR>
+      ao4 oscili gir, gis*p8+ao3, 1<BR>
+      ao5 oscili kamp, gis*p9+ao4, 1<BR>
+      a1,a2,a3,a4 pan ao5, p6, p7, 2, 1, 1 ; separate d3=p6 and d4=p7
+      in space<BR>
+      outs a1, a2<BR>
+      endin</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><BR>
+      <B>Figure 20: Gold detector</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><BR>
+<TABLE BORDER="0" CELLPADDING="3" WIDTH="865" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="50%" HEIGHT="1"><B><FONT FACE="Courier New">dirt.sco
+      - 20 dirt samples</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="50%" HEIGHT="1"><B><FONT FACE="Courier New">gold.sco
+      - 20 gold samples</FONT></B></TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="50%" HEIGHT="1"><FONT FACE="Courier New">f2
+      0 129 7 0 128 1 ; ramp 0 to 1<BR>
+      t 0 200 ; tempo<BR>
+      i1 0.830 1 0.830 0.812 0.170 0.064 0.417 0.897<BR>
+      i1 0.170 1 0.170 1.062 0.085 0.716 0.080 0.871<BR>
+      i1 0.671 1 0.671 0.237 0.380 0.689 0.899 0.600<BR>
+      i1 2.380 1 2.380 0.690 0.355 0.006 0.691 0.437<BR>
+      i1 0.551 1 0.551 0.377 0.007 0.112 0.051 0.246<BR>
+      i1 0.242 1 0.242 1.417 0.275 0.405 0.590 0.810<BR>
+      i1 0.404 1 0.404 1.750 0.631 0.247 0.060 0.767<BR>
+      i1 0.443 1 0.443 1.472 0.297 1.050 0.046 0.455<BR>
+      i1 0.180 1 0.180 1.112 0.245 0.620 0.782 0.547<BR>
+      i1 0.007 1 0.007 0.286 1.223 1.339 0.300 0.475<BR>
+      i1 0.640 1 0.640 0.393 0.642 0.941 0.670 0.123<BR>
+      i1 0.737 1 0.737 0.427 0.796 0.723 0.194 0.149<BR>
+      i1 0.565 1 0.565 0.571 0.005 0.340 0.507 0.168<BR>
+      i1 0.976 1 0.976 0.342 0.090 0.356 0.532 0.461<BR>
+      i1 1.165 1 1.165 0.510 0.212 0.900 0.736 0.574<BR>
+      i1 0.821 1 0.821 0.291 1.185 0.465 0.061 0.392<BR>
+      i1 2.195 1 2.195 0.776 1.027 0.510 0.517 0.135<BR>
+      i1 0.430 1 0.430 1.427 0.183 0.050 0.370 0.563<BR>
+      i1 0.243 1 0.243 0.717 0.531 0.597 0.376 1.170<BR>
+      i1 0.042 1 0.042 0.199 0.745 0.364 0.399 1.086</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="50%" HEIGHT="1"><FONT FACE="Courier New">f2
+      0 129 7 0 128 1 ; ramp 0 to 1<BR>
+      t 0 200 ; tempo<BR>
+      i1 1.394 1 1.394 0.775 0.080 0.446 0.541 1.631<BR>
+      i1 0.807 1 0.807 1.411 0.515 0.851 0.681 0.749<BR>
+      i1 1.355 1 1.355 0.099 0.235 2.054 0.656 2.127<BR>
+      i1 0.498 1 0.498 2.482 0.370 0.743 1.580 0.415<BR>
+      i1 1.197 1 1.197 0.411 3.198 0.370 1.241 0.373<BR>
+      i1 1.955 1 1.955 0.433 1.390 0.067 1.314 0.858<BR>
+      i1 0.330 1 0.330 0.572 0.815 0.574 0.778 1.606<BR>
+      i1 2.019 1 2.019 0.317 0.737 1.144 0.193 0.705<BR>
+      i1 0.996 1 0.996 0.426 0.613 1.612 0.157 0.711<BR>
+      i1 0.775 1 0.775 0.359 0.589 0.874 0.281 1.618<BR>
+      i1 1.335 1 1.335 0.280 1.014 0.407 2.072 0.138<BR>
+      i1 0.251 1 0.251 2.937 0.902 0.905 1.296 0.118<BR>
+      i1 1.182 1 1.182 0.186 0.503 1.302 0.807 1.188<BR>
+      i1 0.782 1 0.782 0.134 1.671 2.251 2.005 0.678<BR>
+      i1 1.206 1 1.206 1.025 0.267 0.584 1.056 0.116<BR>
+      i1 0.674 1 0.674 0.867 0.567 1.283 1.531 1.046<BR>
+      i1 0.207 1 0.207 0.244 0.969 0.523 1.060 1.342<BR>
+      i1 0.907 1 0.907 1.190 0.834 0.281 1.129 0.029<BR>
+      i1 0.453 1 0.453 0.733 1.138 0.840 1.078 0.324<BR>
+      i1 0.086 1 0.086 0.699 0.167 1.241 0.980 0.222</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><B><BR>
+      Figure 21: Dirt and gold training sets</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P>&nbsp;</P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLPADDING="3"
+WIDTH="418" CELLSPACING="2">
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="83%" HEIGHT="1"><B><FONT FACE="Courier New">goldtest1.sco</FONT></B></TD> 
+    <TD VALIGN="TOP" WIDTH="17%" HEIGHT="1"><B><FONT FACE="Courier New">identity</FONT></B></TD> 
+  </TR>
+  <TR HEIGHT="1">
+    <TD VALIGN="TOP" WIDTH="83%" HEIGHT="1"><FONT FACE="Courier New">f2
+      0 129 7 0 128 1 ; ramp 0 to 1<BR>
+      t 0 200 ; tempo<BR>
+      i1 0.333 1 0.333 0.692 0.176 0.138 0.354 0.058<BR>
+      i1 0.554 1 0.554 1.232 0.074 0.198 0.358 0.065<BR>
+      i1 1.028 1 1.028 0.576 0.070 0.077 2.401 0.162<BR>
+      i1 0.217 1 0.217 0.885 0.259 1.087 0.739 1.005<BR>
+      i1 0.507 1 0.507 0.862 0.198 0.309 0.578 1.107<BR>
+      i1 0.570 1 0.570 0.866 0.301 0.434 0.526 0.674<BR>
+      i1 0.554 1 0.554 1.232 0.074 0.198 0.358 0.065<BR>
+      i1 0.530 1 0.530 0.042 0.852 0.250 0.053 0.185<BR>
+      i1 0.497 1 0.497 1.590 1.365 1.175 1.278 0.101<BR>
+      i1 0.167 1 0.167 1.261 0.031 0.658 0.306 1.289</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%" HEIGHT="1"><FONT FACE="Courier New"><BR>
+<BR>
+      ; dirt<BR>
+      ; dirt<BR>
+      ; gold<BR>
+      ; gold<BR>
+      ; dirt<BR>
+      ; dirt<BR>
+      ; dirt<BR>
+      ; dirt<BR>
+      ; gold<BR>
+      ; dirt</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" COLSPAN="2"><BR>
+      <B>Figure 22 : mixed dirt and gold</B></TD>
+     
+  </TR>
+</TABLE></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman"><BR>
+Summary</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">Sounds are useful
+in everyday activities and they can also be useful in abstract
+information processing activities. The advent of faster audio
+synthesis hardware has potential to allow auditory displays to
+become common in many as yet unforeseen computer-based activities.
+However auditory display is still a new field and the designer
+is faced with some difficult challenges, due to the type of information
+to be represented, the need for consistent comprehension, and
+the need to support interactive exploration. The lack of a systematic
+approach for mapping data into sounds has been identified as a
+gaping hole that is impeding progress in this field of practise.
+One way to bridge this gap is to borrow some principles that have
+been developed by graphic designers faced with similar issues.
+Principles of directness, appropriateness, range, level, and organisation
+have appeared consistently and been applied broadly, and may also
+be helpful in auditory display. The integration of these principles
+with psychoacoustic observations may provide the systematic approach
+that has been called for.</FONT></P>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">This suggestion
+was investigated by a demonstration of each principle in the context
+of auditory display. The demonstrations show that the principles
+could apply to sounds. The next step was to find out whether they
+were of any benefit in practise. Bly&#146;s dirt and gold scenario
+was chosen as a test bed because it is an example of information
+that may be difficult to display and understand visually, and
+because it is a reference for other designers. The resulting display
+may allow a listener to hear information about gold and dirt that
+can allow direct answers to the question &quot;is there gold?&quot;
+at local and global levels. The important thing is that these
+principles demonstrably do address important issues and do provide
+a useful method for auditory information design. If you are interested
+in digging up more information about auditory display a good place
+to start is the International Community of Auditory Display (ICAD)
+at </FONT><FONT FACE="Times New Roman"><A HREF="http://www.santafe.edu/~icad">http://www.santafe.edu/~icad</A></FONT><FONT
+ COLOR="#000000" FACE="Times New Roman">.</FONT></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">Acknowledgments</FONT></H3>
+
+</h3>
+
+<P><FONT COLOR="#000000" FACE="Times New Roman">Thanks to Matthew
+Hutchins, and Dr. Simon Kravis of CSIRO Maths and Information
+Science for their reviews. Many thanks to Tim Barrass for reviewing
+both the words and the sounds. Finally thanks to Dr. Richard Boulanger
+for his suggestions.</FONT></P>
+
+<H3><FONT COLOR="#000000" FACE="Times New Roman">References</FONT></H3>
+
+</h3>
+
+<DIR>
+  <P><FONT COLOR="#000000" FACE="Times New Roman">Barrass S. (1996a)
+  Sculpting a sound space with information properties, Organised
+  Sound, 1, 2, Cambridge University Press.</FONT>
+  <P><FONT COLOR="#000000" FACE="Times New Roman">Barrass S. (1996b)
+  EarBenders: using stories about listening to design auditory
+  displays, Proceedings of the First Asia-Pacific Conference on
+  Human Computer Interaction APCHI&#146;96, Information Technology
+  Institute, Singapore.</FONT>
+  <P><FONT COLOR="#000000" FACE="Times New Roman">Barrass S. (1996c)
+  TaDa! Demonstrations of auditory information design, Proceedings
+  of the International Conference on Auditory Display ICAD&#146;96,
+  Xerox PARC, Palo Alto.</FONT>
+  <P><FONT COLOR="#000000" FACE="Times New Roman">Bertin J. (1981)
+  Graphics and Graphic Information Processing, Walter de Gruyter.</FONT>
+  <P><FONT COLOR="#000000" FACE="Times New Roman">Bly S. (1994)
+  Multivariate data analysis, in Kramer G. (ed) Auditory Display:
+  Sonification, Audification and Auditory Interfaces, SFI Studies
+  in the Sciences of Complexity, Proceedings Volume XVIII, Addison
+  Wesley Publishing Company, Reading, MA, U.S.A.</FONT>
+  <P><FONT COLOR="#000000" FACE="Times New Roman">Bregman A.S.
+  (1990) Auditory Scene Analysis, The MIT Press.</FONT>
+  <P><FONT COLOR="#000000" FACE="Times New Roman">Cleveland W.S.
+  (1985) The Elements of Graphing Data, Wadsworth Advanced Books
+  and Software, Monterey, California.</FONT>
+  <P><FONT COLOR="#000000" FACE="Times New Roman">Gibson J.J. (1966)
+  The Senses Considered as Perceptual Systems, Houghton Mifflin
+  Company, Boston.</FONT>
+  <P><FONT COLOR="#000000" FACE="Times New Roman">Norman D.A. (1991)
+  Cognitive Artifacts, in Carroll J.M. (ed), Designing Interaction
+  : Psychology at the Human-Computer Interface, Cambridge University
+  Press.</FONT>
+  <P><FONT COLOR="#000000" FACE="Times New Roman">Sebba R. (1991)
+  Structural Correspondence Between Music and Color, COLOR Research
+  and Applications, 16, 2, pp 81-88.</FONT>
+  <P><FONT COLOR="#000000" FACE="Times New Roman">Stevens S.S.
+  (1962) The surprising simplicity of sensory metrics, American
+  Psychologist, 1962, 17, pp 29-39.</FONT>
+  <P><FONT COLOR="#000000" FACE="Times New Roman">Ware C. (1993)
+  The Foundations of Experimental Semiotics: a Theory of Sensory
+  and Conventional Representation, Journal of Visual Languages
+  and Computing, 4, pp 91-100, Academic Press Limited, London.</FONT>
+</DIR>
+
+</BODY>
+</HTML>

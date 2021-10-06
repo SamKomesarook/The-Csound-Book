@@ -1,0 +1,75 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN05, GEN07</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen04.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen06.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#line" class="toqr">
+<strong>GEN</strong> Routines: Line/Exponential Segment Generators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN05, GEN07</h2>
+
+<pre>
+  <strong>f</strong>  #    time    size   5   a   n1   b   n2   c  .  .  .  
+  <strong>f</strong>  #    time    size   7   a   n1   b   n2   c  .  .  .    
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>These subroutines are used to construct functions from segments of exponential curves (<strong>GEN05)</strong> or straight lines (<strong>GEN07</strong>).
+</p>
+<h3>Initialization</h3>
+<p><em>size </em> &#8211; number of points in the table. Must be a power of 2 or power-of-2 plus 1 (see <a href="../score/f.htm"><strong>f statement</strong></a>).
+</p>
+<p><em>a, b, c,</em> etc. &#8211; ordinate values, in odd-numbered pfields p5, p7, p9, . . . For <strong>GEN05</strong> these must be nonzero and must be alike in sign. No such restrictions exist for <strong>GEN07</strong>.
+</p>
+<p><em>n1, n2</em>, etc. &#8211; length of segment (no. of storage locations), in even-numbered pfields. Cannot be negative, but a zero is meaningful for specifying discontinuous waveforms (e.g. in the example below). The sum <em>n1</em> + <em>n2</em> + .... will normally equal <em>size</em> for fully specified functions. If the sum is smaller, the function locations not included will be set to zero; if the sum is greater, only the first <em>size</em> locations will be stored.
+</p>
+<h3>Note </h3>
+<p>If p4 is positive, functions are post-normalized (rescaled to a maximum absolute value of 1 after generation). A negative p4 will cause rescaling to be skipped.
+</p>
+<p>Discrete-point linear interpolation implies an increase or decrease along a segment by equal differences between adjacent locations; exponential interpolation implies that the progression is by equal ratio. In both forms the interpolation from <em>a</em> to <em>b</em> is such as to assume that the value <em>b</em> will be attained in the n + 1th location. For discontinuous functions, and for the segment encompassing the end location, this value will not actually be reached, although it may eventually appear as a result of final scaling.
+</p>
+<h3>Example</h3>
+
+<pre>  <strong>f</strong> 1 0 256 7 0 128 1 0 -1 128 0</pre>
+<p>This describes a single-cycle sawtooth whose discontinuity is mid-way in the stored function.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen04.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen06.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#line" class="toqr">
+<strong>GEN</strong> Routines: Line/Exponential Segment Generators</font></a>
+</body>
+
+</html>

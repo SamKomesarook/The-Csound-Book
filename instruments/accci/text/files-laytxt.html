@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>files-lay.txt.html</title>
+		<header></header>
+		<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+	</head>
+
+	<body stylesrc="../admin/adpchtxt.html" bgcolor="white">
+		<h3>Naming Conventions: Files</h3>
+		<pre>
+A number of data files are associated with each SWSS instrument.
+These files are solely differentiated by their filename extension,
+but otherwise carry the same name.
+
+.ORC   Csound orchestra file
+.SCO   Csound score file
+.EPS   Encapsulated Postscript file: flowcharts, functions
+.GIF   GIF89a compressed bitmap file: flowcharts, functions for the WWW
+.TXT   documentation
+.SF    soundfile
+
+The name of the instrument conceals a coded classification, that
+divides the corpus of SWSS instruments into main synthesis groups
+and their individual subgroups.  The filename is composed of three
+different numbers in total, each of which is delimited by the
+underscore.  The first number refers the instrument to its main
+group, while the second number associates it to a subgroup of its
+main group.  The division in two hierarchical levels enables one to
+keep track of particular instruments without creating excessive
+overhead organization, and is considered a practical and necessary
+tool when working with a large number of files.  Within the ACCCI
+directory, orchestra and score files are kept in folders, named
+after the number code of their main synthesis group.  It was not
+necessary, at this stage of the database, to further subdivide the
+directory structure into subgroups.  The third number -- ID --
+identifies a particular instrument within the main and subgroup.
+
+For example, the file 01_12_1.SF is the soundfile of an instrument
+and its name 01_12_1 contains three codes:
+ 
+01     the main group code
+12     a subgroup code of main group 01
+ 1     ID code within subgroup 01_12
+
+Appended letters (e.g.: 01_12_1B) serve to indicate different
+versions of the same instrument. 
+
+Our naming convention is made independent of a particular operating
+system by restricting the name length to a maximum of eight
+characters and by choosing the underscore as delimiter between
+number codes.  We would prefer the dot as delimiter -- as it is
+commonly encountered in library classifications -- but the dot may
+not be used in DOS.
+</pre>
+	</body>
+
+</html>

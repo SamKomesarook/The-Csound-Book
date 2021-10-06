@@ -1,0 +1,91 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>zkmod, zamod, zkcl,  zacl</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="zir.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../spectral/top.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/zak.htm" class="toqr">
+Zak Patch System</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>zkmod, zamod, zkcl,  zacl </h2>
+
+<pre>
+  kr      <strong>zkmod</strong>     ksig, kzkmod
+  ar      <strong>zamod</strong>     asig, kzamod
+          <strong>zkcl</strong>      kfirst, klast
+          <strong>zacl</strong>      kfirst, klast
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Clear and modulate the za and zk spaces.
+</p>
+<h3>Performance</h3>
+<p><em>ksig</em> &#8211; the input signal
+</p>
+<p><em>kzkmod</em> &#8211; controls which zk variable is used for modulation. A positive value means additive modulation, a negative value means multiplicative modulation. A value of 0 means no change to <em>ksig.</em> <em>kzkmod</em> can be i-rate or k-rate
+</p>
+<p><em>kfirst</em> &#8211; first zk or za location in the range to clear.
+</p>
+<p><em>klast</em> &#8211; last zk or za location in the range to clear.
+</p>
+<p><strong>zkmod</strong> facilitates the modulation of one signal by another, where the modulating signal comes from a zk variable. Either additive or mulitiplicative modulation can be specified.
+</p>
+<p><strong>zamod</strong> modulates one a-rate signal by a second one, which comes from a za variable. The location of the modulating variable is controlled by the i-rate or k-rate variable <em>kzamod</em>. This is the a-rate version of <strong>zkmod</strong>
+</p>
+<p><strong>zkcl</strong> clears one or more variables in the zk space. This is useful for those variables which are used as accumulators for mixing k-rate signals at each cycle, but which must be cleared before the next set of calculations.
+</p>
+<p><strong>zacl</strong> clears one or more variables in the za space. This is useful for those variables which are used as accumulators for mixing a-rate signals at each cycle, but which must be cleared before the next set of calculations.
+</p>
+<h3>Examples</h3>
+
+
+<pre>
+  k1      <strong>zkmod</strong>     ksig, 23    ; adds value at location 23 to ksig
+
+  a1      <strong>zamod</strong>     asig, -402  ; multiplies asig by value at location 402 
+</pre>
+
+<h3>Author</h3>
+<p>Robin Whittle<br>
+Australia<br>
+May 1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="zir.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../spectral/top.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/zak.htm" class="toqr">
+Zak Patch System</font></a>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+Did Anyone Notice?
+
+1)  Setup default directories:
+	- Sound File Directory: snds 
+	- Sound Sample Directory: snds
+	- Analysis Directory:  anls
+2)  Generate but-12.orc&sco (Time Domain pitch shift "but")
+3)  Create pvanal of "but-12.snd" using 1024 bands and an overlap of 4
+4)  Generate but+2(fd).orc&sco (Pitch shift "but-12.pv" up 2 semitones to B using pvoc)
+5)  Generate but+9(fd).orc&sco (Pitch shift "but-12.pv" up 9 semitones to F# using pvoc)
+6)  Generate but-2(fd).orc&sco (Pitch shift "but-12.pv" up 10 semitones to G using pvoc)
+7)  Create cvanal of "but+2(fd).snd"
+8)  Create cvanal of "but+9(fd).snd"
+9)  Create cvanal of "but-2(fd).snd"
+10)  Create pvanal of "underbit dup" (snds folder) using 1024 bands and an overlap of 6
+11)  Generate undstr.orc&sco (Stretch "underbit dup.pv" to 30 seconds using pvoc)
+12)  Create cvanal of "undstr.snd"
+13)  Generate Did Anyone Notice.orc&sco
+
+Copyright1998 Jeremy Zuckerman
+Anyone is welcome to use the instruments that comprise "Did Anyone Notice".

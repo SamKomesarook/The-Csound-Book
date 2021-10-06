@@ -1,0 +1,87 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>CECILIA SCORES</title>
+	</head>
+
+	<body>
+		&nbsp;
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="substitu.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="special.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<h2>The&nbsp; CECILIA scores</h2>
+		</center>
+		<center>
+			<a href="#norm">Normal</a></center>
+		<center>
+			<a href="#minimum">Mininum</a></center>
+		<center>
+			<a href="#cyb">Cybil</a></center>
+		<center>
+			<a href="#tcl">Tcl</a><br>
+			<br>
+			<br>
+		</center>
+		<center>
+			<hr>
+		</center>
+		<p><b>There are four types of scores:</b>
+		<p>&nbsp;
+		<ol>
+			<li><a name="norm"></a>Any legal ordinary Csound score. A tcl evaluation is performed where any CECILIA [variable] is <a href="substitu.html">substituted</a> with the current value of the interface's objects. The score is then passed on to Csound.<br>
+			<br>
+			<br>
+			<hr width="100%">
+			<p>&nbsp;
+			<li><b>#<a name="minimum"></a>minimum</b><br>
+			If the score begins on the first line with and contains only the word minimum preceded by a sharp sign, CECILIA produces a score containing a single note on i1 starting at time 0 and lasting for the duration equal to the longest duration of all active input soundfiles (see <a href="cec_file.html">filein</a> object), OR, the duration specified by a slider specifically named &quot;total_time&quot; or &quot;duree_totale&quot; .
+			<p>&nbsp;
+			<hr width="100%">
+			<br>
+			&nbsp;
+			<li><b>#<a name="cyb"></a>cyb</b><br>
+			If the score begins on the first line with the word &quot;cyb&quot; preceded by a sharp sign, the following lines will be interpreted as a <a href="cybil.html">Cybil</a> score. See the accompanying help file on <a href="cybil.html">Cybil</a>.
+			<p>&nbsp;
+			<hr width="100%">
+			<br>
+			&nbsp;
+			<li><b>#<a name="tcl"></a>tcl</b><br>
+			If the score begins on the first line with the word tcl preceded by a sharp sign, the following lines will be interpreted as a tcl program. Any tcl procedure or program will be interpreted and a score will be compiled and then passed on to Csound. To do this, it is useful to know that the array &quot;value&quot; contains all the current values of the interface objects. Hence, $value(offset1) will contain the current time-based value of a graph (or slider) named &quot;offset1&quot; . Two possible ways of doing this:
+			<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ---- simple example ---
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #tcl
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set dummy &quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i1 $value(offset1) $value(duree1)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i1 $value(offset1) $value(duree1)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -----------------------
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ---- more complex ---
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #tcl
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proc whatever {} {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; global value soundOutInfo
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #code tcl complexe
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proc more {} {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; global value
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #encore +!
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proc makeScore {} {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #blah blah
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; makeScore
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -----------------------</pre>
+		</ol>
+	</body>
+
+</html>

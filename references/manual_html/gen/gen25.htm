@@ -1,0 +1,80 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN25, GEN27</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen23.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen28.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#line" class="toqr">
+<strong>GEN</strong> Routines: Line/Exponential Segment Generators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN25, GEN27</h2>
+
+<pre>
+  <strong>f</strong>  #    time    size   25   x1  y1  x2  y2  x3  .  .  .
+  <strong>f</strong>  #    time    size   27   x1  y1  x2  y2  x3  .  .  .
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>These subroutines are used to construct functions from segments of exponential curves (<strong>GEN25)</strong> or straight lines (<strong>GEN27</strong>) in breakpoint fashion.
+</p>
+<h3>Initialization</h3>
+<p><em>size </em> &#8211; number of points in the table. Must be a power of 2 or power-of-2 plus 1 (see <a href="../score/f.htm"><strong>f statement</strong></a>).
+</p>
+<p><em>x1, x2, x3,</em> etc. &#8211; locations in table at which to attain the following y value. Must be in increasing order. If the last value is less than size, then the rest will be set to zero. Should not be negative but can be zero.
+</p>
+<p><em>y1, y2, y3,</em>, etc. &#8211; Breakpoint values attained at the location specified by the preceding x value. For <strong>GEN25</strong> these must be non-zero and must be alike in sign. No such restrictions exist for <strong>GEN27</strong>.
+</p>
+<h3>Note </h3>
+<p>If p4 is positive, functions are post-normalized (rescaled to a maximum absolute value of 1 after generation). A negative p4 will cause rescaling to be skipped.
+</p>
+<h3>Example</h3>
+
+<pre>  <strong>f</strong> 1 0 257 27 0 0 100 1 200 -1 256 0</pre>
+<p>This describes a function which begins at 0, rises to 1 at the 100th table location, falls to -1, by the 200th location, and returns to 0 by the end of the table. The interpolation is linear.<br>
+</p>
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath/Codemist Ltd.<br>
+Bath, UK<br>
+New in Csound version 3.49
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen23.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen28.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#line" class="toqr">
+<strong>GEN</strong> Routines: Line/Exponential Segment Generators</font></a>
+</body>
+
+</html>

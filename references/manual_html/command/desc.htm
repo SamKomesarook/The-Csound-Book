@@ -1,0 +1,138 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>Description</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="top.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pc.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/command.htm#generic" class="toqr">
+Command Line Flags: Generic</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>Description<br>
+</h2>
+<p>Flags may appear anywhere in the command line, either separately or bundled together. A flag taking a Name or Number will find it in that argument, or in the immediately subsequent one. The following are thus equivalent commands:
+</p>
+<pre>
+  <strong>csound</strong> -nm3 orchname -Sxxfilename scorename
+  <strong>csound</strong> -n -m 3 orchname -x xfilename -S scorename
+</pre>
+<p>All flags and names are optional. The default values are:
+</p>
+<pre>  csound -s -otest -b1024 -B1024 -m7 -P128 orchname scorename</pre>
+<p>where <em>orchname</em> is a file containing Csound orchestra code, and scorename is a file of score data in standard numeric score format, optionally presorted and time-warped. If <em>scorename</em> is omitted, there are two default options:
+</p>
+<ol>
+	<li>if real-time input is expected (-L, -M or -F), a dummy score file is substituted consisting of the single statement 'f 0 3600' (i.e. listen for RT input for one hour)</li>
+	<li>else CSound uses the previously processed <em>score.srt</em> in the current directory.</li>
+</ol>
+<p>Csound reports on the various stages of score and orchestra processing as it goes, doing various syntax and error checks along the way. Once the actual performance has begun, any error messages will derive from either the instrument loader or the unit generators themselves. A CSound command may include any rational combination of the following flag arguments, with default values as described:
+</p>
+<dl>
+	<a name="utils"><dt><strong>Csound</strong> -U</dt></a>
+	<dd>Invoke Utility Preprocessing programs:sndinfo, hetro, lpanal, pvanal, cvanal, and pvlook.</dd>
+	<dt><strong>Csound</strong> -I</dt>
+	<dd>i-time only. Allocate and initialize all instruments as per the score, but skip all p-time processing (no k-signals or a-signals, and thus no amplitudes and no sound). Provides a fast validity check of the score pfields and orchestra i-variables.</dd>
+	<dt><strong>Csound</strong> -n</dt>
+	<dd>No sound. Do all processing, but bypass writing of sound to disk. This flag does not change the execution in any other way.</dd>
+	<dt><strong>Csound</strong> -i isfname</dt>
+	<dd>Input soundfile name. If not a full pathname, the file will be sought first in the current directory, then in that given by the environment variable SSDIR (if defined), then by SFDIR. The name <em>stdin</em> will cause audio to be read from standard input. If RTAUDIO is enabled, the name <em>devaudio</em> will request sound from the host audio input device.</dd>
+	<dt><strong>Csound</strong> -o osfname</dt>
+	<dd>Output soundfile name. If not a full pathname, the soundfile will be placed in the directory given by the environment variable SFDIR (if defined), else in the current directory. The name <em>stdout</em> will cause audio to be written to standard output. If no name is given, the default name will be <em>test</em>. If RTAUDIO is enabled, the name <em>devaudio</em> will send to the host audio output device.</dd>
+	<dt><strong>Csound</strong> -b Numb</dt>
+	<dd>Number of audio sample-frames per sound i/o <em>software</em> buffer. Large is efficient, but small will reduce audio I/O delay. The default is 1024. In real-time performance, Csound waits on audio I/O on <em>Numb</em> boundaries. It also processes audio (and polls for other input like MIDI) on orchestra <em>ksmps</em> boundaries. The two can be made synchronous. For convenience, if Numb = -N (is negative) the effective value is <em>ksmps * N</em> (audio synchronous with k-period boundaries). With N small (e.g. 1) polling is then frequent and also locked to fixed DAC sample boundaries.</dd>
+	<dt><strong>Csound</strong> -B Numb</dt>
+	<dd>Number of audio sample-frames held in the DAC <em>hardware</em> buffer. This is a threshold on which <em>software</em> audio I/O (above) will wait before returning. A small number reduces audio I/O delay; but the value is often hardware limited, and small values will risk data lates. The default is 1024.</dd>
+	<dt><strong>Csound</strong> -h</dt>
+	<dd>No header on output soundfile. Don't write a file header, just binary samples.</dd>
+	<dd>CSound {-c, -a, -u, -s, -l, -f}</dd>
+	<dd>Audio sample format of the output soundfile. One of:
+	<ul>
+		<li>c = 8-bit signed character</li>
+		<li>a = 8-bit a-law</li>
+		<li>u = 8-bit u-law</li>
+		<li>s = short integer</li>
+		<li>l = long integer</li>
+		<li>f = single-precision float (not playable, but can be read by -i, <a href="../sigio/in.htm"><strong>soundin</strong></a> and <a href="../gen/GEN01.htm"><strong>GEN01</strong></a>)</li>
+	</ul></dd>
+	<dt><strong>Csound</strong> -A</dt>
+	<dd>Write an AIFF output soundfile. Restricts the above formats to c, s, l, or f (AIFC).</dd>
+	<dt><strong>Csound</strong> -W</dt>
+	<dd>Write a .wav output soundfile.</dd>
+	<dt><strong>Csound</strong> -J</dt>
+	<dd>Write an IRCAM output soundfile.</dd>
+	<dt><strong>Csound</strong> -v</dt>
+	<dd>Verbose translate and run. Prints details of orch translation and performance, enabling errors to be more clearly located.</dd>
+	<dt><strong>Csound</strong> -m Numb</dt>
+	<dd>Message level for standard (terminal) output. Takes the <em>sum</em> of 3 print control flags, turned on by the following values:
+	<ul>
+		<li>1 = note amplitude messages</li>
+		<li>2 = samples out of range message</li>
+		<li>4 = warning messages</li>
+	</ul>The default value is <em>m7</em> (all messages on).</dd>
+	<dt><strong>Csound</strong> -d</dt>
+	<dd>Suppress all displays.</dd>
+	<dt><strong>Csound</strong> -g</dt>
+	<dd>Recast graphic displays into ASCII characters, suitable for any terminal.</dd>
+	<dt><strong>Csound</strong> -S</dt>
+	<dd>Interpret scorename as aScot format file and create a standard score file (named &quot;score&quot;) from it, then sort and perform that.</dd>
+	<dt><strong>Csound</strong> -x xfile</dt>
+	<dd>Extract a portion of the sorted score score.srt, according to xfile (see <a href="../misc/preproc.htm">Extract</a>).</dd>
+	<dt><strong>Csound</strong> -t Numb</dt>
+	<dd>Use the uninterpreted beats of <em>score.srt</em> for this performance, and set the initial tempo at <em>Numb</em> beats per minute. When this flag is set, the tempo of score performance is also controllable from within the orchestra. The flag <strong>-t0</strong> will prevent Csound from deleting the sorted score file, score.srt, upon exit.</dd>
+	<dt><strong>Csound</strong> -L devname</dt>
+	<dd>Read Line-oriented real-time score events from device <em>devname</em>. The name <em>stdin</em> will permit score events to be typed at your terminal, or piped from another process. Each line-event is terminated by a carriage-return. Events are coded just like those in a <em>standard numeric score</em>, except that an event with p2=0 will be performed immediately, and an event with p2=T will be performed T seconds after arrival. Events can arrive at any time, and in any order. The score <strong>carry</strong> feature is legal here, as are held notes (p3 negative) and string arguments, but ramps and <strong>pp</strong> or <strong>np</strong> references are not.</dd>
+	<dt><strong>Csound</strong> -M devname</dt>
+	<dd>Read MIDI events from device <em>devname</em>.</dd>
+	<dt><strong>Csound</strong> -F mfname</dt>
+	<dd>Read MIDI events from MIDI file <em>mfname</em>.</dd>
+	<dt><strong>Csound</strong> -P Numb</dt>
+	<dd>Set MIDI sustain pedal threshold (0 - 128). The official switch value of 64 is normally too low, and is more realistic above 100. The default value of 128 will block all pedal info.</dd>
+	<dt><strong>Csound</strong> -N</dt>
+	<dd>Notify (ring the bell) when score or MIDI track is done.</dd>
+	<dt><strong>Csound</strong> -T</dt>
+	<dd>Terminate the performance when MIDI track is done.</dd>
+	<dt><strong>Csound</strong> -j</dt>
+	<dd>Use database <em>fnam</em> for  messages to print to console during performance. (New in version 3.55)</dd>
+	<dt><strong>Csound</strong> -Z</dt>
+	<dd>Switch on dithering of audio conversion from internal floating point to 32, 16 and 8 bit formats. (New in Csound version 4.05)</dd>
+	<dt><strong>Csound</strong> -K</dt>
+	<dd>Switch off peak chunks. New in Csound version 4.09.</dd>
+</dl>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="top.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pc.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/command.htm#generic" class="toqr">
+Command Line Flags: Generic</font></a>
+</body>
+
+</html>

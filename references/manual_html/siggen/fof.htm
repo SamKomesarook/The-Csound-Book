@@ -1,0 +1,89 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>fof, fof2</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="sf2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="fog.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#granular" class="toqr">
+Signal Generators: Granular Synthesis</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>fof, fof2</h2>
+
+<pre>
+  ar      <strong>fof</strong>        xamp, xfund, xform, koct, kband, kris, kdur, kdec, iolaps, ifna, ifnb, itotdur[, iphs[, ifmode]]
+  ar      <strong>fof2</strong>       xamp, xfund, xform, koct, kband, kris, kdur, kdec, iolaps, ifna, ifnb, itotdur, kphs, kgliss
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Audio output is a succession of sinusoid bursts initiated at frequency <em>xfund</em> with a spectral peak at <em>xform</em>. For <em>xfund</em> above 25 Hz these bursts produce a speech-like formant with spectral characteristics determined by the k-input parameters. For lower fundamentals this generator provides a special form of granular synthesis.
+</p>
+<p><strong>fof2</strong> implements k-rate incremental indexing into <em>ifna</em> function with each successive burst.
+</p>
+<h3>Initialization</h3>
+<p><em>iolaps</em> &#8211; number of preallocated spaces needed to hold overlapping burst data. Overlaps are frequency dependent, and the space required depends on the maximum value of <em>xfund * kdur</em>. Can be over-estimated at no computation cost. Uses less than 50 bytes of memory per <em>iolap</em>.
+</p>
+<p><em>ifna, ifnb</em> &#8211; table numbers of two stored functions. The first is a sine table for sineburst synthesis (size of at least 4096 recommended). The second is a rise shape, used forwards and backwards to shape the sineburst rise and decay; this may be linear (<a href="../gen/gen05.htm"><strong>GEN07</strong></a>) or perhaps a sigmoid (<a href="../gen/gen09.htm"><strong>GEN19</strong></a>).
+</p>
+<p><em>itotdur</em> &#8211; total time during which this <strong>fof</strong> will be active. Normally set to p3. No new sineburst is created if it cannot complete its <em>kdur</em> within the remaining <em>itotdur</em>.
+</p>
+<p><em>iphs</em> (optional) &#8211; initial phase of the fundamental, expressed as a fraction of a cycle (0 to 1). The default value is 0.
+</p>
+<p><em>ifmode</em> (optional) &#8211; formant frequency mode. If zero, each sineburst keeps the <em>xform</em> frequency it was launched with. If non-zero, each is influenced by <em>xform</em> continuously. The default value is 0.
+</p>
+<h3>Performance</h3>
+<p><em>xamp</em> &#8211; peak amplitude of each sineburst, observed at the true end of its rise pattern. The rise may exceed this value given a large bandwidth (say, Q &lt; 10) and/or when the bursts are overlapping.
+</p>
+<p><em>xfund</em> &#8211; the fundamental frequency (in Hertz) of the impulses that create new sinebursts.
+</p>
+<p><em>xform</em> &#8211; the formant frequency, i.e. freq of the sinusoid burst induced by each <em>xfund</em> impulse. This frequency can be fixed for each burst or can vary continuously (see <em>ifmode</em>).
+</p>
+<p><em>koct</em> &#8211; octaviation index, normally zero. If greater than zero, lowers the effective <em>xfund</em> frequency by attenuating odd-numbered sinebursts. Whole numbers are full octaves, fractions transitional.
+</p>
+<p><em>kband</em> &#8211; the formant bandwidth (at -6dB), expressed in Hz. The bandwidth determines the rate of exponential decay throughout the sineburst, before the enveloping described below is applied.
+</p>
+
+<p><em>kris, kdur, kdec</em> &#8211; rise, overall duration, and decay times (in seconds) of the sinusoid burst. These values apply an enveloped duration to each burst, in similar fashion to a Csound <strong>linen</strong> generator but with rise and decay shapes derived from the <em>ifnb</em> input. <em>kris</em> inversely determines the skirtwidth (at -40 dB) of the induced formant region. <em>kdur</em> affects the density of sineburst overlaps, and thus the speed of computation. Typical values for vocal imitation are .003,.02,.007.
+</p>
+<p>In the <strong>fof2</strong> implementation, <em>kphs</em> allows k-rate indexing of function table <em>ifna</em> with each successive burst, making it suitable for time-warping applications. Values of for <em>kphs</em> are normalized from 0 to 1, 1 being the end of the function table <em>ifna</em>. <em>kgliss</em> &#8211; sets the end pitch of each grain relative to the initial pitch, in octaves. Thus <em>kgliss</em> = 2 means that the grain ends two octaves above its initial pitch, while <em>kgliss</em> = -5/3 has the grain ending a perfect major sixth below. <strong>Note</strong>: There are no optional parameters in <strong>fof2</strong>
+</p>
+<p>Csound's <strong>fof</strong> generator is loosely based on Michael Clarke's C-coding of IRCAM's <em>CHANT</em> program (Xavier Rodet et al.). Each fof produces a single formant, and the output of four or more of these can be summed to produce a rich vocal imitation. <strong>fof</strong> synthesis is a special form of granular synthesis, and this implementation aids transformation between vocal imitation and granular textures. Computation speed depends on <em>kdur, xfund</em>, and the density of any overlaps.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="sf2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="fog.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#granular" class="toqr">
+Signal Generators: Granular Synthesis</font></a>
+</body>
+
+</html>

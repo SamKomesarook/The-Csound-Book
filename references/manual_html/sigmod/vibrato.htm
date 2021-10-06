@@ -1,0 +1,105 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- An HTML Edition of the Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.18.-->
+<html>
+<head>
+   <title>vibrato, vibr, jitter, jitter2</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+		<a href="bbcut.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="convolve.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a href="../qr/sigmod.htm#effects" class="toqr">
+Signal Modifiers: Special Effects</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>vibrato, vibr, jitter, jitter2</h2>
+<pre>
+  kr      <strong>vibrato</strong>    kAvgAmp, kAvgFreq, kRandAmp, kRandFreq, kAmpMinRate, kAmpMaxRate, kfreqMinRate, kfreqMaxRate, ifn [, iphs]
+  kr      <strong>vibr</strong>       kAvgAmp, kAvgFreq, ifn
+
+  kr      <strong>jitter</strong>     kamp, kfreqMin, kfreqMax
+  kr      <strong>jitter2</strong>    ktotamp, kamp1, kfreq1, kamp2, kfreq2, kamp3, kfreq3
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+
+<p>These opcode are designed to make sounds more natural sounding and &quot;life-like.&quot; <strong>vibrato</strong> and <strong>vibr</strong> generate a vibrato-like signal containing some user-controlled randomness in amplitude and frequency. <strong>jitter</strong> and <strong>jitter2</strong> produce deviation in the output signal to make them more &quot;analog-like&quot; and natural sounding.</p>
+
+<h3>Initialization</h3>
+
+<p><em>ifn</em> &#8211; function table containing the vibrato waveform. <em>ifn</em> normally contains a sine or a triangle wave.</p>
+
+<p><em>iphs</em> (optional) &#8211; initial phase of table, expressed as a fraction of a cycle, in the range 0 to 1. A negative value will cause initialization to be skipped. The default value is 0.</p>
+
+<h3>Performance</h3>
+
+<p><em>kAvgAmp</em> &#8211; average amplitude value of the vibrato signal</p>
+<p><em>kAvgFreq</em> &#8211; average frequency value of the vibrato signal, in Hz</p>
+<p><em>kRandAmp</em> &#8211; amount of random amplitude deviation</p>
+<p><em>kRandFreq</em> &#8211; amount of random frequency deviation</p>
+<p><em>kAmpMinRate</em> &#8211; minimum frequency of random amplitude deviation segments, in Hz</p>
+<p><em>kAmpMaxRate</em> &#8211; maximum frequency of random amplitude deviation segments, in Hz</p>
+<p><em>kfreqMinRate</em> &#8211; minimum frequency of random frequency deviation segments, in Hz</p>
+<p><em>kfreqMaxRate</em> &#8211; maximum frequency of random frequency deviation segments, in Hz</p>
+
+<p><em>kamp</em> &#8211; amplitude of jitter deviation</p>
+<p><em>kfreqMin</em> &#8211;  minimum frequency of random frequency variations, in Hz</p>
+<p><em>kfreqMax</em> &#8211; maximum frequency of random frequency variations, in Hz</p>
+
+<p><em>ktotamp</em> &#8211; resulting amplitude of <strong>jitter2</strong></p>
+<p><em>kamp1</em> &#8211; amplitude of the first jitter component</p>
+<p><em>kfreq1</em> &#8211; frequency of random variation of the first jitter component, in Hz</p>
+<p><em>kamp2</em> &#8211; amplitude of the second jitter component</p>
+<p><em>kfreq2</em> &#8211; frequency of random variation of the second jitter component, in Hz</p>
+<p><em>kamp3</em> &#8211; amplitude of the third jitter component</p>
+<p><em>kfreq3</em> &#8211; frequency of random variation of the third jitter component, in Hz</p>
+
+<p><strong>vibrato</strong> outputs a natural-sounding, user-controllable vibrato. Both the frequency and the amplitude of the oscillator generating the vibrato are randomly varied, to simulate the irregularities of a real vibrato. In order to have a total control of these random variations, several input arguments are required. The random variations are obtained by two segmented lines. The first controls the amplitude deviations and the second controls the frequency deviations. The average duration of each segment of each line can be modified by the arguments <em>kAmpMinRate</em>, <em>kAmpMaxRate</em>, <em>kfreqMinRate</em>, <em>kfreqMaxRate</em>. The deviation from the average amplitude and frequency values can be independently adjusted by means of <em>kRandAmp</em> and <em>kRandFreq</em>.</p>
+
+<p><strong>vibr</strong> is an easier-to-use version of <strong>vibrato</strong>, with fewer arguments. <strong>vibr</strong> uses the same methods as <strong>vibrato</strong> to generate randomness, but several of <strong>vibrato</strong>'s parameters are hard-coded to default values.</p>
+
+<p><strong>jitter</strong> generates a segmented line. The segments are randomly generated inside the +<em>kamp</em> and -<em>kamp</em> interval. Duration of each segment is a random value generated according within the values of <em>kfreqmin</em> and <em>kfreqmax</em>.</p>
+
+<p><strong>jitter2</strong> generates a segmented line such as jitter, but the result is similar to the sum of three <strong>randi</strong> statements, where each <strong>randi</strong> has a different amplitude and frequency value (see <a href="../siggen/rand.htm"><strong>randi</strong></a> for more details). These values can be varied at k-rate. Different effects can be obtained by varying the input arguments. For best results, It is suggested to keep their amplitude moderate.</p>
+
+
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+New in Csound 4.15
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+		<a href="bbcut.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="convolve.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a href="../qr/sigmod.htm#effects" class="toqr">
+Signal Modifiers: Special Effects</a>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+	<title>SoundFont2 File Format</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="windows.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<img src="../nonext.gif" width=38 height=18 alt="" border="0">
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Appendix: SoundFont2 File Format</font>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>SoundFont2 File Format</h2>
+<hr size="2" color="#A9A9A9" noshade>
+
+<p>Beginning with Csound Version 4.16, <a href="../siggen/sf2.htm">Csound supports SoundFont2 sample file format.</a> SoundFont2 (or SF2) is a widespread standard which allows encoding banks of wavetable-based sounds into a binary file. In order to understand the usage of these opcodes, the user must have some knowledge of the SF2 format, so a brief description of this format follows.</p>
+
+<p>The SF2 format is made by generator and modulator objects. All current Csound opcodes regarding SF2 support the generator function only. </p>
+
+<p>There are several levels of generators having a hierarchical structure. The most basic kind of generator object is a sample. Samples may or may not be be looped, and are associated with a MIDI note number, called the base-key. When a sample is associated with a range of MIDI note numbers, a range of velocities, a transposition (coarse and fine tuning), a scale tuning, and a level scaling factor, the sample and its associations make up a &quot;split.&quot; A set of splits, together with a name, make up an &quot;instrument.&quot; When an instrument is associated with a key range, a velocity range, a level scaling factor, and a transposition, the instrument and its associations make up a &quot;layer.&quot; A set of layers, together with a name, makes up a &quot;preset.&quot; Presets are normally the final sound-generating structures ready for the user. They generate sound according to the settings of their lower-level components.</p>
+
+<p>Both sample data and structure data is embedded in the same SF2 binary file. A single SF2 file can contain up to a maximum of 128 banks of 128 preset programs, for a total of 16384 presets in one SF2 file. The maximum number of layers, instruments, splits, and samples is not defined, and probably is only limited by the computer's memory.</p>
+<div align="center">
+<hr size="1" color="#A9A9A9" noshade>
+<img src="sfr2.gif" width=625 height=170 alt="SoundFont2 File Structure" border="0">
+<h3>SoundFont2 File Structure</h3>
+</div>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="windows.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<img src="../nonext.gif" width=38 height=18 alt="" border="0">
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Appendix: SoundFont2 File Format</font>
+</body>
+
+</html>

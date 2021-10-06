@@ -1,0 +1,163 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>Tutorial 3 - Building CECILIA modules</title>
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+	</head>
+
+	<body bgcolor="white">
+		<center>
+			&nbsp;</center>
+		<center>
+			<p>
+			<table cols="3" width="100%" nosave>
+				<tr align="center" nosave>
+					<td align="left" valign="top" nosave><a href="tut2.html"><b>&lt;--</b></a></td>
+					<td align="center" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="right" valign="top" nosave><a href="soundwin.html"><font color="black"><b>--&gt;</b></font></a></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			<h2><b>TUTORIAL 3 : BUILDING CECILIA MODULES</b></h2>
+		</center>
+		<center>
+			<p><a href="#Getting ready">Building a simple CECILIA sound-processing module</a></center>
+		<center>
+			<p><a href="#Building the interface">Buliding the interface</a></center>
+		<center>
+			<p><a href="#Opening">Making the orchestra and score</a></center>
+		<center>
+			<p>&nbsp;</center>
+		<center>
+			<p>
+			<hr>
+		</center>
+		<ul>
+			<li><a name="Getting ready"></a><b>Building a simple CECILIA&nbsp; sound-processing module. <a href="#"><font size="1">top</font></a></b>
+			<p>This tutorial assumes that the user is familiar with Csound programming.</p>
+			<p>We will build a small module for filtering sounds. This module will feature a choice of low-pass, hi-pass, bandpass and band-reject filter, along with a time-function to control the cut-off and/or center frequency. We will also offer a post filter gain slider, a selector for choosing the soundfile to process and an automatic balance switch to reestablish power to the filtered sound.</p>
+			<p>Normally, we would first build the orchestra in Csound and then add the interface, but since we already know what we want to do, we will first build the interface.</p>
+		</ul>
+		<p>
+		<hr width="100%">
+		<ul>
+			<li><a name="Building the interface"></a><b>Building the interface. <a href="#"><font size="1">top</font></a></b>
+			<p>We will therefor need to define the following interface objects:<br>
+			&nbsp;</p>
+			<ol>
+				<li>a <a href="cec_file.html">selector</a> to choose to sound to be processed
+				<li>a <a href="cec_grap.html">graph</a> for the time varying cut-off frequency of the filter.
+				<li>a <a href="cec_grap.html">graph</a> for the bandwidth of the filter (for band-pass and band-reject variants).
+				<li>a <a href="cec_popu.html">popup</a> to select the type of filtering.
+				<li>a <a href="cec_rsli.html">slider</a> for the output gain.
+				<li>a <a href="cec_togg.html">toggle</a> for reesetablishing the level of the sound.<br>
+				&nbsp;
+			</ol>
+			<p>We will be using Csound's Butterworth filters to do the filtering. To control the switching between different kinds of filtering, we will use Csound's <b>if </b>/<b> goto</b><b> </b>structure.<br>
+			&nbsp;
+			<ul>
+				<li>Under the <b>File</b> menu in the Main window, select <b>New...</b> and then <b>Module...</b><br>
+				&nbsp;
+				<li>Open the <b>tk_interface </b>editor pane by clicking on its button or choosing it in the <b>Sections</b> menu.<br>
+				&nbsp;
+				<li>Enter the first graph definition by typing this line:
+				<pre><tt>cgraph&nbsp; freqc -unit Hz -label &quot;Cut-off Frequency&quot; -rel log -min 50 -max 20000 -init 2500</tt></ul>
+
+
+
+
+
+
+</pre>
+			<p>&nbsp;
+			<ul>
+				<li>Enter the second graph by doing Button-3 or Command-Click in the tk_interface pane to bring up the inserter, Choose <b>graph freq </b>under the <b>Graphs</b> cascade. The following pre-formatted line is inserted:
+				<pre>cgraph freq -unit x -rel lo -min 20 -max 15000 -init 500</pre>
+				<p>But we will change the parameter range to -min .001, max 1 and init to 0.1 because this function will be used as a multiplier for the center frequency (freqc) in the orchestra to give us the bandwidth of the filter. We also change -rel log to -rel lin for a linear function. While we are here, let's give it a label of &quot;Bandwidth&quot;.
+			</ul>
+			<p>&nbsp;
+			<ul>
+				<li>Enter the fileselector by using the same inserter method and choosing the standard filein under <b>Filein.</b><br>
+				&nbsp;
+				<li>Enter the toggle. Change the name to &quot;select&quot; and give the label &quot;Balance with Input&quot;.<br>
+				&nbsp;
+				<li>Enter the slider with the inserter. Choose <b>slider10</b> under <b>Sliders.</b> Change the name to &quot;gain&quot; and give a label &quot;Post-Filter Gain&quot;. Change to init value to 1.<br>
+				&nbsp;
+				<li>Enter the popup with he inserter. Change the name to &quot;type&quot; , the label to &quot;Select Filter Type&quot; and give this list for value: &quot;lo-pass hi-pass band-pass band-reject&quot;.<br>
+				&nbsp;
+			</ul>
+			<p>The contents of the tk_interface pane should now read as:
+			<pre>cfilein&nbsp; name&nbsp;&nbsp; -label &quot;Sound to process&quot;
+cgraph&nbsp;&nbsp; freqc&nbsp; -label &quot;Cut-off Frequency&quot; -rel log -min 50 -max 20000 -init 2500
+cgraph&nbsp;&nbsp; freq&nbsp;&nbsp; -label &quot;Center&nbsp; Frequency&quot; -rel lin -min .001 -max 1 -init 0.1
+cslider&nbsp; data10 -label &quot;Post-Filter Gain&quot; -res .1 -min 0 -max 10 -init 1
+ctoggle&nbsp; gain&nbsp;&nbsp; -label &quot;Balance with Input&quot; -init 0
+cpopup&nbsp;&nbsp; type&nbsp;&nbsp; -label &quot;Select Filter Type&quot; -value &quot;lo-pass hi-pass band-pass band-reject&quot;</pre>
+			<p>Select <b>Save module as... </b>under the<b> File </b>menu, and give the new module a name (TestFilters.cec is good). If all is well, the new module will pop open with a grapher window and the Main window will enlarge to include a file selector. CECILIA attempts to warn you on interface definition errors. Check the interface carefully to make sure all the parameters and objects are present and in the correct ranges.
+			<p>&nbsp;
+			<hr width="100%">
+			<br>
+			&nbsp;</p>
+			<li><a name="Opening"></a><b>Making the orchestra and the score. <a href="#"><font size="1">top</font></a></b><br>
+			&nbsp;
+			<ul>
+				<li>Open the stereo pane in the CECILIA editor.<br>
+				&nbsp;
+				<li>Enter the following text in the pane:
+			</ul>
+			<p>&nbsp;
+			<ul>
+				<font color="red"><tt><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; instr 1</b></tt></font>
+				<p><tt>a1,a2 <font color="#000099"><b>soundin</b></font>&nbsp;&nbsp; &quot;[name]&quot;, [offname] <font color="#993399"><b>; name from fileselector</b></font></tt><br>
+				<font color="#993399"><tt><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; and offset substituted here</b></tt></font></p>
+				<p><tt>if&nbsp;&nbsp;&nbsp; gktype != 0 goto hp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#993399"><b>; using if / goto and the value</b></font></tt><br>
+				<tt>ag&nbsp;&nbsp;&nbsp; <font color="#000099"><b>butterlp</b></font>&nbsp;&nbsp;&nbsp; a1, gkfreqc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#993399"><b>; of the &quot;type&quot; popup to select</b></font></tt><br>
+				<tt>ad&nbsp;&nbsp;&nbsp; <font color="#000099"><b>butterlp</b></font>&nbsp;&nbsp;&nbsp; a2, gkfreqc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#993399"><b>; the correct kind of filter</b></font></tt><br>
+				<tt>goto bal</tt></p>
+				<p><font color="#006600"><tt><b>hp:</b></tt></font><br>
+				<tt>if&nbsp;&nbsp;&nbsp; gktype != 1 goto bp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#993399"><b>; the freqc graph controls the</b></font></tt><br>
+				<tt>ag&nbsp;&nbsp;&nbsp; <font color="#000099"><b>butterhp</b></font>&nbsp;&nbsp;&nbsp; a1, gkfreqc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#993399">; <b>cut-off frequency</b></font></tt><br>
+				<tt>ad&nbsp;&nbsp;&nbsp; <font color="#000099"><b>butterhp</b></font>&nbsp;&nbsp;&nbsp; a2, gkfreqc</tt><br>
+				<tt>goto bal</tt></p>
+				<p><font color="#006600"><tt><b>bp:</b></tt></font><br>
+				<tt>if&nbsp;&nbsp;&nbsp; gktype != 2 goto br&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#993399"><b>; the freq graph controls the</b></font></tt><br>
+				<tt>ag&nbsp;&nbsp;&nbsp; <font color="#000099"><b>butterbp</b></font>&nbsp;&nbsp;&nbsp; a1, gkfreqc, gkfreq*gkfreqc <font color="#993399"><b>;bandwidth</b></font></tt><br>
+				<tt>ad&nbsp;&nbsp;&nbsp; <font color="#000099"><b>butterbp</b></font>&nbsp;&nbsp;&nbsp; a2, gkfreqc, gkfreq*gkfreqc</tt><br>
+				<tt>goto bal</tt></p>
+				<p><font color="#006600"><tt><b>br:</b></tt></font><br>
+				<tt>ag&nbsp;&nbsp;&nbsp; <font color="#000099"><b>butterbr&nbsp;&nbsp;&nbsp; </b></font>a1, gkfreqc, gkfreq*gkfreqc</tt><br>
+				<tt>ad&nbsp;&nbsp;&nbsp; <font color="#000099"><b>butterbr&nbsp;&nbsp;&nbsp; </b></font>a2, gkfreqc, gkfreq*gkfreqc</tt></p>
+				<p><font color="#006600"><tt><b>bal:</b></tt></font><br>
+				<tt>if gkgain == 0 goto nobal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#993399"><b>; gkgain toggle decides to</b></font></tt><br>
+				<tt>ag&nbsp;&nbsp;&nbsp; <font color="#000099"><b>balance&nbsp;&nbsp;&nbsp;&nbsp; </b></font>ag, a1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#993399"><b>; balance or not</b></font></tt><br>
+				<tt>ad&nbsp;&nbsp;&nbsp; <font color="#000099"><b>balance&nbsp;&nbsp;&nbsp;&nbsp; </b></font>ad, a2</tt></p>
+				<p><font color="#006600"><tt><b>nobal:</b></tt></font><br>
+				<font color="#000099"><tt><b>outs</b></tt></font><tt>&nbsp; ag*gkdata10, ag*gkdata10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#993399"><b>; the data10 slider controls</b></font></tt><br>
+				<font color="#993399"><tt><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; the final gain</b></tt></font></p>
+				<p><font color="red"><tt><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endin</b></tt></font></p>
+			</ul>
+			<p>&nbsp;<br>
+			&nbsp;
+			<ul>
+				<li>Enter the score in the score editor pane. In fact, the only score that we will need here is the <b>#min</b> keyword. Since the only note we want is on instrument 1 and we do not need to pass it any parameter. The duration of the note will always be the duration of the soundfile. This is a case where the #min score is perfect. Make sure you study the other <a href="score.html">types of scores </a>available in CECILIA.&nbsp; Studying the BuiltIn CECILIA modules is a good way to develop an understanding for the powerful possibilities of CECILIA score pre-processing.<br>
+				&nbsp;
+				<li>Save the module, choose a sound with the file selector, define time-profiles with the graphs and press <b>Play</b>!<br>
+				&nbsp;
+				<li>Studying CECILIA's Builtin modules is highly recommended!<br>
+				&nbsp;
+			</ul>
+		</ul>
+		<p>
+		<hr width="100%">
+		<ul>
+			&nbsp;
+		</ul>
+		<p>&nbsp;
+		<ul>
+			&nbsp;
+		</ul>
+	</body>
+
+</html>

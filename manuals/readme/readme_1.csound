@@ -1,0 +1,1224 @@
+***********NEW: Log of changes introduced from 3.15.10**********************
+
+
+			   CSOUND for MSDOS
+			 CSOUND for ATARI ST
+
+			      John Fitch
+		   School of Mathematical Sciences
+			  University of Bath
+			     Bath BA2 7AY
+			       England
+			 Tel: +44-1225-826820
+			 FAX: +44-1225-826492
+		    E-mail: jpff@maths.bath.ac.uk
+		       or  J.P.Fitch@bath.ac.uk
+				   
+	    (also Codemist Ltd, Tel/FAX: +44-1225-837430)
+
+			    csound_286.zip (old)
+			  csound_fpt_286.zip (old)
+			    csound_new.zip
+			    csound_win.zip
+			    csound_src.zip
+
+These files are the executables for CSound for 286/386/486 machines
+running MS-DOS or Windows.  The "new" version is supposed to be self
+adapting to any hardware over 386.
+
+Also, the files *.ttp are Csound for the Atari ST.  See below for ATARI notes
+
+There is a mailing list kept for this version; to join send mail to
+majordomo@bath.ac.uk with a single line "subscribe pcsound".  There is
+also a Csound mailing list for discussion of any aspect of the system,
+(joined my mailing majordomo@maths.ex.ac.uk) and a WWW page at
+http://www.leeds.ac.uk/music/Man/c_front.html
+
+Local Changes: 
+=============
+ It attempts to do graphics.  It is supposed to adjust to your
+graphics system.  See below for notes on how to set screen types
+explicitly.  I also have graphics in PVANAL and LPANAL with a -g
+option.  In CSOUND itself there is a pause before and after each
+graph.  This can be turned off if the environment variable CSNOSTOP is
+set to YES.
+
+To ensure you get WAV sound files either use the -W option, or set an
+environment variable SFOUTYP to WAV in your AUTOEXEC.BAT
+
+On Windows95 the output device doc is recognised as immediate output.
+One needs a fast machine though
+
+I have introduced a local version number; currently I have v3.46.
+The major number refers to MIT's current version (3 is the beta), the
+46 is my sequence number for the PC.
+
+There are three new utilities to scale for amplitude, a mixer for
+mixing sound files together, and a mkgraph program to write envelopes
+for these two.
+
+See separate release files for versions 3.44-3.46
+
+Version 3.36:
+  Fixed bug in mixer and a bug in grain
+
+Version 3.35:
+  Added granule unit generator, and relaxed restrictions on memory
+files.  Also MAC improvements to dialogs.
+
+Version 3.34:
+  Revised WAV support and added 8bit unsigned type
+
+Version 3.33:
+  Added a "Play on Exit" option for Windows.  Print version number
+always.  On Windows use the registry system to remember parameters,
+and tidy the code.  Decide not to contine the Zortech version.
+  
+Version 3.31:
+  Various additions, now based on WatcomC (rather than Zortech).
+Blaster support temporarily withdrawn.  Incorporates some Windows
+code, and consolidation from Unix system.
+
+Version 3.28.12:
+  Added convolution operations; see documentation below.  Also
+deferred loads of tables.
+
+Version 3.26.12:
+  Fixed bug in granular synthesis
+
+Version 3.25.12:
+  Internal only -- not distributed
+
+Version 3.24.12:
+  Restored MIDI changes as they all failed to work.  Correction to
+reverb2 made.  Another attempt to correct Soundblaster support.  The
+8-bit seems to work for me; 16-bit hangs still.  High speed seems OK.
+Have not checked stereo.  Some shortening of messages, and usage
+message removed in 286 versions (as Data segment is full).
+
+Versions 3.21-3.23 internal; version 3.x.11 was disaster.
+
+Version 3.20.10:
+  A number of changes in the MIDI area.  A number of new generators
+added, including Butterworth filters, vdelay, multitap and reverb2.
+Also granular synthesis generator and stochastic generators.  There is
+an envelope-following generator as well.  See Appendix 7 for details
+of these generators.  These are largely the work of Paris Smaragdis.
+
+Version 3.19.10 and Version 3.18.10:
+  Not released
+
+Version 3.17.10:
+  Created new utility mkgraph which creates envelope files using the
+mouse for drawing.  These files can be used by mixer and scale to
+provide more flexible gain control on sound files.
+  New utility ENVEXT for create an envelope file from a sound file.
+
+Version 3.16.10:
+  Mixer and scale can take envelope files
+
+Version 3.15.10:
+  Experimentally I have attempted to read the device sbmidi as a MIDI
+input for use with the -M option.  I have no idea if this works.
+  When using -o devaudio (also can use -o dac or -o sblst) it will
+force the format to be -c or -s.
+  The mixer can now take varying numbers of channels as input and can
+include some or all channels, and can direct input channel n to output
+channel m.  As the scaling can be negative as well as positive this
+incorporates removal of information as well.  The syntax is not good,
+but inspiration is not with me this weekend. 
+
+
+Copyright:
+=========
+The systems are the product of the MIT Media Laboratory, and this is
+their copyright notice:
+------------------------------------------------------------------------
+
+Copyright 1986, 1987 by the Massachusetts Institute of Technology.
+All rights reserved.
+
+Developed by Barry L. Vercoe at the Experimental Music Studio,
+Media Laboratory, M.I.T., Cambridge, Massachusetts, with partial support
+from the System Development Foundation, and from NSF Grant IRI-8704665.
+
+Permission to use, copy, or modify these programs and their documentation
+for educational and research purposes only and without fee is hereby granted,
+provided that this copyright and permission notice appear on all copies and
+supporting documentation.  For any other uses of this software, in original
+or modified form, including but not limited to distribution in whole or in
+part, specific prior permission from M.I.T. must be obtained.  M.I.T. makes
+no representations about the suitability of this software for any purpose.
+It is provided "as is" without express or implied warranty.
+
+------------------------------------------------------------------------
+The mixer, graphing and SoundBlaster support are probably copyright
+John ffitch, and I hereby give permission to use, copy, or modify this
+code for any purpose whatsoever.  I would like my name to remain in
+there, but I do not insist.
+------------------------------------------------------------------------
+Modifications and new code provided by Robin Whittle are provided
+without warranty etc. etc.  They are copyright 1995 Robin Whittle.
+
+Use of this code for non-commercial software products is permitted,
+provided the source code is made freely available according to the
+principles of the Free Sofware Foundation, with this copyright notice
+attached - and those of Barry Vercoe and John Fitch.
+------------------------------------------------------------------------
+
+Other parts of Csound have other ownerships.  In particular there is
+copyright code of Codemist (cwin.cpp and elsewhere), Boulanger Music
+(various opcodes), Allan S C Lee (granule).  Others may have claims.
+
+Interested parties should note that CSound is a system for creation of
+sound, and is not a MIDI sequencer.
+
+The systems built are described briefly below.
+
+CSOUND EXE
+	digital audio processing and sound synthesis
+	csound [flags] orchfile scorefile
+Csound is an environment in which a "scorefile" or external event
+sequence can invoke arbitrarily complex signal-processing
+"instruments" to produce sound.  Audio may be displayed during its
+creation, and the resulting sound sent to an on-line audio device or
+to an intermediate soundfile for later playback.  Flags include
+-C      use Cscore processing of scorefile
+-I      I-time only orch run
+-n      no sound onto disk
+-i fnam sound input filename
+-o fnam sound output filename (if fnam is devaudio, dac or sblst use directly)
+-b N    sample frames (or -kprds) per software sound I/O buffer
+-B N    samples per hardware sound I/O buffer
+-A      create an AIFF format output soundfile
+-W      create a WAV format output soundfile
+-h      no header on output soundfile
+-c      8-bit signed_char sound samples
+-a      alaw sound samples
+-u      ulaw sound samples
+-s      short_int sound samples
+-l      long_int sound samples
+-f      float sound samples
+-r N    orchestra srate override
+-v      verbose orch translation
+-m N    tty message level. Sum of: 1=note amps, 2=out-of-range msg, 4=warnings
+	8=SB mesages
+-d      suppress all displays
+-g      suppress graphics, use ascii displays
+-S      score is in Scot format
+-t N    use uninterpreted beats of the score, initially at tempo N
+-L dnam read Line-oriented realtime score events from device 'dnam'
+-M dnam read MIDI realtime events from device 'dnam' (must be sbmidi)
+-F fnam read MIDIfile event stream from file 'fnam'
+-P N    MIDI sustain pedal threshold (0 - 128)
+-R      continually rewrite header while writing soundfile (WAV/AIFF)
+-H      print a heartbeat character at each soundfile write
+-N      notify (ring the bell) when score or miditrack is done
+-T      terminate the performance when miditrack is done
+flag defaults: csound -s -otest -b1024 -B1024 -m7 -P128
+
+
+EXTRACT.EXE
+Program for extracting parts of a work.  Not tested in PC version
+
+HETRO.EXE
+	hetrodyne filter analysis for Csound adsyn module
+	hetro [flags] [fundamental] [filename]
+ hetro takes as input a file containing amplitude samples of some
+sound over time (it is assumed that the samples are evenly spaced
+in time) and decomposes that sound into a set of harmonically
+related sine waves with time varying amplitude and phase.
+
+LPCANAL.EXE
+	Paul Lansky's software for linear predictive analysis and
+	pitch tracking, adapted for Csound.
+   lpcanal [-p<n> -i<n> -s<t> -d<t> -o<file> -C<str> -P<frq> -Q<frq>] soundfile
+ lpcanal is the new experimental combination of the old anallpc and ptrack. 
+It performs linear predictive analysis and pitch tracking on monaural 16bit 
+fixed point soundfiles.  If a -g flag is used then a graphical display is
+given of some of the output as it is being computed.
+
+PVANAL.EXE
+	Fourier analysis module for Csound PVOC unit generator
+	pvanal  [-n frame-size] [-o overlap | -i increment] \
+		inputSoundFile outputFFTFile
+ pvanal converts a playable sample (a time-domain representation) into
+a series of short-time Fourier transform (STFT) frames centred at
+regular points throughout the file (a frequency-domain
+representation).  The output file can then be used as the data for the
+PVOC unit generator in Csound to generate notes based on the original
+sample, but with their timescales and pitches arbitrarily and
+dynamically modified.  If a -g flag is used then a graphical display
+is given of some of the output as it is being computed.
+
+SCSORT.EXE	
+Stand-alone sorting of sound files
+Not tested on PC
+
+SNDINFO.EXE	
+Reads the header of a sound file to identify type, duration etc
+	sndinfo soundfile
+
+SCALE.EXE
+ As well as doing the same as SNDINFO this utility reports on the
+maximum amplitude, and can generate a new soundfile with the amplitude
+scaled by a floating point value.  It can also change formats.
+		scale [-flags] soundfile
+Legal flags are:
+	-o fnam sound output filename
+	-A      create an AIFF format output soundfile
+	-W      create a WAV format output soundfile
+	-h      no header on output soundfile
+	-c      8-bit signed_char sound samples
+	-a      alaw sound samples
+	-u      ulaw sound samples
+	-s      short_int sound samples
+	-l      long_int sound samples
+	-f      float sound samples
+	-F fpnum        amount to scale amplitude
+	-F fname        envelope file for scaling
+	-R      continually rewrite header while writing soundfile (WAV/AIFF)
+	-H      print a heartbeat character at each soundfile write
+	-N      notify (ring the bell) when score or miditrack is done
+
+flag defaults: scale -s -otest -F 0.0
+
+If scale is 0.0 then reports maximum possible scaling; otherwise scale
+and generate a new soundfile
+
+MIXER.EXE
+ This utility can mix together a number of sound files (up to 20 at
+present) with different starting times and with scaling on each file.
+		mixer [-flags] soundfile [-flags] soundfile ...
+Legal flags are:
+	-o fnam sound output filename
+	-A      create an AIFF format output soundfile
+	-W      create a WAV format output soundfile
+	-h      no header on output soundfile
+	-c      8-bit signed_char sound samples
+	-a      alaw sound samples
+	-u      ulaw sound samples
+	-s      short_int sound samples
+	-l      long_int sound samples
+	-f      float sound samples
+	-F fpnum        amount to scale amplitude of next sound file
+	-F fname        an envelope file for scaling
+	-R      continually rewrite header while writing soundfile (WAV/AIFF)
+	-H      print a heartbeat character at each soundfile write
+	-N      notify (ring the bell) when score or miditrack is done
+	-S int	Sample at which to insert next sound file
+	-T fpnum	Time at which to insert next sound file
+	-1 -2 -3 -4     include named channel
+	-^ n m  include channel n and output as channel m
+
+Defaults are: mixer -s -otest -F1.0 -S0
+
+MIXER can also be used for some echo effects.
+
+MKGRAPH.EXE
+  A small utility to creat envelope files for MIXER and SCALE.  Type ?
+when the program is running to get all the controls.
+
+	mkgraph [-v] [envfile] [-o outname]
+
+Default is mkgraph -o newgraph.  If an envfile is given it is loaded and can
+be editted.  envfile and outname can be the same.
+
+ENVEXT.EXE
+  Given a sound file it creates an envelope file with an approximation to
+the envelope of the sound file.
+
+	envext [-w time] [-o file] soundfile
+
+Defaults are
+	envext -w 0.25 -o newenv
+
+------------------------------------------------------------------------
+Graphics:
+========
+
+The graphics is just for the display of waveforms.  The full
+specification of the graphics used says that it tries auto-determining
+the graphics on the machine.  This can sometimes fail, so it reads the
+environment variable FG_DISPLAY, and if set as below it uses that kind
+of graphics.
+	Value		Type
+	=====		====
+	GCAHIRES	GCA 640 x 200 x 2
+	GCAMEDRES	GCA 320 x 200 x 4
+	EGACOLOR	EGA 640 x 200 x 16
+	EGAECD		Enhanced EGA 640 x 350 x 16
+	EGALOWRES
+	EGAMONO
+	EVGAHIRES	Everest EVGA board
+	HERCFULL	Hercules 2 pages 2 colour
+	HERCHALF	Hercules 1 page  2 colour
+	ORCHIDPROHIRES	VGA type
+	PARADISEHIRES	VGA type
+	TOSHIBA		Toshiba 3100 -- 640 x 400 x 2
+	TRIDENTHIRES	Trident 800 x 600 x 16
+	VEGAVGAHIRES	Video 7 vega VGA board
+	VESA6A		VESA mode 0x6a
+	VESA2		VESA mode 0x102
+	VGA11		IBM VGA mode 0x11
+	VGA12		IBM VGA mode 0x12
+	VGA13		IBM VGA mode 0x13
+	8514A		IBM 8514A display adapter
+
+The csound_new version uses a different graphics system which seems
+more reliable.
+
+Virtual Memory:
+==============
+
+The system uses virtual memory on 386/486.  The limits on memory size
+are the minimum of
+	1. Free disk space + code size
+	2. 256 times your extended memory
+	3. 3.5Gbytes (!)
+
+You should set up the environment variable TMP or TEMP to the disk to
+use for swap space.  If this is not set it looks at disks C:, D:, ...
+looking for the largest free space.  That gives the limit of space.
+This is by the Flashtek Dos extender.  The csound_new version used the
+DOS4GW DOS extender, which I do not think supports virtual memory.
+
+Reporting Bugs:
+==============
+
+Please mail (or possibly FAX) me reports on any bugs and shortcomings
+of the PC version.  I will endeavour to fix or assist, but it is only
+fair to warn you that this is not either of my jobs, and so it may be
+lower in priorities.  But I am interested in widening the availability
+of CSound.
+
+The csound_new version is built with WatcomC v10.
+
+80286 - version
+===============
+
+The files in the 286 versions also need the program ZPM.EXE, which is
+provided, in your search path.
+
+Windows
+=======
+The version in csound_win.zip is a Windows version with suitable dialog boxes.  
+It is built from the same sources.  It needs WindowsNT, Windows95 or the Win32s
+system.
+
+John Fitch
+School of Mathematical Sciences		Codemist Ltd
+University of Bath			"Alta", Horsecombe Vale
+Bath BA2 7AY				Combe Down, Bath BA2 5QR
+United Kingdom				United Kingdom
+Tel: +44-1225-826820			Tel: +44-1225-837430
+FAX: +44-1225-826492			FAX: +44-1225-837430
+
+------------------------------------------------------------------------
+		  Appendix 7 : Newest Csound opcodes
+				  by
+			   Paris Smaragdis
+		       Berklee College of Music
+
+	This appendix describes recent additions to Csound.  These
+additions include a granular synthesis synthesizer, a new set of
+filters, a new variable delay, a multitap delay, a new reverb, an
+envelope follower, various noise generators, a power function
+generator and two gen routines, GEN20 and GEN21.
+
+
+1) Granular synthesizer.
+
+ar   grain   xamp, xpitch, xdens, kampoff, kpitchoff, kgdur, igfn, iwfn, imgdur
+
+Generates granular synthesis textures.
+
+INITIALIZATION
+
+igfn, igdur - igfn is the ftable number of the grain waveform.  This
+can be just a sine wave or a sampled sound of any length.  Each grain
+will start from a random table position and sustain for igdur seconds.
+
+iwfn - Ftable number of the amplitude envelope used for the grains
+(see also GEN20).
+
+imgdur - Maximum grain duration in seconds.  This the biggest value to
+be assigned on kgdur.
+
+PERFORMANCE
+
+xamp - Total amplitude of the sound.
+
+xpitch  - Grain frequency in cps.
+
+xdens - Density of grains measured in grains per second.  If this is
+constant then the output is synchronous granular synthesis, very
+similar to fof.  If xdens has a random element (like added noise),
+then the result is more like asynchronous granular synthesis.
+
+kampoff - Maximum amplitude deviation from kamp.  This means that the
+maximum amplitude a grain can have is kamp + kampoff and the minimum
+is kamp.  If kampoff is set to zero then there is no random amplitude
+for each grain.
+
+kpitchoff - Maximum pitch deviation from kpitch in cps.  Similar to
+kampoff.
+
+kgdur - Grain duration in seconds.  The maximum value for this should
+be declared in imgdur.  If kgdur at any point becomes greater than
+imgdur, it will be truncated to imgdur.
+
+
+2) Butterworth filters.
+
+		ar	butterhp	asig, kfreq
+		ar	butterlp	asig, kfreq
+		ar	butterbp	asig, kfreq, kband
+		ar	butterbr	asig, kfreq, kband
+
+Implementations of second-order hipass, lopass, bandpass and
+bandreject Butterworth filters.
+
+PERFORMANCE
+
+These new filters are butterworth second-order IIR filters.  They are
+slightly slower than the original filters in Csound, but they offer an
+almost flat passband and very good precision and stopband attenuation.
+
+asig  - Input signal to be filtered.
+
+kfreq  - Cuttoff or center frequency for each of the filters.
+
+kband  - Bandwidth of the bandpass and bandreject filters.
+
+EXAMPLE
+
+	asig	rand		10000	      ; White noise signal
+	alpf	butterlp	asig, 1000    ; cutting frequencies above1K
+	ahpf	butterhp	asig, 500     ; passing frequencies above 500Hz
+	abpf	butterbp	asig, 2000, 100 ; passing only 1950 to 2050 Hz
+	abrf	butterbr	asig, 4500, 200 ; cutting only 4400 to 4600 Hz
+
+
+3) Vdelay
+
+		ar	vdelay	asig, adel, imaxdel
+
+This is an interpolating variable time delay, it is not very different
+from the existing implementation (deltapi), it is only easier to use.
+
+INITIALIZATION
+
+imaxdel - Maximum value of delay in samples.  If adel gains a value
+greater than imaxdel it is folded around imaxdel.  This should not
+happen.
+
+PERFORMANCE
+
+With this unit generator it is possible to do Doppler effects or
+chorusing and flanging.
+
+asig  - Input signal.
+
+adel - Current value of delay in samples.  Note that linear functions
+have no pitch change effects.  Fast changing values of adel will cause
+discontinuities in the waveform resulting noise.
+
+Example
+
+	f1 0 8192 10 1
+
+	ims = 100			; Maximum delay time in msec
+	a1	oscil	10000, 1737, 1	; Make a signal
+	a2	oscil	ims/2, 1/p3, 1	; Make an LFO
+	a2	=	a2 + ims/2	; Offset the LFO so that it is positive
+	a3	vdelay	a1, a2, ims	; Use the LFO to control delay time
+	out	a3
+
+Two important points here.  First, the delay time must be always
+positive.  And second, even though the delay time can be controlled in
+k-rate, it is not advised to do so, since sudden time changes will
+create clicks.
+
+
+4) Multitap delay
+
+	ar	multitap	asig, itime1, igain1, itime2, igain2 . . . 
+
+Multitap delay line implementation.
+
+INITIALIZATION
+
+The arguments itime and igain set the position and gain of each tap.
+The delay line is fed by asig.
+
+Example:
+
+	a1	oscil		1000, 100, 1
+	a2	multitap	a1, 1.2, .5, 1.4, .2
+	out	a2
+
+This results in two delays, one with length of 1.2 and gain of .5, and
+one with length of 1.4 and gain of .2.
+
+
+5) Reverb2
+
+	ar	reverb2	asig, ktime, khdif
+
+This is a reverberator consisting of 6 parallel comb-lowpass filters
+being fed into a series of 5 allpass filters.
+
+PERFORMANCE
+
+The input signal asig is reverberated for ktime seconds.  The
+parameter khdif controls the high frequency diffusion amount.  The
+values of khdif should be from 0 to 1.  If khdif is set to 0 the all
+the frequencies decay with the same speed.  If khdif is 1, high
+frequencies decay faster that lower ones.
+
+Example:
+
+	a1	oscil		10000, 100, 1
+	a2	reverb2	a1, 2.5, .3
+	out	a1 + a2 * .2
+
+This results in a 2.5 sec reverb with faster high frequency
+attenuation.
+
+
+6) Envelope follower
+
+	kr	follow	asig,  idt
+Envelope follower unit generator.
+
+INITIALIZATION
+
+idt - This is the period, in seconds, that the average amplitude of
+asig is reported.  If the frequency of asig is low then idt must be
+large (more than half the period of asig )
+
+PERFORMANCE
+
+asig  - This is the signal from which to extract the envelope.
+
+Example
+
+	k1	line	0, p3, 30000	; Make k1 a simple envelope
+	a1	oscil	k1, 1000, 1	; Make a simple signal using k1
+	ak1	follow	a1, .02		; ak1 is now like k1
+	a2	oscil	ak1, 1000, 1	; Make a simple signal using ak1
+	out	a2			; Both a1 and a2 are the same
+
+To avoid zipper noise, by discontinuities produced from complex
+envelope tracking, a lowpass filter could be used, to smooth the
+estimated envelope.
+
+
+7) Noise generators
+
+All of the following opcodes operate in i-, k- and a-rate.  The output
+rate depends on the first letter of the opcode, a for a-rate, k for k-
+rate and i for i-rate.
+
+xlinrand krange - Linear distribution random number generator.  krange
+is the range of the random numbers [0 - krange).  Outputs only
+positive numbers.
+
+xtrirand krange  -  Same as above only ouputs both negative and 
+positive numbers.
+
+xexprand krange - Exponential distribution random number generator.
+krange is the range of the random numbers [0 - krange).  Outputs only
+positive numbers.
+
+xbexprnd krange - Same as above, only extends to negative numbers too
+with an exponential distribution.
+
+xcauchy kalpha - Cauchy distribution random number generator.  kalpha
+controls the spread from zero (big kalpha => big spread).  Outputs
+both positive and negative numbers.
+
+xpcauchy  kalpha  -  Same as above,  ouputs positive numbers only.
+
+xpoisson klambda - Poisson distribution random number generator.
+klambda is the mean of the distribution.  Outputs only positive
+numbers.
+
+xgauss krange - Gaussian distribution random number generator.  krange
+is the range of the random numbers (-krange - 0 - krange).  Outputs
+both positive and negative numbers.
+
+xweibull ksigma, ktau - Weibull distribution random number generator.
+ksigma scales the spread of the distribution and ktau, if greater
+than one numbers near ksigma are favored, if smaller than one small
+values are favored and if t equals 1 the distribution is exponential.
+Outputs only positive numbers.
+
+xbeta krange, kalpha, kbeta - Beta distribution random number
+generator.  krange is the range of the random numbers [0 - krange).  If
+kalpha is smaller than one, smaller values favor values near 0.  If
+kbeta is smaller than one, smaller values favor values near krange.
+If both kalpha and kbeta equal one we have uniform distribution.  If
+both kalpha and kbeta are greater than one we have a sort of gaussian
+distribution.  Outputs only positive numbers.
+
+
+For more detailed explanation of these distributions, see:
+
+1. C. Dodge - T.A. Jerse 1985. Computer music.  Schirmer books. 
+pp.265 - 286
+
+2. D. Lorrain. "A panoply of stochastic cannons".  In C. Roads, ed. 
+1989. Music machine .  Cambridge, Massachusetts: MIT press, pp. 351 
+- 379.
+
+Examples:
+
+	a1  atrirand  32000	; Audio noise with triangle distribution
+	k1  kcauchy  10000	; Control noise with Cauchy dist.
+	i1  ibetarand  30000, .5, .5 ; i-time random value, beta dist.
+
+
+8) Power functions
+
+		ir	ipow	iarg, kpow
+		kr	kpow	karg, kpow, [inorm]
+		ar	apow	aarg, kpow, [inorm]
+
+Computes xarg  to the power of kpow  and scales the result by inorm.
+
+INITIALIZATION
+
+inorm - The number to divide the result (default to 1).  This is
+especially useful if you are doing powers of a- or k- signals where
+samples out of range are extremely common!
+
+iarg  - If you are using ipow this is the base.
+
+PERFORMANCE
+
+karg  - If you are using kpow this is the base.
+
+aarg  - If you are using apow this is the base.
+
+EXAMPLES:
+
+1.	i2t2	ipow		2,2		; Computes 2^2.
+
+2.	kline	line		0, 1, 4
+	kexp	kpow	kline, 2, 4
+
+This feeds a linear function to kpow and scales that to the line's
+peak value.  The output will be an exponential curve with the same
+range as the input line.
+
+3.	iamp ipow		10, 2
+	a1	oscil		iamp, 100, 1
+	a2	apow	a1, 2, iamp
+	out a2
+
+This will output a sine with its negative part folded over the amp
+axis.  The peak value will be iamp = 10^2 = 100.
+
+
+9) GEN20
+
+This subroutine generates functions of different windows.  These
+windows are usually used for spectrum analysis or for grain envelopes.
+
+	f #	time	size	20	window	max	opt
+
+size  - number of points in the table.  Must be a power of 2 ( + 1).
+
+window  - Type of window to generate.
+		1 - Hamming
+		2 - Hanning
+		3 - Bartlett ( triangle)
+		4 - Blackman ( 3 - term)
+		5 - Blackman - Harris ( 4 - term)
+		6 - Gaussian
+		7 - Kaiser
+		8 - Rectangle
+		9 - Sinc
+
+max - For negative p4 this will be the absolute value at window peak
+point.  If p4 is positive or p4 is negative and p6 is missing the
+table will be post-rescaled to a maximum value of 1.
+
+opt - Optional argument required by the Kaiser window.
+
+Examples:
+
+	f	1	0	1024	20	5
+This creates a function which contains a 4 - term Blackman - Harris 
+window with maximum value of 1.
+
+	f	1	0	1024	-20	2	456
+This creates a function that contains a Hanning window with a maximum 
+value of 456.
+
+	f	1	0	1024	-20	1
+This creates a function that contains a Hamming window with a maximum 
+value of 1.
+
+	f	1	0	1024	20	7	1	2
+This creates a function that contains a Kaiser window with a maximum 
+value of 1.  The extra argument specifies how `open' the window is, for 
+example a value of 0 results in a rectangular window and a value of 10 in 
+a Hamming like window.
+
+
+10) GEN21
+
+This generates tables of different random distributions. (see also noise 
+generators, above).
+
+	f #	time	size	21	type	lvl arg1 arg2
+
+Time and size are the usual Gen function arguments.  Type defines the 
+distribution to be used.
+
+	1   - Uniform
+	2   - Linear
+	3   - Triangular
+	4   - Exponential
+	5   - Biexponential
+	6   - Gaussian
+	7   - Cauchy
+	8   - Positive Cauchy
+	9   - Beta
+	10  - Weibull
+	11  - Poison
+
+Of all these cases only 9 (Beta) and 10 (Weibull) need extra
+arguments.  Beta needs two arguments and Weibull one.
+
+Examples:
+
+	f1 0 1024 21 1		; Uniform (white noise)
+	f1 0 1024 21 6		; Gaussian
+	f1 0 1024 21 9 1 1 2	; Beta (note that level precedes arguments)
+	f1 0 1024 21 10 1 2   	; Weibull
+
+
+	All of the above additions were designed by the author between
+May and December 1994, under the supervision of Dr. Richard Boulanger.
+
+This appendix was written on 20 December 1994 by
+Paris Smaragdis, Berklee College of Music.
+Internet:  psmaragdis@aol.com
+
+------------------------------------------------------------------------
+AUTHOR: Greg Sullivan, sullivan@aussie.enet.dec.com
+        (Based on algorithm given in 'Elements Of Computer Music', by
+        F. Richard Moore.
+
+CVANAL - Impulse Response Fourier Analysis for CONVOLVE operator
+
+csound -U cvanal [flags] infilename outfilename
+
+cvanal converts a soundfile into a single Fourier transform frame. The 
+output file can be used by the CONVOLVE operator to perform Fast
+Convolution between an input signal and the original impulse response.
+Analysis is conditioned by the flags below. A space is optional between 
+the flag and its argument.
+
+-s<rate>        sampling rate of the audio input file. This will over-ride
+                the srate of the soundfile header, which otherwise applies.
+                If neither is present, the default is 10000.
+
+-c<channel>     channel number sought. If omitted, the default is to  
+                process all channels. If a value is given, only the
+                selected channel will be processed.
+                
+-b<begin>       beginning time (in seconds) of the audio segment to be
+                analysed. The default is 0.0
+                
+-d<duration>    duration (in seconds) of the audio segment to be analysed.
+                The default of 0.0 means to the end of the file.
+                
+EXAMPLE
+                cvanal asound cvfile
+will analyse the soundfile "asound" to produce the file "cvfile" for the
+use with CONVOLVE.
+
+HINT: To use data that is not already contained in a soundfile, 
+      a soundfile converter that accepts text files may be used to
+      create a standard audio file. E.g, the .DAT format for SOX.
+      This is useful for implementing FIR filters.
+
+FILES
+The output file has a special CONVOLVE header, containing details of the
+source audio file. The analysis data is stored as 'float', in rectangular
+(real/imaginary) form. 
+
+***NOTE***: The analysis file is NOT system independent! Ensure that
+            the original impulse recording/data is retained. If/when required,
+            the analysis file can be recreated.
+
+AUTHOR: Greg Sullivan, sullivan@aussie.enet.dec.com
+        (Based on algorithm given in 'Elements Of Computer Music', by
+        F. Richard Moore.
+        
+------------------------------------------------------------------------------
+CONVOLVE unit generator:
+
+ar1[,ar2[,ar3[,ar4]]]  convolve  ain,ifilcod,channel
+
+Output is the convolution of signal ain and the impulse response
+contained in ifilcod.  Note that it is considerably more efficient to
+use one instance of the operator when processing a mono input to
+create stereo, or quad, outputs.
+
+INITIALISATION
+
+ifilcod - integer or character-string denoting an impulse response data
+file. An integer denotes the suffix of a file convolve.m; a character
+string (in double quotes) gives a filename, optionally a full pathname. 
+If not a fullpath, the file is sought first in the the current directory,
+then in the one given by the environment variable SADIR (if defined).
+The data file contains the Fourier transform of an impulse response.
+Memory usage depends on the size of the data file, which is read and
+held entirely in memory during computation, but which is shared
+by multiple calls.
+
+channel - integer denoting the channel of the impulse response to be used
+          for the convolution. 0 (the default) means to use all channels.
+          For multi-channel output, the number of channels in the impulse 
+          response must match the number of output signals.
+
+PERFORMANCE
+
+CONVOLVE implements Fast Convolution. The output of this
+operator is delayed with respect to the input. The following
+formulas should be used to calculate the delay:
+
+For (1/kr) <= IRdur:
+
+Delay = ceil(IRdur * kr) / kr
+
+
+For (1/kr) > IRdur: 
+
+Delay = IRdur * ceil(1/(kr*IRdur))
+
+Where:
+
+kr  = Csound control rate
+IRdur = duration, in seconds, of impulse response
+ceil(n) = smallest integer not smaller than n
+
+One should be careful to also take into account the initial delay,
+if any, of the impulse response. For example, if an impulse response
+is created from a recording, the soundfile may not have the initial
+delay included. Thus, one should either ensure that the soundfile
+has the correct amount of zero padding at the start, or, preferably,
+compensate for this delay in the orchestra. (the latter method
+is more efficient). To compensate for the delay in the 
+orchestra, _subtract_ the initial delay from the result
+calculated using the above formula(s), when calculating the required
+delay to introduce into the 'dry' audio path. 
+
+For typical applications, such as reverb, the delay will be in 
+the order of 0.5 to 1.5 seconds, or even longer. This renders
+the current implementation unsuitable for real time applications.
+It could conceivably be used for real time filtering however, if 
+the number of taps is is small enough.
+
+Example:
+
+- Create frequency domain impulse response file:
+  c:\> csound -Ucvanal l1_44.wav l1_44.cv
+
+- Determine duration of impulse response. For high accuracy,
+  determine the number of sample frames in the impulse 
+  response soundfile, and then compute the duration with:
+
+  duration = (sample frames)/(sample rate of soundfile)
+
+  This is due to the fact that the SNDINFO utility only
+  reports the duration to the nearest 10ms. If you have a 
+  utility that reports the duration to the required accuracy,
+  then you can simply use the reported value directly.
+
+  c:\> sndinfo l1_44.wav 
+  length = 60822 samples, sample rate = 44100
+ 
+  Duration = 60822/44100 = 1.379s.
+
+- Determine initial delay, if any, of impulse response. 
+  If the impulse response has not had the initial 
+  delay removed, then you can skip this step. If it has
+  been removed, then the only way you will know the initial
+  delay is if the information has been provided separately.
+  For this example, let's assume that the initial delay is
+  60ms. (0.06s)
+
+- Determine the required delay to apply to the dry signal, to align
+  it with the convolved signal:
+  
+  If kr = 441:
+
+  1/kr = 0.0023, which is <= IRdur (1.379s), so:
+
+  Delay1 = ceil(IRdur * kr) / kr
+        = ceil(608.14) / 441
+        = 609/441
+        = 1.38s
+        
+  Accounting for the initial delay:
+  delay2 = 0.06s
+  Total delay = delay1 - delay2
+              = 1.38 - 0.06
+              = 1.32s
+
+- Create .orc file, e.g:
+----CUT----
+; Simple demonstration of CONVOLVE operator, to apply reverb.
+
+        sr = 44100
+        kr = 441
+        ksmps = 100
+        nchnls = 2
+
+        instr   1
+
+imix = 0.22 ; Wet/dry mix. Vary as desired.
+            ; NB: 'Small' reverbs often require a much higher
+            ; percentage of wet signal to sound interesting. 'Large'
+            ; reverbs seem require less. Experiment! The wet/dry mix is
+            ; very important - a small change can make a large difference. 
+ivol = 0.9  ; Overall volume level of reverb. May need to adjust 
+            ; when wet/dry mix is changed, to avoid clipping.
+idel = 1.32 ; Required delay to align dry audio with output of convolve.
+            ; This can be automatically calculated within the orc file, 
+            ; if desired.
+
+adry          soundin "anechoic.wav"      ; input (dry) audio
+awet1,awet2   convolve adry,"l1_44.cv"    ; stereo convolved (wet) audio
+adrydel       delay   (1-imix)*adry,idel  ; Delay dry signal, to align it with 
+                                          ; convolved signal. Apply level 
+                                          ; adjustment here too.
+
+             outs    ivol*(adrydel+imix*awet1),ivol*(adrydel+imix*awet2) 
+                                          ; Mix wet & dry signals, and output
+        endin
+---CUT----
+
+The granule unit generator (Allan Lee) is more complex than grain
+(above), but does add new possibilities.  This is a shorten manual,
+without the pictures,
+
+NAME
+granule - Granular synthesis unit generator for Csound.
+
+SYNOPSIS
+ granule xamp ivoice iratio imode ithd ifn ipshift igskip \
+	 igskip_os ilength kgap igap_os kgsize igsize_os iatt idec [iseed] \
+	 [ipitch1] [ipitch2] [ipitch3] [ipitch4] [ifnenv]
+
+DESCRIPTION
+granule is a Csound unit generator which employs a wavetable as input
+to produce granularly synthesized audio output.  Wavetable data may be
+generated by any of the gen subroutines such as gen01 which reads an
+audio data file into a wavetable.  This enable a sampled sound to be
+used as the source for the grains.  Up to 128 voices are implemented
+internally.The maximum number of voices can be increased by redefining
+the variable MAXVOICE in the grain4.h file.  granule has a build-in
+random number generator to handle all the random offset parameters.
+Thresholding is also implemented to scan the source function table at
+initialization stage.  This facilitates features such as skipping
+silence passage between sentences.
+
+The characteristics of the synthesis are controlled by 22
+parameters. xamp is the amplitude of the output and it can be either
+audio rate or control rate variable. All parameters with prefix i must
+be valid at Init time, parameters with prefix k can be either control
+or Init values.
+
+SUMMARY OF PARAMETERS
+
+xamp - amplitude.
+
+ivoice - number of voices.
+
+iratio - ratio of the speed of the gskip pointer relative to output
+audio sample rate. eg. 0.5 will be half speed.
+
+imode - +1 grain pointer move forward (same direction of the gskip
+pointer), -1 backward (oppose direction to the gskip pointer) or 0 for
+random.
+
+ithd - threshold, if the sampled signal in the wavetable is smaller
+then ithd, it will be skipped.
+
+ifn - function table number of sound source.
+
+ipshift - pitch shift control. If ipshift is 0, pitch will be set
+randomly up and down an octave. If ipshift is 1, 2, 3 or 4, up to four
+different pitches can be set amount the number of voices definded in
+ivoice. The optional parameters ipitch1, ipitch2, ipitch3 and ipitch4
+are used to quantify the pitch shifts.
+
+igskip - initial skip from the beginning of the function table in sec.
+
+igskip_os - gskip pointer random offset in sec, 0 will be no offset.
+
+ilength - length of the table to be used starting from igskip in sec.
+
+kgap - gap between grains in sec.
+
+igap_os - gap random offset in % of the gap size, 0 gives no offset.
+
+kgsize - grain size in sec.
+
+igsize_os - grain size random offset in % of grain size, 0 gives no
+offset.
+
+iatt - attack of the grain envelope in % of grain size.
+
+idec - decade of the grain envelope in % of grain size.
+
+[iseed] - optional, seed for the random number generator, default is
+0.5.
+
+[ipitch1], [ipitch2], [ipitch3], [ipitch4] - optional, pitch shift
+parameter, used when ipshift is set to 1, 2, 3 or 4. Time scaling
+technique is used in pitch shift with linear interpolation between
+data points. Default value is 1, the original pitch.
+
+EXAMPLE
+Listing of orchestra file.
+sr = 44100
+kr = 4410
+ksmps = 10
+nchnls = 2
+
+instr 1
+
+;
+k1 linseg 0,0.5,1,(p3-p2-1),1,0.5,0
+a1 granule p4*k1,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,
+	p20,p21,p22,p23,p24
+a2 granule p4*k1,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,
+	p20+0.17,p21,p22,p23,p24
+
+outs a1,a2 
+endin
+
+Listing of score file.
+
+; f statement read sound file sine.aiff in the SFDIR directory into f-table 1
+f 1 0 524288 1 "sine.aiff" 1 0
+i1 0 10 2000 64 0.5 0 0 1 4 0 0.005 10 0.01 50 0.02 50 30 30 0.39 1 1.42 0.29 2
+e
+
+The above example reads a sound file called sine.aiff into wavetable
+number 1 with 524,288 samples. It generates 10 seconds of stereo audio
+output using the wavetable. In the orchestra file, all parameters
+required to control the synthesis are passed from the score file. A
+linseg function generator is used to generate an envelope with 0.5
+second of linear attack and decade. Stereo effect is generated by
+using different seeds for the two granule function calls. In the
+example, 0.17 is added to p20 before passing into the second granule
+call to ensure that all of the random offset events are different from
+the first one.
+
+In the score file, the parameters are interpreted as:
+p5 (ivoice) the number of voices is set to 64
+p6 (iratio) is set to 0.5, it scan the wavetable at half of the speed
+   of the audio output rate
+p7 (imode) is set to 0, the grain pointer only move forward
+p8 (ithd) is set to 0, skipping the thresholding process
+p9 (ifn) is set to 1, function table number 1 is used
+p10 (ipshift) is set to 4, four different pitches are going to be
+    generated
+p11 (igskip) is set to 0 and p12 (igskip_os) is set to 0.005, no
+    skipping into the wavetable and a 5 mSec random offset is used
+p13 (ilength) is set to 10, 10 seconds of the wavetable is to be used
+p14 (kgap) is set to 0.01 and p15 (igap_os) is set to 50, 10 mSec gap
+    with 50% random offset is to be used
+p16 (kgsize) is set to 0.02 and p17 (igsize_os) is set to 50, 20 mSec
+    grain with 50% random offset is used
+p18 (iatt) and p19 (idec) are set to 30, 30% of linear attack and
+    decade is applied to the grain
+p20 (iseed) seed for the random number generator is set to 0.39
+p21 - p 24 are pitches set to 1 which is the original pitch, 1.42
+    which is a 5th up, 0.29 which is a 7th down and finally 2 which is
+    an octave up.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Csound is developed by Barry L. Vercoe at the Experimental Music Studio, Media Laboratory, M.I.T., Cambridge, Massachusetts.
+
+------------------------------------------------------------------------
+ATARI Csound
+============
+
+The files are
+			      csound.ttp
+			     extract.ttp
+			      hetro.ttp
+			      lpanal.ttp
+			      pvanal.ttp
+			      scale.ttp
+			      scsort.ttp
+			     sndinfo.ttp
+ I do not have any of the standard compression programs for the Atari
+at present, so these are raw binary files.
+ This is an initial port of 3.14, with no support for graphics or
+MIDI.  The code is not yet optimised, and has only been subjected to
+limited testing.  If there is sufficient interest I will optimise and
+extend, but my Atari is currently failing to boot.  The code does not
+assume the existence of a floating point co- processor, and is built
+for the 68000 (lowest common denominator).  Please report any bugs or
+comments to me.  I am using LatticeC and the sources and scripts are
+available from me, assuming I can read the Atari disk...
+
+There is a better-supported commercially available Atari Csound from CDP.
+They also have a large suite of music synthesis programs on Atari and PC.
+Contact Tom Endrich:
+	tendrich@cix.compulink.co.uk
+	Tel: +44-1904-613299
+	Composers' Desktop Project
+	11 Kilburn Road
+	York YO1 4DF
+	England
+

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+	<title>button, checkbox</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="setctrl.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="sense.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>button, checkbox</h2>
+<pre>
+  kr      <strong>button</strong>     inum
+  kr      <strong>checkbox</strong>   inum
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Sense on-screen controls. Requires Winsound or TCL/TK.</p>
+<h3>Initialization</h3>
+<p><em>inum</em> &#8211; the number of the button or checkbox. If it does not exist, it is made on-screen at initialization.</p>
+<h3>Performance</h3>
+<p>If the button has been pushed since the last k-period, then return 1, otherwise return 0. If the checkbox is set (pushed) then return 1, if not, return 0.</p>
+
+<h3>Example</h3>
+<p>Increase pitch while a checkbox is set, and extend duration for each push of a button.</p>
+<pre>
+          <strong>instr</strong> 1
+  kcps    =          <strong>cpsoct</strong>(p5)
+  k1      <strong>check</strong>      1
+          <strong>if</strong> (k1 == 1) kcps = kcps * 1.1
+  a1      <strong>oscil</strong>      p4, kcps, 1
+          <strong>out</strong>        a1
+
+  k2      <strong>button</strong>     1
+         <strong>if</strong> (k2 == 1) p3 = p3 + 0.1
+         <strong>endin</strong>
+
+</pre>
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath, Codemist. Ltd.<br>
+Bath, UK<br>
+September, 2000<br>
+New in Csound version 4.08
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="setctrl.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="sense.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</font></a>
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>33_01_1.sco.html</title>
+		<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+	</head>
+
+	<body stylesrc="../admin/adpsco.html" bgcolor="white">
+		<pre>
+; ************************************************************************
+; ACCCI:     33_01_1.SCO
+; coded:     jpg 10/93
+
+
+; GEN functions **********************************************************
+; for both oscillators
+f1 0 512 10 1              ; one sinus
+f2 0 512 10 1 1 1          ; three harmonics
+
+; envelope
+f31 0  512 7  0 51 1 29 .9 120 .8 50 .6 50 .5 20 .3 30 .1 162 0
+
+; score ******************************************************************
+
+;    idur iamp  ifqc ifc   ifqm ifm     
+i1  0  1  8000  800  1      50  1  ;         750 (800) 850            Hz
+i1  3  .  .     .    1     111  2  ; 467/578/689 (800) 911/1022/1133  Hz 
+i1  6  .  .     .    2     107  1  ; 693(800)807,1493(1600)1707, ...  Hz    
+
+
+e</pre>
+	</body>
+
+</html>

@@ -1,0 +1,170 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email  csound@lakewoodsound.com -->
+<!-- This is Version 4.16. -->
+<html>
+<head>
+   <title>guiro, tambourine, bamboo, dripwater, sleighbells</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="cabasa.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvoc.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#models" class="toqr">
+Signal Generators  Models and Emulations</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>guiro, tambourine, bamboo, dripwater, sleighbells</h2>
+
+<pre>
+  ar      <strong>guiro</strong>       iamp, idettack[, knum, kdamp, kmaxshake, kfreq, kfreq1]
+  ar      <strong>tambourine</strong>  iamp, idettack[, knum, kdamp, kmaxshake, kfreq, kfreq1, kfreq2]
+  ar      <strong>bamboo</strong>      iamp, idettack[, knum, kdamp, kmaxshake, kfreq, kfreq1, kfreq2]
+  ar      <strong>dripwater</strong>   iamp, idettack[, knum, kdamp, kmaxshake, kfreq, kfreq1, kfreq2]
+  ar      <strong>sleighbells</strong> iamp, idettack[, knum, kdamp, kmaxshake, kfreq, kfreq1, kfreq2]
+</pre>
+
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+
+<p>Semi-physical models of various percussion sounds.</p>
+
+<h3>Initialization</h3>
+
+<p><em>iamp</em> &#8211; Amplitude of output.  Note  As these instruments are stochastic, this is only a approximation.</p>
+
+<p><em>idettack</em> &#8211; period of time over which all sound is stopped</p>
+
+<h3>Performance</h3>
+
+<p><em>knum</em> &#8211; The number of beads, teeth, bells, timbrels, etc.  If, zero the default value is:</p>
+    <pre>     
+         <strong>guiro</strong>        = 128.0000
+         <strong>tambourine</strong>   =  32.0000
+         <strong>bamboo</strong>       =   1.2500
+         <strong>dripwater</strong>    =  10.0000
+         <strong>sleighbells</strong>  =  32.0000
+	</pre>
+<p><em>kdamp</em> &#8211; the damping factor of the instrument.  The value is used as an adjustment around the defaults, with 1 being no damping. If zero, the default values are used. The defaults are:</p>
+	<pre>
+         <strong>guiro</strong>        =   1.0000
+         <strong>tambourine</strong>   =   0.9985
+         <strong>bamboo</strong>       =   0.9999
+         <strong>dripwater</strong>    =   0.9950
+         <strong>sleighbells</strong>  =   0.9994
+	</pre>
+<p><em>kmaxshake</em> &#8211; amount of energy to add back into the system. The value should be in range 0 to 1.</p>
+
+<p><em>kfreq</em> &#8211; the main resonant frequency. The default values are:</p>
+	<pre>
+         <strong>guiro</strong>       = 2500.0000
+         <strong>tambourine</strong>  = 2300.0000
+         <strong>bamboo</strong>      = 2800.0000
+         <strong>dripwater</strong>   =  450.0000
+         <strong>sleighbells</strong> = 2500.0000
+	</pre>
+<p><em>kfreq1</em> &#8211; the first resonant frequency. The default values are:</p>
+	<pre>
+         <strong>tambourine</strong>  = 5600.0000
+         <strong>bamboo</strong>      = 2240.0000
+         <strong>dripwater</strong>   =  600.0000
+         <strong>sleighbells</strong> = 5300.0000
+	</pre>
+<p><em>kfreq2</em> &#8211; the second resonant frequency. The default values are:</p>
+	<pre>
+         <strong>tambourine</strong>  = 8100.0000
+         <strong>bamboo</strong>      = 3360.0000
+         <strong>dripwater</strong>   =  750.0000
+         <strong>sleighbells</strong> = 6500.0000
+	</pre>
+<h3>Example</h3>
+
+<pre>
+
+;orchestra ---------------
+
+  <strong>sr</strong>      =           44100
+  <strong>kr</strong>      =            4410
+  <strong>ksmps</strong>   =              10
+  <strong>nchnls</strong>  =               1
+
+          <strong>instr</strong> 01                     ;example of a <strong>guiro</strong>
+  a1      <strong>guiro</strong>       p4, 0.01
+          <strong>out</strong>         a1
+          <strong>endin</strong>
+
+          <strong>instr</strong> 02                     ;example of a <strong>tambourine</strong>
+  a1      <strong>tambourine</strong>  p4, 0.01
+          <strong>out</strong>         a1
+          <strong>endin</strong>
+
+          <strong>instr</strong> 03                     ;example of <strong>bamboo</strong>
+  a1      <strong>bamboo</strong>      p4, 0.01
+          <strong>out</strong>         a1
+          <strong>endin</strong>
+
+          <strong>instr</strong> 04                     ;example of a water drip
+  a1      <strong>line</strong>        5, p3, 5         ;preset an amplitude boost
+  a2      <strong>dripwater</strong>   p4, 0.01, 0, .9  ;<strong>dripwater</strong> needs a little amplitude help at these values
+  a3      <strong>product</strong>     a1, a2           ;increase amplitude
+          <strong>out</strong>         a3
+          <strong>endin</strong>
+
+          <strong>instr</strong> 05                     ;an example of <strong>sleighbells</strong>
+  a1      <strong>sleighbells</strong> p4, 0.01
+          <strong>out</strong>         a1
+          <strong>endin</strong>
+
+;score -------------------
+
+   i1 0 1 20000
+   i2 2 1 20000
+   i3 4 1 20000
+   i4 6 1 20000
+   i5 8 1 20000
+   e
+
+</pre>
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath, Codemist Ltd.<br>
+Bath, UK<br>
+New in Csound version 4.07<br>
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="cabasa.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvoc.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#models" class="toqr">
+Signal Generators  Models and Emulations</font></a>
+
+</body>
+
+</html>

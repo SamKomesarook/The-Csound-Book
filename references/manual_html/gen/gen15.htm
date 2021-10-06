@@ -1,0 +1,74 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN15</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen13.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen16.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#waveshaping" class="toqr">
+<strong>GEN</strong> Routines: Waveshaping</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN15</h2>
+
+<pre>
+  <strong>f</strong>  #    time    size    15    xint    xamp    h0    phs0   h1    phs1    h2    phs2  .  .  .    
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This subroutine creates two tables of stored polynomial functions, suitable for use in phase quadrature operations.
+</p>
+<h3>Initialization</h3>
+<p><em>size </em> &#8211; number of points in the table. Must be a power of 2 or a power-of-2 plus 1 (see <a href="../score/f.htm"><strong>f statement</strong></a>). The normal value is power-of-2 plus 1.
+</p>
+<p><em>xint</em> &#8211; provides the left and right values [<em>-xint</em>, <em>+xint</em>] of the <em>x</em> interval over which the polynomial is to be drawn. This subroutine will eventually call <a href="GEN03.htm"><strong>GEN03</strong></a> to draw both functions; this p5 value is therefor expanded to a negative-positive p5, p6 pair before <strong>GEN03</strong> is actually called. The normal value is 1.
+</p>
+<p><em>xamp </em> &#8211; amplitude scaling factor of the sinusoid input that is expected to produce the following spectrum.
+</p>
+<p><em>h0, h1, h2, ... hn</em> &#8211; relative strength of partials 0 (DC), 1 (fundamental), 2 ... that will result when a sinusoid of amplitude 
+<pre>  xamp * int(size/2)/xint</pre>
+
+is waveshaped using this function table. These values thus describe a frequency spectrum associated with a particular factor <em>xamp</em> of the input signal.
+</p>
+<p><em>phs0, phs1, ... </em> &#8211; phase in degrees of desired harmonics <em>h0, h1, ...</em> when the two functions of <strong>GEN15</strong> are used with phase quadrature.
+</p>
+<h3>Note </h3>
+<p><strong>GEN15</strong> creates two tables of equal size, labeled <strong>f </strong># and <strong>f</strong> # + 1. Table # will contain a Chebyshev function of the first kind, drawn using <a href="GEN03.htm"><strong>GEN03</strong></a> with partial strengths <em>h0cos(phs0), h1cos(phs1), ...</em> Table #+1 will contain a Chebyshev function of the 2nd kind by calling <a href="GEN13.htm"><strong>GEN14</strong></a> with partials <em>h1sin(phs1), h2sin(phs2),...</em> (note the harmonic displacement). The two tables can be used in conjunction in a waveshaping network that exploits phase quadrature.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen13.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen16.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#waveshaping" class="toqr">
+<strong>GEN</strong> Routines: Waveshaping</font></a>
+</body>
+
+</html>

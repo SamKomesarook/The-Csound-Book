@@ -1,0 +1,46 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>VARIABLE SUBSTITUTION</title>
+	</head>
+
+	<body>
+		&nbsp;
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="cec_sepa.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="score.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<h2>Substitution in the orchestra and the score<br>
+			<br>
+			<br>
+			</h2>
+		</center>
+		<center>
+			<hr>
+		</center>
+		&nbsp;
+		<p><b>&nbsp;</b>
+		<ul>
+			<li><b>In the orchestra:</b><br>
+			For irate objects substitution is done with&nbsp; <i><b>gi</b>name_of_variable</i>, where &quot;variable&quot; is the name of an interface object. [name_of_variable] will be substituted by the current value of the object. Csound syntactic conformity is up to the user.
+			<p>For krate objects (graphs, k-rate sliders, toggles and pop-ups), the time-varying values are passed on with the use of global variables in the form: <b>gk</b><i>name_of_variable</i>. Graphs are also usable through their function tables as numbered in the interface definition. The user can utilize these functions in the orchestra with the usual calls to a function number
+			<p>&nbsp;
+			<li><b>In the score:</b><br>
+			Only i-rate variables can be used in the score. These are accessible in the form [name_of_variable]. You can also use the array $value(name of variable).
+			<p>&nbsp;
+			<li><b>Special sound file functions:</b><br>
+			see <a href="special.html">here</a>
+		</ul>
+	</body>
+
+</html>

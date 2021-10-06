@@ -1,0 +1,466 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>&quot;adeson TN&quot; - Orchestra File</title>
+	</head>
+
+	<body bgcolor="white">
+		Click <a href="adesontn.orc">here</a> to download the plain text orchestra file
+		<ul>
+			<li><a href="#instr1">Instrument 1</a>
+			<li><a href="#instr2">Instrument 2</a>
+			<li><a href="#instr3">Instrument 3</a>
+			<li><a href="#instr4">Instrument 4</a>
+			<li><a href="#instr5">Instrument 5</a>
+			<li><a href="#instr6">Instrument 6</a>
+			<li><a href="#instr7">Instrument 7</a>
+			<li><a href="#instr8">Instrument 8</a>
+			<li><a href="#instr9">Instrument 9</a>
+			<li><a href="#instr10">Instrument 10</a>
+			<li><a href="#instr99">Instrument 99</a>
+			<li><a href="#instr98">Instrument 98</a>
+			<li><a href="#instr12">Instrument 12</a>
+		</ul>
+		<p><a href="../index.htm">Back</a> to the article.
+		<hr>
+		</p>
+		<pre><font face="Courier New">;Magdalena Klapper, &quot;adeson TN&quot; - orchestra file</font>
+
+<font face="Courier New">sr=48000</font>
+<font face="Courier New">kr=2400</font>
+<font face="Courier New">ksmps=20</font>
+<font face="Courier New">nchnls=2</font>
+
+<font face="Courier New">garev init 0                    ;global signal for reverb </font>
+<font face="Courier New">gafiltr init 0                  ;global signal for filtering</font>
+<font face="Courier New">;garev2 init 0 - global signal for reverb, instr 61, 11 i 97 </font>
+
+
+<font face="Courier New"><a name="instr1"></a>;------------------------------;	;INSTR 1 - reads sound file using 'soundin' opcode and localize </font>
+<font face="Courier New">		;the sound in one piont in space.</font>
+<font face="Courier New">instr 1	                        <a href="diag1.gif">;instrument 1 - block diagram</a></font>
+<font face="Courier New">inrp=p4	                        ;p4-the soundin file number</font>
+<font face="Courier New">ibal=p5	                        ;p5-panorama (from left)</font>
+<font face="Courier New">iamp=p6	                        ;p6-level of globel loudness (value between 0 and 1) </font>
+<font face="Courier New">irev=p7	                        ;p7-add global reverb or not, binary value:1 means yes, 0 no</font>
+<font face="Courier New">ifiltr=p8                       ;p8-add global filter or not, binary value:1 means yes, 0 no</font>
+<font face="Courier New">iba1=ibal*iamp</font>
+<font face="Courier New">iba2=(1-ibal)*iamp</font>
+<font face="Courier New">aout	soundin	inrp</font>
+<font face="Courier New">   if (ifiltr==0) goto cont1</font>
+<font face="Courier New">  	gafiltr=aout</font>
+<font face="Courier New">  	goto cont2</font>
+<font face="Courier New">cont1:	</font>
+<font face="Courier New">	outs	aout*iba1, aout*iba2</font>
+<font face="Courier New">cont2:</font>
+<font face="Courier New">   if (irev==0)	goto cont</font>
+<font face="Courier New">  	garev=aout</font>
+<font face="Courier New">cont:</font>
+<font face="Courier New">endin</font>
+
+<font face="Courier New"><a name="instr2"></a>;------------------------------;	;INSTR 2 - reads sound file from the table usin 'loscil' opcode.</font>
+<font face="Courier New">		;Sound localization in space may change in time.</font>
+<font face="Courier New">		;Amplitude is constant.</font>
+<font face="Courier New">instr 2	                        <a href="diag2.gif">;instrument 2 - block diagram</a></font>
+<font face="Courier New">inrf=p4	                        ;p4-the sound file function number</font>
+<font face="Courier New">iampl=p5                        ;p5-constant amplitude (value between 0 and 1)</font>
+<font face="Courier New">ibal=p6	                        ;p6-panorama (from left)</font>
+<font face="Courier New">iamp=p7	                        ;p7-max frequency in relation to value 200</font>
+<font face="Courier New">iff=p8                          ;p8-pitch change function</font>
+<font face="Courier New">irev=p9                         ;p9-add global reverb or not, binary value:1 means yes, 0 no</font>
+<font face="Courier New">ifiltr=p10                      ;p10-add global filter or not, binary value:1 means yes, 0 no</font>
+<font face="Courier New">kfreq	oscil	iamp,1/p3,iff</font>
+<font face="Courier New">   if (ibal&lt;=1) goto contin ;localization of sound changing in time or not kbal oscil 1,1/p3,ibal ;yes, ibal-move in space function number goto contin2 contin: kbal=&quot;ibal&quot; ;no, ibal-one point in space contin2: aout loscil iampl, kfreq, inrf, 200 if (irev=&quot;=0)&quot; goto cont1 garev=&quot;aout&quot; cont1: if (ifiltr=&quot;=0)&quot; goto cont2 gafiltr=&quot;aout&quot; goto cont3 cont2: outs kbal*aout,(1-kbal)*aout cont3: endin <a name="instr3"></a>;------------------------------;</font>
+<font face="Courier New">	;INSTR 3 - reads sound file from the table using 'loscil' opcode</font>
+<font face="Courier New">		;and adds tremolo to the sound. </font>
+<font face="Courier New">		;Tremolo frequency may change in time</font>
+<font face="Courier New">instr 3	    ;this instrument had been design for 'adeson TN', but finaly it was not used.</font>
+<font face="Courier New">                                <a href="diag3.gif">;instrument 3 - block diagram</a>inrp=p4                         ;p4-the sound file function number</font>
+<font face="Courier New">ibal=p5                         ;p5-panorama</font>
+<font face="Courier New">iw1=p6                          ;p6-min value of amplitude (from 0 to 1)</font>
+<font face="Courier New">iw2=p8                          ;p8-mid tremolo amplitude (from 0 to 1)</font>
+<font face="Courier New">it1=p7                          ;p7-time needed to reach min value</font>
+<font face="Courier New">ifreq1=p9                       ;p9-first tremolo frequency (at the begining)</font>
+<font face="Courier New">ifreq2=p10                      ;p10-second tremolo frequency (at the end)</font>
+<font face="Courier New">ifn=p11                         ;p11-tremolo function number</font>
+<font face="Courier New">ifreq=p12                       ;p12-max frequency in relation to 200</font>
+<font face="Courier New">iamp=p13                        ;p13-level of global loudnes (from 0 to 1) </font>
+<font face="Courier New">iff=p14                         ;p14-frequency change function</font>
+<font face="Courier New">irev=p15                        ;p15-add global reverb or not (1-yes, 0-no)</font>
+<font face="Courier New">ifiltr=p16                      ;p16-add global filter of not (1-yes, 0-no)</font>
+<font face="Courier New">klin	linseg	1,it1,iw1,p3-it1-.1,1.3,.1,0</font>
+<font face="Courier New">kam	linseg  0,it1*.6,iw2,it1*.4,iw2,p3-it1,.6</font>
+<font face="Courier New">kfreq	expon 	ifreq1,p3,ifreq2	</font>
+<font face="Courier New">ks	oscil 	kam,kfreq,ifn   ;tremolo</font>
+<font face="Courier New">	kmin=klin-kam</font>
+<font face="Courier New">kfreq	oscil	ifreq,1/p3,iff</font>
+<font face="Courier New">	kampl=(kmin+ks)*iamp</font>
+<font face="Courier New">aout	loscil	kampl,ifreq,inrp,200</font>
+<font face="Courier New">   if (ifiltr==0) goto cont1</font>
+<font face="Courier New"> 	gafiltr=aout</font>
+<font face="Courier New"> 	goto cont2</font>
+<font face="Courier New">cont1:</font>
+<font face="Courier New">	outs 	aout*ibal, aout*(1-ibal)</font>
+<font face="Courier New">cont2:</font>
+<font face="Courier New">   if (irev==0) goto cont</font>
+<font face="Courier New"> 	garev=aout</font>
+<font face="Courier New">cont:</font>
+<font face="Courier New">endin</font>
+
+<font face="Courier New"><a name="instr4"></a>;------------------------------;	;INSTR 4 - reads sound file from the table using 'table' opcode.</font>
+<font face="Courier New">		;Table index may be specified by any function. </font>
+<font face="Courier New">instr 4                         <a href="diag4.gif">;instrument 4 - block diagram</a></font>
+<font face="Courier New">idl=p4                          ;p4-sound file length ( in sek.)</font>
+<font face="Courier New">iroz1=p5                        ;p5-index specification function length</font>
+<font face="Courier New">inr1=p6                         ;p6-index specification function number</font>
+<font face="Courier New">iroz2=p7                        ;p7-sound file function length</font>
+<font face="Courier New">inr2=p8                         ;p8-sound file function number</font>
+<font face="Courier New">ifamp=p9                        ;p9-amplitude function (from 1 to 0)</font>
+<font face="Courier New">iamp=p10                        ;p10-value of max amplitude (about 1)</font>
+<font face="Courier New">ibal=p11                        ;p11-panorama</font>
+<font face="Courier New">irev=p12                        ;p12-add global reverb or not (1-yes, 0-no)</font>
+<font face="Courier New">ifiltr=p13                      ;p13-add global filter or not (1-yes, 0-no)</font>
+<font face="Courier New">aind1	phasor	1/idl</font>
+<font face="Courier New">aind2	tablei	aind1*iroz1,inr1  ;reading index</font>
+<font face="Courier New">aout	table 	aind2*iroz2,inr2  ;reading sound</font>
+<font face="Courier New">   if (ifamp&lt;=1) goto contin1 kamp oscil iamp,1/idl,ifamp ;amplitude goto contin2 contin1: kamp=&quot;ifamp&quot; contin2: if (ifiltr=&quot;=0)&quot; goto cont1 gafiltr=&quot;aout&quot; goto cont2 cont1: kba1=&quot;ibal*kamp&quot; kba2=&quot;(1-ibal)*kamp&quot; outs aout*kba1, aout*kba2 cont2: if (irev=&quot;=0)&quot; goto cont garev=&quot;aout&quot; cont: endin <a name="instr5"></a>;------------------------------;</font>
+<font face="Courier New">	;INSTR 5 - reads sound file from the table using 'loscil' opcode.</font>
+<font face="Courier New">		;Extended modyfication of amplitude is possible.</font>
+<font face="Courier New">instr 5                         <a href="diag5.gif">;instrument 5 - block diagram</a></font>
+<font face="Courier New">ifamp=p4                        ;p4-amplitude function (shape of one cicile-may be repeated with frequency changing in time) </font>
+<font face="Courier New">inf=p5                          ;p5-sound file function number</font>
+<font face="Courier New">ibal=p6                         ;p6-panorama</font>
+<font face="Courier New">iampl=p7                        ;p7-amplitude (from 1 to 0)</font>
+<font face="Courier New">ifster=p8                       ;p8-amplitude modyfication function number</font>
+<font face="Courier New">iffamp=p9                       ;p9-max amplitude of frequency changing</font>
+<font face="Courier New">iamp=p10                        ;p10-max frequency in relation to 200</font>
+<font face="Courier New">iff=p11                         ;p11-frequence change function</font>
+<font face="Courier New">istor=p12                       ;p12-pitch coefficient</font>
+<font face="Courier New">irev=p13                        ;p13-add global reverb or not (1-yes, 0-no)</font>
+<font face="Courier New">ifiltr=p14                      ;p14-add global filter or not (1-yes, 0-no)</font>
+<font face="Courier New">kfre	oscil	iffamp,1/p3,ifster</font>
+<font face="Courier New">kfamp	oscil	1,kfre,ifamp</font>
+<font face="Courier New">kfreq	oscil	iamp,1/p3,iff</font>
+<font face="Courier New">	kampl=kfamp*iamp          ;amplitude modyfication</font>
+<font face="Courier New">	kfrequ=kfreq+istor        ;frequency change</font>
+<font face="Courier New">aout 	loscil	kampl,kfrequ,inf,200</font>
+<font face="Courier New">   if (ifiltr==0) goto cont1</font>
+<font face="Courier New"> 	gafiltr=aout</font>
+<font face="Courier New"> 	goto cont2</font>
+<font face="Courier New">cont1:</font>
+<font face="Courier New">	outs	aout*ibal,aout*(1-ibal)</font>
+<font face="Courier New">cont2:</font>
+<font face="Courier New">   if (irev==0) goto cont</font>
+<font face="Courier New"> 	garev=aout</font>
+<font face="Courier New">cont:</font>
+<font face="Courier New">endin</font>
+
+<font face="Courier New"><a name="instr6"></a>;------------------------------;	;INSTR 6, INSTR 61 - reads sound file from the table using 'loscil' opcode.</font>
+<font face="Courier New">		;Amplitude contains two segments, every one of them </font>
+<font face="Courier New">		;may be linear or exponential, there are possible also mixed</font>
+<font face="Courier New">		;combinations (lin-exp, exp-lin segments of amplitude).</font>
+<font face="Courier New">instr 6                         <a href="diag6.gif">;instrument 6 - block diagram</a></font>
+<font face="Courier New">itime1=p4                       ;p4-first segment time</font>
+<font face="Courier New">iwart1=p5                       ;p5-if equal 1-first segment exponential, </font>
+<font face="Courier New">                                   ;if equal .01-first segment linear </font>
+<font face="Courier New">iwart2=p6                       ;p6-if equal 1-second segment exponential,</font>
+<font face="Courier New">                                   ;if equal .01-second segment linear	</font>
+<font face="Courier New">inf=p7                          ;p7-sound file function number</font>
+<font face="Courier New">iamp=p8                         ;p8-max frequency in relation to 200</font>
+<font face="Courier New">iff=p9                          ;p9-frequency change function</font>
+<font face="Courier New">iampl=p10                       ;p10-global amplitude</font>
+<font face="Courier New">ibal=p11                        ;p11-panorama</font>
+<font face="Courier New">irev=p12                        ;p12-add global reverb or not (1-yes, 0-no)</font>
+<font face="Courier New">ifiltr=p13                      ;p13-add global filter or not (1-yes, 0-no)</font>
+<font face="Courier New">iwart3=1-iwart1</font>
+<font face="Courier New">iwart4=1-iwart2</font>
+<font face="Courier New">itime2=p3-itime1-.1</font>
+<font face="Courier New">iba1=ibal*iampl</font>
+<font face="Courier New">iba2=(1-ibal)*iampl</font>
+<font face="Courier New">kexpo	expseg	0.01,itime1,iwart1,.1,iwart2,itime2,0.01</font>
+<font face="Courier New">klin	linseg	0,itime1,iwart3,.1,iwart4,itime2,0</font>
+<font face="Courier New">kfreq	oscil	iamp,1/p3,iff</font>
+<font face="Courier New">	kampl=kexpo+klin          ;linear and exponential segment put together</font>
+<font face="Courier New">aout	loscil	kampl,kfreq,inf,200</font>
+<font face="Courier New">   if (ifiltr==0) goto cont1</font>
+<font face="Courier New"> 	gafiltr=aout</font>
+<font face="Courier New"> 	goto cont2</font>
+<font face="Courier New">cont1:</font>
+<font face="Courier New">	outs	aout*iba1,aout*iba2</font>
+<font face="Courier New">cont2:</font>
+<font face="Courier New">   if (irev==0) goto cont</font>
+<font face="Courier New">  	garev=aout</font>
+<font face="Courier New">cont:</font>
+<font face="Courier New">endin</font>
+
+<font face="Courier New"><a name="instr7"></a>;------------------------------;	;INSTR 7 - produce set of harmonics with individual amplitude </font>
+<font face="Courier New">		;envelopment. Harmonics are added in loop. </font>
+<font face="Courier New">		;Amplitude envelopment for every harmonic (sine wave) is</font>
+<font face="Courier New">		;preparing for it by filtering the 'echocardiogram sound' </font>
+<font face="Courier New">		;with band sutible for this harmonic pitch. Pulse but not</font>
+<font face="Courier New">		;periodic characteristic of 'echo' is first smoothed with </font>
+<font face="Courier New">		;usage of one of three methods:rms, downsampling, integration.</font>
+<font face="Courier New">instr 7	    ;this instrument had been design for 'adeson TN', but finaly it was not used.</font>
+<font face="Courier New">                                </font>
+<font face="Courier New">inrf=p4                         ;p4-sound file function number</font>
+<font face="Courier New">ilog=p6                         ;p6-number of smoothing algorythm (0,1,2)</font>
+<font face="Courier New">ilsk=p7                         ;p7-number of harmonics adding in loop (about 2)</font>
+<font face="Courier New">iamp=p8                         ;p8-max amplitude</font>
+<font face="Courier New">ifa=p9                          ;p9-amplitude function</font>
+<font face="Courier New">ifb=p10                         ;p10-panorama function</font>
+<font face="Courier New">iff=p11                         ;p11-single harmonic shape function</font>
+<font face="Courier New">irev=p12                        ;p12-add global reverb of not (1-yes, 0-no)</font>
+<font face="Courier New">ifiltr=p13                      ;p13-add global filter or not (1-yes, 0-no)</font>
+<font face="Courier New">a1	soundin	inrf</font>
+<font face="Courier New">	kfreq=p5                  ;p5-first harmonic</font>
+<font face="Courier New">	kndex=0</font>
+<font face="Courier New">	aout=0</font>
+<font face="Courier New">powrot:                           ;loop beginning</font>
+<font face="Courier New">	asklad=0</font>
+<font face="Courier New">aamp 	reson 	a1/5,kfreq,kfreq,2 ;filter band</font>
+<font face="Courier New">   if (ilog==0 || ilog==3) goto algor1</font>
+<font face="Courier New">   if (ilog==1) goto algor2</font>
+<font face="Courier New">   if (ilog==2) goto algor3</font>
+<font face="Courier New">algor1:</font>
+<font face="Courier New">kampp	rms	aamp</font>
+<font face="Courier New">	goto contin</font>
+<font face="Courier New">algor2:</font>
+<font face="Courier New">kampp	downsamp aamp,20	</font>
+<font face="Courier New">	goto contin</font>
+<font face="Courier New">algor3:</font>
+<font face="Courier New">kampp1	downsamp aamp,20</font>
+<font face="Courier New">kampp	integ	 kampp1</font>
+<font face="Courier New">contin:</font>
+<font face="Courier New">asklad	oscil	kampp,kfreq,iff	</font>
+<font face="Courier New">   if (ilog!=3) goto contin2</font>
+<font face="Courier New">	askladout=asklad</font>
+<font face="Courier New">	goto	contin3</font>
+<font face="Courier New">contin2:</font>
+<font face="Courier New">askladout reson	asklad,kfreq,kfreq/100,1; additional smoothing</font>
+<font face="Courier New">contin3:</font>
+<font face="Courier New">	aout=aout + askladout		</font>
+<font face="Courier New">	kndex=kndex + 1</font>
+<font face="Courier New">	kfreq=kfreq + p4</font>
+<font face="Courier New">   if ( kndex &lt; ilsk) goto powrot  ;loop end</font>
+<font face="Courier New">kbal	oscil	1,1/p3,ifb</font>
+<font face="Courier New">kamp	oscil	iamp,1/p3,ifa</font>
+<font face="Courier New">   if (ifiltr==0) goto cont1</font>
+<font face="Courier New"> 	gafiltr=aout</font>
+<font face="Courier New"> 	goto cont2</font>
+<font face="Courier New">cont1:</font>
+<font face="Courier New">	kba1=kbal*kamp</font>
+<font face="Courier New">	kba2=(1-kbal)*kamp</font>
+<font face="Courier New">	outs	kba1*aout,kba2*aout</font>
+<font face="Courier New">cont2:</font>
+<font face="Courier New">   if (irev==0) goto cont</font>
+<font face="Courier New"> 	garev=aout</font>
+<font face="Courier New">cont:</font>
+<font face="Courier New">endin</font>
+
+<font face="Courier New"><a name="instr8"></a>;------------------------------;	;INSTR 8 - similar to 7, but harmonic are not added in loop.</font>
+<font face="Courier New">		;Harmonic pitch may change. All harmonics move parallel.</font>
+<font face="Courier New">		;Even harmonics move in direction oposite of odd harmonics.</font>
+<font face="Courier New">instr 8                         </font>
+
+<font face="Courier New">inrp=p4                         ;p4-sound file function number</font>
+<font face="Courier New">kfreq=p5                        ;p5-first harminic</font>
+<font face="Courier New">ilog=p6                         ;p6-number of smoothing algorythm</font>
+<font face="Courier New">interw=p7                       ;p7-depth of pich move (1 - 4/3)</font>
+<font face="Courier New">iff=p8                          ;p8-single harmonic shape function</font>
+<font face="Courier New">ibal=p9                         ;p9-panorama</font>
+<font face="Courier New">iampl=p10                       ;p10-max global amplitude (from 0 to 1) </font>
+<font face="Courier New">ifa=p11                         ;p11-amplitude function</font>
+<font face="Courier New">irev=p12                        ;p12-add global reverb or not (1-yes, 0-no)</font>
+<font face="Courier New">ifiltr=p13                      ;p13-add global filter or not (1-yes, 0-no)</font>
+<font face="Courier New">a1	soundin	inrp</font>
+<font face="Courier New">;harmonics</font>
+<font face="Courier New">aamp1 	reson 	a1/5,kfreq,kfreq,2 ;filter band </font>
+<font face="Courier New">aamp2 	reson 	a1/5,2*kfreq,kfreq,2	</font>
+<font face="Courier New">aamp3 	reson 	a1/5,3*kfreq,kfreq,2	</font>
+<font face="Courier New">aamp4 	reson 	a1/5,4*kfreq,kfreq,2	</font>
+<font face="Courier New">aamp5 	reson 	a1/5,5*kfreq,kfreq,2	</font>
+<font face="Courier New">aamp6 	reson 	a1/5,6*kfreq,kfreq,2	</font>
+<font face="Courier New">aamp7 	reson 	a1/5,7*kfreq,kfreq,2	</font>
+<font face="Courier New">aamp8 	reson 	a1/5,8*kfreq,kfreq,2	</font>
+<font face="Courier New">aamp9 	reson 	a1/5,9*kfreq,kfreq,2	</font>
+<font face="Courier New">aamp10 	reson 	a1/5,10*kfreq,kfreq,2	</font>
+<font face="Courier New">aamp11 	reson 	a1/5,11*kfreq,kfreq,2	</font>
+<font face="Courier New">   if (ilog==0) goto algor1</font>
+<font face="Courier New">   if (ilog==1) goto algor2</font>
+<font face="Courier New">   if (ilog==2) goto algor3</font>
+<font face="Courier New">algor1:</font>
+<font face="Courier New">kampp1	rms	aamp1</font>
+<font face="Courier New">kampp2	rms	aamp2</font>
+<font face="Courier New">kampp3	rms	aamp3</font>
+<font face="Courier New">kampp4	rms	aamp4</font>
+<font face="Courier New">kampp5	rms	aamp5</font>
+<font face="Courier New">kampp6	rms	aamp6</font>
+<font face="Courier New">kampp7	rms	aamp7</font>
+<font face="Courier New">kampp8	rms	aamp8</font>
+<font face="Courier New">kampp9	rms	aamp9</font>
+<font face="Courier New">kampp10	rms	aamp10</font>
+<font face="Courier New">kampp11	rms	aamp11</font>
+<font face="Courier New">	goto contin</font>
+<font face="Courier New">algor2:</font>
+<font face="Courier New">kampp1	downsamp aamp1,20         ;amplitude smoothing</font>
+<font face="Courier New">kampp2	downsamp aamp2,20	</font>
+<font face="Courier New">kampp3	downsamp aamp3,20	</font>
+<font face="Courier New">kampp4	downsamp aamp4,20	</font>
+<font face="Courier New">kampp5	downsamp aamp5,20	</font>
+<font face="Courier New">kampp6	downsamp aamp6,20	</font>
+<font face="Courier New">kampp7	downsamp aamp7,20	</font>
+<font face="Courier New">kampp8	downsamp aamp8,20	</font>
+<font face="Courier New">kampp9	downsamp aamp9,20	</font>
+<font face="Courier New">kampp10	downsamp aamp10,20	</font>
+<font face="Courier New">kampp11	downsamp aamp11,20	</font>
+<font face="Courier New">	goto contin</font>
+<font face="Courier New">algor3:</font>
+<font face="Courier New">kampp1.1 downsamp aamp1,20</font>
+<font face="Courier New">kampp1	 integ	 kampp1.1</font>
+<font face="Courier New">kampp1.2 downsamp aamp2,20</font>
+<font face="Courier New">kampp2	 integ	 kampp1.2</font>
+<font face="Courier New">kampp1.3 downsamp aamp3,20</font>
+<font face="Courier New">kampp3	 integ	 kampp1.3</font>
+<font face="Courier New">kampp1.4 downsamp aamp4,20</font>
+<font face="Courier New">kampp4	 integ	 kampp1.4</font>
+<font face="Courier New">kampp1.5 downsamp aamp5,20</font>
+<font face="Courier New">kampp5	 integ	 kampp1.5</font>
+<font face="Courier New">kampp1.6 downsamp aamp6,20</font>
+<font face="Courier New">kampp6	 integ	 kampp1.6</font>
+<font face="Courier New">kampp1.7 downsamp aamp7,20</font>
+<font face="Courier New">kampp7	 integ	 kampp1.7</font>
+<font face="Courier New">kampp1.8 downsamp aamp8,20</font>
+<font face="Courier New">kampp8	 integ	 kampp1.8</font>
+<font face="Courier New">kampp1.9 downsamp aamp9,20</font>
+<font face="Courier New">kampp9	 integ	 kampp1.9</font>
+<font face="Courier New">kampp1.10 downsamp aamp10,20</font>
+<font face="Courier New">kampp10	  integ	 kampp1.10</font>
+<font face="Courier New">kampp1.11 downsamp aamp11,20</font>
+<font face="Courier New">kampp11	  integ	 kampp1.11</font>
+<font face="Courier New">contin:</font>
+<font face="Courier New">kfreq1	expseg	1,p3/4,interw,p3/4,1,p3/4,1/interw,p3/4,1</font>
+<font face="Courier New">kfreq2	expseg	1,p3/4,1/interw,p3/4,1,p3/4,interw,p3/4,1</font>
+
+<font face="Courier New">asklad1	oscil	kampp1,kfreq*kfreq1,iff	</font>
+<font face="Courier New">aout1	reson	asklad1,kfreq*kfreq1,kfreq/100,1 ;smoothing</font>
+<font face="Courier New">asklad2	oscil	kampp2,2*kfreq*kfreq2,iff	</font>
+<font face="Courier New">aout2	reson	asklad2,2*kfreq*kfreq2,kfreq/100,1</font>
+<font face="Courier New">asklad3	oscil	kampp3,3*kfreq*kfreq2,iff	</font>
+<font face="Courier New">aout3	reson	asklad3,3*kfreq*kfreq2,kfreq/100,1</font>
+<font face="Courier New">asklad4	oscil	kampp4,4*kfreq*kfreq1,iff	</font>
+<font face="Courier New">aout4	reson   asklad4,4*kfreq*kfreq1,kfreq/100,1</font>
+<font face="Courier New">asklad5	oscil	kampp5,5*kfreq*kfreq1,iff	</font>
+<font face="Courier New">aout5	reson	asklad5,5*kfreq*kfreq1,kfreq/100,1</font>
+<font face="Courier New">asklad6	oscil	kampp6,6*kfreq*kfreq2,iff	</font>
+<font face="Courier New">aout6	reson	asklad6,6*kfreq*kfreq2,kfreq/100,1</font>
+<font face="Courier New">asklad7	oscil	kampp7,7*kfreq*kfreq2,iff	</font>
+<font face="Courier New">aout7	reson	asklad7,7*kfreq*kfreq2,kfreq/100,1</font>
+<font face="Courier New">asklad8	oscil	kampp8,8*kfreq*kfreq1,iff	</font>
+<font face="Courier New">aout8	reson	asklad8,8*kfreq*kfreq1,kfreq/100,1</font>
+<font face="Courier New">asklad9	oscil	kampp9,9*kfreq*kfreq1,iff	</font>
+<font face="Courier New">aout9	reson	asklad9,9*kfreq*kfreq1,kfreq/100,1</font>
+<font face="Courier New">asklad10 oscil	kampp10,10*kfreq*kfreq2,iff	</font>
+<font face="Courier New">aout10	reson	asklad10,10*kfreq*kfreq2,kfreq/100,1</font>
+<font face="Courier New">asklad11 oscil	kampp11,11*kfreq*kfreq2,iff	</font>
+<font face="Courier New">aout11	reson	asklad11,11*kfreq*kfreq2,kfreq/100,1</font>
+<font face="Courier New">  	aout=aout1+aout2+aout3+aout4+aout5+aout6+aout7+aout8+aout9+aout10+aout11</font>
+<font face="Courier New">kampl	oscil	iampl,1/p3,ifa</font>
+<font face="Courier New">   if (ifiltr==0) goto cont1</font>
+<font face="Courier New">  	gafiltr=aout</font>
+<font face="Courier New">  	goto cont2</font>
+<font face="Courier New">cont1:</font>
+<font face="Courier New">	kba1=kampl*ibal</font>
+<font face="Courier New">	kba2=kampl*(1-ibal)</font>
+<font face="Courier New">  	outs	aout*kba1,aout*kba2</font>
+<font face="Courier New">cont2:</font>
+<font face="Courier New">   if (irev==0) goto cont</font>
+<font face="Courier New"> 	garev=aout</font>
+<font face="Courier New">cont:</font>
+<font face="Courier New">endin</font>
+
+<font face="Courier New"><a name="instr9"></a>;------------------------------;	;INSTR 9 - reads sound file and filters to pitchs from it.</font>
+<font face="Courier New">instr 9                         <a href="diag9.gif">;instrument 9 - block diagram</a></font>
+<font face="Courier New">inrp=p4                         ;p4-sound file function number</font>
+<font face="Courier New">iamp=p5                         ;p5-global amplitude</font>
+<font face="Courier New">iamax=p6                        ;p6-max frequency</font>
+<font face="Courier New">iff=p7                          ;p7-frequency change function</font>
+<font face="Courier New">ifreqf=p8                       ;p8-mid frequency of filter</font>
+<font face="Courier New">iwart=p9                        ;p9-filter band width at the end</font>
+<font face="Courier New">iobd=p10                        ;p10-echo frequency</font>
+<font face="Courier New">interw=p11                      ;p11-pitchs gap</font>
+<font face="Courier New">itime=p12                       ;p12-time of filtration</font>
+<font face="Courier New">irtime=p13                      ;p13-reverb time function</font>
+<font face="Courier New">irf=p14                         ;p14-max reverb</font>
+<font face="Courier New">ifiltr=p15                      ;p15-add global filter or not (1-yes, 0-no)</font>
+<font face="Courier New">iamp=p16                        ;p16-reverb amplitude</font>
+<font face="Courier New">iampp=p17                       ;p17-facton of output signala amplitude</font>
+<font face="Courier New">ifi=ifreqf*interw</font>
+<font face="Courier New">iap=iamp*.5</font>
+<font face="Courier New">iapp=iampp*.5</font>
+<font face="Courier New">kfreq	oscil	iamax,1/p3,iff</font>
+<font face="Courier New">ain	loscil	iamp,kfreq,inrp,200</font>
+<font face="Courier New">acomb	comb	ain,.5*p3,iobd</font>
+<font face="Courier New">kpasm	expseg	15000,p3-itime,iwart,itime,iwart</font>
+<font face="Courier New">afiltr1	reson	.5*acomb,ifreqf,kpasm</font>
+<font face="Courier New">afiltr2	reson	.5*acomb,ifi,kpasm</font>
+<font face="Courier New">	afiltr=afiltr1+afiltr2</font>
+<font face="Courier New">   if (irtime==0) goto contin1</font>
+<font face="Courier New">krtime	oscil	irf,1/p3,irtime</font>
+<font face="Courier New">aout	reverb	afiltr,krtime</font>
+<font face="Courier New">	goto contin2</font>
+<font face="Courier New">contin1:</font>
+<font face="Courier New">	iamp*aout=afiltr</font>
+<font face="Courier New">contin2:</font>
+<font face="Courier New">   if (ifiltr==0) goto cont1</font>
+<font face="Courier New"> 	gafiltr=aout*iap+afiltr*iapp</font>
+<font face="Courier New">	goto cont2</font>
+<font face="Courier New">cont1:</font>
+<font face="Courier New">	asign=aout*iap+afiltr*iapp</font>
+<font face="Courier New">	outs	asign,asign</font>
+<font face="Courier New">cont2:</font>
+<font face="Courier New">endin</font>
+
+<font face="Courier New"><a name="instr10"></a>;------------------------------;	;INSTR 10 - using 'adsyn' opcode.</font>
+<font face="Courier New">instr 10                        <a href="diag10.gif">;instrument 10 - block diagram</a></font>
+<font face="Courier New">itime=p4                        ;p4-max amplitude</font>
+<font face="Courier New">iftime=p5                       ;p5-amplitude function</font>
+<font face="Courier New">ifmod=p6                        ;p6-max frequency</font>
+<font face="Courier New">iffmod=p7                       ;p7-frequency function</font>
+<font face="Courier New">ispeed=p8                       ;p8-max time</font>
+<font face="Courier New">ifspeed=p9                      ;p9-time function</font>
+<font face="Courier New">ibal=p10                        ;p10-panorama</font>
+<font face="Courier New">irev=p14                        ;p14-add global reverb or not (1-yes, 0-no)</font>
+<font face="Courier New">ifiltr=p15                      ;p15-add global filter or not (1-yes, 0-no)</font>
+<font face="Courier New">ktime	oscil	itime,1/p3,iftime</font>
+<font face="Courier New">kfmod	oscil	ifmod,1/p12,iffmod</font>
+<font face="Courier New">kspeed	oscil	ispeed,1/p3,ifspeed</font>
+<font face="Courier New">aout 	adsyn	ktime,p13+kfmod,kspeed, p11</font>
+<font face="Courier New">   if (ifiltr==0) goto cont1</font>
+<font face="Courier New"> 	gafiltr=aout</font>
+<font face="Courier New"> 	goto cont2</font>
+<font face="Courier New">cont1:</font>
+<font face="Courier New">	outs	aout*ibal,aout*(1-ibal)</font>
+<font face="Courier New">cont2:</font>
+<font face="Courier New">   if (irev==0) goto cont</font>
+<font face="Courier New"> 	garev=aout</font>
+<font face="Courier New">cont:</font>
+<font face="Courier New">endin</font>
+
+<font face="Courier New"><a name="instr99"></a>;------------------------------;	;INSTR 99 - global effect of reverb</font>
+<font face="Courier New">instr 99</font>
+
+<font face="Courier New">ifn=p4                          ;p4-reverb function</font>
+<font face="Courier New">ipogl=p5                        ;p5-max reverb</font>
+<font face="Courier New">ifs=p6                          ;p6-panorama function</font>
+<font face="Courier New">istor=p7                        ;p7-reverb amplitude (about 1)</font>
+<font face="Courier New">ibal=p8                         ;p8-sound localization in space</font>
+<font face="Courier New">igl=p9                          ;p9-global signal amplitude</font>
+<font face="Courier New">	ain=garev</font>
+<font face="Courier New">krev	oscil	ipogl,1/p3,ifn</font>
+<font face="Courier New">aout	reverb	ain,krev</font>
+<font face="Courier New">   if ( ifs<1) goto contin1 kspace oscil 1,1/contin1: kspace="ifs" contin2: iglo="igl*.5" outs iglo*ibal*garev+istor*aout*kspace,iglo*(1-ibal)*garev+istor*aout*(1-kspace) endin <a name="instr98"> ;------------------------------; ;instr 98 - global effect of filtering. all basic types off filter are possible. instr 98 ialg="p4" ;p4-filter type ain="gafiltr" iaf="p5" ;p5-cutoff frequency function iampf="p6" ;p6-max amplitude of cutoff frequency function if="p7" ;p7-cutoff frequency ibw="p8" ;p8-filter band width ibf="p9" ;p9-band change function ibal="p10" ;p10-panorama iamp="p11" ;p11-global amplitude iba1="iamp*ibal" iba2="iamp*(1-ibal)" kfreq oscil iampf,1/,1/)"' goto algorytm1 if (ialg="=2)" goto algorytm2 if (ialg="=3)" goto algorytm3 if (ialg="=4)" goto algorytm4 algorytm1: ;low-pass filter aout tone ain, if+kfreq goto contin algorytm2: ;high-pass filter aout1 tone ain, if+kfreq aout="ain-aout1" goto contin algorytm3: ;band-pass filter aout reson ain, if+kfreq, kbw goto contin algorytm4: ;band-rejection filter aout1 reson ain, if+kfreq, kbw aout="ain-aout1" goto contin contin: outs iba1*aout,iba2*aout endin <a name="instr12"> </a> ;------------------------------; ;this instrument was design to mix all the piece. instr 12 inr="p4" ;p4-sound file function number il="p5" ;p5-change chanels or not iamp="p6" ;p6-max amplitude inrf="p7" ;p7-amplitude function kamp oscil iamp, 1/din inr if ( il &gt; .5 ) goto cont1 outs kamp*al,kamp*ap goto cont2 cont1: outs kamp*ap,kamp*al cont2: endin ;------------------------------------; </pre> </body> </html>></font></pre>
+	</body>
+
+</html>

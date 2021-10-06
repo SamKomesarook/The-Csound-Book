@@ -1,0 +1,123 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>tablegpw, tablemix, tablecopy, tableigpw, tableimix, tableicopy</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="tableiw.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="tablera.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/table.htm#readwrite" class="toqr">
+Function Table Control: Read/Write Operations</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>tablegpw, tablemix, tablecopy, tableigpw, tableimix, tableicopy</h2>
+
+<pre>
+          <strong>tablegpw</strong>   kfn
+          <strong>tablemix</strong>   kdft, kdoff, klen, ks1ft, ks1off, ks1g, ks2ft, ks2off, ks2g
+          <strong>tablecopy</strong>  kdft, ksft
+          <strong>tableigpw</strong>  ifn
+          <strong>tableimix</strong>  idft, idoff, ilen, is1ft, is1off, is1g, is2ft, is2off, is2g
+          <strong>tableicopy</strong> idft, isft
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>These opcodes allow tables to be copied and mixed.
+</p>
+<h3>Initialization</h3>
+<p><em>ifn</em> &#8211; Table number to be interrogated
+</p>
+
+<h3>Performance</h3>
+<p><em>kfn</em> &#8211; Table number to be interrogated
+</p>
+<p><em>kdft</em> &#8211; Destination function table.
+</p>
+<p><em>kdoff</em> &#8211; Offset to start writing from. Can be negative.
+</p>
+<p><em>kdft</em> &#8211; Number of destination function table.
+</p>
+<p><em>ksft</em> &#8211; Number of source function table.
+</p>
+<p><em>klen</em> &#8211; Number of write operations to perform. Negative means work backwards.
+</p>
+<p><em>ks1ft</em>, <em>ks2ft</em> &#8211; Source function tables. These can be the same as the destination table, if care is exercised about direction of copying data.
+</p>
+<p><em>ks1off</em>, <em>ks2off</em> -Offsets to start reading from in source tables.
+</p>
+<p><em>ks1g</em>, <em>ks2g</em> &#8211; Gains to apply when reading from the source tables. The results are added and the sum is written to the destination table.
+</p>
+<p><strong>tableng</strong> &#8211; These return the length of the specified table. This will be a power of two number in most circumstances - it will not show whether a table has a guardpoint or not - it seems this information is not available in the table's data structure. If table is not found, then 0 will be returned.
+</p>
+<p>Likely to be useful for setting up code for table manipulation operations, such as <strong>tablemix</strong> and <strong>tablecopy</strong>.
+</p>
+<p><strong>tablgpw</strong> &#8211; For writing the table's guard point, with the value which is in location 0. Does nothing if table does not exist.
+</p>
+<p>Likely to be useful after manipulating a table with <strong>tablemix</strong> or <strong>tablecopy.</strong>
+</p>
+<p><strong>tablemix</strong> &#8211; This opcode mixes from two tables, with separate gains into the destination table. Writing is done for <em>klen</em> locations, usually stepping forward through the table - if <em>klen</em> is positive. If it is negative, then the writing and reading order is backwards - towards lower indexes in the tables. This bi-directional option makes it easy to shift the contents of a table sideways by reading from it and writing back to it with a different offset.
+</p>
+<p>If <em>klen</em> is 0, no writing occurs. Note that the internal integer value of <em>klen</em> is derived from the ANSI C floor() function - which returns the next most negative integer. Hence a fractional negative <em>klen</em> value of -2.3 would create an internal length of 3, and cause the copying to start from the offset locations and proceed for two locations to the left.
+</p>
+<p>The total index for table reading and writing is calculated from the starting offset for each table, plus the index value, which starts at 0 and then increments (or decrements) by 1 as mixing proceeds.
+</p>
+<p>These total indexes can potentially be very large, since there is no restriction on the offset or the <em>klen</em>. However each total index for each table is ANDed with a length mask (such as 0000 0111 for a table of length 8) to form a final index which is actually used for reading or writing. So no reading or writing can occur outside the tables. This is the same as &quot;wrap&quot; mode in table read and write. These opcodes do not read or write the guardpoint. If a table has been rewritten with one of these, then if it has a guardpoint which is supposed to contain the same value as the location 0, then call <strong>tablegpw</strong> afterwards.
+</p>
+<p>The indexes and offsets are all in table steps - they are not normalized to 0 - 1. So for a table of length 256, <em>klen</em> should be set to 256 if all the table was to be read or written.
+</p>
+<p>The tables do not need to be the same length - wrapping occurs individually for each table.
+</p>
+<p><strong>tablecopy</strong> &#8211; Simple, fast table copy opcodes. Takes the table length from the destination table, and reads from the start of the source table. For speed reasons, does not check the source length - just copies regardless - in &quot;wrap&quot; mode. This may read through the source table several times. A source table with length 1 will cause all values in the destination table to be written to its value.
+</p>
+<p><strong>tablecopy</strong> cannot read or write the guardpoint. To read it use <strong>table</strong>, with <em>ndx</em> = the table length. Likewise use table write to write it.
+</p>
+<p>To write the guardpoint to the value in location 0, use <strong>tablegpw</strong>.
+</p>
+<p>This is primarily to change function tables quickly in a real-time situation.
+</p>
+<h3></h3>
+
+<h3>Name Changes</h3>
+<p>As of Csound version 3.52, the names of the opcodes <strong>itablegpw</strong>, <strong>itablemix</strong>, and <strong>itablecopy</strong>, have been changed to <strong>tableigpw</strong>, <strong>tableimix</strong>, and <strong>tableicopy</strong>, respectively.
+</p>
+<h3>Author</h3>
+<p>Robin Whittle<br>
+Australia<br>
+May 1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="tableiw.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="tablera.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/table.htm#readwrite" class="toqr">
+Function Table Control: Read/Write Operations</font></a>
+</body>
+
+</html>

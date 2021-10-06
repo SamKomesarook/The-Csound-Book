@@ -1,0 +1,67 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title></title>
+		<meta name="Author">
+	</head>
+
+	<body bgcolor="white">
+		<pre><font face="Courier New">; </font><font size="5" face="Courier New"><b>VIA CREATIVA/VIA TRANSFORMATIVA</b></font>
+<font face="Courier New">;  </font><font size="5" face="Courier New"><b>Arthur B. Hunkins   1990</b></font>
+<font face="Courier New">;</font>
+<font face="Courier New">; From the beginning till now the entire creation has been groaning</font>
+<font face="Courier New">;   in one great act of giving birth.</font>
+<font face="Courier New">;                                       Romans 8:22</font></pre>
+		<pre>
+
+<font face="Courier New">; What is born of the Spirit is spirit.  The wind blows wherever it</font>
+<font face="Courier New">;   pleases; you hear its sound, but you cannot tell where it comes from</font>
+<font face="Courier New">;   or where it is going.  That is how it is with all who are born of</font>
+<font face="Courier New">;   the Spirit.</font>
+<font face="Courier New">;                                       John 3:6, 8</font></pre>
+		<pre>
+
+<font face="Courier New">; We are fellow workers with God.</font>
+<font face="Courier New">;                                       I Corinthians 3:1</font>
+
+<font face="Courier New">; dedicated to creation-centered spirituality</font>
+<font face="Courier New">;   and Matthew Fox, author of <b>ORIGINAL BLESSING</b></font>
+
+<font face="Courier New">; orchestra</font>
+<font face="Courier New">        sr = 8000</font>
+<font face="Courier New">        kr = 400</font>
+<font face="Courier New">        ksmps = 20</font>
+<font face="Courier New">        nchnls = 1</font>
+
+
+<font face="Courier New">        instr 1</font>
+
+<font face="Courier New">ifreq   table   p4 - 1, 2</font>
+<font face="Courier New">iampfac table   p4 - 1, 3</font>
+<font face="Courier New">iflag   = p5</font>
+<font face="Courier New">        if iflag &gt;= 0 goto skip</font>
+<font face="Courier New">arand   = 0</font>
+<font face="Courier New">        goto skip1</font>
+<font face="Courier New">skip:</font>
+<font face="Courier New">kmod    linseg  p5, p6, p7, p8, p9, p10, p11</font>
+<font face="Courier New">kmod    = kmod * 800</font>
+<font face="Courier New">arand   rand    kmod</font>
+<font face="Courier New">skip1:</font>
+<font face="Courier New">kamp    linseg  p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25,p26</font>
+<font face="Courier New">ksclamp tablei  kamp * 51.1, 4</font>
+<font face="Courier New">a1      oscil   18000 * ksclamp * iampfac, ifreq + arand, 1, -1</font>
+<font face="Courier New">        if iflag &gt;= 0 goto skip2</font>
+<font face="Courier New">        out     a1</font>
+<font face="Courier New">        goto last</font>
+<font face="Courier New">skip2:</font>
+<font face="Courier New">aband   reson   a1, ifreq, ifreq * .14, 0, 1</font>
+<font face="Courier New">aband1  reson   aband, ifreq, ifreq * .14, 0, 1</font>
+<font face="Courier New">a2      balance aband1, a1</font>
+<font face="Courier New">        out     a2</font>
+<font face="Courier New">last:</font>
+<font face="Courier New">        endin</font></pre>
+	</body>
+
+</html>

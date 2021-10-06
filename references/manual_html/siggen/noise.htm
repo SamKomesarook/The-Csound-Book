@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+	<title>noise</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pinkish.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="duserrnd.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a href="../qr/siggen.htm#noise" class="toqr">
+Signal Generators: Random (Noise) Generators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>noise</h2>
+<pre>
+  ar      <strong>noise</strong>      xamp, kbeta
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>A white noise generator with an IIR lowpass filter.</p>
+
+<h3>Performance</h3>
+<p><em>xamp</em> &#8211; amplitude of final output</p>
+<p><em>kbeta</em> &#8211; beta of the lowpass filter. Should be in the range of 0 to 1.</p>
+<p>The filter equation is:</p>
+<pre>
+y_n = sqrt(1-beta^2) * x_n + beta Y_(n-1)
+</pre>
+<p>where <em>x_n</em> is white noise.</p>
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath, Codemist. Ltd.<br>
+Bath, UK<br>
+December, 2000<br>
+New in Csound Version 4.16</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pinkish.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="duserrnd.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a href="../qr/siggen.htm#noise" class="toqr">
+Signal Generators: Random (Noise) Generators</a>
+</body>
+
+</html>

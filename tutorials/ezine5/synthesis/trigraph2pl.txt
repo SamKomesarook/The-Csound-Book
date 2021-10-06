@@ -1,0 +1,128 @@
+open (POV, ">plotter.pov");
+povheader(0, 4, 9);
+triplot(100, 100, .1);
+lineplot();
+close (POV);
+
+
+# triplot(N, M, )
+sub triplot
+ {
+  my $j;
+  my $k;
+  my $i;
+  my $h=.00001;
+  my $step = $_[2];
+
+  print POV "mesh {\n";
+
+  for ($j=0; $j<$_[0]; $j++)
+   {
+    $i = 0;
+    for ($k=0; $k<$_[1]; $k++)
+     {
+      $x  = $step*(($i%2) + $j  - $_[1]*.5);
+      $y  = $step*(int($k*.5)*2 - $_[0]*.5);
+      $z  = zf($x, $y);
+      $nx = (zf($x+$h, $y) - zf($x-$h, $y))/2/$h;
+      $ny = (zf($x, $y+$h) - zf($x, $y-$h))/2/$h;
+      $nz = -1;
+
+      if ($i>1)
+       {
+        print POV "smooth_triangle {\n";
+        print POV "  <$x,  $z,  $y>,  <$nx,  $nz,  $ny>,\n";
+        print POV "  <$x1, $z1, $y1>, <$nx1, $nz1, $ny1>,\n";
+        print POV "  <$x2, $z2, $y2>, <$nx2, $nz2, $ny2>\n";
+        print POV " } \n";
+       }
+
+      $x2 = $x1; $y2 = $y1; $z2 = $z1;
+      $x1 = $x;  $y1 = $y;  $z1 = $z;
+
+      $nx2 = $nx1; $ny2 = $ny1; $nz2 = $nz1;
+      $nx1 = $nx;  $ny1 = $ny;  $nz1 = $nz;
+
+      $i++;
+     }
+   }
+
+  print POV "texture {pigment {color rgb <.5, 0, 0>}} finish {caustics .5 phong 1 phong_size 100 reflection 0.1}}\n";
+  #print POV "texture {T_Stone17}}\n";
+ }
+
+sub lineplot
+ {
+  my $i;
+  my $x;
+  my $y;
+  my $z;
+  my $xx;
+  my $yy;
+  my $zz;
+  my $r=.1;
+  my $theta;
+  my $colr;
+  my $colg;
+  my $colb;
+
+  for ($i=0; $i<800; $i++)
+   {
+    $theta=.01*$i;
+    $x = 4*sin($theta);
+    $y = 4*cos($theta);
+    $z = zf($x, $y);
+
+    #$colr = .5+.5/(1+$x*$x);
+    #$colg = 1-.5/(1+$z*$z);
+    #$colb = 0;
+    $colr = .8;
+    $colg = .8;
+    $colb = 0;
+
+    print POV "sphere { <$x, $z, $y> $r";
+    #print POV "texture {T_Stone26}}\n";
+    print POV "texture {pigment {color rgb <$colr, $colg, $colb>}} finish {caustics .5 phong 1 phong_size 100 reflection 0.1}}\n";
+    if ($i>0)
+     {
+      print POV "cylinder { <$x, $z, $y>, <$xx, $zz, $yy> $r\n";
+      print POV "texture {pigment {color rgb <$colr, $colg, $colb>}} finish {caustics .5 phong 1 phong_size 100 reflection 0.1}\n";
+      #print POV "    texture {T_Stone26}\n";
+      print POV "}\n";
+     }
+    $xx  = $x;
+    $yy  = $y;
+    $zz  = $z;
+   }
+ }
+
+sub povheader
+ {
+  my $hx = $_[0];
+  my $hy = $_[1];
+  my $hz = $_[2];
+
+  print POV "global_settings { assumed_gamma 2.2 }\n";
+  print POV "#include \"colors.inc\"\n";
+  print POV "#include \"textures.inc\"\n";
+  print POV "#include \"shapes.inc\"\n";
+  print POV "#include \"glass.inc\"\n";
+  print POV "#include \"metals.inc\"\n";
+  print POV "#include \"stones.inc\"\n";
+  print POV "camera {\n";
+  print POV "    location <$hx, $hz, $hy>\n";
+  print POV "    look_at  <0, 0,  0>\n";
+  print POV "  }\n";
+  print POV "light_source { <$hx, $hz, $hy> color rgb<1, 1, 1>}\n";
+  print POV "light_source { <1, 10, 0> color rgb<1, 1, 1>}\n";
+  print POV "background { color rgb <1, 1, 1> }\n\n";
+ }
+
+sub zf
+ {
+  my $x = $_[0];
+  my $y = $_[1];
+  #my $z = .2*sin(($x*$x + $y*$y));
+  my $z = cos($y*$y/(2+$x*$x))+1/(.2+exp(1.8+$x))-1/(.2+exp(2.2+$y));
+  return ($z);
+ }

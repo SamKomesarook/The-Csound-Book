@@ -1,0 +1,14 @@
+------------------------------  Web Buddy: to go trace log------------------------------Page Title   : Silence(1)Page URL     : http://www.pipeline.com/~gogins/Start time   : 06:10:01 AM Sunday, March 14, 1999Finish time  : 07:41:41 AM Sunday, March 14, 1999Elapsed time : 1 hours, 31 minutes 40 secondsDisk space   : 2514 KB Summary: - Links resolved : 34 of 35 - Graphics resolved : 8 of 9   (1 URL was bad) ----------------------------------------Settings  Levels               : Base page + 2 level deep  External levels      : 0  Persistence          : 3  DOS(8.3) naming      : Off  Stay in directory    : Off  Recreate directories : Off  Block live links     : Off  Extensions to exclude:----------------------------------------
+  0 - Begin Session Update: time = 06:10:01 AM - 
+  0 - Begin Main Loop, Pass #1 - 
+ 13 - Resolve Error :"Timed Out" - http://www.mindspring.net/error/404.html , 
+  8 - Resolve Error :"Timed Out" - http://www.pipeline.com/~gogins/Csound/AXCsound.htm , 
+ 10 - Resolve Error :"Timed Out" - http://www.pipeline.com/~gogins/901128e.mid , 
+ 27 - Resolve Error :"File Not Found" - http://www.pipeline.com/AXCsoundAll/sandbg1.jpg , 
+ 10 - Resolve Error :"Timed Out" - http://www.mindspring.net/error/404.html , 
+  0 - Begin Main Loop, Pass #2 - 
+ 43 - Resolve Error :"Timed Out" - http://www.pipeline.com/~gogins/Csound/AXCsoundAll.zip , 
+  0 - Begin Main Loop, Pass #3 - 
+ 43 - Resolve Error :"Timed Out" - http://www.pipeline.com/~gogins/Csound/AXCsoundAll.zip , 
+  0 - Resolves Finished: Update links - 
+  0 - Finish Session Update: time = 07:41:41 AM - 

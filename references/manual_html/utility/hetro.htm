@@ -1,0 +1,103 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>hetro</title>
+ 	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body  "text="black" link="blue" vlink="blue" bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="top.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="lpanal.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/utility.htm#hetro" class="toqr">
+Utilities: Analysis File Generation</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>hetro</h2>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>hetrodyne filter analysis for the Csound <a href="../siggen/adsyn.htm"><strong>adsyn</strong></a> generator.
+</p>
+<pre>  <strong>csound -U hetro</strong> [flags] infilename outfilename</pre>
+<p>or
+</p>
+<pre>  <strong>hetro</strong> [flags] infilename outfilename</pre>
+<p><strong>hetro</strong> takes an input soundfile, decomposes it into component sinusoids, and outputs a description of the components in the form of breakpoint amplitude and frequency tracks. Analysis is conditioned by the control flags below. A space is optional between flag and value.
+</p>
+<p><em>-s srate </em>sampling rate of the audio input file. This will over-ride the srate of the soundfile header, which otherwise applies. If neither is present, the default is 10000. Note that for <strong>adsyn</strong> synthesis the srate of the source file and the generating orchestra need not be the same.
+</p>
+<p><em>-c channel </em>channel number sought. The default is 1.
+</p>
+<p><em>-b begin </em> &#8211; beginning time (in seconds) of the audio segment to be analyzed. The default is 0.0
+</p>
+<p><em>-d duration </em> &#8211; duration (in seconds) of the audio segment to be analyzed. The default of 0.0 means to the end of the file. Maximum length is 32.766 seconds.
+</p>
+<p><em>-f begfreq </em> &#8211; estimated starting frequency of the fundamental, necessary to initialize the filter analysis. The default is 100 (cps).
+</p>
+<p><em>-h partials </em> &#8211; number of harmonic partials sought in the audio file. Default is 10, maximum is a function of memory available.
+</p>
+<p><em>-M maxamp </em> &#8211; maximum amplitude summed across all concurrent tracks. The default is 32767.
+</p>
+<p><em>-m minamp </em> &#8211; amplitude threshold below which a single pair of amplitude/frequency tracks is considered dormant and will not contribute to output summation. Typical values: 128 (48 db down from full scale), 64 (54 db down), 32 (60 db down), 0 (no thresholding). The default threshold is 64 (54 db down).
+</p>
+<p><em>-n brkpts </em> &#8211; initial number of analysis breakpoints in each amplitude and frequency track, prior to thresholding (<em>-m</em>) and linear breakpoint consolidation. The initial points are spread evenly over the duration. The default is 256.
+</p>
+<p><em>-l cutfreq </em> &#8211; substitute a 3rd order Butterworth low-pass filter with cutoff frequency <em>cutfreq</em> (in Hz), in place of the default averaging comb filter. The default is 0 (don't use).
+</p>
+<h3>Example</h3>
+
+<pre>  <strong>hetro</strong> -s44100 -b.5 -d2.5 -h16 -M24000 audiofile.test adsynfile7 </pre>
+<p>This will analyze 2.5 seconds of channel 1 of a file &quot;audiofile.test&quot;, recorded at 44.1 kHz, beginning .5 seconds from the start, and place the result in a file &quot;adsynfile7&quot;. We request just the first 16 harmonics of the sound, with 256 initial breakpoint values per amplitude or frequency track, and a peak summation amplitude of 24000. The fundamental is estimated to begin at 100 Hz. Amplitude thresholding is at 54 db down.
+</p>
+<p>The Butterworth LPF is not enabled.
+</p>
+<a name="fileformat"><h3>File Format</h3></a>
+<p>The output file contains time-sequenced amplitude and frequency values for each partial of an additive complex audio source. The information is in the form of breakpoints (time, value, time, value, ....) using 16-bit integers in the range 0 - 32767. Time is given in milliseconds, and frequency in Hertz (cps). The breakpoint data is exclusively non-negative, and the values -1 and -2 uniquely signify the start of new amplitude and frequency tracks. A track is terminated by the value 32767. Before being written out, each track is data-reduced by amplitude thresholding and linear breakpoint consolidation.
+</p>
+<p>A component partial is defined by two breakpoint sets: an amplitude set, and a frequency set. Within a composite file these sets may appear in any order (amplitude, frequency, amplitude ....; or amplitude, amplitude..., then frequency, frequency,...). During <a href="../siggen/adsyn.htm"><strong>adsyn</strong></a> resynthesis the sets are automatically paired (amplitude, frequency) from the order in which they were found. There should be an equal number of each.
+</p>
+<p>A legal <strong>adsyn</strong> control file could have following format:
+</p>
+<pre>
+  -1 time1 value1 ... timeK valueK 32767 ; amplitude breakpoints for partial 1
+  -2 time1 value1 ... timeL valueL 32767 ; frequency breakpoints for partial 1
+  -1 time1 value1 ... timeM valueM 32767 ; amplitude breakpoints for partial 2
+  -2 time1 value1 ... timeN valueN 32767 ; frequency breakpoints for partial 2
+  -2 time1 value1 ..........
+  -2 time1 value1 ..........             ; pairable tracks for partials 3 and 4
+  -1 time1 value1 ..........
+  -1 time2 value1 ..........<br>
+</pre>
+<p>If the filename passed to hetro has the extension <em>.sdif</em>, data will be written in SDIF format as 1TRC frames of additive synthesis data. The utility program <a href="sdif2ads.htm"><strong>sdif2ads</strong></a> can be used to convert any SDIF file containing a stream of 1TRC data to the Csound <a href="../siggen/adsyn.htm"><strong>adsyn</strong></a> format. New in Csound version 4.08.</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="top.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="lpanal.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/utility.htm#hetro" class="toqr">
+Utilities: Analysis File Generation</font></a>
+</body>
+</html>

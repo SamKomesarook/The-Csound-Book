@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>variables-lay.txt.html</title>
+		<header></header>
+		<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+	</head>
+
+	<body stylesrc="../admin/adpchtxt.html" bgcolor="white">
+		<h3>Naming Conventions: Variables</h3>
+		<pre>
+- the first letter
+The first letter is always i,k or a (or g for global variables) and
+specifies the rate of the variable.
+ 
+- the body of the variable name
+Mnemonic of their parameter, the following variable names have been
+adopted throughout the ACCCI.  Whenever possible, the variable names
+used in the MIT Csound manual are respected.
+
+amp    amplitude              form   formant frequency
+atss   attenuation ratio      fq     frequency
+att    attack                 lh     lowest harmonic
+beg    begin                  meth   method of decay
+buf    buffer size            mid    middle
+bw     bandwidth              mod    modulated signal
+cfq    center frequency       nh     number of harmonics
+dec    decay                  oct    octaviation
+del    delay                  off    offset value
+dur    duration               pcf    pitch contr. function
+dyn    dynamic index          pch    pitch
+env    envelope               sc     scaling factor
+f      function table         src    source signal
+ff     formant frequency      stsec  start second
+fil    file                   tf     transfer function
+fn     function number        timpnt time pointer
+fund   fundamental frequency  val    value
+ind    index                  vib    vibrato
+
+- the last character
+To further characterize variable names, we sometimes attach an
+extra letter to the end of the variable name, mnemonic of the
+function of that particular unit generator.  For example, ifc may be
+the function table variable for an oscillator that generates a
+carrier signal.  The most frequently attached mnemonics are:
+
+c      carrier                m      modulator
+e      envelope               r      random number
+i      index                  w      wave 
+
+We also attach numbers to the end of the variable, but they usually
+convey less meaning.  In orchestras with many variables of the same
+type, numbers are necessary.  The decay time of the 4th envelope
+function of an additive instrument is idec4. 
+</pre>
+	</body>
+
+</html>

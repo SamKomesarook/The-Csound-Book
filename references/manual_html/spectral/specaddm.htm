@@ -1,0 +1,84 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>specaddm, specdiff, specscal, spechist, specfilt</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="top.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="specptrk.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/spectral.htm" class="toqr">
+Operations Using Spectral Data Types</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>specaddm, specdiff, specscal, spechist, specfilt</h2>
+
+<pre>
+  wsig    <strong>specaddm</strong>  wsig1, wsig2[, imul2]
+  wsig    <strong>specdiff</strong>  wsigin
+  wsig    <strong>specscal</strong>  wsigin, ifscale, ifthresh
+  wsig    <strong>spechist</strong>  wsigin
+  wsig    <strong>specfilt</strong>  wsigin, ifhtim
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Initialization</h3>
+<p><em>imul2</em> (optional) &#8211; if non-zero, scale the <em>wsig2</em> magnitudes before adding. The default value is 0.
+</p>
+<h3>Performance</h3>
+<p><strong>specaddm</strong> &#8211; do a weighted add of two input spectra. For each channel of the two input spectra, the two magnitudes are combined and written to the output according to:
+</p>
+<pre>  magout = mag1in + mag2in * imul2</pre>
+<p>The operation is performed whenever the input <em>wsig1</em> is sensed to be new. This unit will (at Initialization) verify the consistency of the two spectra (equal size, equal period, equal mag types).
+</p>
+<p><strong>specdiff</strong> &#8211; find the positive difference values between consecutive spectral frames. At each new frame of <em>wsigin</em>, each magnitude value is compared with its predecessor, and the positive changes written to the output spectrum. This unit is useful as an energy onset detector.
+</p>
+<p><strong>specscal</strong> &#8211; scale an input spectral datablock with spectral envelopes. Function tables <em>ifthresh</em> and <em>ifscale</em> are initially sampled across the (logarithmic) frequency space of the input spectrum; then each time a new input spectrum is sensed the sampled values are used to scale each of its magnitude channels as follows: if <em>ifthresh</em> is non-zero, each magnitude is reduced by its corresponding table-value (to not less than zero); then each magnitude is rescaled by the corresponding <em>ifscale</em> value, and the resulting spectrum written to <em>wsig</em>.
+</p>
+<p><strong>spechist </strong>- accumulate the values of successive spectral frames. At each new frame of <em>wsigin</em>, the accumulations-to-date in each magnitude track are written to the output spectrum. This unit thus provides a running <em>histogram</em> of spectral distribution.
+</p>
+<p><strong>specfilt</strong> &#8211; filter each channel of an input spectrum. At each new frame of <em>wsigin</em>, each magnitude value is injected into a 1st-order lowpass recursive filter, whose half-time constant has been initially set by sampling the ftable <em>ifhtim</em> across the (logarithmic) frequency space of the input spectrum. This unit effectively applies a <em>persistence</em> factor to the data occurring in each spectral channel, and is useful for simulating the <em>energy integration</em> that occurs during auditory perception. It may also be used as a time-attenuated running <em>histogram</em> of the spectral distribution.
+</p>
+<h3>Example</h3>
+
+
+<pre>
+  wsig2    <strong>specdiff</strong>         wsig1               ; sense onsets 
+  wsig3    <strong>specfilt</strong>         wsig2, 2            ; absorb slowly 
+           <strong>specdisp</strong>         wsig2, .1           ; &amp; display both spectra 
+           <strong>specdisp</strong>         wsig3, .1
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="top.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="specptrk.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/spectral.htm" class="toqr">
+Operations Using Spectral Data Types</font></a>
+</body>
+
+</html>

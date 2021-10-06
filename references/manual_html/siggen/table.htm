@@ -1,0 +1,98 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>table, tablei, table3, oscil1, oscil1i, osciln</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="loopseg.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="phasor.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#table" class="toqr">
+Signal Generators: Table Access</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>table, tablei, table3, oscil1, oscil1i, osciln</h2>
+
+<pre>
+  ir      <strong>table</strong>      indx, ifn[, ixmode[, ixoff[, iwrap]]]
+  ir      <strong>tablei</strong>     indx, ifn[, ixmode[, ixoff[, iwrap]]]
+  ir      <strong>table3</strong>     indx, ifn[, ixmode[, ixoff[, iwrap]]]
+  kr      <strong>table</strong>      kndx, ifn[, ixmode[, ixoff[, iwrap]]]
+  kr      <strong>tablei</strong>     kndx, ifn[, ixmode[, ixoff[, iwrap]]]
+  kr      <strong>table3</strong>     kndx, ifn[, ixmode[, ixoff[, iwrap]]]
+  ar      <strong>table</strong>      andx, ifn[, ixmode[, ixoff[, iwrap]]]
+  ar      <strong>tablei</strong>     andx, ifn[, ixmode[, ixoff[, iwrap]]]
+  ar      <strong>table3</strong>     andx, ifn[, ixmode[, ixoff[, iwrap]]]
+  kr      <strong>oscil1</strong>     idel, kamp, idur, ifn
+  kr      <strong>oscil1i</strong>    idel, kamp, idur, ifn
+  ar      <strong>osciln</strong>     kamp, ifrq, ifn, itimes
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Table values are accessed by direct indexing or by incremental sampling.
+</p>
+<h3>Initialization</h3>
+<p><em>ifn</em> &#8211; function table number. <strong>tablei, oscil1i</strong> require the extended guard point.
+</p>
+<p><em>ixmode</em> (optional) &#8211; index data mode. The default value is 0.</p>
+<ul>
+<li>0 = raw index
+<li>1 = normalized (0 to 1) 
+</ul>
+<p><em>ixoff</em> (optional) &#8211; amount by which index is to be offset. For a table with origin at center, use tablesize/2 (raw) or .5 (normalized). The default value is 0.
+</p>
+<p><em>iwrap</em> (optional) &#8211; wraparound index flag. The default value is 0.</p>
+<ul>
+<li>0 = nowrap (index &lt; 0 treated as index=0; index tablesize sticks at index=size)
+<li>1 = wraparound. 
+</ul>
+<p><em>idel</em> &#8211; delay in seconds before <strong>oscil1</strong> incremental sampling begins.
+</p>
+<p><em>idur</em> &#8211; duration in seconds to sample through the <strong>oscil1</strong> table just once. A zero or negative value will cause all initialization to be skipped.
+</p>
+<p><em>ifrq, itimes </em> &#8211; rate and number of times through the stored table.
+</p>
+<h3>Performance</h3>
+<p><strong>table</strong> invokes table lookup on behalf of init, control or audio indices. These indices can be raw entry numbers (0,l,2...size - 1) or scaled values (0 to 1-e). Indices are first modified by the offset value then checked for range before table lookup (see <em>iwrap</em>). If index is likely to be full scale, or if interpolation is being used, the table should have an extended guard point. <strong>table</strong> indexed by a periodic phasor ( see <a href="phasor.htm"><strong>phasor</strong></a>) will simulate an oscillator.
+</p>
+<p><strong>oscil1</strong> accesses values by sampling once through the function table at a rate determined by <em>idur</em>. For the first <em>idel</em> seconds, the point of scan will reside at the first location of the table; it will then begin moving through the table at a constant rate, reaching the end in another <em>idur</em> seconds; from that time on (i.e. after <em>idel</em> + <em>idur</em> seconds) it will remain pointing at the last location. Each value obtained from sampling is then multiplied by an amplitude factor <em>kamp</em> before being written into the result. Because <strong>oscil1</strong> is an interpolating opcode, the table it reads should have a guard point.
+</p>
+<p><strong>osciln</strong> will sample several times through the stored table at a rate of <em>ifrq</em> times per second, after which it will output zeros. Generates audio signals only, with output values scaled by <em>kamp.</em>
+</p>
+<p><strong>tablei</strong> and <strong>oscil1i</strong> are interpolating units in which the fractional part of index is used to interpolate between adjacent table entries. The smoothness gained by interpolation is at some small cost in execution time (see also <a href="oscil.htm"><strong>oscili</strong></a>, etc.), but the interpolating and non-interpolating units are otherwise interchangeable. Note that when <strong>tablei</strong> uses a periodic index whose modulo <em>n</em> is less than the power of 2 table length, the interpolation process requires that there be an (<em>n</em>+ 1)th table value that is a repeat of the 1st (see <a href="../score/f.htm"><strong>f Statement</strong></a> in score). <strong>table3</strong> is experimental, and is identical to <strong>tablei</strong>, except that it uses cubic interpolation. (New in Csound version 3.50.)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="loopseg.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="phasor.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#table" class="toqr">
+Signal Generators: Table Access</font></a>
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>samphold, downsamp, upsamp, interp, integ, diff</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="spat.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="ntrpol.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#sample" class="toqr">
+Signal Modifiers: Sample Level Operators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>samphold, downsamp, upsamp, interp, integ, diff</h2>
+
+<pre>
+  kr      <strong>downsamp</strong>   asig[, iwlen]
+  ar      <strong>upsamp</strong>     ksig
+  ar      <strong>interp</strong>     ksig[, iskip]
+  kr      <strong>integ</strong>      ksig[, iskip]
+  ar      <strong>integ</strong>      asig[, iskip]
+  kr      <strong>diff</strong>       ksig[, iskip]
+  ar      <strong>diff</strong>       asig[, iskip]
+  kr      <strong>samphold</strong>   xsig, kgate[, ival, ivstor]
+  ar      <strong>samphold</strong>   asig, xgate[, ival, ivstor]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Modify a signal by up- or down-sampling, integration, and differentiation.
+</p>
+<h3>Initialization</h3>
+<p><em>iwlen</em> (optional) &#8211; window length in samples over which the audio signal is averaged to determine a downsampled value. Maximum length is <em>ksmps</em>; 0 and 1 imply no window averaging. The default value is 0.
+</p>
+<p><em>iskip</em> (optional) &#8211; initial disposition of internal save space ( see <a href="port.htm"><strong>reson</strong></a>). The default value is 0.
+</p>
+<p><em>ival, ivstor</em> (optional) &#8211; controls initial disposition of internal save space. If <em>ivstor</em> is zero the internal &quot;hold&quot; value is set to <em>ival</em> ; else it retains its previous value. Defaults are 0,0 (i.e. init to zero)
+</p>
+<h3>Performance</h3>
+<p><strong>downsamp</strong> converts an audio signal to a control signal by downsampling. It produces one kval for each audio control period. The optional window invokes a simple averaging process to suppress foldover.
+</p>
+<p><strong>upsamp, interp</strong> convert a <em>control</em> signal to an <em>audio</em> signal. The first does it by simple repetition of the kval, the second by linear interpolation between successive kvals. <strong>upsamp</strong> is a slightly more efficient form of the assignment, <em>asig</em> = <em>ksig</em>.
+</p>
+<p><strong>integ, diff</strong> perform <em>integration</em> and <em>differentiation</em> on an input control signal or audio signal. Each is the converse of the other, and applying both will reconstruct the original signal. Since these units are special cases of low-pass and high-pass filters, they produce a scaled (and phase shifted) output that is frequency-dependent. Thus <strong>diff</strong> of a sine produces a cosine, with amplitude <em>2 * sin(pi * Hz / <strong>sr</strong>)</em> that of the original (for each component partial); <strong>integ</strong> will inversely affect the magnitudes of its component inputs. With this understanding, these units can provide useful signal modification.
+</p>
+<p><strong>samphold</strong> performs a sample-and-hold operation on its input according to the value of <em>gate</em>. If <em>gate 0</em>, the input samples are passed to the output; If <em>gate = 0</em>, the last output value is repeated. The controlling <em>gate</em> can be a constant, a control signal, or an audio signal.
+</p>
+<h3></h3>
+
+<h3>Example</h3>
+
+<pre>
+  asrc    <strong>buzz</strong>      10000,440,20, 1     ; band-limited pulse train
+  adif    <strong>diff</strong>      asrc                ; emphasize the highs
+  anew    <strong>balance</strong>   adif, asrc          ;   but retain the power
+  agate   <strong>reson</strong>     asrc,0,440          ; use a lowpass of the original
+  asamp   <strong>samphold</strong>  anew, agate         ;   to gate the new audiosig
+  aout    <strong>ton</strong>e      asamp,100           ; smooth out the rough edges
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="spat.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="ntrpol.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#sample" class="toqr">
+Signal Modifiers: Sample Level Operators</font></a>
+</body>
+
+</html>

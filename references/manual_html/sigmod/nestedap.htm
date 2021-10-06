@@ -1,0 +1,157 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>nestedap</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="reverb2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="babo.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#reverb" class="toqr">
+Signal Modifiers: Reverberation</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>nestedap</h2>
+
+<pre>
+  ar  <strong>nestedap</strong>  asig, imode, imaxdel, idel1, igain1[, idel2, igain2 [, idel3, igain3]]</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Three different nested all-pass filters, useful for implementing reverbs.
+</p>
+<h3>Initialization</h3>
+<p><em>imode</em> &#8211; operating mode of the filter:
+</p>
+<ul>
+	<li>1 = simple all-pass filter</li>
+	<li>2 = single nested all-pass filter</li>
+	<li>3 = double nested all-pass filter</li>
+</ul>
+<p><em>idel1</em>, <em>idel2</em>, <em>idel3</em> &#8211; delay times of the filter stages. Delay times are in seconds and must be greater than zero. <em>idel1</em> must be greater than the sum of <em>idel2</em> and <em>idel3</em>. 
+</p>
+<p><em>igain1</em>, <em>igain2</em>, <em>igain3</em> &#8211; gain of the filter stages.
+</p>
+<p><em>imaxdel </em> &#8211; will be necessary if k-rate delays are implemented. Not currently used.
+</p>
+<h3>Performance</h3>
+<p><em>asig</em> &#8211; input signal
+</p>
+<p>If <em>imode</em> = 1, the filter takes the form:
+</p>
+<p align="center"><img src="imode1.gif" width="381" height="144" border="0" alt="nestedap: imode=1">
+</p>
+<p>If <em>imode</em> = 2, the filter takes the form:
+</p>
+<p align="center"><img src="imode2.gif" width="381" height="144" border="0" alt="nestedap: imode=2">
+</p>
+<p>If <em>imode</em> = 3, the filter takes the form:
+</p>
+<p align="center"><img src="imode3.gif" width="556" height="144" border="0" alt="nestedap: imode=3">
+</p>
+<h3>Example</h3>
+
+
+
+
+
+
+
+
+
+<pre><strong>instr</strong> 5
+  insnd     =           p4
+  gasig     <strong>diskin</strong>      insnd, 1
+<strong>endin 
+</strong>
+<strong>instr</strong> 10
+  imax      =           1
+  idel1     =           p4
+  igain1    =           p5
+  idel2     =           p6
+  igain2    =           p7
+  idel3     =           p8
+  igain3    =           p9
+  idel4     =           p10
+  igain4    =           p11
+  idel5     =           p12
+  igain5    =           p13
+  idel6     =           p14
+  igain6    =           p15
+  afdbk     <strong>init</strong>        0
+
+  aout1     <strong>nestedap</strong>    gasig+afdbk*.4, 3, imax, idel1, igain1, idel2,\\   igain2, idel3,    igain3      
+  
+  aout2     <strong>nestedap</strong>    aout1, 2, imax, idel4, igain4, idel5, igain5
+
+  aout      <strong>nestedap</strong>    aout2, 1, imax, idel6, igain6
+
+  afdbk     <strong>butterlp</strong>    aout, 1000
+
+            <strong>outs</strong>        gasig+(aout+aout1)/2, gasig-(aout+aout1)/2
+  
+gasig     =           0
+<strong>
+endin 
+</strong>
+
+;Score
+
+f1 0 8192 10 1
+
+; Diskin
+;   Sta  Dur  Soundin
+i5  0    3    1
+
+; Reverb
+;   St  Dur  Del1 Gn1  Del2  Gn2  Del3  Gn3  Del4  Gn4  Del5  Gn5  Del6  Gn6
+i10 0   4    97   .11  23   .07   43   .09   72    .2   53    .2   119   .3
+e
+</pre>
+
+
+
+
+
+
+
+
+<h3>Author</h3>
+<p>Hans Mikelson<br>
+February 1999<br>
+New in Csound version 3.53
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="reverb2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="babo.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#reverb" class="toqr">
+Signal Modifiers: Reverberation</font></a>
+</body>
+
+</html>

@@ -1,0 +1,119 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>fmbell, fmrhode, fmwurlie, fmmetal,  fmb3, fmpercfl</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="fmvoice.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="loscil.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#fm" class="toqr">
+Signal Generators: FM Synthesis</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>fmbell, fmrhode, fmwurlie, fmmetal, fmb3, fmpercfl</h2>
+
+
+
+
+<pre>
+  ar      <strong>fmbell</strong>     kamp, kfreq, kc1, kc2, kvdepth, kvrate, ifn1, ifn2, ifn3, ifn4, ivfn
+  ar      <strong>fmrhode</strong>    kamp, kfreq, kc1, kc2, kvdepth, kvrate, ifn1, ifn2, ifn3, ifn4, ivfn
+  ar      <strong>fmwurlie</strong>   kamp, kfreq, kc1, kc2, kvdepth, kvrate, ifn1, ifn2, ifn3, ifn4, ivfn
+  ar      <strong>fmmetal</strong>    kamp, kfreq, kc1, kc2, kvdepth, kvrate, ifn1, ifn2, ifn3, ifn4, ivfn
+  ar      <strong>fmb3</strong>       kamp, kfreq, kc1, kc2, kvdepth, kvrate, ifn1, ifn2, ifn3, ifn4, ivfn
+  ar      <strong>fmpercfl</strong>   kamp, kfreq, kc1, kc2, kvdepth, kvrate, ifn1, ifn2, ifn3, ifn4, ivfn
+<hr size="2" color="#A9A9A9" noshade>
+</pre>
+
+
+
+
+
+<h3>Description</h3>
+<p>A family of FM sounds, all using 4 basic oscillators and various architectures, as used in the TX81Z synthesizer.<br>
+</p>
+<h3>Initialization</h3>
+<p>All these opcodes take 5 tables for initialization. The first 4 are the basic inputs and the last is the low frequency oscillator (LFO) used for vibrato. The last table should usually be a sine wave.<br>
+</p>
+<p>For the other opcodes the initial waves should be as in the table:
+</p>
+<pre>              ifn1        ifn2          ifn3      ifn4
+<hr size="2" color="#A9A9A9" noshade>
+<strong>fmbell </strong>       sinewave    sinewave      sinewave  sinewave 
+<strong>fmrhode </strong>      sinewave    sinewave      sinewave  fwavblnk 
+<strong>fmwurlie </strong>     sinewave    sinewave      sinewave  fwavblnk 
+<strong>fmmetal </strong>      sinewave    twopeaks      twopeaks  sinewave 
+<strong>fmb3  </strong>        sinewave    sinewave      sinewave  sinewave 
+<strong>fmpercfl </strong>     sinewave    sinewave      sinewave  sinewave</pre>
+<p>The sounds produced are then:
+</p>
+<pre><strong>
+fmbell</strong>        Tubular Bell 
+<strong>fmrhode</strong>       Fender Rhodes  Electric Piano 
+<strong>fmwurlie</strong>      Wurlitzer Electric Piano 
+<strong>fmmetal</strong>       &quot;Heavy Metal&quot; 
+<strong>fmb3 </strong>         Hammond B3 organ 
+<strong>fmpercfl</strong>      Percussive Flute</pre>
+
+<h3>Performance</h3>
+<p><em>kamp</em> &#8211; Amplitude of note.
+</p>
+<p><em>kfreq</em> &#8211; Frequency of note played.
+</p>
+<p><em>kc1, kc2 --</em> Controls for the synthesizer, as in the table:
+</p>
+<pre>
+kc1           kc2                                           Algorithm
+<hr size="2" color="#A9A9A9" noshade>
+<strong>fmbell</strong>        Mod index 1       Crossfade of two outputs        5 
+<strong>fmrhode</strong>       Mod index 1       Crossfade of two outputs        5 
+<strong>fmwurlie</strong>      Mod index 1       Crossfade of two outputs        5 
+<strong>fmmetal</strong>       Total mod index   Crossfade of two modulators     3 
+<strong>fmb3 </strong>         Total mod index   Crossfade of two modulators     4 
+<strong>fmpercfl</strong>      Total mod index   Crossfade of two modulators     4
+</pre>
+<p><em>kvdepth</em> -- Vibrator depth
+</p>
+<p><em>kvrate</em> -- Vibrator rate<br>
+</p>
+<h3>Author</h3>
+<p>John ffitch (after Perry Cook)<br>
+University of Bath, Codemist Ltd.<br>
+Bath, UK<br>
+New in Csound version 3.47<br>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="fmvoice.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="loscil.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#fm" class="toqr">
+Signal Generators: FM Synthesis</font></a>
+</body>
+
+</html>

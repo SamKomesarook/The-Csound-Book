@@ -1,0 +1,82 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>port, portk, tone, tonek, atone, atonek, reson, resonk, areson, aresonk</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../siggen/tablera.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="tonex.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>port, portk, tone, tonek, atone, atonek, reson, resonk, areson, aresonk</h2>
+
+<pre>
+  kr      <strong>portk</strong>      ksig, khtim[, isig]
+  kr      <strong>port</strong>       ksig, ihtim[, isig]
+  kr      <strong>tonek</strong>      ksig, khp[, iskip]
+  ar      <strong>tone</strong>       asig, khp[, iskip]
+  kr      <strong>atonek</strong>     ksig, khp[, iskip]
+  ar      <strong>atone</strong>      asig, khp[, iskip]
+  kr      <strong>resonk</strong>     ksig, kcf, kbw[, iscl, iskip]
+  ar      <strong>reson</strong>      asig, kcf, kbw[, iscl, iskip]
+  kr      <strong>aresonk</strong>    ksig, kcf, kbw[, iscl, iskip]
+  ar      <strong>areson</strong>     asig, kcf, kbw[, iscl, iskip]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>A control or audio signal is modified by a low- or band-pass recursive filter with variable frequency response.
+</p>
+<h3>Initialization</h3>
+<p><em>isig</em> &#8211; initial (i.e. previous) value for internal feedback. The default value is 0.
+</p>
+<p><em>iskip</em> &#8211; initial disposition of internal data space. Since filtering incorporates a feedback loop of previous output, the initial status of the storage space used is significant. A zero value will clear the space; a non-zero value will allow previous information to remain. The default value is 0.
+</p>
+<p><em>iscl</em> &#8211; coded scaling factor for resonators. A value of 1 signifies a peak response factor of 1, i.e. all frequencies other than kcf are attenuated in accordance with the (normalized) response curve. A value of 2 raises the response factor so that its overall RMS value equals 1. (This intended equalization of input and output power assumes all frequencies are physically present; hence it is most applicable to white noise.) A zero value signifies no scaling of the signal, leaving that to some later adjustment ( see <a href="rms.htm"><strong>balance</strong></a>). The default value is 0.
+</p>
+<h3>Performance</h3>
+<p><strong>port</strong> applies portamento to a step-valued control signal. At each new step value, <em>ksig</em> is low-pass filtered to move towards that value at a rate determined by <em>ihtim</em>. <em>ihtim</em> is the &quot;half-time&quot; of the function (in seconds), during which the curve will traverse half the distance towards the new value, then half as much again, etc., theoretically never reaching its asymptote. With <strong>portk</strong>, the half-time can be varied at the control rate.
+</p>
+<p><strong>tone</strong> implements a first-order recursive low-pass filter in which the variable <em>khp</em> (in Hz) determines the response curve's half-power point. Half power is defined as peak power / root 2.
+</p>
+<p><strong>reson</strong> is a second-order filter in which <em>kcf</em> controls the center frequency, or frequency position of the peak response, and <em>kbw</em> controls its bandwidth (the frequency difference between the upper and lower half-power points).
+</p>
+<p><strong>atone</strong>, <strong>areson</strong> are filters whose transfer functions are the complements of <strong>tone</strong> and <strong>reso</strong>n. <strong>atone</strong> is thus a form of high-pass filter and <strong>areson</strong> a notch filter whose transfer functions represent the &quot;filtered out&quot; aspects of their complements. Note, however, that power scaling is not normalized in <strong>atone</strong>, <strong>areson</strong>, but remains the true complement of the corresponding unit. Thus an audio signal, filtered by parallel matching <strong>reson</strong> and <strong>areson</strong> units, would under addition simply reconstruct the original spectrum. This property is particularly useful for controlled mixing of different sources ( see <a href="lpread.htm"><strong>lpreson</strong></a>). Complex response curves such as those with multiple peaks can be obtained by using a bank of suitable filters in series. (The resultant response is the product of the component responses.) In such cases, the combined attenuation may result in a serious loss of signal power, but this can be regained by the use of <strong>balance</strong>.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../siggen/tablera.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="tonex.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</font></a>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>70_01_1.sco.html</title>
+		<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+	</head>
+
+	<body stylesrc="../admin/adpsco.html" bgcolor="white">
+		<pre>
+; *********************************************************************
+; ACCCI:  70_01_1.SCO
+; coded:  Ron Parks 6/96
+
+
+; GEN functions ******************************************************* 
+; waveform
+f1  0  4096  10  1   ; sine function for grain production
+
+; envelopes
+; iampfn envelope         ; overall envelope for stream amplitude
+f31  0  4096  -7          0   400 8000   2400 8000   1296 0
+
+; octpch envelope
+f32  0  4096  -7  9.75 4096 9.75    ; oct notation
+; ibwfn envelope 
+f33  0  4096   7  1    4096  1      ; bw of random pitch variation
+
+; first set of granular parametes
+; imiigtfn envelope           
+f34  0  4096  -7  .02  4096  .02    ; minimum inter-grain time 
+; imxigtfn envelope  
+f35  0  4096  -7  .1   4096  .1     ; maximum inter-grain time
+; imiglfn envelope
+f36  0  4096  -7  .02  4096  .02    ; minimum grain length
+; imxglfn envelope
+f37  0  4096  -7  .05  4096  .05    ; maximum grain length
+
+; second iampfn envelope    ; overall envelope for stream amplitude
+f41  0  4096  -7          0   400 1500   2400 1500   1296 0
+
+; second set of granular values: smaller bw var and igt
+; ibwfn envelope 
+f43  0  4096  -7  .5   4096  .5     ; bw of random pitch variation
+; imiigtfn envelope           
+f44  0  4096  -7  .001 4096  .001   ; minimum inter-grain time
+; imxigtfn envelope  
+f45  0  4096  -7  .01  4096  .01    ; maximum inter-grain time
+
+
+; grain envelope 
+f39  0  4096   7  0    1024  1   2048  1  1024  0
+
+
+; overview of variables ***********************************************
+;           most of the values are set in the GEN functions above
+; iamp      amplitude of overall event
+; iboct     base pch in oct notation: center frequency of grain stream
+; ibw       bandwidth of random frequency variation of grains
+;           1 = semitone variation above and below center frequency
+; imiigt    minimum inter-grain time
+; imxigt    maximum inter-grain time
+; imigl	    minimum grain length
+; imxgl	    maximum grain length
+; iseed	    seed value for randh
+; ige       grain envelope
+
+; score ***************************************************************
+; section 1
+; a single stream of grains
+;  start dur iamp iboct ibw imiigt imxigt imigl imxgl iseed ige
+i1  0	   5   31    32  33     34     35    36    37  .001  39
+s
+
+; section 2
+; eight streams creating a grain density of roughly 200 grains per sec
+;  start dur iamp iboct ibw imiigt imxigt imigl imxgl iseed ige
+i1  1	   5   41    32  43     44     45    36    37  .001  39
+i1  .	   .    .     .   .      .      .     .     .  .002   .
+i1  .	   .    .     .   .      .      .     .     .  .003   .
+i1  .	   .    .     .   .      .      .     .     .  .004   .
+i1  .	   .    .     .   .      .      .     .     .  .005   .
+i1  .	   .    .     .   .      .      .     .     .  .006   .
+i1  .	   .    .     .   .      .      .     .     .  .007   .
+i1  .	   .    .     .   .      .      .     .     .  .008   .
+e
+</pre>
+	</body>
+
+</html>

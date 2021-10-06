@@ -1,0 +1,71 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>rnd, birnd</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="dbamp.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="urd.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/math.htm#rand">
+Mathematical Functions: Random Functions</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>rnd, birnd</h2>
+
+<pre>
+          <strong>rnd</strong>(x)     (init- or control-rate only)
+          <strong>birnd</strong>(x)   (init- or control-rate only)
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Where the argument within the parentheses may be an expression. These value converters sample a global random sequence, but do not reference <strong>seed</strong>. The result can be a term in a further expression.</p>
+
+<h3>Performance</h3>
+<p><strong>rnd</strong>(<em>x</em>) &#8211; returns a random number in the unipolar range 0 to <em>x</em>.
+</p>
+<p><strong>birnd</strong>(<em>x</em>) &#8211; returns a random number in the bipolar range -<em>x</em> to <em>x</em>. <strong>rnd</strong> and <strong>birnd</strong> obtain values from a global pseudo-random number generator, then scale them into the requested range. The single global generator will thus distribute its sequence to these units throughout the performance, in whatever order the requests arrive.
+</p>
+
+
+<h3>Author</h3>
+<p>Barry Vercoe<br>
+MIT<br>
+Cambridge, Massachussetts<br>
+1997
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="dbamp.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="urd.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a href="../qr/math.htm#rand" class="toqr">
+Mathematical Functions: Random Functions</a>
+</body>
+</html>

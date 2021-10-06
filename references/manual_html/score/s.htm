@@ -1,0 +1,76 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>s Statement</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="v.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="e.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#statements" class="toqr">
+Score Syntax: Statements</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>s Statement</h2>
+
+<pre>
+  <strong>s</strong>  anything</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>The <strong>s statement</strong> marks the end of a section.
+</p>
+<h3>P Fields </h3>
+
+<p>All p-fields are ignored.</p>
+
+<h3>Special Considerations </h3>
+<p>Sorting of the <a href="i.htm"><strong>i statement</strong></a>, <a href="f.htm"><strong>f statement</strong></a> and <a href="a.htm"><strong>a statement</strong></a> by action time is done section by section.
+</p>
+<p>Time warping for the <a href="t.htm"><strong>t statement</strong></a> is done section by section.
+</p>
+<p>All action times within a section are relative to its beginning. A section statement establishes a new relative time of 0, but has no other reinitializing effects (e.g. stored function tables are preserved across section boundaries).
+</p>
+<p>A section is considered complete when all action times and finite durations have been satisfied (i.e., the &quot;length&quot; of a section is determined by the last occurring action or turn-off). A section can be extended by the use of an <a href="f.htm"><strong>f0 statement</strong></a>.
+</p>
+<p>A section ending automatically invokes a Purge of inactive instrument and data spaces.
+</p>
+<p><strong>Note</strong>: Since score statements are processed section by section, the amount of memory required depends on the maximum number of score statements in a section. Memory allocation is dynamic, and the user will be informed as extra memory blocks are requested during score processing.
+</p>
+<p>For the end of the final section of a score, the <strong>s statement</strong> is optional; the <a href="e.htm"><strong>e statement</strong></a> may be used instead.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="v.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="e.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#statements" class="toqr">
+Score Syntax: Statements</font></a>
+</body>
+
+</html>

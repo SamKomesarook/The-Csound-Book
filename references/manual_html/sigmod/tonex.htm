@@ -1,0 +1,80 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>tonex, atonex, resonx</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="port.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="resonr.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>tonex, atonex, resonx</h2>
+
+<pre>
+  ar      <strong>tonex</strong>      asig, khp[, inumlayer, iskip]
+  ar      <strong>atonex</strong>     asig, khp[, inumlayer, iskip]
+  ar      <strong>resonx</strong>     asig, kcf, kbw[, inumlayer, iscl, iskip]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p><strong>tonex</strong>, <strong>atonex</strong> and <strong>resonx</strong> are equivalent to fliters consisting of more layers of <a href="port.htm"><strong>tone</strong></a>, <a href="port.htm"><strong>atone</strong></a> and <a href="port.htm"><strong>reson</strong></a>, with the same arguments, serially connected. Using a stack of a larger number of filters allows a sharper  cutoff. They are faster than using  a larer number  instances in a Csound orchestra of the old opcodes, because only one initialization and k- cycle are needed at time, and the audio loop falls enterely inside the cache memory of processor.
+</p>
+<h3>Initialization</h3>
+<p><em>inumlayer</em> &#8211; number of elements in the filter stack.. Default value is 4.
+</p>
+<p><em>iskip</em> &#8211; initial disposition of internal data space. Since filtering incorporates a feedback loop of previous output, the initial status of the storage space used is significant. A zero value will clear the space; a non-zero value will allow previous information to remain. The default value is 0.
+</p>
+<p><em>iscl</em> &#8211; coded scaling factor for resonators. A value of 1 signifies a peak response factor of 1, i.e. all frequencies other than kcf are attenuated in accordance with the (normalized) response curve. A value of 2 raises the response factor so that its overall RMS value equals 1. (This intended equalization of input and output power assumes all frequencies are physically present; hence it is most applicable to white noise.) A zero value signifies no scaling of the signal, leaving that to some later adjustment ( see <a href="rms.htm"><strong>balance</strong></a>). The default value is 0.
+</p>
+<h3>Performance</h3>
+<p><em>asig</em> &#8211; input signal
+</p>
+<p><em>khp</em> &#8211; the response curve's half-power point. Half power is defined as peak power / root 2.
+</p>
+<p><em>kcf</em> &#8211; the center frequency of the filter, or frequency position of the peak response.
+</p>
+<p><em>kbw</em> &#8211; bandwidth of the filter (the Hz difference between the upper and lower half-power points)
+</p>
+<h3>Author</h3>
+<p>Gabriel Maldonado (adapted by John ffitch)<br>
+Italy<br>
+New in Csound version 3.49
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="port.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="resonr.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</font></a>
+</body>
+
+</html>

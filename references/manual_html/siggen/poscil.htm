@@ -1,0 +1,87 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>poscil, poscil3</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="oscil.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="lfo.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#basicoscils" class="toqr">
+Signal Generators: Basic Oscillators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>poscil, poscil3</h2>
+
+<pre>
+  ar      <strong>poscil</strong>     kamp, kcps, ifn [,iphs]
+  kr      <strong>poscil</strong>     kamp, kcps, ifn [,iphs]
+  ar      <strong>poscil3</strong>    kamp, kcps, ifn [,iphs]
+  kr      <strong>poscil3</strong>    kamp, kcps, ifn [,iphs]
+  
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>High precision oscillators. <strong>poscil3</strong> and <strong>lposcil3</strong> use cubic interpolation.
+</p>
+<h3>Initialization</h3>
+<p><em>ifn</em> &#8211; function table number
+</p>
+<p><em>iphs</em> (optional) &#8211; initial phase of sampling, expressed as a  fraction of a cycle (0 to 1). The default value is 0.
+</p>
+<h3>Performance</h3>
+<p><em>ar</em> &#8211; output signal
+</p>
+<p><em>kamp</em> &#8211; amplitude
+</p>
+<p><em>kcps</em> &#8211; frequency
+</p>
+
+<p><strong>poscil</strong> (precise oscillator) is the same as <a href="oscil.htm"><strong>oscili</strong></a>,but allows much more precise frequency control, especially when using long tables and low frequency values. It uses floating-point table indexing, instead of integer math, like <strong>oscil</strong> and <strong>oscili</strong>.  It is only a bit slower than <strong>oscili</strong>.
+</p>
+
+<h3>Author</h3>
+<p>Gabriel Maldonado (<strong>poscil</strong>)<br>
+Italy<br>
+1998 (New in Csound version 3.52)
+</p>
+<p>John ffitch (<strong>poscil3</strong>)<br>
+University of Bath/Codemist Ltd.<br>
+Bath, UK<br>
+February, 1999 (New in Csound version 3.52)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="oscil.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="lfo.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#basicoscils" class="toqr">
+Signal Generators: Basic Oscillators</font></a>
+</body>
+
+</html>

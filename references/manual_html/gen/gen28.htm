@@ -1,0 +1,97 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN28</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen25.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen30.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#file" class="toqr">
+<strong>GEN</strong> Routines: File Access</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN28</h2>
+
+<pre>
+  <strong>f</strong>  #    time    size   28   ifilcod
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This function generator reads a text file which contains sets of three values representing the xy coordinates and a time-tag for when the signal should be placed at that location, allowing the user to define a time-tagged trajectory. The file format is in the form:
+</p>
+<pre>
+  time1    X1      Y1
+  time2    X2      Y2
+  time3    X3      Y3
+</pre>
+<p>The configuration of the xy coordinates in space places the signal in the following way:
+</p>
+<ul>
+	<li>a1 is -1, 1</li>
+	<li>a2 is 1, 1</li>
+	<li>a3 is -1, -1</li>
+	<li>a4 is 1, -1</li>
+</ul>
+<p>This assumes a loudspeaker set up as a1 is left front, a2 is right front, a3 is left back, a4 is right back. Values greater than 1 will result in sounds being attenuated as if in the distance. <strong>GEN28</strong> creates values to 10 milliseconds of resolution.
+</p>
+<h3>Initialization</h3>
+<p><em>size</em> &#8211; number of points in the table. Must be 0. <strong>Gen28</strong> takes 0 as the size and automatically allocates memory.
+</p>
+<p><em>ifilcod</em> &#8211; character-string denoting the source soundfile name. A character-string (in double quotes, spaces permitted) gives the filename itself, optionally a full pathname. If not a full path, the named file is sought in the current directory.
+</p>
+<h3> Example</h3>
+
+<pre>  f1 0 0 28 &quot;move&quot;</pre>
+<p>The file &quot;move&quot; should look like:
+</p>
+<pre>
+    0       -1       1
+    1        1       1
+    2        4       4
+    2.1     -4      -4
+    3        10     -10
+    5       -40      0
+</pre>
+<p>Since <strong>GEN28</strong> creates values to 10 milliseconds of resolution, there will be 500 values created by interpolating X1 to X2 to X3 and so on, and Y1 to Y2 to Y3 and so on, over the appropriate number of values that are stored in the function table. The sound will begin in the left front, over 1 second it will move to the right front, over another second it move further into the distance but still in the left front, then in just 1/10th of a second it moves to the left rear, a bit distant. Finally over the last .9 seconds the sound will move to the right rear, moderately distant, and it comes to rest between the two left channels (due west!), quite distant.
+</p>
+<h3>Author</h3>
+<p>Richard Karpen<br>
+Seattle, Wash<br>
+1998  (New in Csound version 3.48)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen25.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen30.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#file" class="toqr">
+<strong>GEN</strong> Routines: File Access</font></a>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>dam</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="rms.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="clip.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#amp" class="toqr">
+Signal Modifiers: Amplitude Modifiers</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>dam</h2>
+
+<pre>
+  ar      <strong>dam</strong>        asig, kthreshold, icomp1, icomp2, irtime, iftime
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This opcode dynamically modifies a gain value applied to the input sound <em>ain</em> by comparing its power level to a given threshold level. The signal will be compressed/expanded with different factors regarding that it is over or under the threshold.
+</p>
+<h3>Initialization</h3>
+<p><em>icomp1</em> &#8211; compression ratio for upper zone.
+</p>
+<p><em>icomp2</em> &#8211; compression ratio for lower zone
+</p>
+<p><em>irtime</em> &#8211; gain rise time in seconds. Time over which the gain factor is allowed to raise of one unit.
+</p>
+<p><em>iftime</em> &#8211; gain fall time in seconds. Time over which the gain factor is allowed to decrease of one unit.
+</p>
+<h3>Performance</h3>
+<p><em>asig</em> &#8211; input signal to be modified
+</p>
+<p><em>kthreshold</em> &#8211; level of input signal which acts as the threshold. Can be changed at k-time (e.g. for ducking)
+</p>
+<p>Note on the compression factors: A compression ratio of one leaves the sound unchanged. Setting the ratio to a value smaller than one will compress the signal (reduce its volume) while setting the ratio to a value greater than one will expand the signal (augment its volume).
+</p>
+<h3>Author</h3>
+<p>Marc Resibois<br>
+Belgium<br>
+1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="rms.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="clip.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#amp" class="toqr">
+Signal Modifiers: Amplitude Modifiers</font></a>
+</body>
+
+</html>

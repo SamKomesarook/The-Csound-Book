@@ -1,0 +1,628 @@
+Release Notes for 4.13
+======================
+
+A set of incremental changes, including consolidation of the macintosh
+system into the main sources.
+
+
+Bug Fixes
+---------
+
+There was a fence-post problem throughout strset where string 8, 16,
+.. were not recognised.
+
+A bug in pvoc fixed which could give incorrect output in some
+circumstances
+
+fout fixed
+
+Typo meant that MIDI did not work on Macintosh
+
+
+Language Changes
+----------------
+
+The number of channels which used to have an implicit maximum of 8 has
+been liberalised significantly.
+
+24bit audio now supported for output and input.
+
+The csound.txt file has been renamed csound.xmg (for external
+messages)
+
+There is a new variable type a f-variable.  This is used in streaming
+pvanal.
+
+Opcode Fixes
+------------
+
+soundin can not take upto 24 channels
+
+gbuzz fixed (it used to jump sign sometimes)
+
+Improvements to vdelay family
+
+New Opcodes 
+-----------
+
+bbcut -- for breakbeat cutting.(Nick Collins)
+
+spat3d, spat3di, spat3dt -- Three dimension room simulation (Istvan
+Varga)
+
+deltapx, deltapxw -- read from and write to a delayr/delayw delay line
+with interpolation
+
+pvsanal -- streaming pvanalysis, generating an f-variable
+pvsynth -- resynthesis of fvariablesd
+pvsadsyn -- streaming additive synthesis
+pvscross -- streaming cross-synthesis
+pvsfread --
+pvsmaska --
+pvsftw -- write a streamed pvoc frame to table
+pvsftr -- read  a streamed pvoc frame to table
+pvsinfo -- information about a streamed pvanal
+
+lineto, tlineto -- Generate glissandos starting from a control signal
+
+loopseg, lpshold -- Generate control signal consisting of linear
+segments delimited by two or more specified points. The entire
+envelope is looped at k-rate.
+
+
+Other Changes:
+-------------
+
+The pvanal analysis program can have the windowing type controlled by
+a -h option.
+
+Internally the maximum number of channels has been increased
+significantly. 
+
+Efficiency gains in lowpass
+
+Some internal messages removed
+
+filelen and filepeak revised for PVOC_EX format etc
+
+MACOSX changes merged in
+
+
+Windows GUI Changes
+-------------------
+
+Can now select 24bit output
+
+-----------------------------------------------------------------------
+==John ff
+  2001 August
+========================================================================
+bbcutm,bbcuts  
+
+a1 bbcutm asource, ibps, isubdiv, ibarlength, iphrasebars, inumrepeats
+                [, istutterspeed, istutterchance, ienvchoice ] 
+
+a1,a2 bbcuts asource1, asource2, ibps, isubdiv, ibarlength, iphrasebars,
+                inumrepeats [, istutterspeed, istutterchance, ienvchoice]
+
+Description
+
+The BreakBeat Cutter automatically generates cutups of a source audio
+stream in the style of drum and bass/jungle breakbeat manipulations.
+There are two versions, for mono or stereo sources.  Whilst originally
+based on breakbeat cutting, the opcode can be applied to any type of
+source audio.
+
+The prototypical cut sequence favoured over one bar with eighth note
+subdivisions would be
+
+3+ 3R + 2
+ 
+where we take a 3 unit block from the source's start, repeat it, then
+2 units from the 7th and 8th eighth notes of the source.
+
+We talk of rendering phrases (a sequence of cuts before reaching a new
+phrase at the beginning of a bar) and units (as subdivision th notes).
+
+The opcode comes most alive when multiple synchronised versions are
+used simultaneously.
+
+Initialisation
+
+ibps- tempo to cut at, in beats per second.
+isubdiv - subdivisions unit, for a bar. So 8 is eighth notes (of a 4/4
+          bar). 
+ibarlength - how many beats per bar. Set to 4 for default 4/4 bar
+             behaviour 
+iphrasebars - the output cuts are generated in phrases, each phrase is
+              up to iphrasebars long.  
+inumrepeats - in normal use the algorithm would allow up to one
+              additional repeat of a given cut at a time. This
+              parameter allows that to be changed. Value 1 is normal-
+              up to one extra repeat. 0 would avoid repeating, and you
+              would always get back the original source except for
+              enveloping and stuttering.  
+istutterspeed (optional) - the stutter can be an integer multiple of
+              the subdivision speed. For instance, if subdiv is 8
+              (quavers) and stutterspeed is 2, then the stutter is in
+              semiquavers (sixteenth notes= subdiv 16). The default is 1. 
+istutterchance (optional) - the tail of a phrase has this chance of
+              becoming a single repeating one unit cell stutter (0.0
+              to 1.0). The default is 0. 
+ienvchoice (optional) - choose 1 for on (exponential envelope for cut
+              grains) or 0 for off. Off will cause clicking, but may
+              give good noisy results, especially for percussive
+              sources. The default is 1, on.
+
+Performance
+
+asource - to be cut up. This version runs in real-time without
+knowledge of future audio. 
+
+CSD EXAMPLES
+
+//first steps- mono and stereo versions
+<CsoundSynthesizer>
+<CsInstruments>
+sr        =         44100
+kr        =         4410
+ksmps     =         10
+nchnls    =         2
+
+instr 1
+    asource diskin "break7.wav",1,0,1	; a source breakbeat sample, wraparound lest it stop!
+
+    ; cuts in eighth notes per 4/4 bar, up to 4 bar phrases, up to 1
+    ; repeat in total (standard use) rare stuttering at 16 note speed,
+    ; no enveloping  
+    asig bbcutm asource, 2.6937, 8,4,4,1,   2,0.1,0
+
+    outs	asig,asig
+endin
+
+instr 2	;stereo version
+   asource1,asource2 diskin "break7stereo.wav",1,0,1	; a source breakbeat sample, wraparound lest it stop!
+
+  ; cuts in eighth notes per 4/4 bar, up to 4 bar phrases, up to 1
+  ; repeat in total (standard use) rare stuttering at 16 note speed,
+  ; no enveloping  
+  asig1,asig2 bbcuts asource1, asource2, 2.6937, 8,4,4,1,   2,0.1,0
+
+  outs	asig1,asig2
+endin
+
+</CsInstruments>
+<CsScore> 
+i1 0 10 
+i2 11 10
+e
+</CsScore>
+</CsoundSynthesizer>
+
+
+//multiple simultaneous synchronised breaks
+
+<CsoundSynthesizer>
+<CsInstruments>
+sr        =         44100
+kr        =         4410
+ksmps     =         10
+nchnls    =         1
+
+instr 1
+  ibps    = 2.6937
+  iplaybackspeed = ibps/p5
+  asource diskin p4,iplaybackspeed,0,1	
+ 
+  asig bbcutm asource, 2.6937, p6,4,4,p7,   2,0.1,1
+
+  out	asig
+endin
+
+</CsInstruments>
+<CsScore> 
+
+;   source      bps cut repeats
+i1 0 10 "break1.wav" 2.3 8   2	//2.3 is the source original tempo
+i1 0 10 "break2.wav" 2.4 8   3
+i1 0 10 "break3.wav" 2.5 16  4
+e
+</CsScore>
+</CsoundSynthesizer>
+
+
+//cutting up any old audio- much more interesting noises than this should be possible!
+<CsoundSynthesizer>
+<CsInstruments>
+sr        =         44100
+kr        =         4410
+ksmps     =         10
+nchnls    =         1
+
+instr 1
+  asource oscil 20000,70,1
+  ; ain,bps,subdiv,barlength,phrasebars,numrepeats, 
+  ;stutterspeed,stutterchance,envelopingon 
+  asig bbcutm asource, 2, 32,1,1,2, 4,0.6,1
+  outs	asig
+endin
+
+</CsInstruments>
+<CsScore> 
+f1 0 256 10 1
+i1 0 10 
+e
+</CsScore>
+</CsoundSynthesizer>
+
+
+//constant stuttering- faked, not possible since can only stutter in last half bar
+//could make extra stuttering option parameter 
+<CsoundSynthesizer>
+<CsInstruments>
+sr        =         44100
+kr        =         4410
+ksmps     =         10
+nchnls    =         1
+
+instr 1
+  asource diskin "break7.wav",1,0,1
+
+  ;16th note cuts- but cut size 2 over half a beat.
+  ;each half beat will eiather survive intact or be turned into 
+  ;the first sixteenth played twice in succession
+
+  asig bbcutm asource,2.6937,2,0.5,1,2, 2,1.0,0
+  outs	asig
+endin
+
+</CsInstruments>
+<CsScore> 
+i1 0 30 
+e
+</CsScore>
+</CsoundSynthesizer>
+
+Author
+        Nick Collins
+        London
+        August 2001
+------------------------------------------------------------------------
+
+aW, aX, aY, aZ  spat3di ain, iX, iY, iZ, idist, ift, imode[, istor]
+aW, aX, aY, aZ  spat3d ain, kX, kY, kZ, idist, ift, imode, imdel, iovr[, istor]
+                spat3dt ioutft, iX, iY, iZ, idist, ift, imode, irlen[, iftnocl]
+
+DESCRIPTION
+-----------
+
+These opcodes position the input sound in a 3D space, with optional simulation
+of room acoustics, in various output formats. With spat3di, sound source
+position is set at i-time; spat3d allows moving the sound at k-rate (this
+movement is interpolated internally to eliminate "zipper noise" if sr != kr).
+spat3dt can be used to render the impulse response at i-time, storing output
+in a function table, suitable for convolution.
+
+INITIALIZATION
+--------------
+
+iX - sound source X coordinate in meters (positive: right, negative: left)
+iY - sound source Y coordinate in meters (positive: front, negative: back)
+iZ - sound source Z coordinate in meters (positive: up, negative: down)
+
+imode - output mode
+    0: B format with W output only (mono)
+        aout    =  aW
+    1: B format with W and Y output (stereo)
+        aleft   =  aW + 0.7071*aY
+        aright  =  aW - 0.7071*aY
+    2: B format with W, X, and Y output (2D). This can be converted to UHJ:
+        aWre, aWim      hilbert aW
+        aXre, aXim      hilbert aX
+        aYre, aYim      hilbert aY
+        aWXr    =  0.0928*aXre + 0.4699*aWre
+        aWXiYr  =  0.2550*aXim - 0.1710*aWim + 0.3277*aYre
+        aleft   =  aWXr + aWXiYr
+        aright  =  aWXr - aWXiYr
+    3: B format with all outputs (3D)
+    4: simulates a pair of microphones (stereo output)
+        aW      butterlp aW, ifreq      ; recommended values for ifreq
+        aY      butterlp aY, ifreq      ; are around 1000 Hz
+        aleft   =  aW + aX
+        aright  =  aY + aZ
+  Mode 0 is the cheapest to calculate, while mode 4 is the most expensive.
+  More information about B format can be found here:
+    http://www.york.ac.uk/inst/mustech/3d_audio/ambis2.htm
+
+idist - for modes 0 to 3: unit circle distance in meters, for mode 4: distance
+  between microphones (0.2 - 0.5 meters).
+
+imdel - max. delay time for spat3d in seconds. This has to be longer than the
+  delay time of the latest reflection (depends on room dimensions, sound source
+  distance, and recursion depth; using this formula gives a safe (although
+  somewhat overestimated) value:
+    imdel = (R + 1) * sqrt(W*W + H*H + D*D) / 340.0
+  where R is the recursion depth, W, H, and D are the width, height, and depth
+  of the room, respectively).
+
+iovr - oversample ratio for spat3d (1 to 8). Setting it higher improves quality
+  at the expense of memory and CPU usage. The recommended value is 2.
+
+ioutft - output ftable number for spat3dt. W, X, Y, and Z outputs are written
+  interleaved to this table. If the table is too short, output will be
+  truncated.
+
+irlen - impulse response length of echoes (in seconds). Depending on filter
+  parameters, values around 0.005-0.01 are suitable for most uses (higher
+  values result in more accurate output, but slower rendering).
+
+iftnocl - do not clear output ftable (mix to existing data) if set to 1, clear
+  table before writing if set to 0 (default: 0).
+
+istor - skip initialization if non-zero (default: 0).
+
+ift - function table storing room parameters (for free field spatialization,
+  set it to zero or negative). Table size is 64. The values in the table are:
+
++----------------+----------------------------------------------------+
+|       0        | Early reflection recursion depth (0 is the sound   |
+|                | source, 1 is the first reflection etc.) for spat3d |
+|                | and spat3di. The number of echoes for four walls   |
+|                | (front, back, right, left) is:                     |
+|                |   N = (2*R + 2) * R                                |
+|                | If all six walls are enabled:                      |
+|                |   N = (((4*R + 6)*R + 8)*R) / 3                    |
++----------------+----------------------------------------------------+
+|       1        | Late reflection recursion depth (used by spat3dt   |
+|                | only). spat3dt skips early reflections and renders |
+|                | echoes up to this level. If early reflection depth |
+|                | is negative, spat3d and spat3di will output zero,  |
+|                | while spat3dt will start rendering from the sound  |
+|                | source.                                            |
++----------------+----------------------------------------------------+
+|       2        | imdel for spat3d. Overrides opcode parameter if    |
+|                | non-negative.                                      |
++----------------+----------------------------------------------------+
+|       3        | irlen for spat3dt. Overrides opcode parameter if   |
+|                | non-negative.                                      |
++----------------+----------------------------------------------------+
+|       4        | idist value. Overrides opcode parameter if >= 0.   |
++----------------+----------------------------------------------------+
+|       5        | random seed (0 - 65535)                            |
+|                | -1 seeds from current time.                        |
++----------------+----------------------------------------------------+
+|     6 - 53     | wall parameters                                    |
+|                |  w =  6: ceil                                      |
+|                |  w = 14: floor                                     |
+|                |  w = 22: front                                     |
+|                |  w = 30: back                                      |
+|                |  w = 38: right                                     |
+|                |  w = 46: left                                      |
++----------------+----------------------------------------------------+
+|     w + 0      | enable reflections from this wall (0: no, 1: yes)  |
++----------------+----------------------------------------------------+
+|     w + 1      | wall distance from listener (in meters)            |
++----------------+----------------------------------------------------+
+|     w + 2      | randomization of wall distance (0 - 1)             |
+|                | (in units of 1 / (wall distance))                  |
++----------------+----------------------------------------------------+
+|     w + 3      | reflection level (-1 - 1)                          |
++----------------+----------------------------------------------------+
+|     w + 4      | parametric equalizer frequency in Hz               |
++----------------+----------------------------------------------------+
+|     w + 5      | parametric equalizer level (1.0: no filtering)     |
++----------------+----------------------------------------------------+
+|     w + 6      | parametric equalizer Q (0.7071: no resonance)      |
++----------------+----------------------------------------------------+
+|     w + 7      | parametric equalizer mode (0: peak EQ,             |
+|                | 1: low shelf, 2: high shelf)                       |
++----------------+----------------------------------------------------+
+
+PERFORMANCE
+-----------
+
+ain - input signal
+
+aW, aX, aY, aZ - output signals
+
+         +--------+--------+--------+--------+----------------------+
+         | mode 0 | mode 1 | mode 2 | mode 3 |       mode 4         |
+    +----+--------+--------+--------+--------+----------------------+
+    | aW | W out  | W out  | W out  | W out  | left chn / low freq. |
+    +----+--------+--------+--------+--------+----------------------+
+    | aX |   0    |   0    | X out  | X out  | left chn / high frq. |
+    +----+--------+--------+--------+--------+----------------------+
+    | aY |   0    | Y out  | Y out  | Y out  | right chn / low frq. |
+    +----+--------+--------+--------+--------+----------------------+
+    | aZ |   0    |   0    |   0    | Z out  | right chn / high fr. |
+    +----+--------+--------+--------+--------+----------------------+
+
+kX, kY, kZ - sound source coordinates (in meters)
+
+AUTHOR
+------
+
+Istvan Varga
+2001
+
+------------------------------------------------------------------------
+
+
+aout    deltapx adel, iwsize
+        deltapxw ain, adel, iwsize
+
+DESCRIPTION
+-----------
+
+These units can read from and write to a delayr/delayw delay line with
+interpolation. deltapx is similar to deltapi or deltap3, however it allows
+higher quality interpolation. deltapxw mixes the input signal to the delay
+line at adel seconds. This opcode can be mixed with reading units (deltap,
+deltapn, deltapi, deltap3, and deltapx) in any order; the actual delay time is
+the difference of the read and write time.
+
+INITIALIZATION
+--------------
+
+iwsize - interpolation window size in samples. Allowed values are integer
+  multiplies of 4 in the range 4 to 1024. iwsize = 4 uses cubic interpolation.
+  Increasing iwsize improves sound quality at the expense of CPU usage, and
+  minimum delay time.
+
+PERFORMANCE
+-----------
+
+ain - input signal
+
+aout - output signal
+
+adel - delay time in seconds.
+
+  a1      delayr idlr
+          deltapxw a2, adl1, iws1
+  a3      deltapx adl2, iws2
+          deltapxw a4, adl3, iws3
+          delayw a5
+
+  Minimum and maximum delay times:
+
+    idlr >= 1/kr                                Delay line length
+
+    adl1 >= (iws1/2)/sr                         Write before read
+    adl1 <= idlr - (1 + iws1/2)/sr              (allows shorter delays)
+
+    adl2 >= 1/kr + (iws2/2)/sr                  Read time
+    adl2 <= idlr - (1 + iws2/2)/sr
+    adl2 >= adl1 + (iws1 + iws2) / (2*sr)
+    adl2 >= 1/kr + adl3 + (iws2 + iws3) / (2*sr)
+
+    adl3 >= (iws3/2)/sr                         Write after read
+    adl3 <= idlr - (1 + iws3/2)/sr              (allows feedback)
+
+  (note: window sizes for opcodes other than deltapx are: deltap, deltapn: 1,
+   deltapi: 2 (linear), deltap3: 4 (cubic))
+
+EXAMPLE
+-------
+
+a1      phasor 300.0
+a1      =  a1 - 0.5
+a_      delayr 1.0
+adel    phasor 4.0
+adel    =  sin (2.0 * 3.14159265 * adel) * 0.01 + 0.2
+        deltapxw a1, adel, 32
+adel    phasor 2.0
+adel    =  sin (2.0 * 3.14159265 * adel) * 0.01 + 0.2
+        deltapxw a1, adel, 32
+adel    =  0.3
+a2      deltapx adel, 32
+a1      =  0
+        delayw a1
+
+        out a2 * 20000.0
+
+AUTHOR
+------
+
+Istvan Varga
+Aug 2001
+
+------------------------------------------------------------------------
+ ksig loopseg kfreq, ktrig, ktime0, kvalue0  [, ktime1, kvalue1,
+... , ktimeN, kvalueN]
+ksig lpshold kfreq, ktrig, ktime0, kvalue0  [, ktime1, kvalue1,
+... , ktimeN, kvalueN]
+
+DESCRIPTION
+
+Generate control signal consisting of linear segments delimited by two
+or more specified points. The entire envelope is looped at kfreq
+rate. Each parameter can be varied at k-rate.
+
+INITIALISATION
+
+No parameters at init rate.
+
+PERFORMANCE
+
+ksig - output signal
+kfreq - repeat rate in Hz or fraction of Hz
+ktrig - if non-zero, retriggers the envelope from start (see
+trigger opcode), before the envelope cycle is completed
+ktime0...ktimeN - times of points; expressed in fraction
+of a cycle
+kvalue0...kvalueN - values of points
+
+loopseg opcode is similar to linseg, but the entire envelope is looped
+at kfreq rate. Notice that times are not expressed in seconds but in
+fraction of a cycle. Actually each duration represent is proportional
+to the other, and the entire cycle duration is proportional to the sum
+of all duration values.  The sum of all duration is then rescaled
+according to kfreq argument. For example, considering an envelope made
+up of 3 segments, each segment having 100 as duration value, their sum
+will be 300. This value represents the total duration of the envelope,
+and is actually divided into 3 equal parts, a part for each segment.
+Actually, the real envelope duration in seconds is determined by
+kfreq. Again, if the envelope is made up of 3 segments, but this time
+the first and last segments have a duration of 50, whereas the central
+segment has a duration of 100 again, their sum will be 200. This time
+200 represent the total duration of the 3 segments, so the central
+segment will be twice as long as the other segments.
+
+All parameters can be varied at k-rate. 
+Negative frequency values are allowed, reading the envelope backward.
+ktime0 should always be set to 0, except if the user wants some special
+effect.
+
+lpshold is similar to loopseg, but can generate only horizontal
+segments, i.e. holds values for each time interval placed between
+ktimeN and ktimeN+1. It can be useful, among other things, for melodic
+control, like old analog sequencers.
+
+Example:
+instr 1
+k0 line 1,p3,33
+k1 loopseg  .5, 0,      0,0, k0,32000, 66,5000, 100,0
+....
+endin
+
+In the previous example the envelope is repeated one time each two
+seconds (kfreq=.5), and the duration of first segment is varied
+continuously, being controlled by the output of line opcode.
+
+------------------------------------------------------------------------
+kr lineto ksig, ktime
+kr tlineto ksig, ktime, ktrig
+
+DESCRIPTION
+
+Generate glissandos starting from a control signal.
+
+PERFORMANCE
+
+kr - output signal
+ksig - input signal
+ktime - time length of glissando in seconds
+ktrig - trigger signal
+
+lineto adds glissando (i.e. straight lines) to a stepped input signal
+(for example, produced by randh, randomh or lpshold).  It generates a
+straight line starting from previous step value, reaching the new step
+value in ktime seconds. When the new step value is reached, such value
+is held until a new step occurs. Be sure that ktime argument value is
+smaller than the time elapsed between two consecutive steps of the
+original signal, otherwise discontinuities will occur in output
+signal.
+
+When used together with the output of lpshold it emulates the
+glissando effect of old analog sequencers.
+
+tlineto is similar to lineto, but can be applied to any kind of signal
+(not only stepped signals), without producing discontinuities.  Last
+value of each segment is sampled and held from input signal each time
+ktrig value is set to a nonzero value. Normally ktrig signal consists
+of a sequence of zeroes (see trigger opcode).
+
+The effect of glissando is quite different from port, since in these
+cases, the lines are stright. Also the context of useage is different.
+------------------------------------------------------------------------

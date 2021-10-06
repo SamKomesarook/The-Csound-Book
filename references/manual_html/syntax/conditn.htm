@@ -1,0 +1,77 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>&gt;&nbsp;,&nbsp; &lt;&nbsp;,&nbsp;&gt;=&nbsp;,&nbsp;&lt;=&nbsp;,&nbsp;==&nbsp;,&nbsp;!=&nbsp;,&nbsp;?</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../control/button.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="macros.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#conditional">Instrument Control: Conditional Values</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>&gt;&nbsp;,&nbsp; &lt;&nbsp;,&nbsp;&gt;=&nbsp;,&nbsp;&lt;=&nbsp;,&nbsp;==&nbsp;,&nbsp;!=&nbsp;,&nbsp;?</h2>
+
+<pre>
+
+    (a <strong>&gt;</strong>  b <strong>?</strong> v1 <strong>:</strong> v2)
+    (a <strong>&lt;</strong>  b <strong>?</strong> v1 <strong>:</strong> v2)
+    (a <strong>&gt;=</strong> b <strong>?</strong> v1 <strong>:</strong> v2)
+    (a <strong>&lt;=</strong> b <strong>?</strong> v1 <strong>:</strong> v2)
+    (a <strong>==</strong> b <strong>?</strong> v1 <strong>:</strong> v2)
+    (a <strong>!=</strong> b <strong>?</strong> v1 <strong>:</strong> v2)
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>where <em>a</em>, <em>b</em>, <em>v1</em> and <em>v2</em> may be expressions, but <em>a</em>, <em>b</em> 
+ not audio-rate.
+</p>
+<p>In the above conditionals, <em>a</em> and <em>b</em> are first compared. If the indicated relation is true (<em>a</em> greater than <em>b</em>, <em>a</em> less than <em>b</em>, <em>a</em> greater than or equal to <em>b</em>, <em>a</em> less than or equal to <em>b</em>, <em>a</em> equal to <em>b</em>, <em>a</em> not equal to <em>b</em>), then the conditional expression has the value of <em>v1</em>; if the relation is false, the expression has the value of <em>v2</em>. (For convenience, a sole &quot;<strong>=</strong>&quot; will function as &quot;<strong>= =</strong>&quot;.)
+</p>
+<p>NB.: If <em>v1</em> or <em>v2</em> are expressions, these will be evaluated before the conditional is determined.
+</p>
+<p>In terms of binding strength, all conditional operators (i.e. the relational operators (<strong>&lt;</strong>, etc.), and <strong>?</strong>, and <strong>:</strong> ) are weaker than the arithmetic and logical operators (<strong>+</strong>, <strong>-</strong>, <strong>*</strong>, <strong>/</strong>, <strong>&amp;</strong> and <strong>||</strong>).
+</p>
+<p>These are <em>operators</em> not <em>opcodes</em>. Therefore, they can be used within orchestra statements, but do not form complete statements themselves.</p>
+<h3>Example</h3>
+
+
+
+<pre>
+ k2 = (k1 &lt; p5/2 + p6 ? k1 : p7)
+</pre>
+<p>binds the terms p5/2 and p6. It will return the value k1 below this threshold, else the value p7.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../control/button.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="macros.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#conditional">Instrument Control: Conditional Values</font></a>
+</body>
+</html>

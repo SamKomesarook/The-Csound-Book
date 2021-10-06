@@ -1,0 +1,88 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>pan</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigmod/dconv.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="locsig.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#panning" class="toqr">
+Signal Modifiers: Panning and Spatialization</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>pan</h2>
+
+<pre>
+  a1, a2, a3, a4   <strong>pan</strong>       asig, kx, ky, ifn[, imode[, ioffset]]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Distribute an audio signal amongst four channels with localization control.
+</p>
+<h3>Initialization</h3>
+<p><em>ifn</em> &#8211; function table number of a stored pattern describing the amplitude growth in a speaker channel as sound moves towards it from an adjacent speaker. Requires extended guard-point.
+</p>
+<p><em>imode</em> (optional) &#8211; mode of the <em>kx, ky</em> position values. 0 signifies raw index mode, 1 means the inputs are normalized (0 - 1). The default value is 0.
+</p>
+<p><em>ioffset</em> (optional) &#8211; offset indicator for <em>kx, ky</em>. 0 infers the origin to be at channel 3 (left rear); 1 requests an axis shift to the quadraphonic center. The default value is 0.
+</p>
+<h3>Performance</h3>
+<p><strong>pan</strong> takes an input signal <em>asig</em> and distributes it amongst four outputs (essentially quad speakers) according to the controls <em>kx</em> and <em>ky</em>. For normalized input (mode=1) and no offset, the four output locations are in order: left-front at (0,1), right-front at (1,1), left-rear at the origin (0,0), and right-rear at (1,0). In the notation (<em>kx</em>, <em>ky)</em>, the coordinates <em>kx</em> and <em>ky</em>, each ranging 0 - 1, thus control the 'rightness' and 'forwardness' of a sound location.
+</p>
+<p>Movement between speakers is by amplitude variation, controlled by the stored function table <em>ifn</em>. As <em>kx</em> goes from 0 to 1, the strength of the right-hand signals will grow from the left-most table value to the right-most, while that of the left-hand signals will progress from the right-most table value to the left-most. For a simple linear pan, the table might contain the linear function 0 - 1. A more correct pan that maintains constant power would be obtained by storing the first quadrant of a sinusoid. Since pan will scale and truncate <em>kx</em> and <em>ky</em> in simple table lookup, a medium-large table (say 8193) should be used.
+</p>
+<p><em>kx, ky</em> values are not restricted to 0 - 1. A circular motion passing through all four speakers (inscribed) would have a diameter of root 2, and might be defined by a circle of radius R = root 1/2 with center at (.5,.5). <em>kx, ky</em> would then come from Rcos(angle), Rsin(angle), with an implicit origin at (.5,.5) (i.e. <em>ioffset</em> = 1). Unscaled raw values operate similarly. Sounds can thus be located anywhere in the polar or Cartesian plane; points lying outside the speaker square are projected correctly onto the square's perimeter as for a listener at the center.
+</p>
+<h3></h3>
+
+<h3>Example</h3>
+
+
+<pre>
+<strong>instr</strong>     1
+  k1           <strong>phasor</strong>    1/p3                     ; fraction of circle
+  k2           <strong>tablei</strong>    k1, 1, 1                 ; sin of angle (sinusoid in f1)
+  k3           <strong>tablei</strong>    k1, 1, 1, .25, 1         ; cos of angle (sin offset 1/4 circle)
+  a1           <strong>oscili</strong>    10000,440, 1             ; audio signal..
+  a1,a2,a3,a4  <strong>pan</strong>       a1, k2/2, k3/2, 2, 1, 1  ; sent in a circle (f2=1st quad sin)
+                                 
+               <strong>outq</strong> a1, a2, a3, a4
+<strong>endin</strong>
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../sigmod/dconv.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="locsig.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#panning" class="toqr">
+Signal Modifiers: Panning and Spatialization</font></a>
+</body>
+
+</html>

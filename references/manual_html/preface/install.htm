@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>Installation</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="get.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="use.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr">
+Installation</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+<h2>How to Install Csound</h2>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Macintosh</h3>
+<p>Detailed instructions for installing and configuring Csound on Macintosh systems may be obtained from:</p>
+<pre>
+   <a href="http://mitpress.mit.edu/e-books/csound/fpage/gs/mac/a/a.html" target="_blank">http://mitpress.mit.edu/e-books/csound/fpage/gs/mac/a/a.htm</a>l
+</pre>
+
+<h3>Windows 95/98</h3>
+<p>Detailed instructions for installing and configuring Csound on Windows 95 or Windows 98 systems may be obtained from:</p>
+<pre>
+   <a href="http://mitpress.mit.edu/e-books/csound/fpage/gs/pc/pc.html" target="_blank">http://mitpress.mit.edu/e-books/csound/fpage/gs/pc/pc.html</a>
+</pre>
+
+<h3>MS-DOS and Windows 3.x</h3>
+<p>Detailed instructions for installing and configuring Csound on MS-DOS or Windows 3.x systems may be obtained from:</p>
+<pre>
+   <a href="http://hem.passagen.se/rasmuse/PCinstal.htm" target="_blank">http://hem.passagen.se/rasmuse/PCinstal.htm</a>
+</pre>
+
+<h3>Linux (Developers' Version)</h3>
+<h4>Introduction to the Developers Linux Version</h4>
+<p>Building Csound for UNIX and Linux machines has been possible thanks to John Fitch's Csound.tar.gz source file kept at:</p>
+<pre>
+   <a href="ftp://ftp.maths.bath.ac.uk/pub/dream/newest" target="_blank">ftp://ftp.maths.bath.ac.uk/pub/dream/newest</a>
+</pre>
+
+<p>This source tree builds Csound on a variety of UNIX-type systems, including the NeXT, Sun's Solaris, SGI machines, and Intel-based Linux. It should be noted that John also maintains a Linux binary at the Bath repository. That version is built from his canonical sources.</p>
+
+<p>In 1998 a group of developers prepared a new version of Csound for Linux. This version (often referred to as the &quot;developers' version&quot; or &quot;unofficial distribution&quot;) aims to deliver a modern package for Linux users. It offers a variety of amenities specific to Linux systems, including these items:</p>
+<ul>
+	<li>Enhanced makefile system 
+	<li>'autoconf' and 'configure' supported for site-specific build 
+	<li>Support for Jaroslav Kysela's ALSA sound drivers 
+	<li>Support for 64-bit Alpha systems 
+	<li>Full MIDI and realtime audio support 
+	<li>Builds shared library (libcsound.so) for greatly reduced memory footprint 
+	<li>Includes Robin Whittle's random number generator 
+	<li>Provided in various popular Linux distribution packaging formats 
+	<li>Utilizes .csoundrc resource file
+	<li>Provides a high-priority scheduler for improved realtime i/o
+	<li>Includes support for full-duplex under the OSS/Free and OSS/Linux drivers 
+	<li>CVS and bug-tracking system established for developers
+</ul>
+<p>This distribution's code base originates with the sources provided by John Fitch at the Bath site. Every effort is made to ensure compatibility with those sources at the opcode level, and users should have no trouble running most orc/sco files or .csd files made for Csound on other operating systems.</p>
+
+<p>The makefile structure has been provided by Nicola Bernardini. He also maintains the CVS repository. Other features have been added by developers Ed Hall (Alpha port), Fred Floberg (scheduler), Robin Whittle, and Steve Kersten (full-duplex under OSS driver). RPM and DEB packages are sporadically available from Damien Miller and Guenter Geiger.</p>
+
+<p>Building the developers' version is quite simple, using the familiar &quot;./configure; make depend; make; make install&quot; command sequence. Instructions for compiling and installing Csound are provided with the package, along with other relevant documentation. A mail-list has been established for developers and users of this package, and a bug-tracking system has been set up by Damien Miller.</p>
+
+<h4>Preparing Linux Audio for Csound</h4>
+
+<p>As long as the basic Linux audio system is properly configured and installed, no special efforts need to be made in order to enjoy audio output from Csound. The default realtime audio output device (devaudio) is defined as /dev/dsp in Csound itself, although other audio devices (/dev/audio, /dev/dspW) can be specified if so desired.</p>
+
+<h4>Using the Developers Version</h4>
+
+<p>This version is designed to be opcode-compatible with any other version of Csound. However, some new options have been added which may require clarification.</p>
+
+<p>Realtime audio output can be as simple as this:</p>
+<pre>
+   csound -o devaudio -V 75 my.orc my.sco
+</pre>
+
+<p>The '-V' flag is a Linux-specific output volume control from Jonathan Mohr. Note that it will work only with the OSS/Free and OSS/Linux drivers.</p>
+
+<p>Here we get a little more complicated:</p>
+<pre>
+   csound --sched --ossin=/dev/dsp0 --ossout=/dev/dsp1 my.*
+</pre>
+
+<p>This example invokes Fred Floberg's high-priority scheduler (which will automatically disable graphics output) and Steve Kersten's support for full-duplex using either the OSS/Free driver included with the Linux kernel or the commercially available OSS/Linux driver. Linux users can use the asterisk as a wildcard for the orc/sco extensions. However, if you have my.orc, my.sco, and my.txt within the same directory the compiler will get confused and the wildcard won't work.</p>
+
+<p>If more than one soundcard is present in the system, ALSA users have the option of choosing which card will function for either audio input or output. The command sequence then appears so:</p>
+<pre>
+   csound --incard=1 --outcard=2 my.orc your.sco
+</pre>
+
+<p>The standard advice regarding audio buffer settings holds true for Linux as well as for any other version. If the audio output is choppy you may need to adjust the value for the '-b' flag which controls the sample frame size for the software audio buffer. The best setting will depend upon various aspects of your machine system, including CPU speed, memory limits, hard-disk performance, etc.</p>
+
+<p>Supported options for MIDI include the '-Q' (MIDI output device) and '-K' (MIDI input port) flags from Gabriel Maldonado's DirectCsound. Here is an example which uses one of Gabriel's opcodes, requiring the use of a MIDI output port:</p>
+<pre>
+   csound -Q0 -n my_moscil.orc my_moscil.sco
+</pre>
+<p>The '-Q0' flag selects the first available MIDI output device, '-n' cancels writing the output to disk.</p>
+
+<p>It should be noted that, for Linux at least, in the opcode for this instrument (<strong>moscil</strong>) the sample rate determines the tempo of events. Setting the control rate (<strong>kr</strong>) to equal the sample rate (<strong>sr</strong>), &quot;unofficial distribution&quot; a higher sample rate will result in a slower performance. When <strong>sr</strong>=390000 (yes, you read that correctly, it's a sample rate of three hundred and ninety thousand) then the MIDI event performance output is approximately 60 BPM (beats per minute). At that sample rate a score tempo statement of 't 0 60' will actually mean 60 bpm. In essence, the sample rate acts as a restraint or throttle on the tempo of the MIDI event stream.</p>
+
+<p>Using MIDI for realtime input is simple:</p>
+<pre>
+   csound --sched -o devaudio -M/dev/midi my_midi_in.*
+</pre>
+
+<p>With correctly written orc/sco files this example will allow realtime control of Csound via whatever controlling device is hooked up to /dev/midi. If more than one MIDI device is present in the machine the user can specify which to use:</p>
+<pre>
+   csound --sched -o devaudio -M/dev/midi01 my_midi_in.*
+</pre>
+
+<p>That sequence will select the second MIDI device for MIDI input.</p>
+
+<p>Here we use a Type 0 standard MIDI file for the controlling input:</p>
+<pre>
+   csound --sched -o devaudio -T -F/home/midfiles/my_type_0.mid my_cool.orc my_cool.sco
+</pre>
+
+<p>In these last two examples the score file provides only the necessary function tables and a place-holder to indicate how long Csound should stay active:</p>
+<pre>
+  f1 0 8192 10 1	; a sine wave 
+  f0 240	      ; stay active for 240 seconds 
+  e
+</pre>
+
+<p>However, the '-T' flag will halt performance as soon as the end of the MIDI file is reached.</p>
+
+<h4>Availability</h4>
+
+<p>The Linux developers version of Csound is available in source and binary distributions. The main distribution sites are at AIMI in Italy:</p>
+<pre>
+   <a href="http://AIMI.dist.unige.it/AIMICSOUND/AIMICSOUND_home.html" target="_blank">http://AIMI.dist.unige.it/AIMICSOUND/AIMICSOUND_home.html</a>
+</pre>
+
+<p>and the ftp server for the Music Technology Department at Bowling Green State University in the USA:</p>
+<pre>
+   <a href="ftp://mustec.bgsu.edu/pub/linux" target="_blank">ftp://mustec.bgsu.edu/pub/linux</a>
+</pre>
+
+<p>Developer Maurizio Umberto Puxeddu has also established a distribution point, though at this time it is version-specific and not browsable. For more information regarding his site, and for more information generally regarding Linux Csound, see this Web page:</p>
+<pre>
+   <a href="http://www.bright.net/~dlphilp/linux_csound.html" target="_blank">http://www.bright.net/~dlphilp/linux_csound.html</a>
+</pre>
+
+<h4>Credits</h4>
+
+<p>First thanks go to Barry Vercoe for creating Csound and allowing it to be freely and publicly distributed and to John Fitch for maintaining the canonical source packages (including his own build for Linux).</p>
+
+<p>Special thanks go to the following persons for their development assistance and/or spiritual guidance:</p>
+
+<ul>
+	<li>Paul Barton-Davis 
+	<li>Nicola Bernardini 
+	<li>Richard Boulanger 
+	<li>Fred Floberg 
+	<li>Ed Hall 
+	<li>Steve Kersten 
+	<li>Gabriel Maldonado 
+	<li>Damien Miller 
+	<li>Maurizio Umberto Puxeddu 
+	<li>Larry Troxler 
+	<li>Robin Whittle
+</ul>
+
+<p>My apologies to anyone I've left out. Please send corrections and emendations of this document to me at my email address below.</p>
+
+<p>Dave Phillips<br>
+dlphilp@bright.net<br>
+September 1999<br>
+</p>
+
+<h3>Other Platforms</h3>
+<p>For information on availability of Csound for other platforms, see <a target="parent" href="http://mitpress.mit.edu/e-books/csound/frontpage.html">The Csound FrontPage</a>:</p>
+<pre>
+   <a target="parent" href="http://mitpress.mit.edu/e-books/csound/frontpage.html">http://mitpress.mit.edu/e-books/csound/frontpage.html</a>
+</pre>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="get.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="use.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr">
+Installation</a>
+</body>
+</html>

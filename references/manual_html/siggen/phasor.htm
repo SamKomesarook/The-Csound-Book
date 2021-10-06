@@ -1,0 +1,76 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>phasor</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="table.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="phasrbnk.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#phasors" class="toqr">
+Signal Generators: Phasors</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>phasor</h2>
+
+<pre>
+  kr      <strong>phasor</strong>     kcps[, iphs]  
+  ar      <strong>phasor</strong>     xcps[, iphs]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Produce a normalized moving phase value.
+</p>
+<h3>Initialization</h3>
+<p><em>iphs</em> (optional) &#8211; initial phase, expressed as a fraction of a cycle (0 to 1). A negative value will cause phase initialization to be skipped. The default value is zero.
+</p>
+<h3>Performance</h3>
+<p>An internal phase is successively accumulated in accordance with the <em>kcps</em> or <em>xcps</em> frequency to produce a moving phase value, normalized to lie in the range 0 &lt;= phs &lt; 1.
+</p>
+<p>When used as the index to a <strong>table</strong> unit, this phase (multiplied by the desired function table length) will cause it to behave like an oscillator.
+</p>
+<p>Note that <strong>phasor</strong> is a special kind of integrator, accumulating phase increments that represent frequency settings.
+</p>
+<h3>Example</h3>
+
+
+<pre> 
+           <strong>phasor</strong>     1 ; cycle once per second
+  kpch     <strong>table</strong>      k1 * 12, 1 ; through 12-note pch table
+  a1       <strong>oscil</strong>      p4, cpspch(kpch), 2 ; with continuous sound
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="table.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="phasrbnk.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#phasors" class="toqr">
+Signal Generators: Phasors</font></a>
+</body>
+
+</html>

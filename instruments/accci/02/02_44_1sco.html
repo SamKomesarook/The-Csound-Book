@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>02_44_1.sco.html</title>
+		<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+	</head>
+
+	<body stylesrc="../admin/adpsco.html" bgcolor="white">
+		<pre>
+; ************************************************************************
+; ACCCI:      02_44_1.SCO
+; coded:      jpg 9/93
+
+; GEN functions **********************************************************
+; carrier
+f11  0  513  9  1 1 0
+
+; bell shaped control function         ; &quot;named&quot; soundfiles for GEN 01 are
+f71  0  513  1  &quot;Sflib/88_01_1.TAB&quot; 0 0 0     ; possible since Csound 1992
+                ; Using an earlier Csound version, one needs to adapt 
+                ; this to fit the soundin.x mechanism.
+
+; exponential envelope
+f51  0  513  5  1024 512 1             ; post-normalized
+
+; score ******************************************************************
+;     idur  ifq   iamp
+i1  1 120   3900  10000
+e</pre>
+	</body>
+
+</html>

@@ -1,0 +1,41 @@
+Copyright 1986, 1987 by the Massachusetts Institute of Technology. All rights
+reserved. Developed by Barry L. Vercoe at the Experimental Music Studio, Media
+Laboratory, M.I.T., Cambridge, Massachusetts, with partial support from the System
+Development Foundation, and from NSF Grant IRI-8704665. Permission to use, copy,
+or modify these programs and their documentation for educational and research
+purposes only and without fee is hereby granted, provided that this copyright and
+permission notice appear on all copies and supporting documentation.  For any
+other uses of this software, in original or modified form, including but not
+limited to distribution in whole or in part, specific prior permission from M.I.T.
+must be obtained.  M.I.T. makes no representations about the suitability of this
+software for any purpose. It is provided "as is" without express or implied
+warranty.
+
+MIT Copyright Clarification:    
+
+Csound is a tool for the making of music.  Just as free compilers allow you to
+compile programs for commercial use, you are allowed to use Csound to make music
+for commercial use. This only applies to the *sounds* produced with Csound - the
+licensing agreement for the source code has not changed.  (You can use the source
+code for Csound for any academic or research purpose, but you must arrange with
+MIT to put it to any commercial use.) You are free to sell your friends the sounds
+you make with Csound, or new instruments they can use to make their own sounds. 
+If you would like to contribute your instruments to the general good of
+the Csound community, the Csound list is an ideal place for this.
+
+Additional Copyright notices:
+
+Part of this cose is copyright John ffitch.  A licence is hereby granted to anyone
+to use, copy, or modify this code for any purpose whatsoever.  It would be
+appreciated if the name ffitch were to remainin any derived code, but that is not
+a condition.
+
+Modifications and new code provided by Robin Whittle are provided without warranty
+etc.  They are copyright 1995 Robin Whittle. Use of this code for
+non-commercial software products is permitted, provided the source code is made
+freely available according to the principles of the Free Sofware Foundation, with
+this copyright notice attached - and those of Barry Vercoe and John Fitch.
+
+Other parts of Csound have other ownerships.  In particular there is copyright
+code of Codemist Ltd. (cwin.cpp and elsewhere), Boulanger Music, cSounds.com
+(various opcodes), Allan Lee (granule).  Others may have claims.

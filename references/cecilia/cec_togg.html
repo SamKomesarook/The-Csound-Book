@@ -1,0 +1,60 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>CEC_toggle</title>
+	</head>
+
+	<body>
+		&nbsp;
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="cec_file.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="cec_popu.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<h2>The&nbsp; ctoggle object</h2>
+		</center>
+		<center>
+			<a href="#NAME">Name</a></center>
+		<center>
+			<a href="#SYNOPSIS">Synopsis</a></center>
+		<center>
+			<a href="#OPTIONS">Options</a></center>
+		<center>
+			<a href="#DESCRIPTION">Description</a></center>
+		<center>
+			<a href="#SUBSTITUTION">Substitution</a></center>
+		<center>
+			<h4><b><a href="index.html"></a></b></h4>
+		</center>
+		<center>
+			<hr>
+		</center>
+		<h4><a name="NAME"></a><u>NAME</u></h4>
+		<b>ctoggle</b> - Creation of toggle interface object
+		<h4><a name="SYNOPSIS"></a><u>SYNOPSIS</u></h4>
+		<pre><b>ctoggle</b> <b>name</b> ?options?</pre>
+		<h4><a name="OPTIONS"></a><u>OPTIONS</u></h4>
+		-<b>label</b> <i>name</i><br>
+		-<b>init</b> <i>value</i>
+		<h4><a name="DESCRIPTION"></a><u>DESCRIPTION</u></h4>
+		The <b>ctoggle</b> command produces a toggle box. If <b>-init</b> is given followed by a 0 or a 1,&nbsp; the initial state of the toggle will be set upon initial parsing. The <b>-label</b> flag can be used to specify an alternative name&nbsp; for the toggle in the interface.
+		<p>An option menu is also produced with the options: <b>k-rate, record, playback, load and save</b>. The user can record slider events with <b>record</b> and replay them with <b>playback</b>. A given stream can be saved under any name with <b>save</b> and recalled with <b>load</b>. <b>k-rate</b> allows to simply play the toggle without recording.<br>
+		&nbsp;
+		<h4><a name="SUBSTITUTION"></a><u>SUBSTITUTION</u></h4>
+		&nbsp;At compilation, any instance of <i>gk<b>name or </b>gi<b>name </b></i>in the orchestra, will be replaced by 0 if the toggle is not selected and 1 if it is. The user determines the propriety of an i-rate or k-rate usage in a given context. The ctoggle object can also be used in the score by using the replacement string : <b>[name]</b>
+		<p>
+		<hr>
+		<br>
+		Copyright &copy; 1996 - 97
+	</body>
+
+</html>

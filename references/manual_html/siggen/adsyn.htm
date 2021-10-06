@@ -1,0 +1,89 @@
+
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+
+<head>
+
+   
+<title>adsyn</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="mpulse.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="adsynt.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#additive" class="toqr">
+Signal Generators: Additive Synthesis/Resynthesis</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>adsyn</h2>
+
+<pre>
+  ar      <strong>adsyn</strong>      kamod, kfmod, ksmod, ifilcod
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Output is an additive set of individually controlled sinusoids, using an oscillator bank.
+</p>
+
+<h3>Initialization</h3>
+<p><em>ifilcod</em> &#8211; integer or character-string denoting a control-file derived from analysis of an audio signal. An integer denotes the suffix of a file <em>adsyn.m</em> or <em>pvoc.m</em>; a character-string (in double quotes) gives a filename, optionally a full pathname. If not fullpath, the file is sought first in the current directory, then in the one given by the environment variable <a href="../syntax/dirfiles.htm"><strong>SADIR</strong></a> (if defined). <strong>adsyn</strong> control contains breakpoint amplitude- and frequency-envelope values organized for oscillator resynthesis, while <strong>pvoc</strong> control contains similar data organized for fft resynthesis. Memory usage depends on the size of the files involved, which are read and held entirely in memory during computation but are shared by multiple calls (see also <a href="../sigmod/lpread.htm"><strong>lpread</strong></a>).
+</p>
+
+<h3>Performance</h3>
+<p><strong>adsyn</strong> synthesizes complex time-varying timbres through the method of additive synthesis. Any number of sinusoids, each individually controlled in frequency and amplitude, can be summed by high-speed arithmetic to produce a high-fidelity result.
+</p>
+
+<p>Component sinusoids are described by a control file describing amplitude and frequency tracks in millisecond breakpoint fashion. Tracks are defined by sequences of 16-bit binary integers:
+</p>
+
+<pre>
+   -1, time, amp, time, amp,... 
+   -2, time, freq, time, freq,...
+</pre>
+<p>such as from hetrodyne filter analysis of an audio file. ( For details see <a href="../utility/hetro.htm"><strong>hetro</strong></a>.) The instantaneous amplitude and frequency values are used by an internal fixed-point oscillator that adds each active partial into an accumulated output signal. While there is a practical limit (limit removed in version 3.47) on the number of contributing partials, there is no restriction on their behavior over time. Any sound that can be described in terms of the behavior of sinusoids can be synthesized by <strong>adsyn</strong> alone.
+</p>
+
+<p>Sound described by an <strong>adsyn</strong> control file can also be modified during re-synthesis. The signals <em>kamod,</em> <em>kfmod</em>, <em>ksmod</em> will modify the amplitude, frequency, and speed of contributing partials. These are multiplying factors, with <em>kfmod</em> modifying the frequency and <em>ksmod</em> modifying the <em>speed</em> with which the millisecond breakpoint line-segments are traversed. Thus .7, 1.5, and 2 will give rise to a softer sound, a perfect fifth higher, but only half as long. The values 1,1,1 will leave the sound unmodified. Each of these inputs can be a control signal.
+</p>
+
+
+<p><em>kfmod</em> is a control-rate transposition factor: a value of 1 incurs no transposition, 1.5 transposes up a perfect fifth, and .5 down an octave.</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="mpulse.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="adsynt.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#additive" class="toqr">
+Signal Generators: Additive Synthesis/Resynthesis</font></a>
+</body>
+
+
+</html>
+

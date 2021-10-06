@@ -1,0 +1,118 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>Tutorial 2 - Csound Programming with CECILIA</title>
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+	</head>
+
+	<body bgcolor="white">
+		<center>
+			&nbsp;</center>
+		<center>
+			<p>
+			<table cols="3" width="100%" nosave>
+				<tr align="center" nosave>
+					<td align="left" valign="top" nosave><a href="tut1.html"><b>&lt;--</b></a></td>
+					<td align="center" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="right" valign="top" nosave><a href="tut3.html"><font color="black"><b>--&gt;</b></font></a></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			<h2><b>TUTORIAL 2 : CSOUND PROGRAMMING WITH CECILIA</b></h2>
+		</center>
+		<center>
+			<p><a href="#Getting ready">Why use CECILIA?</a></center>
+		<center>
+			<p><a href="#Opening">Making a simple orchestra and score</a></center>
+		<center>
+			<p><a href="#Using">Testing, changing, testing...</a></center>
+		<center>
+			<p>&nbsp;</center>
+		<center>
+			<p>
+			<hr>
+		</center>
+		<p>&nbsp;
+		<ul>
+			<li><a name="Getting ready"></a><b>Csound Programming and the CECILIA file structure. <a href="#"><font size="1">top</font></a></b>
+			<p>CECILIA is a highly efficient Csound programming environment.&nbsp; Some of the tools to make the job easier and more productive:</p>
+			<ul>
+				<li>Text-editor optimized for Csound coding
+				<li>Full on-line Csound manual
+				<li>Orchestra and Score Opcode inserters
+				<li>Quick syntax checker
+				<li>Full in-text error reporting
+				<li>Service functions for soundfile information
+				<li>Colorized and tabulated syntax
+				<li>Unified (orc &amp; sco) document structure
+				<li>Comprehensive Search and Replace facilities.<br>
+				&nbsp;
+			</ul>
+			<p>CECILIA saves documents as single files.&nbsp; These files are called modules and include both the orchestra and the score along with a number of other useful information. The reason for this is to make file managment easier. It is entirely possible to save the orchestra and score independently in the traditional way, but we believe even the experienced Csound programmer will find the unified document structure easier to deal with.<br>
+			&nbsp;
+			<hr width="100%">
+			<br>
+			&nbsp;
+			<li><a name="Opening"></a><b>Making a simple orchestra and score <a href="#"><font size="1">top</font></a></b><br>
+			&nbsp;
+			<ul>
+				<li>Start CECILIA. Start Netscape.<br>
+				&nbsp;
+				<li>Under the <b>File</b> menu in the Main window, select <b>New...</b> and then <b>Module...</b>
+				<p>The <a href="editor.html">CECILIA editor</a> opens up with a couple of window panes. The CECILIA Csound Editor is divided into 9 different sections (or panes). These can be posted in the editor window through the Sections menu or the buttons under the editor menubar:</p>
+				<ul>
+					<li><i><b>info.</b></i> In this section, the author can enter any relevant information about what this particular module does. This information can be displayed by selecting the <b>About this module...</b> menu in the grapher window when the module is saved and recalled.
+					<li><i><b>tk_interface.</b></i> In this section the author will enter&nbsp; definitions for any CECILIA interface object to be used in this module. THis is of course optional. The <a href="tut3.html">third tutorial </a>deals with this.
+					<li><i><b>mono, stereo, quad.</b></i> These three sections are where the orchestra is entered. Which variant will be used for the computation is determined by which &quot;channel&quot; button is selected in the Main window. This separation is useful for permitting three variations on the number of output channels. It is not necessary to use all three versions. Only the versions with some content will be available in the Main window.
+					<li><i><b>score.</b></i> In this section the score is input. There are a number of different <a href="score.html">types of CECILIA scores</a>.
+					<li><i><b>orcOut, scoreOut, csoundOut.</b></i> These panes are read-only and show the orchestra and score files that are actually sent to Csound for computation. the csoundOut pane show the&nbsp; csound command.
+				</ul>
+				<p>&nbsp;<br>
+				For the time being, close off all the editor panes, except the stereo and the score panes. As you can see, a stereo orchestra template has been filled out in the stereo pane and a short&nbsp; score has been entered containing a sine wave function table and a single 10 second note.<br>
+				&nbsp;
+				<li>Adjust the relative size of the panes by dragging on their name plate on the top-right side of their pane. You can also solo any given panel.<br>
+				&nbsp;<br>
+				Click in the stereo pane. We are now ready to enter our first orchestra. <b>Note:</b>&nbsp; the regular Csound header specifying sampling rates, control rate, no. of channels and ksmps, is given in the Main window. However, like in regular Csound programming, any global definitions can be given at the top of the orchestra before the first instrument definition.<br>
+				&nbsp;
+				<li>For this example, we will program a simple frequency-modulation instrument. You can type in a <i><b>foscil </b></i>opcode but, more than likely, you may not remember all the parameters associated with tha particular opcode. So we will use the <b>opcode-inserter</b> to facilitate our job. In the stereo pane, command-click or Button-3 on the line where you wish to include the new opcode. A <i>popup menu<b> </b></i>will appear containing cascades of all the Csound opcodes. Navigate to the <i><b>Generate</b></i>, then to <i><b>oscils</b></i> and finally select <i><b>foscil. </b></i>The <i><b>foscil</b></i> opcode is inserted with all its syntax and parameters. You only need to replace the variables with appropriate values.<br>
+				&nbsp;
+				<li>Repeat the above procedure to insert a<i><b> linseg</b></i> opcode so we can control the modulation index of the <i><b>foscil.</b></i><br>
+				&nbsp;
+				<li>Go to the<b> Edit </b>menu and select <b>Colorize syntax</b>. As you can see, the opcodes are colorized and whenever the mouse travels over a legal opcode, its syntax is given in the assistance window at the bottom of the editor window.<br>
+				&nbsp;
+				<li>Now go back and insert tabs between the output variables, the opcodes and the parameters. Then grab and drag the small blue line just below the pane buttons. Adjust the beginning and the end of the blue line.<br>
+				&nbsp;
+				<li>Select the foscil opcode by double-clicking on it. When it is highlighted, under the <b>Edit</b> menu the <b>Help with selected opcode... </b>Netscape will open up the Csound manual at the correct page.<br>
+				&nbsp;
+				<li>Once you have entered a valid orchestra and a valid score (in the score pane), bring up the Main window, select DAC (for real-time output) and press <b>Play. </b>Should you have any errors in your orchestra, the system will beep and the error will be highlighted in the editor. In fact, you should try a deliberate error just to check out this feature...<br>
+				&nbsp;
+				<li>Note that<i><b> we did not have to save</b></i> our orchestra and score in order to hear the computation. This actually saves an enormous amount of time when testing and developping orchestras ansd scores. We only need to save once we wish to keep the work we have done.
+			</ul>
+			<p>&nbsp;<br>
+			&nbsp;
+			<p>
+			<hr width="100%">
+			<br>
+			&nbsp;</p>
+			<li><a name="Using"></a><b>Testing, changing... The CECILIA interaction loop.&nbsp; <a href="#"><font size="1">top</font></a></b>
+			<p>Developing orchestras and scores in Csound is a process of going back and forth between adjusting parameters, listening to results, readjusting until results are satisfactory. CECILIA facilitates this loop by giving instant access to Csound's rich syntax and allowing instantaneous auditory feedback from programs. To take full advantage of this optimized loop, it is recommended that the user:<br>
+			&nbsp;</p>
+			<ul>
+				<li>make use of all quick-key shortcuts, specially those for Playing, pausing and stopping computations.
+				<li>make use of the opcode-inserter
+				<li>make use of the on-line manual.
+				<li>make use of CECILIA's interface objects to test the range of effective parameter values. This is the topic of our <a href="tut3.html">next tutorial</a>
+			</ul>
+		</ul>
+		<p>
+		<hr width="100%">
+		<br>
+		&nbsp;
+		<ul>
+			&nbsp;
+		</ul>
+	</body>
+
+</html>

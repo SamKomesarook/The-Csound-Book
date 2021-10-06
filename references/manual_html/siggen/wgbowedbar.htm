@@ -1,0 +1,114 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>wgbowedbar</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="wgclar.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="moog.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#waveguide" class="toqr">
+Signal Generators: Waveguide Physical Modeling</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>wgbowedbar</h2>
+
+<pre>
+  ar      <strong>wgbowedbar</strong> kamp, kfreq, kpos, kbowpres, kgain[, kconst, ktvel, kbowpos, ilow]
+</pre>
+
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>A physical model of a bowed bar, belonging to the Perry Cook family of waveguide instruments.</p>
+
+<h3>Initialization</h3>
+<p><em>ilow</em> (optional) &#8211; lowest frequency required</p>
+
+<h3>Performance</h3>
+<p><em>kamp</em> &#8211; amplitude of signal</p>
+<p><em>kfreq</em> &#8211; frequency of signal</p>
+<p><em>kpos</em> &#8211; position of the bow on the bar, in the range 0 to 1</p>
+<p><em>kbowpres</em> &#8211; pressure of the bow (as in <strong>wgbowed</strong>)</p>
+<p><em>kgain</em> &#8211; gain of filter. A value of about 0.809 is suggested.</p>
+<p><em>kconst</em> (optional) &#8211; an integration constant. Default is zero.</p>
+<p><em>ktvel</em> (optional) &#8211; either 0 or 1. When <em>ktvel</em> = 0, the bow velocity follows an ADSR style trajectory. When <em>ktvel</em> = 1, the value of the bow velocity decays in an exponentially.</p>
+<p><em>kbowpos</em> (optional) &#8211; the position on the bow, which affects the bow velocity trajectory.</p>
+
+
+<h3>Example</h3>
+
+<pre>
+
+;orchestra ----------------
+
+  <strong>instr</strong> 1
+; pos      =         [0, 1]
+; bowpress =         [1, 10]
+; gain     =         [0.8, 1]
+; intr     =         [0,1]
+; trackvel =         [0, 1]
+; bowpos   =         [0, 1]
+
+  kb      <strong>line</strong>       0.5, p3, 0.1
+  kp      <strong>line</strong>       0.6, p3, 0.7
+  kc      <strong>line</strong>       1, p3, 1
+
+  a1      <strong>wgbowedbar</strong> p4, <strong>cpspch</strong>(p5), kb, kp, 0.995, p6, 0, kc, 50
+
+          <strong>out</strong>        a1
+          <strong>endin</strong>
+
+;score -----------------
+
+  i1      0  3 32000 7.00 0
+
+  e
+
+
+</pre>
+
+<h3>Author</h3>
+<p>John ffitch (after Perry Cook)<br>
+University of Bath, Codemist Ltd.<br>
+Bath, UK<br>
+New in Csound version 4.07<br>
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="wgclar.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="moog.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#waveguide" class="toqr">
+Signal Generators: Waveguide Physical Modeling</font></a>
+
+</body>
+
+</html>

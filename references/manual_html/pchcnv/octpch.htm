@@ -1,0 +1,108 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>octpch, pchoct, cpspch, octcps, cpsoct</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../valcnv/mac.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="cps2pch.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/pitch.htm#functions" class="toqr">
+Pitch Convertors: Functions</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>octpch, pchoct, cpspch, octcps, cpsoct</h2>
+
+
+<pre>
+         <strong>octpch</strong> (pch)  (init- or control-rate args only)
+         <strong>pchoct</strong> (oct)  (init- or control-rate args only)
+         <strong>cpspch</strong> (pch)  (init- or control-rate args only)
+         <strong>octcps</strong> (cps)  (init- or control-rate args only)
+         <strong>cpsoc</strong>t (oct)  (no rate restriction)
+		 
+  icps   <strong>cps2pch</strong>       ipch, iequal
+  icps   <strong>cpsxpch</strong>       ipch, iequal, irepeat, ibase
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>where the argument within the parentheses may be a further expression.
+</p>
+<p>These are really <strong>value converters</strong> with a special function of manipulating pitch data.
+</p>
+<p>Data concerning pitch and frequency can exist in any of the following forms:
+</p>
+<hr align="CENTER" size="1" width="450">
+<table align="center" width="400" cellspacing="2" cellpadding="2" border="0">
+	<tr>
+		<th width="325" align="left">Name
+		</th>
+		<th width="75" align="left">Abbreviation
+		</th>
+	</tr>
+	<tr>
+		<td>octave point pitch-class (8ve.pc)
+		</td>
+		<td><em>pch</em>
+		</td>
+	</tr>
+	<tr>
+		<td>octave point decimal
+		</td>
+		<td><em>oct</em>
+		</td>
+	</tr>
+	<tr>
+		<td>cycles per second
+		</td>
+		<td><em>cps</em>
+		</td>
+	</tr>
+</table>
+<hr align="CENTER" size="1" width="450">
+<p>The first two forms consist of a whole number, representing octave registration, followed by a specially interpreted fractional part. For <strong>pch</strong>, the fraction is read as two decimal digits representing the 12 equal-tempered pitch classes from .00 for C to.11 for B. For <strong>oct</strong>, the fraction is interpreted as a true decimal fractional part of an octave. The two fractional forms are thus related by the factor 100/12. In both forms, the fraction is preceded by a whole number octave index such that 8.00 represents Middle C, 9.00 the C above, etc. Thus A440 can be represented alternatively by 440 (<strong>cps</strong>),8.09 (<strong>pch</strong>), 8.75 (<strong>oct</strong>), or 7.21 (pch), etc. Microtonal divisions of the <strong>pch</strong> semitone can be encoded by using more than two decimal places.
+</p>
+<p>The mnemonics of the pitch conversion units are derived from morphemes of the forms involved, the second morpheme describing the source and the first morpheme the object (result). Thus
+</p>
+<pre>  <strong>cpspch</strong>(8.09)</pre>
+<p>will convert the pitch argument 8.09 to its <em>cps</em> (or Hertz) equivalent, giving the value of 440. Since the argument is constant over the duration of the note, this conversion will take place at i-time, before any samples for the current note are produced. By contrast, the conversion
+</p>
+<pre>  <strong>cpsoct</strong>(8.75 + k1)</pre>
+<p>which gives the value of A440 transposed by the octave interval <em>k1</em> will repeat the calculation every, k-period since that is the rate at which <em>k1</em> varies.
+</p>
+<p><strong>Note:</strong> The conversion from <strong>pch</strong> or <strong>oct</strong> into <strong>cps</strong> is not a linear operation but involves an exponential process that could be time-consuming when executed repeatedly. Csound now uses a built-in table lookup to do this efficiently, even at audio rates.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../valcnv/mac.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="cps2pch.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/pitch.htm#functions" class="toqr">
+Pitch Convertors: Functions</font></a>
+</body>
+</html>

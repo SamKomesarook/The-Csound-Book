@@ -1,0 +1,111 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>fog</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="fof.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="grain.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#granular" class="toqr">
+Signal Generators: Granular Synthesis</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>fog</h2>
+
+<pre>
+  ar      <strong>fog</strong>        xamp, xdens, xtrans, xspd, koct, kband, kris, kdur, kdec, iolaps, ifna, ifnb, itotdur[, iphs[, itmode]]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Audio output is a succession of grains derived from data in a stored function table <em>ifna</em>. The local envelope of these grains and their timing is based on the model of <strong>fof</strong> synthesis and permits detailed control of the granular synthesis.
+</p>
+<h3>Initialization</h3>
+<p><em>iolaps</em> &#8211; number of pre-located spaces needed to hold overlapping grain data. Overlaps are density dependent, and the space required depends on the maximum value of <em>xdens</em>* <em>kdur</em>. Can be over-estimated at no computation cost. Uses less than 50 bytes of memory per <em>iolaps</em>.
+</p>
+<p><em>ifna</em>, <em>ifnb</em> &#8211; table numbers of two stored functions. The first is the data used for granulation, usually from a soundfile (<a href="../gen/GEN01.htm"><strong>GEN01</strong></a>). The second is a rise shape, used forwards and backwards to shape the grain rise and decay; this is normally a sigmoid (<a href="../gen/GEN09.htm"><strong>GEN19</strong></a>) but may be linear (<a href="../gen/GEN05.htm"><strong>GEN07</strong></a>).
+</p>
+<p><em>itotdur</em> &#8211; total time during which this <strong>fog</strong> will be active. Normally set to p3. No new grain is created if it cannot complete its <em>kdur</em> within the remaining <em>itotdur</em>.
+</p>
+<p><em>iphs</em> (optional) &#8211; initial phase of the fundamental, expressed as a fraction of a cycle (0 to 1). The default value is 0.
+</p>
+<p><em>itmode</em> (optional) &#8211; transposition mode. If zero, each grain keeps the <em>xtrans</em> value it was launched with. if non-zero, each is influenced by <em>xtrans</em> continuously. The default value is 0.
+</p>
+<h3>Performance</h3>
+<p><em>xamp</em> &#8211; amplitude factor. Amplitude is also dependent on the number of overlapping grains, the interaction of the rise shape (<em>ifnb</em>) and the exponential decay (<em>kband</em>), and the scaling of the grain waveform (<em>ifna</em>). The actual amplitude may therefore exceed <em>xamp</em>.
+</p>
+<p><em>xdens</em> &#8211; density. The frequency of grains per second.
+</p>
+<p><em>xtrans</em> &#8211; transposition factor. The rate at which data from the stored function table <em>ifna</em> is read within each grain. This has the effect of transposing the original material. A value of 1 produces the original pitch. Higher values transpose upwards, lower values downwards. Negative values result in the function table being read backwards.
+</p>
+<p><em>xspd</em> &#8211; speed. The rate at which successive grains advance through the stored function table <em>ifna</em>. <em>xspd</em> is in the form of an index (0 to 1) to <em>ifna</em>. This determines the movement of a pointer used as the starting point for reading data within each grain. (<em>xtrans</em> determines the rate at which data is read starting from this pointer.)
+</p>
+<p><em>koct</em> &#8211; octaviation index. The operation of this parameter is identical to that in <strong>fof</strong>.
+</p>
+<p><em>kband</em>, <em>kris</em>, <em>kdur</em>, <em>kdec</em> &#8211; grain envelope shape. These parameters determine the exponential decay (<em>kband</em>), and the rise (<em>kris</em>), overall duration (<em>kdur</em>,) and decay (<em>kdec</em> ) times of the grain envelope. Their operation is identical to that of the local envelope parameters in <strong>fof</strong>.
+</p>
+<p>The Csound <strong>fog</strong> generator is by Michael Clarke, extending his earlier work based on IRCAM's fof algorithm.
+</p>
+<h3>Example</h3>
+
+
+
+
+
+
+
+
+<pre> ;p4 = transposition factor
+ ;p5 = speed factor
+ ;p6 = function table for grain data
+ i1  = sr/ftlen(p6) ;scaling to reflect sample rate and table length
+ a1  <strong>phasor</strong> i1*p5 ;index for speed
+ a2  <strong>fog</strong>    5000, 100, p4, a1, 0, 0, , .01, .02, .01, 2, p6, 1, p3, 0, 1</pre>
+
+
+
+
+
+
+
+
+<h3>Author</h3>
+<p>Michael Clark<br>
+Huddersfield<br>
+May 1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="fof.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="grain.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#granular" class="toqr">
+Signal Generators: Granular Synthesis</font></a>
+</body>
+
+</html>

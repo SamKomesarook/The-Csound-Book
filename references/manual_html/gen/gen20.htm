@@ -1,0 +1,101 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN20</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen17.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen21.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#windows" class="toqr">
+<strong>GEN</strong> Routines: Window Functions</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN20</h2>
+
+<pre>     
+  <strong>f</strong>  #     time    size    20     window     max     [opt]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This subroutine generates functions of different windows. These windows are usually used for spectrum analysis or for grain envelopes.
+</p>
+<h3>Initialization</h3>
+<p><em>size</em> &#8211; number of points in the table. Must be a power of 2 ( + 1).
+</p>
+<p><em>window</em> &#8211; Type of window to generate:
+</p>
+<ul>
+	<li>1 = Hamming</li>
+	<li>2 = Hanning</li>
+	<li>3 = Bartlett ( triangle)</li>
+	<li>4 = Blackman ( 3-term)</li>
+	<li>5 = Blackman - Harris ( 4-term)</li>
+	<li>6 = Gaussian</li>
+	<li>7 = Kaiser</li>
+	<li>8 = Rectangle</li>
+	<li>9 = Sync</li>
+</ul>
+<p><em>max</em> &#8211; For negative p4 this will be the absolute value at window peak point. If p4 is positive or p4 is negative and p6 is missing the table will be post-rescaled to a maximum value of 1. </p>
+<p><em>opt</em> &#8211; Optional argument required by the Kaiser window.</p>
+
+<h3>Examples</h3>
+
+<pre>  <strong>f</strong>       1       0       1024    20      5</pre>
+<p>This creates a function which contains a 4 - term Blackman - Harris window with maximum value of 1.
+</p>
+<pre>  <strong>f</strong>       1       0       1024    -20     2       456</pre>
+<p>This creates a function that contains a Hanning window with a maximum value of 456.
+</p>
+<pre>  <strong>f</strong>       1       0       1024    -20     1</pre>
+<p>This creates a function that contains a Hamming window with a maximum value of 1.
+</p>
+<pre>  <strong>f</strong>       1       0       1024    20      7       1       2</pre>
+<p>This creates a function that contains a Kaiser window with a maximum value of 1. The extra argument specifies how &quot;open&quot; the window is, for example a value of 0 results in a rectangular window and a value of 10 in a Hamming like window.
+</p>
+<p>For diagrams, see <a href="../appendix/windows.htm">Window Functions</a>
+</p>
+
+<p>Paris Smaragdis<br>
+MIT, Cambridge<br>
+1995</p>
+<p>John ffitch<br>
+University of Bath/Codemist Ltd.<br>
+Bath, UK</p>
+
+<p>New in Csound version 3.2</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen17.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen21.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#windows" class="toqr">
+<strong>GEN</strong> Routines: Window Functions</font></a>
+</body>
+
+</html>

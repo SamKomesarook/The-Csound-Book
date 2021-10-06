@@ -1,0 +1,98 @@
+
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+
+<head>
+
+   
+<title>Evaluation of Expressions</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="mult.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="f.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#expressions" class="toqr">
+Score Syntax: Expressions</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>Evaluation of Expressions</h2>
+<hr size="2" color="#A9A9A9" noshade>
+<p>In earlier versions of Csound the numbers presented in a score were used as given.  There are occasions when some simple evaluation would be easier.  This need is increased when there are macros.  To assist in this area the syntax of an arithmetic expressions within square brackets [ ] has been introduced.  Expressions built from the operations +, -, *,  /, %, and ^ are allowed, together with grouping with ( ). The expressions can include numbers, and naturally macros whose values are numeric or arithmetic strings.  All calculations are made in floating point numbers.  Note that unary minus is not yet supported.
+</p>
+
+<p>New in Csound version 3.56 are <strong>&#64;</strong><em>x</em> (next power-of-two greater than or equal to <em>x</em>) and <strong>&#64;&#64;</strong><em>x</em> (next power-of-two-plus-one greater than or equal to <em>x</em>).</p>
+
+<h3>Example</h3>
+
+<pre>
+  r3  CNT
+
+  i1  0  [0.3*$CNT.]
+  i1  +  [($CNT./3)+0.2]
+
+  e
+</pre>
+<p>As the three copies of the section have the macro $CNT. with the different values of 1, 2 and 3, this expands to
+</p>
+
+<pre>
+  s
+  i1  0  0.3
+  i1  0.3  0.533333
+  s
+  i1  0  0.6
+  i1  0.6  0.866667
+  s
+  i1  0  0.9
+  i1  0.9  1.2
+  e
+</pre>
+<p>This is an extreme form, but the evaluation system can be used to ensure that repeated sections are subtly different.
+</p>
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath/Codemist Ltd.<br>
+Bath, UK<br>
+April, 1998 (New in Csound version 3.48)<br>
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="mult.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="f.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#expressions" class="toqr">
+Score Syntax: Expressions</font></a>
+</body>
+
+
+</html>
+

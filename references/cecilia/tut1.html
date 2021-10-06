@@ -1,0 +1,160 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>Tutorial I - Using CECILIA</title>
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+	</head>
+
+	<body bgcolor="white">
+		<center>
+			&nbsp;</center>
+		<center>
+			<p>
+			<table cols="3" width="100%" nosave>
+				<tr align="center" nosave>
+					<td align="left" valign="top" nosave><a href="jump.html"><b>&lt;--</b></a></td>
+					<td align="center" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="right" valign="top" nosave><a href="tut2.html"><font color="black"><b>--&gt;</b></font></a></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			<h2><b>TUTORIAL I : USING CECILIA</b></h2>
+		</center>
+		<center>
+			<p><a href="#Getting ready">Getting ready</a></center>
+		<center>
+			<p><a href="#Opening">Opening a module and choosing a sound</a></center>
+		<center>
+			<p><a href="#Using">Using the Interface</a></center>
+		<center>
+			<p><a href="#tools">Using the graphing tools</a></center>
+		<center>
+			<p><a href="#Where">Where to from here?</a></center>
+		<center>
+			<p><a href="#Performance">Performance issues</a></center>
+		<center>
+			<p>&nbsp;</center>
+		<center>
+			<p>
+			<hr>
+		</center>
+		<p>&nbsp;
+		<ul>
+			<li><a name="Getting ready"></a><b>Getting ready. <a href="#"><font size="1">top</font></a></b>
+			<p>Of course, having read all the <a href="setup.html">setup documentation</a> , you already have everything set and ready to go. You have a Csound version accessible, your preferences have already been set in the <i>Preferences</i> window and your environmental variables are in order. If you have not already done so, start CECILIA by double-clicking its icon or typing <i>cecilia</i> in a command shell.&nbsp; Since you are reading this, Netscape is most likely running.</p>
+			<p>Only the CECILIA Main window should open up at startup time. It looks like like a shortened version of <a href="main.html">this</a>.<br>
+			&nbsp;
+			<hr width="100%">
+			<br>
+			&nbsp;</p>
+			<li><a name="Opening"></a><b>Opening a module and choosing a sound. <a href="#"><font size="1">top</font></a></b>
+			<p>CECILIA comes with about 30 modules that let you do the most unimaginable things to soundfiles. Lets get started by choosing a module with the <b>New...</b> cascade under the <b>File </b>menu. Choose the <i>Transposer</i> module in the <i>Pitch</i> class since it uses most of the features of CECILIA and is conceptually straightforward: it transposes a soundfile in pitch with a few bells and whistles thrown in.</p>
+			<p>Two things happen:</p>
+			<p>1- The <a href="interfac.html">Grapher</a> window has opened up showing some colored lines (some of the lines are hidden under others), a couple of sliders at the bottom, some toggle buttons and some coloured buttons etc.<br>
+			&nbsp;<br>
+			&nbsp;2- The <a href="soundwin.html">Main</a> window has expanded showing a largish button, a couple of small icons and a small slider.</p>
+			<p>Enlarge the Grapher window so we have space to work with. CECILIA will remember the size of the window and open to that size next time around.</p>
+			<p>Bring up the Main window and click on the <b>toLoad</b> button. This brings up the fileselector. The Macintosh and Windows file selectors are fairly straightforward but on <b>Unix </b>systems, there are quite a few things you can do here: The four buttons at the bottom of the selector get you quickly to the four directories you have entered in the <i>Prefences</i> window plus your home directory. You can use the filter to choose what kind of iles will be shown (Directories are always shown). When you choose a file, information about it is shown. If its a soundfile, even more information is shown. If its a sound file, you can play it by hitting the speaker icon and you can edit it with the scissors. You can trash any file by selecting it and hitting the trash can. You can convert it with your soundfile converter by hitting <i>Convert, </i>and you can rename it.</p>
+			<p>For the time being, navigate with the fileselector to the <i>examples</i> folder in the Cecilia folder. Once there choose the <i>beat.aiff </i>file. CECILIA can deal with SDII , AIFF and WAV audio files, not much else. Click OK.</p>
+			<p>The <b>toLoad</b> button now says <i><b>beat.aiff. </b></i>The text immediately underneath the button gives the duration, sampling rate, file type, channels and word size of the soundfile. Moving the slider underneath increments the duration of the duration from 0 to the full duration. This slider controls the &quot;offset&quot; into the soundfile and sometimes used, sometimes not. Leave it at 0 (no offset). <i><b>beat.aiff</b></i> is a stereo sound, so choose the <i><b>stereo</b></i> button beside the <i><b>channels: </b></i>label.&nbsp; You can play and edit beat.aiff with the two icons beside the button. The <i><b>sr/kr/ksmps </b></i>and <i><b>gen size</b></i> popups are set to default values so we will leave them for now.<br>
+			&nbsp;</p>
+			<p>
+			<hr width="100%">
+			<br>
+			&nbsp;</p>
+			<li><a name="Using"></a><b>Using the Interface. <a href="#"><font size="1">top</font></a></b>
+			<p>Bring up the Grapher window. This is where all the fun happens. This module is a simple transposer but the handles you have on transposing are like none you have had before! We will take the features one by one. Keep in mind that all CECILIA modules are different and the parameters will vary greatly depending on their nature.</p>
+			<p>There are eleven parameters you can control with the <i>Transposer</i> module. Six are controlled by graphs and five with sliders and toggles (on parameter is controlles by a graph <i>and</i> a slider) :<br>
+			&nbsp;</p>
+			<ul>
+				<li>The transposition factor (Graph and slider)
+				<li>The range for the amplitude modulation (Graph)
+				<li>The frequency for the amplitude modulation (Graph)
+				<li>The range for the frequency modulation (Graph)
+				<li>Teh frequency for the frequency modulation (Graph)
+				<li>The gain of the output (Graph)
+				<li>The total duration od this computation (i-rate slider)
+				<li>Amplitude modulation toggle
+				<li>Frequency modulation toggle
+				<li>Anti-alias filter toggle
+				<li>Loop sound toggle<br>
+				&nbsp;
+			</ul>
+			<p>Leaving everything else as presented, select <i>Loop sound .</i>This will loop our 3 second <i>beat.aiff </i>for the total duration of 30 seconds specified by the <i>Total duration</i> slider.
+			<p>Click on the green &quot;<i>Tranpose Factor</i>&quot; button. This selects the green line in the grapher. Now clik anywhere in the white space in the grapher. Click again somewhere else, and again... and again and... You have just defined a time-profile for the selected parameter (the transposition factor). Move the mouse over one of the points, click and drag the point around. Move the mouse over a point and click Button-2 (or Command-click). The point is deleted. Now move the mouse over one of the straight lines. When it turns white, click and drag the function up or down. Play arounf a bit with these tricks.</p>
+			<p>Bring up the <b>Main</b> window. Press the <b>DAC</b> button (it turns red) to hear the sound in realtime (this may not work well on a slow machine). Press the <b>Play</b> button. If all is well, the computation will launch you will hear James sounding like Darth Vader and Donald Duck. You can stop the computation by clicking the <b>Stop</b> button.</p>
+			<p>While we are here, try the small display sliders at the bottom right corner of the window.</p>
+			<p>
+			<hr width="100%">
+			<br>
+			&nbsp;</p>
+			<li><b>Using the graphing&nbsp;<a name="tools"></a>tools&nbsp; <a href="#"><font size="1">top</font></a></b><br>
+			Go back to the Grapher and, just below the menu bar, press the&nbsp;<img src="reset.gif" nosave height="30" width="30"> icon. The function you had drawn is replaced to its default value. Push the&nbsp;<img src="rand.gif" nosave height="30" width="30"> and&nbsp;<img src="drunks.gif" nosave height="30" width="30"> buttons. Might as well try&nbsp;<img src="sines.gif" nosave height="30" width="30">,&nbsp;<img src="square.gif" nosave height="30" width="30">,&nbsp;<img src="comp.gif" nosave height="30" width="30">&nbsp; and&nbsp;<img src="imp.gif" nosave height="30" width="30"> also. Thats nice but a little hard to control...
+			<p>These are all function generators. They are useful. Specially if you learn to use them judiciously. To do this there are hidden <b>controls </b>on all of these generators. Click the&nbsp;<img src="sines.gif" nosave height="30" width="30"> with Button-2 (or Option-click). A box opens to let specify the parameters of the generator (in this case a sine wave). Try this with all the tools above. Do the <b>Play/Stop</b> routine liberally to hear the results of the differents functions.</p>
+			<p>Now here's a good trick: Click the&nbsp;<img src="reset.gif" nosave height="30" width="30"> icon to reset the function. Grab the leftmost point and drag all the way down then grab the rightmost point and drag all the way up. Next select the&nbsp;<img src="scatt.gif" nosave height="30" width="30"> scatter function with Button-2 or Option-click. With the first slider resample the function with 150 points. Select the <i>square </i>radio button. Put the <i>y</i> slider at ~.1 and press <i>scatter-y. </i>Muck around here for a bit. Playing, erasing, trying all kinds of combinations.</p>
+			<p>Remember that you can always edit any function that was generated with the tools. When you have one you like particularly, you can copy it with&nbsp;<img src="copy.gif" nosave height="30" width="30">, select another parameter with the right parameter buttons and paste to it with the&nbsp;<img src="paste.gif" nosave height="30" width="30"> button. You can even save a function you *really* like with the&nbsp;<img src="drunks.gif" nosave height="30" width="30"> button and re-read it into another module with the&nbsp;<img src="imp.gif" nosave height="30" width="30"> button...</p>
+			<p>Now select some of the other parameters, like <i>amplitude modulation range</i> and frequency, <i>gain</i> and <i>frequency modulation range</i>, and try to make an ungodly mess of the soundfile.</p>
+			<p>When you are finished, go under the <b>File</b> menu and select <b>Save Snapshot. </b>The filedialog will open and you can give a name to your &quot;setup&quot;, namely the state of all the buttons, graphs, inputs and sliders for this module. You can later recall it with the <b>Open...</b> menu and re-modify its different objects.<br>
+			&nbsp;</p>
+		</ul>
+		<p>
+		<hr>
+		<ul>
+			<li><b>Using the&nbsp;<a name="sliders"></a>sliders and other objects&nbsp; <a href="#"><font size="1">top</font></a></b>
+			<p>The slider, toggle and popup items react differently on different platform. On the Macintosh, you can set the value prior to computation only. On <b>Unix </b>however, you can interact with the computation in real-time by manipulating the ojects.</p>
+			<p>Reset all the graphs using the&nbsp;<img src="reset.gif" nosave height="30" width="30"> icon. Press the <b>play</b> button. The sound file will play without transposition. While it is playing, move the <i>Transpose</i> slider at the bottom of the Grapher window. The transposition will follow your movements. Try the same with the toggles for amplitude and frequency modulation. Note that some toggle will not react because of the nature of the parameter they control. This is the case for the <i>Loop sound</i> toggle that functions only at computation launch time.</p>
+			<p>This is quite straightforward. But the real interest in moving sliders is to be able to <b>record</b> the movements and&nbsp; then <b>play them back</b>. You can do that with the help of the small <b>k-rate</b> popup on the right side of the objects. Select 'record' with the <i>k-rate</i> popup on the right of the <i>Transpose</i> slider. Press <b>Play</b>. Fool around with the slider until the computation comes to an end. Then, select <i>playback</i> with the <i>k-rate </i>popup. Press <b>Play</b> again and sit back. All your movements are played back (the slider does not move, but it's all there!). You can save and recall your movement files with the load and save item in the <i>k-rate</i> popup.</p>
+			<p>Note that these movement recording can only take place with object that have<i> k-rate</i> popups. <i>i-rate</i> popups mean values of the object are only read at the start on the computation.</p>
+			<p>Once you have a good movement recorded, you'll want to write the soundfile to disk. To do this go to the Main window and select <i><b>Disk -&gt;. </b></i>When you press Play, the computation will now be written to a sound file. A soundfile name is proposed to you in the entry beside the <i><b>Disk-&gt;</b></i> icon. You can change it if you like. By default, all soundfile are written in the directory you specified in the Preferences window. If <b>Auto-Play</b> has been checked under the Csound menu in the Main window, the sound will be automatically played when computation is finished.</p>
+			<p>Congratulations, you have just recorded your first sound with CECILIA!<br>
+			&nbsp;</p>
+		</ul>
+		<p>
+		<hr width="100%">
+		<br>
+		&nbsp;
+		<ul>
+			<li><a name="Where"></a><b>Where to from here?&nbsp; <a href="#"><font size="1">top</font></a></b>
+			<p>Working with CECILIA is about exploration, imagination and dicovery. Sound is endlessly malleable and we bellieve CECILIA is the only tool that lets you control it so intimately. The 30 odd modules in CECILIA allow you to do just about anything you would want to do to a sound: filters, resonators, stretchers, compressors, distortion, you name it, its there. Also, dont forget that a sound once written to disk with CECILIA becomes a candidate for further processing through different modules.</p>
+			<p>Here are a few tips to enhance your productivity:<br>
+			&nbsp;</p>
+			<ul>
+				<li>Use all the shortcut keys you can find! Specially the <b>Play/Stop</b> keys. They save a tremendous amount of time. You can set these (on Unix machines) in the Preferences window.
+				<li>Do not hesitate to explore extreme ranges of parameters.
+				<li>Do not hesitate to re-process sounds.
+				<li>Take the time to familiarize yourself with all the modules. Many of them may seem complex and difficult to understand, but they all do something unique!
+				<li>In the Main window, use the&nbsp;<img src="copy.gif" nosave height="24" width="27"> icon to automatically re-circulate previously processed sounds.
+				<li>Try and get a handle on how all the function generators work. Small changes can bring radical differences in the effect.
+			</ul>
+			<p>&nbsp;
+		</ul>
+		<p>
+		<hr width="100%">
+		<br>
+		&nbsp;
+		<ul>
+			<li><a name="Performance"></a><b>Performance issues&nbsp; <a href="#"><font size="1">top</font></a></b>
+			<p>Csound, CECILIA's DSP engine, can be taxing for slower machines. The faster your machine, the more you can do in real-time. However, even fast machines can choke (cracking sound output) on complex modules with extreme parameter values. Some steps to follow (in order of preference):<br>
+			&nbsp;</p>
+			<ol>
+				<li>Select a higher <i><b>ksmps</b></i> value in the Main window. You will loose a bit of quality but you can select a smaller value when writing to disk.
+				<li>Reduce usage of&nbsp; &quot;overlapping&quot; parameters in the warper/stretcher families of modules. Quality is often just as good with small overlaps settings.
+				<li>Reduce the sampling rate. This is really a last resort since many modules do not adapt to the new rate and sounds will come out transposed....
+				<li>Write the file to disk. Often, this is quite satisfactory, specially on shorter sounds.
+				<li>Try different values in the <b>DAC</b> and <b>Disk Buffer</b>&nbsp; under the <b>Csound</b> menu to fine tune real-time performance. For DAC output, use smaller &quot;<b>soft</b>&quot; values.
+			</ol>
+			<p>Be adventurous!<br>
+			&nbsp;
+		</ul>
+		<p>
+		<hr width="100%">
+		<br>
+		&nbsp;
+		<ul>
+			&nbsp;
+		</ul>
+	</body>
+
+</html>

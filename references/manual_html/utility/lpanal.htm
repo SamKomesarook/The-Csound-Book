@@ -1,0 +1,97 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>lpanal</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="hetro.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvanal.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/utility.htm#lpanal" class="toqr">
+Utilities: Analysis File Generation</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>lpanal</h2>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>linear predictive analysis for the Csound <a href="../sigmod/lpread.htm"><strong>lp</strong></a> generators
+</p>
+<pre>  <strong>csound -U lpanal</strong> [flags] infilename outfilename</pre>
+<p>or
+</p>
+<pre>  <strong>lpanal</strong> [flags] infilename outfilename</pre>
+<p><strong>lpanal </strong>performs both lpc and pitch-tracking analysis on a soundfile to produce a time-ordered sequence of <em>frames</em> of control information suitable for Csound resynthesis. Analysis is conditioned by the control flags below. A space is optional between the flag and its value.
+</p>
+<p><em>-a </em>[alternate storage] &#8211; asks lpanal to write a file with filter poles values rather than the usual filter coefficient files. When <strong>lpread</strong> / <strong>lpreson</strong> are used with pole files, automatic stabilization is performed and the filter should not get wild. (This is the default in the Windows GUI) - Changed by Marc Resibois.
+</p>
+<p><em>-s srate </em> &#8211; sampling rate of the audio input file. This will over-ride the srate of the soundfile header, which otherwise applies. If neither is present, the default is 10000.
+</p>
+<p><em>-c channel </em> &#8211; channel number sought. The default is 1.
+</p>
+<p><em>-b begin </em> &#8211; beginning time (in seconds) of the audio segment to be analyzed. The default is 0.0
+</p>
+<p><em>-d duration </em> &#8211; duration (in seconds) of the audio segment to be analyzed. The default of 0.0 means to the end of the file.
+</p>
+<p><em>-p npoles </em> &#8211; number of poles for analysis. The default is 34, the maximum 50.
+</p>
+<p><em>-h hopsize </em> &#8211; hop size (in samples) between frames of analysis. This determines the number of frames per second (srate / hopsize) in the output control file. The analysis framesize is hopsize * 2 samples. The default is 200, the maximum 500.
+</p>
+<p><em>-C string </em> &#8211; text for the comments field of the lpfile header. The default is the null string.
+</p>
+<p><em>-P mincps </em> &#8211; lowest frequency (in Hz) of pitch tracking. -P0 means no pitch tracking.
+</p>
+<p><em>-Q maxcps </em> &#8211; highest frequency (in Hz) of pitch tracking. The narrower the pitch range, the more accurate the pitch estimate. The defaults are -P70, -Q200.
+</p>
+<p><em>-v verbosity </em> &#8211; level of terminal information during analysis. 
+<ul>
+  <li>0 = none</li>
+  <li>1 = verbose</li>
+  <li>2 = debug</li>
+</ul>
+The default is 0.
+</p>
+<h3>Example </h3>
+
+<pre>  <strong>lpanal</strong> -a -p26 -d2.5 -P100 -Q400 audiofile.test lpfil22 </pre>
+<p>will analyze the first 2.5 seconds of file &quot;audiofile.test&quot;, producing srate/200 frames per second, each containing 26-pole filter coefficients and a pitch estimate between 100 and 400 Hertz. Stabilized (<em>-a</em>) output will be placed in &quot;lpfil22&quot; in the current directory.
+</p>
+<h3>File Format </h3>
+<p>Output is a file comprised of an identifiable header plus a set of frames of floating point analysis data. Each frame contains four values of pitch and gain information, followed by <em>npoles</em> filter coefficients. The file is readable by Csound's <a href="../sigmod/lpread.htm"><strong>lpread</strong></a>.
+</p>
+<p><strong>lpanal</strong> is an extensive modification of Paul Lanksy's lpc analysis programs.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="hetro.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvanal.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/utility.htm#lpanal" class="toqr">
+Utilities: Analysis File Generation</font></a>
+</body>
+
+</html>

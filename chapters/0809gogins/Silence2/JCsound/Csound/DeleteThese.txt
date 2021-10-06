@@ -1,0 +1,1 @@
+*.pch *.obj *.lib *.exp *.ncb *.clw *.opt *.sbr *.bsc *.wav *.idb *.pdb *.srt *.bak *.tmp *.ilk *.ve2

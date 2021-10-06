@@ -1,0 +1,95 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>lfo</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="poscil.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="buzz.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#basicoscils" class="toqr">
+Signal Generators: Basic Oscillators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>lfo</h2>
+
+<pre>
+  kr      <strong>lfo</strong>        kamp, kcps[, itype]
+  ar      <strong>lfo</strong>        kamp, kcps[, itype]</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>A low frequency oscillator of various shapes.
+</p>
+<h3>Initialization</h3>
+<p><em>itype</em> &#8211; determine the waveform of the oscillator. Default is 0.
+</p>
+<ul>
+<li><em>itype</em> = 0 - sine</li>
+<li><em>itype</em> = 1 - triangles</li>
+<li><em>itype</em> = 2 - square (bipolar)</li>
+<li><em>itype</em> = 3 - square (unipolar)</li>
+<li><em>itype</em> = 4 - saw-tooth</li>
+<li><em>itype</em> = 5 - saw-tooth(down)</li>
+</ul>
+<p>The sine wave is implemented as a 4096 table and linear interpolation. The others are calculated.
+</p>
+<h3>Performance</h3>
+<p><em>kamp</em> &#8211; amplitude of output
+</p>
+<p><em>kcps</em> &#8211; frequency of oscillator
+</p>
+<h3>Example</h3>
+
+
+
+
+<pre>instr 1
+kp    <strong>lfo</strong>  10, 5, 4
+ar    <strong>oscil</strong>  p4, p5+kp, 1
+      <strong>out</strong>  ar
+endin</pre>
+
+
+
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath/Codemist Ltd.<br>
+Bath, UK<br>
+November, 1998 (New in Csound version 3.491)<br>
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="poscil.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="buzz.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#basicoscils" class="toqr">
+Signal Generators: Basic Oscillators</font></a>
+</body>
+
+</html>

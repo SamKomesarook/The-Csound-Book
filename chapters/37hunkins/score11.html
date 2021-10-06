@@ -1,0 +1,36 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>Score-11</title>
+		<meta name="Author">
+	</head>
+
+	<body bgcolor="white">
+		<font color="#000040" size="6" face="Times New Roman,Georgia,Times"><b>Score-11: A Score Preprocessor for Csound</b></font><b><font face="Times New Roman"> </font></b>
+		<h3><font size="4" face="Times New Roman,Georgia,Times">Comments by Arthur B. Hunkins</font></h3>
+		<p><font face="Times New Roman"><b>Score-11</b> is a score preprocessor written by Aleck Brinkman originally for Music 11, at the Eastman School of Music in 1980. It was subsequently updated, through 1984. The code was then ported in the late '80's to DOS (by Craig Harris). Score-11 also functions remarkably well as a score preprocessor for the most recent 486 DOS version of Csound, for example. I have used it (in conjunction with Csound) primarily to randomize start time and duration parameters (also frequencies), with the goal of creating multiple/variable realizations of my non-realtime digital works.</font></p>
+		<p><font face="Times New Roman">Score-11 is the property of Dr. Aleck Brinkman, who may be reached as follows:<br>
+		</font></p>
+		<p><font face="Times New Roman">&nbsp;</font><font face="Courier New">&nbsp; Alexander Brinkman<br>
+		&nbsp;&nbsp;287 Wimbledon Road<br>
+		&nbsp;&nbsp;Rochester, NY 14617<br>
+		&nbsp;&nbsp;Email: aleck@theory.esm.rochester.edu</font></p>
+		<p><font face="Times New Roman">Dr. Brinkman intends (as of July 1998) to produce new and improved versions of Score-11 for both PC and Mac platforms. These will be made available to interested parties for a fee. Contact him for details.</font></p>
+		<p><font face="Times New Roman">The version of Score-11 that I used (DOS--dating from at least the early '90's), required the following command line:<br>
+		<br>
+		<b>score11 &lt; score_input_file</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(note that the &lt; is required)</font><br>
+		</p>
+		<p><font face="Times New Roman">The program writes its output to the file s.out--a file suitable as (.sco) input to Csound.<br>
+		</font></p>
+		<h3><font face="Times New Roman"><b>Peculiarities I Have Observed<i> </i></b></font></h3>
+		<p><font face="Times New Roman">(In the July 1998 DOS version of Score-11):</font><br>
+		</p>
+		<p><font face="Times New Roman">1) The &quot;non-repeating sets&quot; feature does not seem to work.</font></p>
+		<p><font face="Times New Roman">2) Rdeviation is undependable in that its range limits are not always observed. Also, the &quot;deviation&quot; is added to start time (p2) rather than duration (p3), contrary to the documentation. (The &quot;range bug&quot; is most unfortunate, as rdeviation could be a very useful tool for randomizing durations <i>or</i> start times.) Finally (and as stated), rd must be placed <i>within</i> an instrument block; it applies <i>only</i> to that block, and thus is not available globally.</font></p>
+		<p><font face="Times New Roman">3) Due to differences between Music11 (the program's original &quot;parent&quot;) and Csound, the Advance, Purge, and Comment statements discussed in the documentation are not implemented. Also, the End statement does not work correctly in Score-11 (substitute *e instead), though this does not seem to matter much (it can be omitted).</font></p>
+		<p><font face="Times New Roman">4) One particular limitation of Score-11 has proven especially difficult for me: its significantly restricted random number capability. (This function has always been the primary rationale for Score-11 in my work.) Though Score-11 allows for different values of Rseed, generating an unlimited quantity of random number series, there is no way of &quot;massaging&quot; these numbers other than setting their limits and specifying whether or not they are integer. For example, it is not possible to rule out immediate repetitions (crucial when working with integers), to specify some minimum difference between successive values, or to make a later value dependent on a previous one. It seems that a more elaborate and powerful &quot;musical text processor&quot; for Csound is required to furnish such increased functionality. (Or perhaps these are features to be hoped for in upcoming revisions.)</font>
+	</body>
+
+</html>

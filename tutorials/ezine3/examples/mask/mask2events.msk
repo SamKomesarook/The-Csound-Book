@@ -1,0 +1,71 @@
+{; mask2events.sco
+ ; © Dami‡n Keller. November 1998. 
+ ; Using CMask in ecological modeling.
+ 
+f1 0 512 7 0 256 1 256 0
+f2 0 65536 1 "metal.sd2" 0 4 1 
+f3 0 65536 1 "metal.sd2" 0 4 2 
+}
+; Time-varying distribution: 2 events w/common end-begin.
+; No time stamps are used for the mask breakpoints.
+
+
+f 0 2  
+
+p1 	const 1
+
+p2 	rnd uni	; grain rate 
+	mask [.05 .001] [.07 .03]
+	prec 5
+		
+p3 	rnd uni	; grain duration 
+	mask [.05 .1] [.1 .3] 
+	prec 5
+					
+p4	rnd uni		; amplitude
+	mask [.1 .9] [1 1]
+	prec 5
+	
+p5 	range .001	.005	; stretch original.
+	accum on
+	prec 5
+
+p6 	range .001	.005	; stretch original.
+	accum on
+	prec 5
+
+p7	range 2 3
+	prec 0
+
+p8	range 2 3
+	prec 0
+
+f 2 4  
+
+p1 	const 1
+
+p2 	rnd uni	; grain rate 
+	mask [.001 .05] [.03 .07]
+	prec 5
+	
+p3 	rnd uni	; grain duration 
+	mask [.1 .05] [.3 .1] 
+	prec 5
+					
+p4	rnd uni		; amplitude
+	mask [.9 .1] [1 1]
+	prec 5
+	
+p5 	range .001	.005	; stretch original.
+	accum on init .25	; skip attack
+	prec 5
+
+p6 	range .001	.005	; stretch original.
+	accum on init .25	; skip attack
+	prec 5
+
+p7	range 2 3
+	prec 0
+	
+p8	range 2 3
+	prec 0

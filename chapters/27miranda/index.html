@@ -1,0 +1,630 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Three Modeling Approaches to Instrument Design</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">26. Three Modeling Approaches
+to Instrument Design</FONT></H1>
+
+<H2><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">Eduardo
+Reck Miranda</FONT></H2>
+
+<H2><FONT FACE="Times New Roman">Introduction</FONT></H2>
+
+<P><FONT FACE="Times New Roman">Computer sound synthesis is becoming
+increasingly attractive to a wide range of musicians. On one hand
+and with very few exceptions, manufacturers of mainstream synthesizers
+have not been able to produce many established powerful synthesis
+techniques on an industrial scale. On the other hand, however,
+the sound processing power of the personal computer is increasing,
+and is becoming more affordable. Computers are highly programmable
+and any personal computer will soon be able to run Csound in real-time,
+capable of synthesizing sounds using any technique that one could
+possibly imagine.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Musicians often may not wish to
+use preset timbres; they may, rather, prefer to design their own
+instruments. There are a variety of ways to design instruments
+on a computer and the choice of a suitable synthesis technique
+is crucial for effective results. Some techniques may perform
+better than others for some specific timbres, but there are no
+definite criteria for selection; it is basically a matter of experience
+and taste. In this chapter we introduce a taxonomy for sound synthesis
+techniques aimed at supporting the less experienced instrument
+designer in the definition of their own criteria. In general,
+the more intuitive and flexible the technique, the more attractive
+it tends to be. For example, those techniques whose parameters
+provide meaningful ways to design instruments and timbres are
+usually preferred to those techniques whose parameters are entirely
+based upon abstract mathematical formulae.</FONT></P>
+
+<P><FONT FACE="Times New Roman">We begin with a background discussion
+about instrument design here; we then present and illustrate three
+approaches to instrument design, which naturally emerge from the
+proposed taxonomy. This chapter concludes with a discussion on
+instrument design from the author's own point of view, as a composer.</FONT></P>
+
+<H2><FONT FACE="Times New Roman">Defining Boundaries of Abstraction</FONT></H2>
+
+<P><FONT FACE="Times New Roman">In traditional Western music,
+musicians work with discrete musical elements, such as notes and
+their duration. Composers then are encouraged to think both of
+the production of sounds as the multidimensional control of these
+elements and also the notation of the music in a score by means
+of symbols. The performer then interprets the score by relating
+these symbols to gestures on a musical instrument.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Western music traditionally has
+a certain boundary of abstraction which characterizes its representation
+(for example, the abstraction of a sound event as a note). The
+inner acoustic features of a sound (for example, amplitude of
+partials and harmonic content) are not directly relevant for traditional
+performers and composers, who tend to learn only how to obtain
+the desired results by acting on the control mechanism of the
+instrument: they learn what actions to perform from symbols arranged
+in a score, in order to play the music. Musicians, in this case,
+are purely concerned with the arrangement of symbols in a score,
+which may require further interpretation since some sound parameters
+(for example, timbre) cannot be explicitly represented within
+the limitations of traditional notation.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Contemporary techniques of orchestration
+do encourage the creation of unusual timbral effects. There are,
+however, no obvious symbols to notate the harmonic content of
+individual instruments. Even if those symbols were to be created,
+the performer would not normally know how to interpret them because
+traditional orchestral instruments do not have &quot;keys&quot;
+for changing its harmonic spectrum. In traditional Western music,
+composers and performers have to work with a conceptual model
+of individual instruments, which has a certain boundary of abstraction
+that gives very little room for significant manipulation of timbre.
+The human voice may be considered an exception to this case; contemporary
+composers have achieved a great variety of timbres using the human
+voice alone.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In order to design a computer
+instrument, one should define suitable boundaries of abstraction
+upon which the synthesis parameters will be based. In traditional
+Western music, a performer transforms musical symbols into instrumental
+gestures; similarly, a computer works with sound synthesis parameters,
+in order to produce a sound (for example, the amplitude and frequency
+values for an oscillator).</FONT></P>
+
+<P><FONT FACE="Times New Roman">Pierre Schaeffer, in Book I of
+his &quot;Trait_ des objets musicaux&quot;, (Schaeffer 1966) proposes
+an inspiring notion, which is worth bearing in mind when designing
+a new musical instrument. He proposes that any device is a musical
+instrument if it allows one to obtain a varied collection of sonic
+objects, whilst maintaining a certain aural identity. The identity
+of an instrument is maintained by the permanence of certain consistent
+sound features, which allow for the variation of other features.</FONT></P>
+
+<H2><FONT FACE="Times New Roman">Taxonomy and Modeling Approaches</FONT></H2>
+
+<P><FONT FACE="Times New Roman">A growing number of synthesis
+techniques have been invented and used worldwide (Dodge and Jerse
+1985, Roads 1996, Russ 1996, Miranda (forthcoming) 1998). There
+is not, however, a generally agreed taxonomy to study these techniques.
+Indeed, the synthesizer production industry sometimes makes the
+situation worse by creating various marketing-oriented labels
+for what might essentially be the same synthesis paradigm. In
+order to aid the beginner to navigate through this vast conceptual
+ocean, we suggest a taxonomy for synthesis techniques, based upon
+the idea that these techniques work based upon a <I>model</I>.
+For instance, some synthesis models tend to employ loose mathematical
+abstractions, whereas others attempt to mimic mechanical-acoustic
+phenomena. Synthesis techniques may thus be classified into three
+classes according to their modeling approach: <I>Loose Modeling</I>,
+<I>Physical Modeling</I> and <I>Spectral Modeling</I>. It is important
+to observe that the boundaries of this taxonomy may, however,
+overlap; some techniques may qualify for more than one class.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Loose Modeling techniques tend
+to provide synthesis parameters that bear little relation to the
+acoustic world; they are usually based entirely upon conceptual
+mathematical formulae. Examples of Loose Modeling techniques include:
+<I>Amplitude Modulation</I> (AM), <I>Frequency Modulation</I>
+(FM), <I>Waveshaping</I> and <I>Granular Synthesis</I>. It is
+often difficult to predict the outcome and to explore the potential
+of a loose model. Amplitude Modulation (AM), for instance, is
+a powerful technique and extremely easy to program but the relationship
+between a sound spectrum and its respective synthesis parameters
+is far from intuitive.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Physical Modeling and Spectral
+Modeling attempt to alleviate this problem by providing less obscure
+synthesis parameters; both support the incorporation of natural
+acoustic phenomena. The fundamental difference between Physical
+and Spectral Modeling techniques is that the former tends to model
+a sound at its source, whilst the latter tends to model a sound
+at the basilar membrane of the human ear.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In general, Physical Modeling
+techniques work by emulating the functioning of acoustic musical
+instruments. The key issue of Physical Modeling is the emulation
+of acoustic sound generators rather than of the sounds themselves.
+For example, whilst some synthesis techniques (for example, Additive
+Synthesis) attempt to produce a guitar-like sound using methods
+that have little resemblance to the functioning of the guitar,
+a Physical Modeling technique would attempt to synthesize it by
+emulating the behavior of a plucked string. Examples of Physical
+Modeling techniques include: <I>Recirculating Wavetable</I>, <I>Modal
+Synthesis</I> and <I>Waveguides</I>.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The implementation of a physical
+model from scratch is not straightforward. However, once the model
+is implemented, it is not complicated to interpret the role of
+their synthesis parameters. Take for example a singing voice-like
+instrument: a loose model using FM would provide relatively complex
+synthesis parameters, such as<I> modulation index</I> and <I>frequency
+ratio</I>. Conversely, a physical model using Waveguides would
+provide more easily interpreted synthesis parameters, such as
+<I>air pressure</I>, <I>vocal tract shape</I> and <I>throat radiation
+output</I>.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Spectral Modeling techniques have
+their origins in Fourier's Theorem and <I>Additive Synthesis</I>.
+Fourier's Theorem states that any periodic waveform can be modeled
+as a sum of partials at various amplitude envelopes and time-varying
+frequencies. Additive Synthesis is accepted as perhaps the most
+powerful and flexible Spectral Modeling method, but it is difficult
+and expensive to run. Musical timbres are composed of hundreds
+of time-varying partials, including harmonic, non-harmonic and
+noise components. It would require several oscillators, noise
+generators and envelopes to simulate musical timbres using the
+classic additive technique. The specification and control of the
+parameter values for these components are difficult and time-consuming.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Alternative methods have been
+proposed to improve this situation, by providing tools to automatically
+obtain the synthesis parameters from the analysis of sampled sounds;
+for example, <I>Phase Vocoding</I> and <I>Linear Predictive Coding</I>.
+The analysis techniques used here usually store filter coefficients
+rather than samples. Note that in these cases, the synthesis technique
+may use a combination of filters, as in <I>Subtractive Synthesis</I>,
+to generate the spectral components of the sound. The great advantage
+of this type of Spectral Modeling over plain sampling is that
+musicians can manipulate these coefficients in a variety of ways
+in order to create new sounds. Sound-morphing, for example, can
+be achieved by varying the coefficients accordingly.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Loose Modeling techniques are
+relatively cheap and easy to industrialize onto LSI chips, but
+they are difficult to control. Conversely, Physical Modeling techniques
+are difficult and expensive to industrialize, but are relatively
+straightforward to control. Spectral Modeling lies between these
+two extremes. It is generally agreed, however, that no single
+synthesis technique will ever be able to fully satisfy the exacting
+musician. In the not so distant future, musicians will probably
+prefer to give up collecting synthesizer modules and keyboards,
+and rather opt for a personal computer running a powerful sound
+synthesis software, such as Csound.</FONT></P>
+
+<P><FONT FACE="Times New Roman">An example technique for each
+modeling approach is discussed below. Fully working programming
+examples are provided in the accompanying CD-ROM.</FONT></P>
+
+<H2><FONT FACE="Times New Roman">Loose Modeling: <I>Amplitude
+Modulation</I></FONT></H2>
+
+<P><FONT FACE="Times New Roman">Modulation occurs when some aspect
+of an audio signal (called a <I>carrier</I>) varies according
+to the behavior of another audio signal (called a <I>modulator</I>).
+Amplitude modulation therefore occurs when a modulator drives
+the amplitude of a carrier.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The <I>tremolo</I> effect may
+be considered to be an example of amplitude modulation; it is
+achieved by applying a very slow sub-audio rate of amplitude variation
+on a sound (i.e. less than approximately 18 Hz). If the frequency
+of the variation is raised to the audible band (i.e. higher than
+approximately 18 Hz) then additional partials (or <I>sidebands</I>)
+will be added to the spectrum of the signal.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Simple amplitude modulation synthesis
+uses only two sinewave generators (or <I>oscillators</I>): one
+for the carrier and the other for the modulator. The frequency
+of the carrier oscillator is usually called<B> fc</B> whilst the
+frequency of the modulator oscillator is called<B> fm </B>.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Complex amplitude modulation may
+involve more than two signals; for example, the amplitude of <I>oscillator
+C</I> is modulated by the outcome of<I> oscillator B</I>, which
+in turn is amplitude modulated by <I>oscillator A</I>. Signals
+other than sinewaves (for example, noise) may also be employed
+for either carriers or modulators. The more complex the signalling
+system, then the more difficult it is to predict the outcome of
+the instrument.</FONT></P>
+
+<P><FONT FACE="Times New Roman">There are two variants of amplitude
+modulation: classic Amplitude Modulation (AM) and Ring Modulation
+(RM).</FONT></P>
+
+<P><FONT FACE="Times New Roman">In AM (Figure 1), the output from
+the modulator is added to an offset amplitude value. See example
+<B>am.orc/sco</B> on the accompanying CD-ROM.</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">&nbsp;<IMG SRC="figures/01.gif"
+HEIGHT="322" WIDTH="297" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></B></P>
+
+<P><B><FONT FACE="Times New Roman">Figure 1: Classic Amplitude
+Modulation</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">Note that, if there is no modulation,
+then the amplitude of the carrier would be equal to this offset
+value. The amplitude of the modulator is specified by an amount
+of the offset amplitude value (<B>ac</B>) in relation to a modulation
+index (<B>mi</B>): <B>am = ac*mi</B>. If the modulation index
+is equal to zero then there is no modulation, but if it is higher
+than zero, then the carrier wave will take an envelope with a
+sinusoidal variation. Example:</FONT></P>
+
+<P><FONT FACE="Courier New">;===========================<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">instr</A>
+1<BR>
+;p4 = modulation index (mi)<BR>
+;p5 = modulator frequency (fm)<BR>
+;p6 = carrier amplitude (ac)<BR>
+;p7 = carrier frequency (fc)<BR>
+;<BR>
+am = p4*p6 ;modulator amplitude (am)<BR>
+kenv <A HREF="../../references/manual_html/sigmod/linen.htm">linen</A>
+1,0.1,p3,0.05<BR>
+amod <A HREF="../../references/manual_html/siggen/oscil.htm">oscili</A>
+am,p5,1<BR>
+acar <A HREF="../../references/manual_html/siggen/oscil.htm">oscili</A>
+amod+p6,p7,1<BR>
+<A HREF="../../references/manual_html/sigio/in.htm">outs</A> acar*kenv,acar*kenv<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">endin</A><BR>
+;===========================</FONT></P>
+
+<P><FONT FACE="Times New Roman">In simple _AM, the spectrum of
+the resulting signal contains energy at 3 frequencies: the frequency
+of the carrier (<B>fc</B>) plus two sidebands (<B>fc-fm </B>and<B>
+fc+fm</B>, respectively). The amplitude of the carrier frequency
+remains unchanged, whilst the amplitudes of the sidebands are
+calculated as follows: <B>ac*(0.5*mi)</B>. For example, when <B>mi=1</B>,
+the sidebands will have 50% of the amplitude of the carrier (Figure
+2).</FONT></P>
+
+<P><FONT FACE="Times New Roman">&nbsp;<IMG SRC="figures/2.gif"
+HEIGHT="193" WIDTH="324" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><FONT FACE="Times New Roman">&nbsp;<B>Figure 2: The resulting
+spectrum of simple AM</B></FONT></P>
+
+<P><FONT FACE="Times New Roman">In RM the amplitude of the carrier
+is entirely determined by the modulator signal alone. Thus if
+there is no modulation, then there is no sound (Figure 3). Example:</FONT></P>
+
+<P><FONT FACE="Courier New">;===========================<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">instr</A>
+1<BR>
+;p4 = modulator amplitude (am)<BR>
+;p5 = modulator frequency (fm)<BR>
+;p6 = carrier frequency (fc)<BR>
+;<BR>
+kenv <A HREF="../../references/manual_html/sigmod/linen.htm">linen</A>
+p4,0.1,p3,0.05<BR>
+amod <A HREF="../../references/manual_html/siggen/oscil.htm">oscili</A>
+kenv,p5,1<BR>
+acar <A HREF="../../references/manual_html/siggen/oscil.htm">oscili</A>
+amod,p6,1<BR>
+<A HREF="../../references/manual_html/sigio/in.htm">outs</A> acar,acar<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">endin</A><BR>
+;===========================</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/3.gif" HEIGHT="314"
+WIDTH="143" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">Figure 3: Ring Modulation</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">In simple RM (i.e. both signals
+are sinewaves), the resulting spectrum contains energy only at
+the sidebands (i.e. <B>fc-fm </B>and<B> fc+fm</B>); the frequency
+of the carrier wave will not be present. RM therefore may alter
+the pitch of the carrier signal. For instance, if <B>fc=440 </B>Hz
+and<I> </I><B>fm=110</B> Hz, then the instrument will produce
+two sidebands of 330 Hz and<I> </I>550 Hz respectively. In RM
+the energy of the modulator signal is split between the two resulting
+sidebands (Figure 4). As there is no fundamental frequency in
+the resulting spectrum, the sounds of RM usually do not have a
+strong sensation of pitch. See example <B>rm.orc/sco</B> on the
+accompanying CD-ROM.</FONT></P>
+
+<P><FONT FACE="Times New Roman">RM may also be achieved by the
+multiplication of two signals. The multiplication of two sounds
+results in a spectrum containing frequencies that are the sum
+and difference between the frequencies of each component in the
+first sound, and those of each component in the second.</FONT></P>
+
+<P>&nbsp;</P>
+
+<P><I><FONT FACE="Times New Roman">&nbsp;<IMG SRC="figures/4.gif"
+HEIGHT="154" WIDTH="296" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></I></P>
+
+<P><B><FONT FACE="Times New Roman">Figure 4: The resulting spectrum
+of simple RM</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">Both AM and RM can use signals
+other than sinusoids, applying the same principles discussed above.
+In any case, great care must be taken in order to avoid foldover
+distortion (i.e. generation of frequencies above 50% of the sampling
+rate); note that the highest frequencies of the two sounds will
+be additive.</FONT></P>
+
+<H2><FONT FACE="Times New Roman">Physical Modeling: <I>Recirculating
+Wavetable</I></FONT></H2>
+
+<P><FONT FACE="Times New Roman">The Recirculating Wavetable uses
+a time-varying table-lookup to simulate the behavior of a vibrating
+medium. The basic functioning of this method starts with a table-lookup
+of a fixed length, filled with random samples. In this case, the
+table functions as a queue of sample values, rather than as a
+fixed array, as in the case of a simple oscillator. As samples
+are output from the right side of the queue, they are processed
+according to a certain algorithm, and the result is fed back to
+the left side (Figure 5). The algorithm for processing the samples
+defines the nature of the simulation; for example, cellular automata
+(Miranda (forthcoming) 1998).</FONT></P>
+
+<P><FONT FACE="Times New Roman">Although this method does not
+bear strong physical resemblance to the medium being modeled,
+its functioning does resemble the way in which sounds produced
+by most acoustic instruments evolve: they converge from a highly
+disorganized distribution of partials (characteristic of the initial
+noise components of the attack of a note) to oscillatory patterns
+(characteristic of the sustained part of a note).</FONT></P>
+
+<P>&nbsp;</P>
+
+<P>&nbsp;</P>
+
+<P><FONT FACE="Times New Roman">&nbsp;<IMG SRC="figures/5.gif"
+HEIGHT="153" WIDTH="442" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">Figure 5: The Recirculating
+Wavetable technique</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">The Karplus-Strong algorithm is
+a classic example of Recirculating Wavetable. The algorithm, devised
+by Kevin Karplus and Alex Strong, averages the current output
+sample of a delay line with the preceding one (as in a low-pass
+filter), and feeds the result back at the end of the delay queue.
+Note that, in this case, the delay line and the wavetable (or
+table-lookup) are the same thing.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The following example illustrates
+the implementation of a standard Karplus-Strong algorithm devised
+by Russel Pinkston:</FONT></P>
+
+<P><FONT FACE="Courier New">;===========================<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">instr</A>
+1<BR>
+;p4 = amplitude<BR>
+;p5 = pitch<BR>
+;<BR>
+icps = <A HREF="../../references/manual_html/pchcnv/octpch.htm">cpspch</A>(p5)<BR>
+asig <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+0<BR>
+kcount <A HREF="../../references/manual_html/syntax/assign.htm">init</A>
+1/icps*kr ;loop counter<BR>
+;----------------------<BR>
+adel <A HREF="../../references/manual_html/sigmod/delayr.htm">delayr</A>
+1/icps ;length od delay <A HREF="../../references/manual_html/siggen/line.htm">line</A>
+is 1/cps<BR>
+asig <A HREF="../../references/manual_html/sigmod/port.htm">tone</A>
+adel,sr/2 ;filter output of delay<BR>
+<A HREF="../../references/manual_html/pgmctl/igoto.htm">if</A>
+(kcount &lt; 0) kgoto continue<BR>
+;----------------------<BR>
+kloop: ;firstly fill delay <A HREF="../../references/manual_html/siggen/line.htm">line</A>
+with noise<BR>
+asig <A HREF="../../references/manual_html/siggen/rand.htm">rand</A>
+p4,-1<BR>
+kcount = kcount-1 ;decrement loop counter<BR>
+;----------------------<BR>
+continue:<BR>
+<A HREF="../../references/manual_html/sigmod/delayr.htm">delayw</A>
+asig<BR>
+<A HREF="../../references/manual_html/pgmctl/igoto.htm">if</A>
+(kcount &gt;= 0) kgoto kloop<BR>
+<A HREF="../../references/manual_html/sigio/in.htm">outs</A> asig,
+asig<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">endin</A><BR>
+;===========================</FONT></P>
+
+<P><FONT FACE="Times New Roman">It firstly fills a delay line
+with noise</FONT></P>
+
+<P><I><FONT FACE="Courier New">kloop:<BR>
+asig <A HREF="../../references/manual_html/siggen/rand.htm">rand</A>
+p4,-1<BR>
+kcount = kcount-1<BR>
+...<BR>
+<A HREF="../../references/manual_html/sigmod/delayr.htm">delayw</A>
+asig<BR>
+<A HREF="../../references/manual_html/pgmctl/igoto.htm">if</A>
+(kcount &gt;=0) kgoto kloop</FONT></I></P>
+
+<P><FONT FACE="Times New Roman">then it feeds the output of the
+delay line through a first-order LPF (Csound's <I>tone</I>)</FONT></P>
+
+<P><I><FONT FACE="Courier New">adel <A HREF="../../references/manual_html/sigmod/delayr.htm">delayr</A>
+1/icps<BR>
+asig <A HREF="../../references/manual_html/sigmod/port.htm">tone</A>
+adel,sr/2<BR>
+...<BR>
+out asig</FONT></I></P>
+
+<P><FONT FACE="Times New Roman">and feeds the result back into
+the delay line. The pitch of the sound (<I>icps=<A HREF="../../references/manual_html/pchcnv/octpch.htm">cpspch</A>(p5)</I>)
+determines the length of the delay <A HREF="../../references/manual_html/siggen/line.htm">line</A>
+(<I>adel delay 1/icps</I>). See example <B>pinkston.orc/sco</B>
+on the accompanying CD-ROM.</FONT></P>
+
+<P><FONT FACE="Times New Roman">This technique produces simulations
+of the sound of a plucked string. The &quot;pluck&quot; effect
+is _achieved by gradually removing the high frequency components
+from the signal that is fed back into the delay line. The signal
+bursts with a loud, bright percussive-like quality, then it darkens
+and turns into a simpler sinusoidal type of sound. The decay of
+the sound is normally dependent upon the size of the wavetable,
+but it is possible to control the decay length by adding time-stretching
+mechanisms to the original algorithm; several variations on the
+original Karplus-Strong technique have been developed in order
+to produce effects other than the plucked-string effect. For example,
+simulations of drum-like timbres can be achieved by inverting
+the sign of a few output samples, according to a probability factor.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Complex Physical Modeling techniques
+tend to require multiple delay lines, recursive loops and complex
+filtering; such instruments are often complicated to programme.
+For these cases, Csound developers often design add-on units that
+encapsulate specific algorithms. For example, Csound now provides
+<I>pluck</I>, a special unit for the implementation of the Karplus-Strong
+technique. It needs five parameters to function:</FONT></P>
+
+<P><FONT FACE="Times New Roman">1. amplitude (<I>kamp</I>)<BR>
+2. frequency (<I>kcps</I>)<BR>
+3. size of the recirculating table-lookup (<I>icps</I>)<BR>
+4. the nature of the initialization (<I>ifn</I>)<BR>
+5. the type of feedback method (<I>imeth</I>)</FONT></P>
+
+<P><FONT FACE="Times New Roman">The size of the recirculating
+table-lookup is specified in Hz and is usually set equal to the
+frequency value (<I>kcps = icps</I>). The table-lookup can be
+initialized either by means of a random sequence of samples produced
+by the <I>pluck </I>unit itself or by means of a user-defined
+function; to initialize the table with random samples, set <I>ifn=0.<B>
+</B></I>As for the feedback method, Csound offers six algorithms,
+but the simple averaging method, described above, is the most
+commonly used (i.e.,<B><I> </I></B><I>imeth=1</I>). See example
+<B>pluck.orc/sco</B> on the accompanying CD-ROM.</FONT></P>
+
+<H2><FONT FACE="Times New Roman">Spectral Modeling: <I>Additive
+Synthesis</I></FONT></H2>
+
+<P><FONT FACE="Times New Roman">Additive Synthesis functions by
+summing up individually generated partials in order to form a
+specific sound. By partials we refer to any component of a spectrum.
+Musical timbres are composed of a number of partials, including
+harmonic, non-harmonic and noise components. The basic architecture
+of an Additive synthesizer employs a number of oscillators with
+appropriate amplitude and frequency envelope functions for each
+partial (Figure 6).</FONT></P>
+
+<P><FONT FACE="Times New Roman">&nbsp;<IMG SRC="figures/6.gif"
+HEIGHT="435" WIDTH="525" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">Figure 6: The basic architecture
+of an Additive Synthesizer</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">The output from all oscillators
+are added together to obtain the compound sound. Example of a
+simple additive synthesiser:</FONT></P>
+
+<P><FONT FACE="Courier New">;===========================<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">instr</A>
+1<BR>
+;p4 = amplitude<BR>
+;p5 = pitch<BR>
+;---------<BR>
+;partial 1<BR>
+kenv1 expon 1,p3,0.000976<BR>
+a1 <A HREF="../../references/manual_html/siggen/oscil.htm">oscili</A>
+kenv1*p4,p5*0.56,1<BR>
+;---------<BR>
+;partial 2<BR>
+kenv2 expon 0.67,p3*0.9,0.000976<BR>
+a2 <A HREF="../../references/manual_html/siggen/oscil.htm">oscili</A>
+kenv2*p4,p5*0.56+1,1<BR>
+;---------<BR>
+;partial 3<BR>
+kenv3 expon 1,p3*0.65,0.000976<BR>
+a3 <A HREF="../../references/manual_html/siggen/oscil.htm">oscili</A>
+kenv3*p4,p5*0.92,1<BR>
+;---------<BR>
+asig = (a1+a2+a3)/3<BR>
+<A HREF="../../references/manual_html/sigio/in.htm">outs</A> asig,
+asig<BR>
+<A HREF="../../references/manual_html/syntax/iblock.htm">endin</A><BR>
+;===========================</FONT></P>
+
+<P><FONT FACE="Times New Roman">Given enough oscillators and appropriate
+envelopes, this instrument is capable of generating virtually
+any sound. See example <B>add.orc/sco</B> on the accompanying
+CD-ROM.</FONT></P>
+
+<P><FONT FACE="Times New Roman">A more sophisticated Additive
+synthesizer would require dozens of oscillators, noise generators
+and envelope functions in order to produce a satisfactory sound.
+It is very difficult to manage this vast amount of variables,
+and determining values for these parameters is both difficult
+and tedious. Analysis techniques to automatically obtain parameters
+from sampled sounds have been developed to get round this problem.</FONT></P>
+
+<P><FONT FACE="Times New Roman">More sophisticated Spectral Modeling
+techniques work in two stages - analysis and resynthesis - which
+can be performed in a number of ways. The most popular ones use
+the Fast Fourier Transform (FFT) method and a technique known
+as filter inversion to synthesize the partials. In this case,
+a bank of filters is used to extract information about the components
+of a sound. This information is broken down into &quot;filter
+coefficients&quot; that describe the behavior of the individual
+partials of the sound. These coefficients are then stored and
+used to resynthesize the sound using the filter inversion technique.
+Unlike samples, filter coefficients can be easily manipulated
+to create new sounds.</FONT></P>
+
+<H2><FONT FACE="Times New Roman">Conclusion</FONT></H2>
+
+<P><FONT FACE="Times New Roman">Loose Modeling techniques tend
+to bestow their own intrinsic characteristics upon the sounds
+they produce. For example, AM or FM instruments produce a clearly
+identifiable AM or FM sound quality; a simulation of a bell in
+FM always sounds FM-like. There is nothing wrong with this, such
+techniques are useful to produce interesting sounds not necessarily
+found in the &quot;real&quot; acoustic world. Physical Modeling
+techniques tend to favour the design of instruments with strong
+permanence of the sound characteristics of their acoustic counterpart;
+for example, a standard Karplus-Strong instrument will always
+produce a &quot;plucked&quot; string sound. Conversely, Spectral
+Modeling techniques tend to provide the means to manipulate what
+would constitute the character of a timbre; for example, sound-morphing
+effect.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The problem with a computer is
+that its possibilities are limitless. It is an &quot;instrument&quot;
+whose timbre does not exist until a programmer defines its boundaries
+and constraints. We propose that the definition of the boundaries
+of abstraction and constraints must involve the specification
+of a strong synthesis criterion that maintains tangible common
+characteristics but allows variations to emerge. In this case,
+Physical Modeling techniques, being inherently more compatible
+with Schaeffer's notion, discussed above, tend to produce more
+plausible instruments.</FONT></P>
+
+<H2><FONT FACE="Times New Roman">References</FONT></H2>
+
+<P><FONT FACE="Times New Roman">Dodge, C. and Jerse, C., 1985,
+<I>Computer Music</I>, New York:Schirmer Books.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Miranda, E. R., (forthcoming)
+1998, <I>Computer Sound Synthesis for the Electronic Musician</I>,
+Oxford/UK:Focal Press.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Roads, C., 1996, <I>The Computer
+Music Tutorial</I>, Cambridge/MA:The MIT Press.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Russ, M., 1996, <I>Sound Synthesis
+and Sampling</I>, Oxford/UK:Focal Press.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Schaeffer, P., 1966, <I>Trait_
+des objets musicaux</I>, Paris:Edition du Seuil.</FONT>
+
+</BODY>
+</HTML>

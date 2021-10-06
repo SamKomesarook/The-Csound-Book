@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>lowpass2</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="vlowres.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="biquad.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>lowpass2</h2>
+<pre>
+  ar      <strong>lowpass2</strong>   asig, kcf, kq[, iskip]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Implementation of resonant second-order lowpass filter.</p>
+<h3>Initialization</h3>
+<p><em>iskip</em> &#8211; initial disposition of internal data space. A zero value will clear the space; a non-zero value will allow previous information to remain. The default value is 0.</p>
+
+<h3>Performance</h3>
+<p><em>asig</em> &#8211; input signal to be filtered</p>
+
+<p><em>kcf</em> &#8211; cutoff or resonant frequency of the filter, measured in Hz</p>
+
+<p><em>kq</em> &#8211; Q of the filter, defined, for bandpass filters, as bandwidth/cutoff. <em>kq</em> should be between 1 and 500</p>
+
+<p><strong>lowpass2</strong> is a second order IIR lowpass filter, with k-rate controls for cutoff frequency (<em>kcf</em>) and Q (<em>kq</em>). As <em>kq</em> is increased, a resonant peak forms around the cutoff frequency, transforming the lowpass filter response into a response that is similar to a bandpass filter, but with more low frequency energy. This corresponds to an increase in the magnitude and &quot;sharpness&quot; of the resonant peak. For high values of <em>kq</em>, a scaling function such as <strong>balance</strong> may be required. In practice, this allows for the simulation of the voltage-controlled filters of analog synthesizers, or for the creation of a pitch of constant amplitude while filtering white noise.</p>
+
+<h3>Example</h3>
+<pre>
+; Orchestra file for resonant filter sweep of a sawtooth-like waveform.
+  <strong>sr</strong>      = 44100
+  <strong>kr</strong>      = 2205
+  <strong>ksmps</strong>   = 20
+  <strong>nchnls</strong>  = 1
+
+          <strong>instr</strong> 1
+
+  idur    =          p3
+  ifreq   =          p4
+  iamp    =          p5 * .5
+  iharms  =          (sr*.4) / ifreq
+
+; Sawtooth-like waveform
+  asig    <strong>gbuzz</strong>      1, ifreq, iharms, 1, .9, 1
+
+; Envelope to control filter cutoff 
+  kfreq   <strong>linseg</strong>     1, idur * 0.5, 5000, idur * 0.5, 1
+
+  afilt   <strong>lowpass2</strong>   asig, kfreq, 30
+
+; Simple amplitude envelope
+  kenv    <strong>linseg</strong>     0, .1, iamp, idur -.2, iamp, .1, 0 
+          <strong>out</strong>        asig * kenv
+
+          <strong>endin</strong>
+
+
+; Score file for above
+  f1 0 8192 9 1 1 .25
+
+  i1 0 5 100 1000
+  i1 5 5 200 1000
+  <strong>e</strong>
+</pre>
+
+<h3>Author</h3>
+<p>
+Sean Costello<br>
+Seattle, Washington
+August, 1999<br>
+New in Csound version 4.0
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="vlowres.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="biquad.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</font></a>
+</body>
+
+</html>

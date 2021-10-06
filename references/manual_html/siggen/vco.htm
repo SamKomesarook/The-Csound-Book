@@ -1,0 +1,126 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>vco</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="buzz.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="mpulse.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#dynspecoscils" class="toqr">
+Signal Generators: Dynamic Spectrum Oscillators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>vco</h2>
+
+
+<pre>
+  ar      <strong>vco</strong>        kamp, kfqc[, iwave][, ipw][, ifn][, imaxd]</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Implementation of a band limited, analog modeled oscillator, based on integration of band limited impulses. <strong>vco</strong> can be used to simulate a variety of analog wave forms. Last four arguments were made optional in Csound Version 4.16.
+</p>
+<h3>Initialization</h3>
+<p><em>iwave</em> (optional) &#8211; determines the waveform:
+</p>
+<ul>
+<li><em>iwave</em> = 1 - sawtooth</li>
+<li><em>iwave</em> = 2 - Square/PWM</li>
+<li><em>iwave</em> = 3 - triangle/Saw/Ramp</li>
+</ul>
+<p><em>iwave</em> defaults to 1.</p>
+<p><em>ipw</em> (optional) &#8211; determines the pulse width when <em>iwave</em> is set to 2, and determines Saw/Ramp character when <em>iwave</em> is set to 3. The value of <em>ipw</em> should be between 0 and 1. A value of .5 will generate a square wave or a triangle wave depending on <em>iwave</em>. Default is 1.
+</p>
+<p><em>ifn</em> (optional) &#8211; the table number of a of a stored sine wave. Default is 1.
+</p>
+<p><em>imaxd</em> (optional) &#8211; is the maximum delay time. A time of 1/ifqc may be required for the pwm and triangle waveform. To bend the pitch down this value must be as large as 1/(minimum frequency). Default is 1.
+</p>
+
+<h3>Performance</h3>
+<p><em>kamp</em> &#8211; determines the amplitude
+</p>
+<p><em>kfqc</em> &#8211; is the frequency of the wave
+</p>
+
+<h3>Example</h3>
+
+<pre>
+<strong>instr</strong> 10
+  idur    = p3               ; Duration
+  iamp    = p4               ; Amplitude
+  ifqc    = cpspch(p5)       ; Frequency
+  iwave   = p6               ; Selected wave form 1=Saw, 2=Square/PWM, 3=Tri/Saw-Ramp-Mod
+  isine   = 1
+  imaxd   = 1/ifqc*2         ; Allows pitch bend down of two octaves
+  
+  kpw1    <strong>oscil</strong> .25, ifqc/200, 1
+  kpw     =     kpw1 + .5
+  asig    <strong>vco</strong>   iamp, ifqc, iwave, kpw, 1, imaxd
+          <strong>outs</strong>   asig, asig   ;Output and amplification
+endin
+
+
+f1 0 65536 10 1
+  ; Sta Dur Amp Pitch Wave
+  i10 0 2 20000 5.00 1
+  i10 + . . . 2
+  i10 . . . . 3
+  i10 . 2 20000 7.00 1
+  i10 . . . . 2
+  i10 . . . . 3
+  i10 . 2 20000 9.00 1
+  i10 . . . . 2
+  i10 . . . . 3
+  i10 . 2 20000 11.00 1
+  i10 . . . . 2
+  i10 . . . . 3
+e
+</pre>
+
+
+
+
+
+
+
+
+
+<h3>Author</h3>
+<p>Hans Mikelson<br>
+December, 1998 (New in Csound version 3.50)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="buzz.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="mpulse.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#dynspecoscils" class="toqr">
+Signal Generators: Dynamic Spectrum Oscillators</font></a>
+</body>
+
+</html>

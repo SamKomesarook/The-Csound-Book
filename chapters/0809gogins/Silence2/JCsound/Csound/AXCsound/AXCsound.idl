@@ -1,0 +1,103 @@
+#include <olectl.h>
+// AXCsound.idl : IDL source for AXCsound.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (AXCsound.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(018CD11C-20DE-11D2-917D-00A0CC30C276),
+		dual,
+		helpstring("IAXCsound Interface"),
+		pointer_default(unique)
+	]
+	interface IAXCsound : IDispatch
+	{
+		[propput, id(DISPID_AUTOSIZE)]
+		HRESULT AutoSize([in]VARIANT_BOOL vbool);
+		[propget, id(DISPID_AUTOSIZE)]
+		HRESULT AutoSize([out,retval]VARIANT_BOOL* pbool);
+		[propput, id(DISPID_CAPTION)]
+		HRESULT Caption([in]BSTR strCaption);
+		[propget, id(DISPID_CAPTION)]
+		HRESULT Caption([out,retval]BSTR* pstrCaption);
+		//	Real-time control.
+		[id( 1), helpstring("method Play")] HRESULT Play();
+		[id( 2), helpstring("method Pause")] HRESULT Pause();
+		[id( 3), helpstring("method Resume")] HRESULT Resume();
+		[id( 4), helpstring("method Stop")] HRESULT Stop();
+		//	Files.
+		[id( 5), helpstring("method Open")] HRESULT Open(BSTR Filename);
+		[id( 6), helpstring("method Import")] HRESULT Import(BSTR Filename);
+		[id( 7), helpstring("method Save")] HRESULT Save(BSTR Filename);
+		[id( 8), helpstring("method Export")] HRESULT Export(BSTR Filename);
+		[id( 9), helpstring("method OpenSound")] HRESULT OpenSound();
+		//	Properties.
+		[propget, id(10), helpstring("property Filename")] HRESULT Filename([out, retval] BSTR *pVal);
+		[propput, id(10), helpstring("property Filename")] HRESULT Filename([in] BSTR newVal);
+		[propget, id(11), helpstring("property Command")] HRESULT Command([out, retval] BSTR *pVal);
+		[propput, id(11), helpstring("property Command")] HRESULT Command([in] BSTR newVal);
+		[propget, id(12), helpstring("property OrcFilename")] HRESULT OrcFilename([out, retval] BSTR *pVal);
+		[propget, id(13), helpstring("property ScoFilename")] HRESULT ScoFilename([out, retval] BSTR *pVal);
+		[propget, id(14), helpstring("property MidiFilename")] HRESULT MidiFilename([out, retval] BSTR *pVal);
+		[propget, id(15), helpstring("property OutputSoundfileName")] HRESULT OutputSoundfileName([out, retval] BSTR *pVal);
+		[propget, id(16), helpstring("property Score")] HRESULT Score([out, retval] BSTR *pVal);
+		[propput, id(16), helpstring("property Score")] HRESULT Score([in] BSTR newVal);
+		[propget, id(17), helpstring("property ScoreLine")] HRESULT ScoreLine([in] long Index, [out, retval] BSTR *pVal);
+		[propput, id(17), helpstring("property ScoreLine")] HRESULT ScoreLine([in] long Index, [in] BSTR newVal);
+		[id(18), helpstring("method AddScoreLine")] HRESULT AddScoreLine(BSTR Note);
+		[id(19), helpstring("method AddNote10")] HRESULT AddNote10(double p1, double p2, double p3, double p4, double p5, double p6, double p7, double p8, double p9, double p10);
+		[id(20), helpstring("method AddNote9")] HRESULT AddNote9(double p1, double p2, double p3, double p4, double p5, double p6, double p7, double p8, double p9);
+		[id(21), helpstring("method AddNote8")] HRESULT AddNote8(double p1, double p2, double p3, double p4, double p5, double p6, double p7, double p8);
+		[id(22), helpstring("method AddNote7")] HRESULT AddNote7(double p1, double p2, double p3, double p4, double p5, double p6, double p7);
+		[id(23), helpstring("method AddNote6")] HRESULT AddNote6(double p1, double p2, double p3, double p4, double p5, double p6);
+		[id(24), helpstring("method AddNote5")] HRESULT AddNote5(double p1, double p2, double p3, double p4, double p5);
+		[id(25), helpstring("method AddNote4")] HRESULT AddNote4(double p1, double p2, double p3, double p4);
+		[id(26), helpstring("method AddNote3")] HRESULT AddNote3(double p1, double p2, double p3);
+		[propget, id(27), helpstring("property ScoreLineCount")] HRESULT ScoreLineCount([out, retval] long *pVal);
+		[propput, id(27), helpstring("property ScoreLineCount")] HRESULT ScoreLineCount([in] long newVal);
+		[propget, id(28), helpstring("property Orchestra")] HRESULT Orchestra([out, retval] BSTR *pVal);
+		[propput, id(28), helpstring("property Orchestra")] HRESULT Orchestra([in] BSTR newVal);
+		[id(29), helpstring("method RemoveAll")] HRESULT RemoveAll();
+		[id(30), helpstring("method RemoveCommand")] HRESULT RemoveCommand();
+		[id(31), helpstring("method RemoveOrchestra")] HRESULT RemoveOrchestra();
+		[id(32), helpstring("method RemoveScore")] HRESULT RemoveScore();
+		[id(33), helpstring("method RemoveScoreExceptFunctions")] HRESULT RemoveScoreExceptFunctions();
+		[id(34), helpstring("method UpdateView")] HRESULT UpdateView();
+	};
+
+[
+	uuid(018CD10F-20DE-11D2-917D-00A0CC30C276),
+	version(1.0),
+	helpstring("AXCsound 1.0 Type Library")
+]
+library AXCSOUNDLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(3DE31672-D1A4-11D2-ACCC-005004052BF7),
+		helpstring("_IAXCsoundEvents Interface")
+	]
+	dispinterface _IAXCsoundEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("method UpdateView")] HRESULT UpdateView();
+	};
+
+	[
+		uuid(018CD11D-20DE-11D2-917D-00A0CC30C276),
+		helpstring("AXCsound Class")
+	]
+	coclass AXCsound
+	{
+		[default] interface IAXCsound;
+		[default, source] dispinterface _IAXCsoundEvents;
+	};
+};

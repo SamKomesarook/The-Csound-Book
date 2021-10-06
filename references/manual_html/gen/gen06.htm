@@ -1,0 +1,73 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN06</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen05.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen08.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#line" class="toqr">
+<strong>GEN</strong> Routines: Line/Exponential Segment Generators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN06</h2>
+
+<pre>
+  <strong>f</strong>  #   time   size   6   a   n1   b   n2   c   n3   d .  .  .  
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This subroutine will generate a function comprised of segments of cubic polynomials, spanning specified points just three at a time.
+</p>
+<h3>Initialization</h3>
+<p><em>size</em> &#8211; number of points in the table. Must be a power off or power-of-2 plus 1 (see <a href="../score/f.htm"><strong>f statement</strong></a>).
+</p>
+<p><em>a, c, e, ...</em> &#8211; local maxima or minima of successive segments, depending on the relation of these points to adjacent inflexions. May be either positive or negative.
+</p>
+<p><em>b, d, f, ...</em> &#8211; ordinate values of points of inflexion at the ends of successive curved segments. May be positive or negative.
+</p>
+<p><em>n1, n2, n3...</em> &#8211; number of stored values between specified points. Cannot be negative, but a zero is meaningful for specifying discontinuities. The sum <em>n1</em> + <em>n2</em> + ... will normally equal size for fully specified functions. (for details, see <a href="GEN05.htm"><strong>GEN05</strong></a>).
+</p>
+<h3>Note </h3>
+<p><strong>GEN06</strong> constructs a stored function from segments of cubic polynomial functions. Segments link ordinate values in groups of 3: point of inflexion, maximum/minimum, point of inflexion. The first complete segment encompasses <em>b</em>, <em>c</em>, <em>d</em> and has length <em>n2</em> + <em>n3</em>, the next encompasses <em>d</em>, <em>e</em>, <em>f</em> and has length <em>n4</em> + <em>n5</em>, etc. The first segment (<em>a</em>, <em>b</em> with length <em>n1</em>) is partial with only one inflexion; the last segment may be partial too. Although the inflexion points <em>b</em>, <em>d</em>, <em>f</em> ... each figure in two segments (to the left and right), the slope of the two segments remains independent at that common point (i.e. the 1st derivative will likely be discontinuous). When <em>a</em>, <em>c</em>, <em>e</em>... are alternately maximum and minimum, the inflexion joins will be relatively smooth; for successive maxima or successive minima the inflexions will be comb-like.
+</p>
+<h3>Example</h3>
+<pre>  <strong>f</strong>    1    0    65    6   0   16   .5    16   1   16   0   16   -1  </pre>
+<p>This creates a curve running 0 to 1 to -1, with a minimum, maximum and minimum at these values respectively. Inflexions are at .5 and 0, and are relatively smooth.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen05.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen08.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#line" class="toqr">
+<strong>GEN</strong> Routines: Line/Exponential Segment Generators</font></a>
+</body>
+
+</html>

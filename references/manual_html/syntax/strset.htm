@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>strset, pset</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="header.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="seed.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm#header">Orchestra Syntax: Orchestra Header Statements</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>strset, pset</h2>
+<pre>
+          <strong>strset</strong>   iarg, &quot;stringtext&quot;
+          <strong>pset       </strong>con1, con2, ...
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Allow certain global parameters to be initialized at orchestra load time, rather than instrument initialization or performance time.</p>
+
+<h3>Initialization</h3>
+<p><em>iarg</em> &#8211; numeric value to be associated with an alphanumeric string</p>
+<p><em>con1</em>, <em>con2</em>, etc. &#8211; preset values for a MIDI instrument</p>
+<p><strong>strset</strong> (optional) allows a string, such as a filename, to be linked with a numeric value. Its use is optional.</p>
+<p><strong>pset</strong> (optional) defines and initializes numeric arrays at orchestra load time. It may be used as an orchestra header statement (i.e. instrument 0) or within an instrument. When defined within an instrument, it is not part of its i-time or performance operation, and only one statement is allowed per instrument. These values are available as i-time defaults. When an instrument is triggered from MIDI it only gets p1 and p2 from the event, and p3, p4, etc. will receive the actual preset values.</p>
+
+<h3>Examples</h3>
+
+<p>The following statement, used in the orchestra header, will allow the numeric value 10 to substituted anywhere the soundfile <em>asound.wav</em> is called for.</p>
+
+<pre>
+  <strong>strset</strong> 10, &quot;asound.wav&quot;
+</pre>
+<p>The example below illustrates <strong>pset</strong> as used within an instrument.</p>
+<pre>
+<strong>instr</strong> 1
+      <strong>pset</strong>  0,0,3,4,5,6     ; pfield substitutes
+  a1  <strong>oscil</strong>  10000, 440, p6
+</pre>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="header.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="seed.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/orch.htm#header">Orchestra Syntax: Orchestra Header Statements</font></a>
+</body>
+</html>

@@ -1,0 +1,294 @@
+Release Notes for 4.19
+======================
+
+Mainly internal changes, especially related to globals.  Some code
+removed as never used and other internal tidying.  Too numerous to
+list.
+
+
+Bug Fixes
+---------
+
+A typo in piped output fixed
+
+More than 20 #includes now correct
+
+Language Changes
+----------------
+
+It is possible to have more x-rate arguments (hardly used yet)
+
+Added long options and removed -- option.  See below
+(Linux only) added --sched option
+
+The vcomb and vallpas opcodes have a x-rate second argument
+
+vco has 3 additional optional arguments
+
+dnoise added to utilities, and may work in 64bit mode
+
+
+Opcode Fixes
+------------
+
+sfont now skips unknown chunks
+
+vbapz was plain wrong
+
+vbap family corrected for krate of 1 and other problems;; also code
+improved.
+
+sense/sensekey now work in Lunux 
+
+New Opcodes 
+-----------
+
+wterrain -- wave terrain synthesis opcode
+
+New Gens
+--------
+
+Gen22 renamed gen18 to avoid clash with DirectCsound usage
+
+Gen33/34 added
+
+
+Other Changes:
+-------------
+
+An error message in pluck was the wrong string
+
+**INTERNAL** many globals have been moved to a single global structure
+
+**INTERNAL** changes to error recovery
+
+
+Known Bugs
+==========
+
+The following bugs are known but not yet fixed 9still!)
+
+6: PVOC can glitch (mail of Mon, 19 Jun 2000 00:45:23 +0200)
+8. Spaces in arguments to opcodes can be ignored, giving oddities
+9. Mismatched closing bracket can give crash (mail of Fri, 19 Oct 2001
+   19:00:56 +0100) 
+
+
+Windows GUI Changes
+-------------------
+
+Attempts to stop the crash on exit, but still not right.
+
+-----------------------------------------------------------------------
+==John ff
+
+========================================================================
+LONG OPTIONS
+
+--format={alaw,ulaw,schar,uchar,float,short,long,24bit,rescale}	 Set sound type
+--aiff			Set AIFF format
+--wave			Set WAV format
+--ircam			Set IRCAM format
+--noheader		Raw format
+--nopeaks		Do not write peak information
+
+--nodisplays		suppress all displays
+--asciidisplay		suppress graphics, use ascii displays
+--postscriptdisplay	suppress graphics, use Postscript displays
+
+--defer-gen1		defer GEN01 soundfile loads until performance time
+--iobufsamps=N		sample frames (or -kprds) per software sound I/O buffer
+--hardwarebufsamps=N	samples per hardware sound I/O buffer
+--cscore		use Cscore processing of scorefile
+
+--midifile=FNAME	read MIDIfile event stream from file
+--midi-device=FNAME	read MIDI realtime events from device
+--terminate-on-midi	terminate the performance when miditrack is done
+
+--heartbeat=N		print a heartbeat style 1, 2 or 3 at each soundfile write
+--notify		notify (ring the bell) when score or miditrack is done
+--rewrite		continually rewrite header while writing soundfile (WAV/AIFF)
+
+--input=FNAME		sound input filename
+--output=FNAME		sound output filename
+--logfile=FNAME		log output to file
+
+--nosound		no sound onto disk or device
+--tempo=N		use uninterpreted beats of the score, initially at tempo N
+--i-only		I-time only orch run
+--control-rate=N	orchestra krate overrid
+--sample-rate=N		orchestra srate override
+--score-in=FNAME	read Line-oriented realtime score events from device
+--messagelevel=N	tty message level. Sum of: 1=note amps, 2=out-of-range msg, 4=warnings
+
+
+--extract-score=FNAME	extract from score.srt using extract file
+--keep-sorted-score
+--utility=NAME		run utility program
+--verbose		verbose orch translation
+--list-opcodes		List opcodes in this version
+--list-opcodesN		List opcodes in style N in this version
+--dither		Dither output
+--sched			set real-time priority and lock memory
+
+--help			Long help
+------------------------------------------------------------------------
+
+GEN33, GEN34
+============
+
+f # time size  33  src nh scl [fmode]
+f # time size  34  src nh scl [fmode]
+
+DESCRIPTION
+===========
+
+These routines generate composite waveforms by mixing simple sinusoids,
+similarly to GEN09, but the parameters of the partials are specified in
+an already existing table, which makes it possible to calculate any
+number of partials in the orchestra.
+The difference between GEN33 and GEN34 is that GEN33 uses inverse FFT
+to generate output, while GEN34 is based on the algorithm used in
+oscils opcode. GEN33 allows integer partials only, and does not support
+power of two plus 1 table size, but may be significantly faster with a
+large number of partials. On the other hand, with GEN34, it is possible
+to use non-integer partial numbers and extended guard point, and this
+routine may be faster if there is only a small number of partials (note
+that GEN34 is also several times faster than GEN09, although the latter
+may be more accurate).
+
+INITIALIZATION
+==============
+
+size - number of points in the table. Must be power of two (GEN33 and
+GEN34), or power of two plus 1 (GEN34 only), and in the case of GEN33,
+at least 4.
+
+src - source table number. This table contains the parameters of each
+  partial in the following format:
+    stra, pna, phsa, strb, pnb, phsb, ...
+  the parameters are:
+    stra, strb, etc.: relative strength of partials. The actual
+                      amplitude depends on the value of scl, or
+                      normalization (if enabled).
+    pna, pnb, etc.:   partial number, or frequency, depending on fmode
+                      (see below); zero and negative values are
+                      allowed, however, if the absolute value of the
+                      partial number exceeds (size / 2), the partial
+                      will not be rendered. With GEN33, partial number
+                      is rounded to the nearest integer.
+    phsa, phsb, etc.: initial phase, in the range 0 to 1.
+  Table length (not including the guard point) should be at least
+  3 * nh. If the table is too short, the number of partials (nh) is
+  reduced to (table length) / 3, rounded towards zero.
+
+nh - number of partials. Zero or negative values are allowed, and
+  result in an empty table (silence). The actual number may be reduced
+  if the source table (src) is too short, or some partials have too
+  high frequency.
+
+scl - amplitude scale.
+
+fmode - (optional, defaults to 0) a non-zero value can be used to set
+  frequency in Hz instead of partial numbers in the source table.
+  The sample rate is assumed to be fmode if it is positive, or
+  -(sr * fmode) if any negative value is specified.
+
+EXAMPLE
+=======
+
+; partials 1, 4, 7, 10, 13, 16, etc. with base frequency of 400 Hz
+
+ibsfrq  =  400
+; estimate number of partials
+inumh   =  int(1.5 + sr * 0.5 / (3 * ibsfrq))
+; source table length
+isrcln  =  int(0.5 + exp(log(2) * int(1.01 + log(inumh * 3) / log(2))))
+; create empty source table
+itmp    ftgen 1, 0, isrcln, -2, 0
+ifpos   =  0
+ifrq    =  ibsfrq
+inumh   =  0
+l1:
+        tableiw ibsfrq / ifrq, ifpos, 1         ; amplitude
+        tableiw ifrq, ifpos + 1, 1              ; frequency
+        tableiw 0, ifpos + 2, 1                 ; phase
+ifpos   =  ifpos + 3
+ifrq    =  ifrq + ibsfrq * 3
+inumh   =  inumh + 1
+        if (ifrq < (sr * 0.5)) igoto l1
+
+; store output in ftable 2 (size = 262144)
+
+itmp    ftgen 2, 0, 262144, -34, 1, inumh, 1, -1
+
+AUTHOR
+======
+
+Istvan Varga
+Mar 2002
+
+------------------------------------------------------------------------
+ar vco  xamp, xcps [,iwave] [,kpw] [,isine] [,imaxd] [,ileak] [,inyx]
+[,iphs]
+
+ileak (optional, default = 0) - If ileak is between zero and one (0 < ileak
+< 1) then ileak is used as the leaky integrator value.  Otherwise a leaky
+integrator value of .999 is used for the saw and square waves and .995 is
+used for the triangle wave.  If ileak is not zero   This can be used to
+"flatten" the square wave or "straighten" the saw wave at low frequencies by
+setting ileak to .99999 or a similar value.  This should give a hollower
+sounding square wave.
+
+inyx (optional, default = .5)  This is used to determine the number of
+harmonics in the band limited pulse.  All overtones up to sr*inyx will be
+used.  The default gives sr*.5 (sr/2).  For sr/4 use inyx=.25.  This can
+generate a "fatter" sound in some cases.
+
+iphs (optional, default = 0)  This is a phase value.  There is an artifact
+(bug-like feature) in vco which occurs during the first half cycle of the
+square wave which causes the waveform to be greater in magnitude than all
+others.  The value of iphs has an effect on this artifact.  In particular
+setting iphs to .5 will cause the first half cycle of the square wave to
+resemble a small triangle wave.  This may be more desirable than the large
+wave artifact which is the current default.
+
+Hans Mikelson
+------------------------------------------------------------------------
+aout wterrain  kamp, kpch, k_xcenter, k_ycenter, k_xradius, k_yradius,
+               itabx, itaby
+
+A simple wave-terrain synthesis opcode.
+
+INITIALISATION:
+
+itabx and itaby are two tables which define the terrain
+
+PERFORMANCE:
+
+The output is the result of drawing an ellipse with axies k_xradius
+and k_yradius centered at (k_xcenter, k_ycenter), and traversing it at
+frequency kpch.
+
+EXAMPLE
+
+instr 1
+kdclk	linseg	0, 0.01, 1, p3-0.02, 1, 0.01, 0
+kcx	line	0.1, p3, 1.9
+krx	linseg	0.1, p3/2, 0.5, p3/2, 0.1
+kpch	line	cpspch(p4), p3, p5 * cpspch(p4)
+a1	wter	10000, kpch, kcx, kcx, -krx, krx, p6, p7
+a1      dcblock a1
+	out	a1*kdclk
+endin
+
+f1	0	8192	10	1 0 0.33 0 0.2 0 0.14 0 0.11
+f2	0	4096	10	1 
+
+i1	0	4	7.00 1 1 1
+i1	4	4	6.07 1 1 2
+i1	8	8	6.00 1 2 2
+
+Matthew G
+------------------------------------------------------------------------
+

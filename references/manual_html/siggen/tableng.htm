@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>tableng</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../valcnv/ftlen.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="tablekt.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/table.htm#queries" class="toqr">
+Function Table Control: Table Queries</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>tableng</h2>
+<pre>
+  ir      <strong>tableng</strong>    ifn
+  kr      <strong>tableng</strong>    kfn
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Interrogates a function table for length.</p>
+
+<h3>Initialization</h3>
+<p><em>ifn</em> &#8211; Table number to be interrogated</p>
+
+<h3>Performance</h3>
+<p><em>kfn</em> &#8211; Table number to be interrogated</p>
+
+<p><strong>tableng</strong> returns the length of the specified table. This will be a power of two number in most circumstances. It will not show whether a table has a guardpoint or not. It seems this information is not available in the table's data structure. If the specified table is not found, then 0 will be returned.</p>
+
+<p>Likely to be useful for setting up code for table manipulation operations, such as <a href="tablegpw.htm"><strong>tablemix</strong></a> and <a href="tablegpw.htm"><strong>tablecopy</strong></a>.</p>
+
+<h3>Name Changes</h3>
+<p>As of Csound version 3.52, the name of the opcode <strong>itablegpw</strong> has been changed to <strong>tableng</strong>.</p>
+
+<h3>Author</h3>
+<p>Robin Whittle<br>
+Australia<br>
+May 1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../valcnv/ftlen.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="tablekt.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/table.htm#queries" class="toqr">
+Function Table Control: Table Queries</font></a>
+</body>
+
+</html>

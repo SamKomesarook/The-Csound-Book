@@ -1,0 +1,213 @@
+P       { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 10 pt; 
+          margin-left : 1 em;
+          color : black;
+        } 
+
+P.tabs  { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 8 pt; 
+          color : black;
+          line-height : 1.5;
+          margin-left : .5 em;
+          font-weight : bold;
+        } 
+				
+P.grfx  { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 8 pt; 
+          color : black;
+          line-height : 1.5;
+          margin-left : 0 em;
+          font-weight : bold;
+        } 
+				
+A       { color : black ;
+          text-decoration : underline;
+	      }
+				
+A.toqr  { font-family : "Verdana", "Arial", "Helvetica", "Century Gothic", sans-serif; 
+          font-size : 8 pt; 
+          color : black;
+          text-decoration : none;
+          text-align : left;
+        }
+
+A.tabs  { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 8 pt; 
+          color : black;
+          text-decoration : none;
+	}
+				
+A.con   { font-family : "Andale Mono", "Lucida Console", "Courier New", "Courier", monospace;
+          font-size : 9 pt;
+          color : black;
+          line-height : 1.5;
+          text-decoration : none;
+          text-align : center;
+        }
+				
+A.qr    { font-family : "Andale Mono", "Lucida Console", "Courier New", "Courier", monospace;
+          font-size : 9 pt;
+          color : black;
+          text-decoration : none;
+        }
+        
+A.nolin {text-decoration : none;
+        }
+				
+A.head2 { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 16 pt;
+          font-weight : bold;
+          margin-top : 1 em;
+          margin-bottom : 1 em;
+          color : black;
+        } 
+
+H1      { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 22 pt;
+          font-weight : bold;
+          margin-top : 1 em;
+          margin-bottom : 1 em;
+          color : black;				 
+        } 
+
+H2      { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 16 pt;
+          font-weight : bold;
+          margin-top : 1 em;
+          margin-bottom : 1 em;
+          color : black;
+        } 
+
+H3      { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 12 pt;
+          font-weight : bold;
+          margin-top : 2.5 em;
+          margin-bottom : 1 em;
+          color : black;
+        } 
+
+H4      { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 11 pt;
+          font-weight : bold;
+          margin-top : 1.5 em;
+          margin-bottom : 1 em;
+          color : black;
+        } 
+
+TD      { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 10 pt;
+          color : black;
+        } 
+
+TH      { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif;
+          font-size : 10 pt;
+          color : black;
+          font-weight : bold;
+        } 
+
+TD.qr   { font-family : "Andale Mono", "Lucida Console", "Courier New", "Courier", monospace;
+          font-size : 9 pt;
+          color : black;
+        } 
+
+Strong  { font-weight : bold;
+        }
+
+EM      { font-style : italics;
+        }
+				
+TT      { font-family : "Andale Mono", "Lucida Console", "Courier New", "Courier", monospace;
+          font-size : 10 pt;
+          color : black;
+	}
+				
+TT.eq   { font-family : "Andale Mono", "Lucida Console", "Courier New", "Courier", monospace;
+          font-size : 10 pt;
+          color : black;
+          line-height : 1.5;
+	}
+				
+PRE     { font-family : "Andale Mono", "Lucida Console", "Courier New", "Courier", monospace;
+          font-size : 10 pt;
+          color : black;
+          margin-left : 1 em;
+	}
+				
+PRE.con { font-family : "Andale Mono", "Lucida Console", "Courier New", "Courier", monospace;
+          font-size : 9 pt;
+          color : black;
+        }
+        
+LI      { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 10 pt; 
+          margin-left : 1.5 em;
+          color : black;
+        } 
+
+.alpha { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 14 pt;
+          font-weight : bold;
+          color : black;
+          margin-left : .5 em;
+          text-decoration : none;
+					font-variant : small-caps
+        } 
+
+.toqr  { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 8 pt; 
+          color : black;
+          text-decoration : none;
+          text-align : left;
+        }
+.exp   { vertical-align : super;
+         font-size : smaller;
+       }
+.head1 { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 22 pt;
+          font-weight : bold;
+          font-variant : small-caps;
+          margin-top : 1 em;
+          margin-bottom : 1 em;
+          color : black;
+					text-decoration : none;
+        } 
+.head2  { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 16 pt;
+          font-weight : bold;
+          margin-top : 1 em;
+          margin-bottom : 1 em;
+          color : black;
+					text-decoration : none;
+        } 
+.head4  { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 11 pt;
+          font-weight : bold;
+          margin-top : 1.5 em;
+          margin-bottom : 1 em;
+          color : black;
+					text-decoration : none;
+        } 
+.head4center  { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 11 pt;
+          font-weight : bold;
+          margin-top : 1.5 em;
+          margin-bottom : 1 em;
+          color : black;
+					text-decoration : none;
+					text-align : center;
+        } 
+.tabs  { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 8 pt; 
+          color : black;
+          line-height : 1.5;
+          margin-left : .5 em;
+          font-weight : bold;
+        } 
+.figcapt  { font-family : "Trebuchet", "Arial", "Helvetica", "Verdana", sans-serif; 
+          font-size : 14 pt; 
+          color : white;
+          line-height : 1.5;
+          margin-left : .5 em;
+          background-color : black;
+        } 
+

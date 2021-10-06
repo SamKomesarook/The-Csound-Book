@@ -1,0 +1,116 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>nlfilt</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="lineto.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pareq.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#specfilters" class="toqr">
+Signal Modifiers: Specialized Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>nlfilt</h2>
+
+<pre>
+  ar      <strong>nlfilt</strong>     ain, ka, kb, kd, kL, kC
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Implements the filter:
+</p>
+<pre> 
+  Y{n} =a Y{n-1} + b Y{n-2} + d Y^2{n-L} + X{n} - C 
+</pre>
+<p>described in Dobson and Fitch (ICMC'96)
+</p>
+<h3>Examples</h3>
+<ol>
+	<li><p>Non-linear effect. The range of parameters are:</p>
+
+<pre>
+  a = b = 0
+  d = 0.8, 0.9, 0.7
+  C = 0.4, 0.5, 0.6
+  L = 20
+</pre>
+<p>This affects the lower register most but there are audible effects over the whole range. We suggest that it may be useful for coloring drums, and for adding arbitrary highlights to notes.
+</p></li>
+	<li><p>Low Pass with non-linear. The range of parameters are:
+</p>
+<pre>
+  a = 0.4
+  b = 0.2
+  d = 0.7
+  C = 0.11
+  L = 20, ... 200
+</pre>
+<p>There are instability problems with this variant but the effect is more pronounced of the lower register, but is otherwise much like the pure comb. Short values of <em>L</em> can add attack to a sound.
+</p></li>
+	<li><p>High Pass with non-linear. The range of parameters are:
+</p>
+<pre>
+  a = 0.35
+  b = -0.3
+  d = 0.95
+  C = 0,2, ... 0.4
+  L = 200
+</pre></li>
+	<li><p>High Pass with non-linear. The range of parameters are:
+</p>
+<pre>
+  a = 0.7
+  b = -0.2, ... 0.5
+  d = 0.9
+  C = 0.12, ... 0.24
+  L = 500, 10
+</pre>
+<p>The high pass version is less likely to oscillate. It adds scintillation to medium-high registers. With a large delay <em>L</em> it is a little like a reverberation, while with small values there appear to be formant-like regions. There are arbitrary color changes and resonances as the pitch changes. Works well with individual notes.
+</p></li>
+</ol>
+<p><strong>Warning</strong>: The &quot;useful&quot; ranges of parameters are not yet mapped.<br>
+</p>
+<h3>Author</h3>
+<p>
+
+John ffitch<br>
+University of Bath/Codemist Ltd.<br>
+Bath, UK<br>
+1997<br>
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="lineto.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pareq.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#specfilters" class="toqr">
+Signal Modifiers: Specialized Filters</font></a>
+</body>
+
+</html>

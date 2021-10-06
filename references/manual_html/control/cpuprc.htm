@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>cpuprc, maxalloc, prealloc</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="active.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="timek.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#realtime" class="toqr">
+Instrument Control: Real-time Performance Control</font></a>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>cpuprc, maxalloc, prealloc</h2>
+<pre>
+          <strong>cpuprc</strong>    insnum, ipercent
+          <strong>maxalloc</strong>  insnum, icount
+          <strong>prealloc</strong>  insnum, icount
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Control allocation of cpu resources on a per-instrument basis, to optimize realtime output.</p>
+
+<h3>Initialization</h3>
+
+<p><em>insnum</em> &#8211; instrument number</p>
+<p><em>ipercent</em> &#8211; percent of cpu processing-time to assign. Can also be expressed as a fractional value.</p>
+<p><em>icount</em> &#8211; number of instrument allocations </p>
+
+<h3>Performance</h3>
+
+<p><strong>cpuprc</strong> sets the cpu processing-time percent usage of an instrument, in order to avoid buffer underrun in realtime performances, enabling a sort of polyphony theshold. The user must set <em>ipercent</em> value for each instrument to be activated in realtime. Assuming that the total theoretical processing time of the cpu of the computer is 100%, this percent value can only be defined empirically, because there are too many factors that contribute to limiting realtime polyphony in different computers.</p> 
+
+<p>For example, if <em>ipercent</em> is set to 5% for instrument 1, the maximum number of voices that can be allocated in realtime, is 20 (5% * 20 = 100%). If the user attempts to play a further note while the 20 previous notes are still playing, Csound inhibits the allocation of that note and will display the following warning message:</p>
+<pre>
+  can't allocate last note because it exceeds 100% of cpu time
+</pre>
+<p>In order to avoid audio buffer underruns, it is suggested to set the maximum number of voices slightly lower than the real processing power of the computer. Sometimes an instrument can require more processing time than normal. If, for example, the instrument contains an oscillator which reads a table that doesn't fit in cache memory, it will be slower than normal. In addition, any program running concurrently in multitasking, can subtract processing power to varying degrees.</p>
+<p>At the start, all instruments are set to a default value of <em>ipercent</em> = 0.0% (i.e. zero processing time or rather infinite cpu processing-speed). This setting is OK for deferred-time sessions.</p>
+<p><strong>maxalloc</strong> limits the number of allocations of an instrument. <strong>prealloc</strong> creates space for instruments but does not run them.</p>
+<p>All instances of <strong>cpuprc</strong>, <strong>maxalloc</strong>, and <strong>prealloc</strong> must be defined in the header section, not in the instrument body.</p>
+
+<h3>Example</h3>
+
+<pre>
+	<strong>sr</strong>     = 44100
+	<strong>kr</strong>     = 441
+	<strong>ksmps</strong>  = 100
+	<strong>nchnls</strong> = 2
+		<strong>cpuprc</strong> 1, 2.5       ; set instr 1 to 2.5% of processor power,
+                                    ; i.e. maximum 40 voices (2.5% * 40 = 100%)
+		<strong>cpuprc</strong> 2, 33.333    ; set instr 2 to 33.333% of processor power,
+                                    ; i.e. maximum 3 voices (33.333% * 3 = 100%)
+	
+	<strong>instr</strong> 1
+	...body...
+	<strong>endin</strong>
+	
+	<strong>instr</strong> 2
+	....body...
+	<strong>endin</strong>
+</pre>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+July, 1999<br>
+New in Csound version 3.57
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="active.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="timek.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#realtime" class="toqr">
+Instrument Control: Real-time Performance Control</font></a>
+</body>
+</html>

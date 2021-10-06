@@ -1,0 +1,81 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>loopseg, lpshold</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="transeg.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="table.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#linear" class="toqr">
+Signal Generators: Linear and Exponential Generators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>loopseg, lpshold</h2>
+
+<pre>
+  kr      <strong>loopseg</strong>    kfreq, ktrig, ktim0, kval0[, ktim1, kval1,...ktimN, kvalN]
+  kr      <strong>lpshold</strong>    kfreq, ktrig, ktim0, kval0[, ktim1, kval1,...ktimN, kvalN]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Generate a control signal, or envelope, consisting of linear segments delimited by two or more specified points. The entire envelope is looped at <em>kfreq</em> rate. Each parameter can be varied at k-rate. New in Csound 4.13</p>
+
+<h3>Performance</h3>
+
+<p><em>kfreq</em> &#8211; repeat rate. Expressed in Hz or fraction of Hz. Negative values will read the envelope backward.</p>
+<p><em>ktrig</em> &#8211; if non-zero, retriggers the envelope from start, before the envelope cycle is completed. See <a href="trigger.htm"><strong>trigger</strong></a> opcode.</p>
+<p><em>ktim0, ktim1</em>, etc. &#8211; time of points. Expressed, in arbitrary units, as a fraction of a complete cycle. <em>ktim0</em> will usually be set to 0, except for special effects.</p>
+<p><em>kval0, kval1</em>, etc. &#8211; values of points</p>
+
+
+<p><strong>loopseg</strong> is similar to <a href="line.htm"><strong>linseg</strong></a>, except the entire envelope is looped at <em>kfreq</em> rate. Note that times are not expressed in seconds, but as a fraction of a complete cycle. The relative duration of each segment is is fixed proportionally to the others, as defined by <em>ktim0</em>, <em>ktim1</em>, etc. The duration of an entire cycle is the sum of all duration values, rescaled according to <em>kfreq</em>. For an envelope made up of three segments, with each segment having 100 as a duration, the total duration will be 300. This duration, in arbitrary units, is then scaled by <em>kfreq</em> to obtain the actual envelope duration in seconds.</p>
+
+<p><strong>lpshold</strong> is similar to <strong>loopseg</strong>, but generates only horizontal segments. Each <em>kval</em> is held for the duration of the segment. This is useful for, among other things, melodic control, similar to analog sequencers.</p>
+
+<h3>Example</h3>
+<pre>
+          <strong>instr</strong> 1
+  kfreq   <strong>init</strong>       .5          ; set duration of loop at 2 seconds
+  k0      <strong>line</strong>       1, p3, 33   ; increase duration of first segment on each repetition
+  k1      <strong>loopseg</strong>    .5, 0, 0, 0, k0, 32000, 66, 5000, 100, 0
+          <strong>endin</strong>
+</pre>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="transeg.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="table.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#linear" class="toqr">
+Signal Generators: Linear and Exponential Generators</font></a>
+
+</body>
+</html>

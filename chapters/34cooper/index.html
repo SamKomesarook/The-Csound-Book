@@ -1,0 +1,939 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Composing with Digital Editing Systems and Csound</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">32. Composing with Digital Editing
+Systems and Csound</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Dr. Robert L. Cooper</FONT></H2>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">Introduction</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">When I first started using<I>
+Csound </I>I was <I>&quot;perfing&quot;</I> everything on Micro
+Technology Unlimited's <I>Digi-Sound </I>16 system in a 386 PC
+clone with <B>8MB RAM!</B> The interface was fine but the processing
+speed was horrendous. It took forever to compile some of the more
+CPU intensive opcodes and various orchestra configurations. My
+recourse to this extraodinary amount of compilation time was to
+compile smaller files and port the result into a sound editor
+and then utilize a sequencer to control a sampler, where I would
+load my sounds. Since then I have found a groove that works for
+me. I still compile sound files (size not being an issue now)
+with Csound and port the result to <I>Digidesign's Pro-Tools II
+</I>editing system and do a lot of composing and final work in
+that environment. It saves compilation time and eliminates the
+need to re-write orchestra and score files. I also use a number
+of editing tools that are available on the MAC such as <I>SoundHack,
+Hyperprism, Sound Designer II, TurboSynth, SoundEffects</I>, the
+<I>TDM Plug-ins</I> for Pro-Tools, and occassionally, on the PC,
+<I>Sound Forge </I>or <I>CoolEdit</I>.<BR>
+&nbsp;</FONT></P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">Cymbolic<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">I have been using a subtractive
+synthesis approach in the use of sample processing in my compositions
+with sound manipulation opcodes. I will be illustrating various
+orchestra and score files that I used in a composition called
+<I>Cymbolic.</I></FONT></P>
+
+<P><FONT FACE="Times New Roman">In Cymbolic, I used two suspended
+cymbals as sound sample sources (one with a clear attack when
+struck and the other with less of the initial strike apparent
+and after editing each for optimal clarity, proceeded to subject
+each to a number of processes. Using the soundin opcode and Gen
+1, I processed the resulting samples using a number of the signal
+modifiers and generators to bend, transpose, reverberate, filter,
+and create layers.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Example 1 displays a stereo sample
+(a1,a2<I> soundin</I>) with one channel being reverberated within
+the instrument for timbre enhancement and the 2nd channel as a
+&quot;dry&quot; component. Each channel is subjected to a different
+panning function and balanced for amplitude normalization.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">EX. 1</FONT></B><FONT FACE="Times New Roman">
+</FONT><TABLE BORDER="0" CELLSPACING="2" CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">sr=44100</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">kr=2205</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">ksmps=20</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">nchnls=2</FONT></TD> 
+  </TR>
+</TABLE><TABLE BORDER="0" CELLSPACING="2" CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">instr 1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">k1 linseg 1, p3*.5, 4.7, p3*.5,
+      2.6 ; time varying reverb loop time</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">k2 linseg 0, p3*.5, 1, p3*.5, 0
+      ; automated panning</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">k3 expseg 1, p3*.3, .5, p3*.3, .1,
+      p3*.3, .7, p3*.1, .5 ;automated panning</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a1, a2 soundin &quot;cym.snd&quot;,
+      p4</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a3 reverb a2, k1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a4 balance a3, a1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">outs1 (a4*k2)+(a1*k3)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">outs2 (a4*(1-k2))+(a1*(1-k3))</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">endin</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT FACE="Times New Roman">SCORE</FONT></B><FONT FACE="Times New Roman">
+</FONT><TABLE BORDER="0" CELLSPACING="2" CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+    <TD><FONT FACE="Courier New">2.64</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">1</FONT></TD> 
+    <TD><FONT FACE="Courier New">2.64</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">1.5</FONT></TD> 
+    <TD><FONT FACE="Courier New">2.64</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><FONT FACE="Times New Roman">The orchestra is quite simple,
+but when I inserted p-fields in the place of the values I could
+create a somewhat lengthy score to generate a number of variations
+of the original and archived each for use when I moved from the
+Csound environment to the Pro-Tools Editing System. By increasing
+and decreasing the reverb time value, the overall color would
+change and produced interesting dynamic qualities, dependent on
+the amount of reverberation and loop-time values.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">For example, when the reverb time
+value was set to about 3.5 or higher the sound became somewhat
+transparent and when the reverb time value was smaller the sound
+became more distinct. I used this contrast to achieve a dynamic
+envelope with the more transparent reverberated sound being a
+softer dynamic and a dryer sound being a louder dynamic. This
+would accomodate the dimension of &quot;foreground&quot;, &quot;middleground&quot;,
+&quot;background&quot; and all of the space in between, similar
+to the panning function, but mapped into the &quot;front to back
+space&quot; in the concert hall. The manipulation of these values
+could be single, hardwired values (values assigned to p-fields
+that remain the same for the duration of the relevent event) or
+continuous values (values that changed over time - achieved by
+using expseg, linen, or linseg).<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">I utilized 2 different opcodes
+(<I>linseg</I> and <I>expseg</I>) for panning to contrast a linear
+motion and an exponential motion in the stereo field in addition
+to dividing the p3 variable (duration) differently with each opcode
+statement. (ie. the k2 <I>linseg</I> in example 1 shows a simple
+arch envelope - p3*.5 p3*.5 and the k3 <I>expseg</I> divides the
+duration thus - p3*.3 p3*.3 p3*.3 p3*1). One of the primary gestures
+involves panning from a subtle and sometimes non-existent presence
+to a more apparent application. The panning aspect played an important
+role in the composition and I applied different panning methods
+throughout the work to help define each section or transition.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">An example of a panning application
+that moves within the stereo field at a faster rate of activity,
+is shown in example 2. (Now I realize that you can also use various
+gen subroutines to create an even more extreme panning application
+by using a configuration with the opcodes - table, phasor, GEN
+5 0r GEN 7!).</FONT></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">EX. 2<BR>
+</FONT></B><TABLE BORDER="0" CELLSPACING="2" CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">sr=44100</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">kr=2205</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">ksmps=20</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">nchnls=2</FONT></TD> 
+  </TR>
+</TABLE><BR>
+<TABLE BORDER="0" CELLSPACING="2" CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">instr 1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">k1 expseg .5, p3*.1, 1, p3*.2, .1,
+      p3*.2, .5, p3*.1, 1, p3*.1, .1, p3*.1, 1, p3*.1, .2, p3*.1, .7
+      ; panning</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a1 soundin &quot;buzz.snd&quot;,
+      0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a2 reson a1, 400, 20,1 ; filter
+      the sample</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a3 balance a2, a1 ; balance the
+      output</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">outs1 a3 * k1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">outs2 a3 * (1-k1)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">endin</FONT></TD> 
+  </TR>
+</TABLE><BR>
+<B><FONT FACE="Times New Roman">SCORE<BR>
+</FONT></B><TABLE BORDER="0" CELLSPACING="2" CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+    <TD><FONT FACE="Courier New">1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">2</FONT></TD> 
+    <TD><FONT FACE="Courier New">1</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><FONT FACE="Times New Roman">One of the most useful orchestras,
+for Cymbolic, is shown in example 3. I used an <I>oscili</I> opcode
+to oscillate a sample at different speeds (.2 to 1.8) to cycle
+or read the table containing the sample. I used this orchestra
+at times with a <I>linseg</I> or <I>expseg</I> opcode to control
+the frequency in a continuous manner later in the comnposition
+by inserting values that changed by very small degrees (somewhere
+between .7 to 1.3). This subtle change in oscillation emulated
+the colorful timbre variations of an acoustic instrument.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">EX. 3<BR>
+</FONT></B><TABLE BORDER="0" CELLSPACING="2" CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">sr=44100</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">kr=2205</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">ksmps=20</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">nchnls=1</FONT></TD> 
+  </TR>
+</TABLE><BR>
+<TABLE BORDER="0" CELLSPACING="2" CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">instr 1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a1 oscili 10000, p4, 1 ; load the
+      sample into a table and oscillate according to the p- field entry</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">out a1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">endin</FONT></TD> 
+  </TR>
+</TABLE><BR>
+<B><FONT FACE="Times New Roman">SCORE<BR>
+</FONT></B><TABLE BORDER="0" CELLSPACING="2" CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">f1</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+    <TD><FONT FACE="Courier New">131072</FONT></TD> 
+    <TD><FONT FACE="Courier New">1</FONT></TD> 
+    <TD><FONT FACE="Courier New">&quot;cym.snd&quot;</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+    <TD><FONT FACE="Courier New">4</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+    <TD><FONT FACE="Courier New">2</FONT></TD> 
+    <TD><FONT FACE="Courier New">.5</FONT></TD> 
+    <TD><FONT FACE="Courier New">; p4 = frequency of oscillation</FONT></TD> 
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">.5</FONT></TD> 
+    <TD><FONT FACE="Courier New">2</FONT></TD> 
+    <TD><FONT FACE="Courier New">.7</FONT></TD> 
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">.9</FONT></TD> 
+    <TD><FONT FACE="Courier New">2</FONT></TD> 
+    <TD><FONT FACE="Courier New">.3</FONT></TD> 
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">1</FONT></TD> 
+    <TD><FONT FACE="Courier New">2</FONT></TD> 
+    <TD><FONT FACE="Courier New">.9</FONT></TD> 
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">1.1</FONT></TD> 
+    <TD><FONT FACE="Courier New">6</FONT></TD> 
+    <TD><FONT FACE="Courier New">.2435</FONT></TD> 
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">1.15</FONT></TD> 
+    <TD><FONT FACE="Courier New">8</FONT></TD> 
+    <TD><FONT FACE="Courier New">.2477</FONT></TD> 
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><FONT FACE="Times New Roman">This worked well for what I needed
+in a certain section of the work, but I also needed to glissando
+a modified (step) glissando effect for other sections and I used
+a modified version of one of James Mobberley's Csound orchestras
+shown in example 4. This orchestra/score combination worked very
+well for long glissando gestures and discreet, but somewhat random
+results. It was particularly useful in the beginning moments of
+Cymbolic (the low, pitch drifting rumbling sounds). The orchestra
+and score permit you to glissando using the middle value (p5...
+12) to represent how many notes per octave and the first number
+(p4... -12) to indicate how many steps below and p6 in the score
+to indicate the destination pitch in steps (9 steps above).</FONT></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">EX. 4<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="2"
+CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">sr=44100</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">kr=2205</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">ksmps=20</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">nchnls=2</FONT></TD> 
+  </TR>
+</TABLE><BR>
+<TABLE BORDER="0" CELLSPACING="2" CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">instr 1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1=p3</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i2=1/p3</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i3=exp(log(2)*p4/p6)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i4= exp(log(2)*p5/p6)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">if p4 = p5 goto nondiv</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">goto rest</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">nondiv: i5=(p4+p5)/2</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i6=1/(exp(log(2)*i5/p6))</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">goto dur</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">rest: i6=log(i4/i3)/(i4-i3)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">dur: p3=i1*i6</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">p7=p7*1000</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a1 expseg i2*i3, p3, i2*i4</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a1 phasor a1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">if p8 = -1 goto reverse</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">goto table</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">reverse: a1 = 1 - a1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">table: a2 table a1*(sr*i1), 1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a3=a2*p7</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">outs1 a3</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">outs2 a3</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">endin</FONT></TD> 
+  </TR>
+</TABLE><BR>
+<B><FONT FACE="Times New Roman">SCORE<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="2"
+CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">f1</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+    <TD><FONT FACE="Courier New">262144</FONT></TD> 
+    <TD><FONT FACE="Courier New">1</FONT></TD> 
+    <TD><FONT FACE="Courier New">&quot;cym.aiff&quot;</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+    <TD><FONT FACE="Courier New">4</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+    <TD><FONT FACE="Courier New">5</FONT></TD> 
+    <TD><FONT FACE="Courier New">-12</FONT></TD> 
+    <TD><FONT FACE="Courier New">12</FONT></TD> 
+    <TD><FONT FACE="Courier New">9</FONT></TD> 
+    <TD><FONT FACE="Courier New">10</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><FONT FACE="Times New Roman">Whenever I used an opcode that
+required an <I>ifn </I>(function table), I used <I>GEN 1 </I>to
+load the cymbal samples and manipulated the orchestra and score
+files slightly by changing parameter values when needed. Sometimes
+I would change the <I>skip time</I> parameter, vary the frequency
+of oscillation by discrete or continuous values, use the reverse
+version, and many other processes according to the usefullness
+of particular opcode functions and parameters.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In another example, I used the
+<I>rand </I>opcode and the <I>oscil </I>opcode to control frequency
+and load the cymbal sample into <I>GEN 1</I> This configuration
+was the foundation for the reverberated and random cycling of
+the sample in the middle section of Cymbolic.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The frequency of the sample will
+glissando in whatever direction you indicate (ascending or descending
+values) in the <I>expseg </I>opcode arguments. The <I>kcps </I>argument
+in the <I>randh </I>opcode points to the 4th parameter field in
+the score and provides a means for control from event to event
+(note entries).</FONT></P>
+
+<P><FONT FACE="Times New Roman">Amplitude is also controlled from
+the score in most sections and provided a means of controlling
+the contour of dynamics throughout the work. Example 5 illustrates
+one of the main orchestra and score files used with this configuration.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">EX. 5<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="2"
+CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">sr=44100</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">kr=2205</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">ksmps=20</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">nchnls=1</FONT></TD> 
+  </TR>
+</TABLE><BR>
+<TABLE BORDER="0" CELLSPACING="2" CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">instr 1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">k2 expseg 1, p3*.2, .4, p3*.3, .7,
+      p3*.3, .5, p3*.2, 1 ; provide random value for the randh opcode</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">k1 randh k2, p4 ; random frequency
+      oscillation in stepped values</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a1 oscili p5, k1, 1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">out a1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">endin</FONT></TD> 
+  </TR>
+</TABLE><BR>
+<B><FONT FACE="Times New Roman">SCORE<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="2"
+CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">f1</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+    <TD><FONT FACE="Courier New">262144</FONT></TD> 
+    <TD><FONT FACE="Courier New">1</FONT></TD> 
+    <TD><FONT FACE="Courier New">&quot;cym.aiff&quot;</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+    <TD><FONT FACE="Courier New">4</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+    <TD><FONT FACE="Courier New">10</FONT></TD> 
+    <TD><FONT FACE="Courier New">1</FONT></TD> 
+    <TD><FONT FACE="Courier New">10000</FONT></TD> 
+    <TD><FONT FACE="Courier New">; p4=amplitude</FONT></TD> 
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">2</FONT></TD> 
+    <TD><FONT FACE="Courier New">10</FONT></TD> 
+    <TD><FONT FACE="Courier New">1</FONT></TD> 
+    <TD><FONT FACE="Courier New">10000</FONT></TD> 
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">5</FONT></TD> 
+    <TD><FONT FACE="Courier New">10</FONT></TD> 
+    <TD><FONT FACE="Courier New">1</FONT></TD> 
+    <TD><FONT FACE="Courier New">10000</FONT></TD> 
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><FONT FACE="Times New Roman">After each sound had been developed
+and a multitude of variations compiled and saved, I transferred
+all samples to<I> Digidesign's Pro-Tools Editing System</I>. With
+an 8 track digital editing environment I was able to cut, paste,
+duplicate, and re-arrange all the sounds into a sequence that
+made musical sense to me. Each track has editable graphs for volume
+and panning in addition to allowing you to seamlessly fade (with
+a good number of shapes for the crossfade) from one sound to the
+next. This enabled me to stretch certain aspects of individual
+sound. This is most evident at the end of Cymbolic. The final
+cymbal crash was modified with various filters, combined into
+a single stereo sound file and the last 2 seconds of the original
+processed sound copied, displaced and layered to prolong the decay.</FONT></P>
+
+<P><FONT FACE="Times New Roman">It was at this point in the compositional
+process that I would port certain sounds to <I>SoundDesigner,
+HyperPrism, </I>or<I> SoundHack </I>for tweaking. I would apply
+most reverb effects from the <I>Pro-Tools </I>system and bounced
+everything to 2 track stereo when finished. The <I>Pro-Tools </I>system
+allows you to edit all samples in a non-destructive manner so
+that you end up not butchering your original samples by mistake
+or through system crashes.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The use of the opcode - <I>randh
+</I>provided the primary function for most of the section of Cymbolic
+at ....... (minutes/seconds). Many variations were compiled and
+examined for application in a time continuum that would portray
+a sense of contrast to the previous musical material. By cutting,
+pasting and editing the original compiled samples I arrived at
+what you hear at this point in the work. The next example is a
+modified version of the original orchestra ( using a higher sample
+rate).</FONT></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">EX. 6<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="2"
+CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">sr=44100</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">kr=2205</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">ksmps=20</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">nchnls=2</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="2"
+CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">instr 1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">k1 linseg .5, p3*.1, 1, p3*.7, .1,
+      p3*.1, 1, p3*.1, .5 ; panning function</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">k2 expseg 4, p3*.5, 4.3, p3*.3,
+      4.8, p3*.2, 4.5 ; varies the speed of sample ;oscillation</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">k3 randh 1.5, k2, p4 ; generates
+      a control signal to provide a series of random ;frequency control
+      values</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a1 oscil 15000, (k3*1.3)*1.1, 1
+      ; sample loaded into table and controlled with the oscil opcode</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">outs1 a1 * k1 ; panning</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">outs2 a1 * (1-k1) ; panning</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">endin</FONT></TD> 
+  </TR>
+</TABLE><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><FONT FACE="Times New Roman">I was unable to generate a consistent
+reiteration of the sample with this orchestra, but with the help
+of the<I> Pro-Tools </I>editing sytem I was able to create what
+I needed by layering and slight displacement of each entry. The
+illustration below shows a <I>Pro-Tools II </I>interface and the
+resulting waveforms and volume graphs for the cut and pasted version
+of part of this section of the work. The first shows a gradation
+in amplitude and reiteration of a specific region of the original
+sound which you can see in the longer waveform in the lower most
+track of the first picture. This is a portion of the &quot;gravity
+free cymbal oscillating sound&quot;.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><CENTER><FONT FACE="Times New Roman"><IMG SRC="rotating.jpg"
+HEIGHT="292" WIDTH="226" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></CENTER></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><FONT FACE="Times New Roman">The next picture shows a layering
+of a similar sound slightly displaced in time, to create a crescendo.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT WIDTH="75%"></FONT></P>
+
+<P><CENTER><FONT FACE="Times New Roman"><IMG SRC="layers.jpg"
+HEIGHT="581" WIDTH="139" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></CENTER></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT WIDTH="75%"></FONT></P>
+
+<P><FONT FACE="Times New Roman">By layering the same file in multiple
+tracks, I created a macro dynamic contour in different sections
+of the work and controlled panning in the same manner. Each track
+can be assigned different placement in the stereo field (L or
+R) and a sort of crossfading between adjacent tracks creates a
+visual control model.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT WIDTH="75%"></FONT></P>
+
+<P><CENTER><FONT FACE="Times New Roman"><IMG SRC="dynamics.jpg"
+HEIGHT="403" WIDTH="747" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></CENTER></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT WIDTH="75%"></FONT></P>
+
+<P><FONT FACE="Times New Roman">My favorite sound is the sound
+I describe as &quot;gravity free cymbal oscillating sound&quot;
+(see first picture above). This, to me, sounds as if the cymbal
+is self oscillating in a inconsistent fashion. I could have used
+the <I>loscil</I> or <I>oscil</I> opcodes to generate a consistent
+oscillation of sound, but I wanted an effect of starting, almost
+stopping, and continuance of the oscillating sound impression.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The continuous dwell of amplitude
+and growing spectral envelope of the sample was accomplished using
+a set of variables for the amplitude and frequency arguments using
+the orchestra example below.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">EX. 7<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="2"
+CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">sr=44100</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">kr=2205</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">ksmps=20</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">nchnls=1</FONT></TD> 
+  </TR>
+</TABLE><BR>
+<TABLE BORDER="0" CELLSPACING="2" CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">instr 1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">k1 expseg 100, p3*.1, 90, p3*.2,
+      100, p3*.1,95,</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">p3*.1, 100, p3*.2, 90, p3*.1, 100,
+      p3*.1, 95 , p3*.1, 100 ; change the frequency of the sample via
+      p3</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a1 loscil 20000, k1, 1, 120, 2,
+      15000 , 50000 , 2, 10000,50000 ; loop set to forward and backwards</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">out a1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">endin</FONT></TD> 
+  </TR>
+</TABLE><BR>
+<B><FONT FACE="Times New Roman">SCORE<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="2"
+CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">f1</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+    <TD><FONT FACE="Courier New">131072</FONT></TD> 
+    <TD><FONT FACE="Courier New">1</FONT></TD> 
+    <TD><FONT FACE="Courier New">&quot;cym.aiff&quot;</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+    <TD><FONT FACE="Courier New">4</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">i1</FONT></TD> 
+    <TD><FONT FACE="Courier New">0</FONT></TD> 
+    <TD><FONT FACE="Courier New">20</FONT></TD> 
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><FONT FACE="Times New Roman">This orchestra and score provided
+a basic template to generate a number of varied sound files which
+changed in terms of duration, speed, and pitch. Each sound file
+was edited and ported into the Pro-Tools system for layering,
+juxtaoposing and shaping the overall contour to achieve an aural
+impression of elasticity and a sort of &quot;ostinato&quot;, as
+a structural element for the middle/latter section of the piece.</FONT></P>
+
+<P><FONT FACE="Times New Roman">I added filter opcodes (<I>reson,
+alpass,</I> and <I>comb</I>) in later orchestras similar to example
+7 to increase the spectral density and enhance the dynamic quality
+of the sound as shown in example 8.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">EX. 8<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="2"
+CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">sr=44100</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">kr=2205</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">ksmps=20</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">nchnls=1</FONT></TD> 
+  </TR>
+</TABLE><BR>
+<TABLE BORDER="0" CELLSPACING="2" CELLPADDING="0">
+  <TR>
+    <TD><FONT FACE="Courier New">instr 1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">k1 expseg 100, p3*.1, 90, p3*.2,
+      100, p3*.1,95,</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">p3*.1, 100, p3*.2, 90, p3*.1, 100,
+      p3*.1, 95 , p3*.1, 100 ; change the frequency of the sample via
+      p3</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">k2 expseg 100, p3*.2, 450, p3*.2,
+      50, p3*.1, 250, p3*.3, 500, p3*.2, 275 ; change the center frequency
+      over time</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">k3 expseg 50, p3*.1, 30, p3*.2,
+      50, p3*.1, 75, p3*.3, 25, p3*.2, 15 ; change the bandwith over
+      time</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a1 loscil 20000, k1, 1, 120, 2,
+      15000 , 50000 , 2, 10000,50000 ; loop set to forward and backwards</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a2 reson a1, k2, k3, 1 ; filter
+      the result of a1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">a3 balance a1, a2 ; scale the result
+      for amplitude</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">out a3</FONT></TD> 
+  </TR>
+  <TR>
+    <TD><FONT FACE="Courier New">endin</FONT></TD> 
+  </TR>
+</TABLE><BR>
+<FONT FACE="Times New Roman"><HR ALIGN=LEFT>&nbsp;</FONT></P>
+
+<P><B><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">Conclusion<BR>
+</FONT></B></P>
+
+<P><FONT FACE="Times New Roman">It would be impossible for me
+to recreate the work at this point since only small orchestra
+and score files were used and since most of the final work was
+accomplished using the editing system. Even showing the editing
+system pictures is somewhat misleading since I periodically &quot;bounced&quot;
+everything to disk (saving all tracks as either a mono file or
+split stereo file) to maintain a manageable file in the Pro-Tools
+environment. This &quot;back and forth&quot; approach was adhered
+to during most of this work. I would select a series of opcodes
+that provided the parameter flexibility to achieve certain sound
+shapes and would port each resulting sound file into an editing
+system for minute shaping ( cutting off portions of silence, selecting
+portions of the sound, processing with various functions inherent
+in the particular editor, layering, eliminating extraneous noise
+and clicks, etc...).</FONT></P>
+
+<P><FONT FACE="Times New Roman">Editing in a visual environment
+provides a fast and efficient means of shaping the macro and micro
+sonic contours and allows immediate layering of a particular sound
+or sounds, by way of cutting, pasting and delimiting individual
+sounds. With a host of powerful editing tools available (free
+and otherwise), this approach will encourage a more concentrated
+effort on the compositional process and hopefully, limit the amount
+of time learning and trying to interpret &quot;code.&quot;</FONT>
+
+</BODY>
+</HTML>

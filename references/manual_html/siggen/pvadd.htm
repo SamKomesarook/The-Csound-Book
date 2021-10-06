@@ -1,0 +1,144 @@
+
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.10.-->
+<html>
+<head>
+<title>pvadd</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvread.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvsanal.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#vocoding" class="toqr">
+Signal Generators: STFT Resynthesis (Vocoding)</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>pvadd</h2>
+
+ 
+<pre> ar      <strong>pvadd</strong>      ktimpnt, kfmod, ifilcod, ifn, ibins[, ibinoffset, ibinincr, iextractmode, ifreqlim, igatefn]</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p><strong>pvadd</strong> reads from a <a href="pvoc.htm"><strong>pvoc</strong></a> file and uses the data to perform additive synthesis using an internal array of interpolating oscillators. The user supplies the wave table (usually one period of a sine wave), and can choose which analysis bins will be used in the re-synthesis.
+</p>
+
+<h3>Initialization</h3>
+<p><em>ifilcod</em> &#8211; integer or character-string denoting a control-file derived from <a href="../utility/pvanal.htm"><strong>pvanal</strong></a> analysis of an audio signal. An integer denotes the suffix of a file <em>pvoc.m</em>; a character-string (in double quotes) gives a filename, optionally a full pathname. If not fullpath, the file is sought first in the current directory, then in the one given by the environment variable <a href="../syntax/dirfiles.htm"><strong>SADIR</strong></a> (if defined). <strong>pvoc</strong> control files contain data organized for fft resynthesis. Memory usage depends on the size of the files involved, which are read and held entirely in memory during computation but are shared by multiple calls (see also <a href="../sigmod/lpread.htm"><strong>lpread</strong></a>).
+</p>
+
+<p><em>ifn</em> &#8211; table number of a stored function containing a sine wave</p>
+
+<p><em>ibins</em> &#8211; number of bins that will be used in the resynthesis (each bin counts as one oscillator in the re-synthesis)</p>
+
+<p><em>ibinoffset</em> (optional) &#8211; is the first bin used (it is optional and defaults to 0).
+</p>
+
+<p><em>ibinincr</em> (optional) &#8211; sets an increment by which <strong>pvadd</strong> counts up from <em>ibinoffset</em> for <em>ibins</em> components in the re-synthesis (see below for a further explanation).
+</p>
+
+<p><em>iextractmode</em> (optional) &#8211; determines if spectral extraction will be carried out and if so whether components that have changes in frequency below <em>ifreqlim</em> or above <em>ifreqlim</em> will be discarded. A value for <em>iextractmode</em> of 1 will cause <strong>pvadd</strong> to synthesize only those components where the frequency difference between analysis frames is greater than <em>ifreqlim</em>. A value of 2 for <em>iextractmode</em> will cause <strong>pvadd</strong> to synthesize only those components where the frequency difference between frames is less than <em>ifreqlim</em>. The default values for <em>iextractmode</em> and <em>ifreqlim</em> are 0, in which case a simple resynthesis will be done. See examples below.
+</p>
+
+<p><em>igatefn</em> (optional) &#8211; is the number of a stored function which will be applied to the amplitudes of the analysis bins before resynthesis takes place. If <em>igatefn</em> is greater than 0 the amplitudes of each bin will be scaled by <em>igatefn</em> through a simple mapping process. First, the  amplitudes of all of the bins in all of the frames in the entire analysis file are compared to determine the maximum amplitude value. This value is then used create normalized amplitudes as indeces into the stored function <em>igatefn</em>. The maximum amplitude will map to the last point in the function. An amplitude of 0 will map to the first point in the function. Values between 0 and 1 will map accordingly to points along the function table.This will be made clearer in the examples below.
+</p>
+
+<h3>Performance</h3>
+<p><em>ktimpnt</em> and <em>kfmod</em> are used in the same way as in <strong>pvoc</strong>.
+</p>
+
+<h3>Examples</h3>
+
+<pre>  ktime <strong>line</strong>  0, p3, p3
+  asig  <strong>pvadd</strong> ktime, 1, &quot;oboe.pvoc&quot;, 1, 100, 2</pre>
+<p>In the above, <em>ibins</em> is 100 and <em>ibinoffset</em> is 2. Using these settings the resynthesis will contain 100 components beginning with bin #2 (bins are counted starting with 0). That is, resynthesis will be done using bins 2-101 inclusive. It is usually a good idea to begin with bin 1 or 2 since the 0th and often 1st bin have data that is neither necessary nor even helpful for creating good clean resynthesis.
+</p>
+
+<pre>  ktime <strong>line</strong>  0, p3, p3
+  asig  <strong>pvadd</strong> ktime, 1, &quot;oboe.pvoc&quot;, 1, 100, 2, 2</pre>
+<p>The above is the same as the previous example with the addition of the value 2 used for the optional <em>ibinincr</em> argument. This result will still result in 100 components in the resynthesis, but <strong>pvadd</strong> will count through the bins by 2 instead of by 1. It will use bins 2, 4, 6, 8, 10, and so on. For <em>ibins</em>=10, <em>ibinoffset</em>=10, and <em>ibinincr</em>=10, <strong>pvadd</strong> would use bins 10, 20, 30, 40, up to and including 100.
+</p>
+
+<p>Below is an example using spectral extraction. In this example <i>iextractmode</i> is one and <i>ifreqlim</i> is 9. This will cause pvadd to synthesize only those bins where the frequency deviation, averaged over 6 frames, is greater than 9.</p>
+ 
+<pre>
+  ktime line  0, p3, p3
+  asig  pvadd ktime, 1,  &quot;oboe.pvoc&quot;, 1, 100, 2, 2, 1, 9
+</pre>
+
+<p>If <i>iextractmode</i> were 2 in the above, then only those bins with an average frequency deviation of less than 9 would be synthesized. If tuned correctly, this technique can be used to separate the pitched parts of the spectrum from the noisy parts. In practice this depends greatly on the type of sound, the quality of the recording and digitization, and also on the analysis window size and frame increment.</p>
+
+<p>Next is an example using amplitude gating. The last 2 in the argument list stands for f2 in the score. </p>
+
+<pre>
+  asig  pvadd ktime, 1,  &quot;oboe.pvoc&quot;, 1, 100, 2, 2, 0, 0, 2
+</pre>
+<p>Suppose the score for the above were to contain:</p>
+
+<pre>
+  f2 0 512 7 0 256 1 256 1
+</pre>
+<p>Then those bins with amplitudes of 50% of the maximum or greater would be left unchanged, while those with amplitudes less than 50% of the maximum would be scaled down. In this case the lower the amplitude the more severe the scaling down would be. But suppose the score contains:</p>
+
+<pre>
+  f2 0 512 5 1 512 .001
+</pre>
+<p>In this case lower amplitudes will be left unchanged and greater ones will be scaled down, turning the sound &quot;upside-down&quot; in terms of the amplitude spectrum! Functions can be arbitrarily complex. Just remember that the normalized amplitude values of the analysis are themselves the indeces into the function.</p>
+
+
+<p>Finally, both spectral extraction and amplitude gating can be used together. The example below will synthesize only those components that with a frequency deviation of less than 5Hz per frame and it will scale the amplitudes according to F2.</p>
+
+<pre>
+  asig  pvadd ktime, 1,  &quot;oboe.pvoc&quot;, 1, 100, 1, 1, 2, 5, 2
+</pre>
+
+<h3>USEFUL HINTS:</h3>
+<p>By using several <strong>pvadd</strong> units together, one can gradually fade in different parts of the resynthesis, creating various &quot;filtering&quot; effects. The author uses <strong>pvadd</strong> to synthesis one bin at a time to have control over each separate component of the re-synthesis.
+</p>
+
+<p>If any combination of <em>ibins</em>, <em>ibinoffset</em>, and <em>ibinincr</em>, creates a situation where <strong>pvadd</strong> is asked to used a bin number greater than the number of bins in the analysis, it will just use all of the available bins, and give no complaint.  So to use every bin just make <em>ibins</em> a big number (ie. 2000).
+</p>
+
+<p>Expect to have to scale up the amplitudes by factors of 10-100, by the way.
+</p>
+
+<h3>Author </h3>
+<p>Richard Karpen<br>
+Seattle, Wash<br>
+1998 (New in Csound version 3.48, additional arguments version 3.56)<br>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvread.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="pvsanal.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#vocoding" class="toqr">
+Signal Generators: STFT Resynthesis (Vocoding)</font></a>
+</body>
+
+
+</html>
+

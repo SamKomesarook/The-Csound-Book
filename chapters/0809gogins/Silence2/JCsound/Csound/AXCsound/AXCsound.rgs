@@ -1,0 +1,36 @@
+HKCR
+{
+	AXCsound.AXCsound.1 = s 'AXCsound Class'
+	{
+		CLSID = s '{018CD11D-20DE-11D2-917D-00A0CC30C276}'
+		'Insertable'
+	}
+	AXCsound.AXCsound = s 'AXCsound Class'
+	{
+		CurVer = s 'AXCsound.AXCsound.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {018CD11D-20DE-11D2-917D-00A0CC30C276} = s 'AXCsound Class'
+		{
+			ProgID = s 'AXCsound.AXCsound.1'
+			VersionIndependentProgID = s 'AXCsound.AXCsound'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Programmable'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 1'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '131473'
+			}
+			'TypeLib' = s '{018CD10F-20DE-11D2-917D-00A0CC30C276}'
+			'Version' = s '1.0'
+		}
+	}
+}
+

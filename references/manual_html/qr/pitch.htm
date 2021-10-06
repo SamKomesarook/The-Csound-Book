@@ -1,0 +1,171 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>QuickRef: Pitch Convertors</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body text="black" link="black" vlink="black" alink="black" bgcolor="white">
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" width="10">
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="math.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="midi.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+<hr size="1" color="#A9A9A9" noshade>
+<h1>Pitch Convertors</h1>
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="functions"><h2>Pitch Converters: Functions</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../pchcnv/octpch.htm">
+      <strong>octpch</strong>(pch)</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (init- or control-rate args only)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../pchcnv/octpch.htm">
+      <strong>pchoct</strong>(oct)</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (init- or control-rate args only)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../pchcnv/octpch.htm">
+      <strong>cpspch</strong>(pch)</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (init- or control-rate args only)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../pchcnv/octpch.htm">
+      <strong>octcps</strong>(cps)</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (init- or control-rate args only)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../pchcnv/octpch.htm">
+      <strong>cpsoct</strong>(oct)</a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      (no rate restriction)
+    </td>
+  </tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<a class="qr" name="tuning"><h2>Pitch Convertors: Tuning Opcodes</h2></a>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      icps
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../pchcnv/cps2pch.htm">
+      <strong>cps2pch</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ipch, iequal
+    </td>
+  </tr>
+
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      icps
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../pchcnv/cps2pch.htm">
+      <strong>cpsxpch</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ipch, iequal, irepeat, ibase
+    </td>
+  </tr>
+
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      icps
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../pchcnv/cpstun.htm">
+      <strong>cpstun</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      ktrig, kindex, kfn
+    </td>
+  </tr>
+
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">
+      icps
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../pchcnv/cpstun.htm">
+      <strong>cpstuni</strong></a>
+    </td>
+    <td class="qr" nowrap width="72%" valign="TOP">
+      index, ifn
+    </td>
+  </tr>
+
+</table>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" width="10">
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="math.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="midi.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>Unified File Format for Orchestras and Scores</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../command/pc.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="preproc.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Unified File Format</font>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h1>Unified File Format for Orchestras and Scores</h1>
+<hr size="2" color="#A9A9A9" noshade>
+<h2>Description</h2>
+<p>The Unified File Format, introduced in Csound version 3.50, enables the orchestra and score files, as well as command line flags, to be combined in one file. The file has the extension <strong>.csd</strong>. This format was originally introduced by Michael Gogins in AXCsound.
+</p>
+<p>The file is a structured data file which uses markup language, similar to any SGML such as HTML. Start tags (&lt;<em>tag</em>&gt;) and end tags (&lt;/<em>tag</em>&gt;) are used to delimit the various elements. The file is saved as a text file.
+</p>
+<h2>Structured Data File Format</h2>
+
+<h3>Mandatory Elements</h3>
+<p>The Csound Element is used to alert the csound compiler to the <strong>.csd</strong> format. The file must begin with the start tag <strong>&lt;CsoundSynthesizer&gt;. </strong>The last line of the file must be the end tag <strong>&lt;/CsoundSynthesizer&gt;.</strong> The remaining elements are defined below.
+</p>
+<h4>Options</h4>
+<p>Csound command line flags are put in the Options Element. This section is delimited by the start tag <strong>&lt;CsOptions&gt;</strong> and the end tag <strong>&lt;/CsOptions&gt; </strong>Lines beginning with <strong>#</strong> or <strong>;</strong> are treated as comments.
+</p>
+<h4>Instruments (Orchestra)</h4>
+<p>The instrument definitions (orchestra) are put into the Instruments Element. The statements and syntax in this section are identical to the Csound orchestra file, and have the same requirements, including the header statements (<strong>sr</strong>, <strong>kr</strong>, etc.) This Instruments Element is delimited with the start tag <strong>&lt;CsInstruments&gt;</strong> and the end tag <strong>&lt;/CsInstruments&gt;.</strong>
+</p>
+<h4>Score</h4>
+<p>Csound score statements are put in the Score Element. The statements and syntax in this section are identical to the Csound score file, and have the same requirements. The Score Element is delimited by the start tag <strong>&lt;CsScore&gt; </strong>and the end tag <strong>&lt;/CsScore&gt;.</strong>
+</p>
+
+<h3>Optional Elements</h3>
+<h4>Included Base64 Files</h4>
+<p>Base64 encoded MIDI files may be included with the tag <strong>&lt;CsMidifileB filename=</strong><em>filename</em><strong>&gt;</strong>, where <em>filename</em> is the name of the file containing the MIDI information. There is no matching end tag. New in Csound version 4.07.
+</p>
+<p>Base64 encoded sample files may be included with the tag <strong>&lt;CsSampleB filename=</strong><em>filename</em><strong>&gt;</strong>, where <em>filename</em> is the name of the file containing the sample. There is no matching end tag. New in Csound version 4.07.
+</p>
+<h4>Version Blocking</h4>
+<p>Versions of Csound may blocked by placing one of the following statements between the start tag &lt;CsVersion&gt; and the end tag &lt;/CsVersion&gt;:
+<pre>
+	Before #.#
+</pre>
+or
+<pre>
+	After #.#
+</pre>
+where #.# is the requested Csound version number. The second statement may be written simply as:
+<pre>
+	#.#
+</pre>
+See example below. New in Csound version 4.09.
+</p>
+
+<h2>Example</h2>
+<p>Below is a sample file, test.csd, which renders a .wav file at 44.1 kHz sample rate containing one second of a 1 kHz sine wave. Displays are suppressed. test.csd was created from two files, tone.orc and tone.sco, with the addition of command line flags.
+</p>
+<pre>
+  <strong>&lt;CsoundSynthesizer&gt;</strong>;
+    ; test.csd - a Csound structured data file
+  
+  <strong>&lt;CsOptions&gt;</strong>
+    -W -d -o tone.wav 
+  <strong>&lt;/CsOptions&gt;</strong>
+  
+  <strong>&lt;CsVersion&gt;</strong>    ;optional section
+    Before 4.10  ;these two statements check for
+    After 4.08   ;   Csound version 4.09
+  <strong>&lt;/CsVersion&gt;</strong>
+  
+  <strong>&lt;CsInstruments&gt;</strong>
+    ; originally tone.orc 
+    <strong>sr</strong> = 44100
+    <strong>kr</strong> = 4410
+    <strong>ksmps</strong> = 10
+    <strong>nchnls</strong> = 1
+    <strong>instr</strong>   1 
+        a1 <strong>oscil</strong> p4, p5, 1 ; simple oscillator 
+           <strong>out</strong> a1
+      <strong>endin</strong>
+  <strong>&lt;/CsInstruments&gt;</strong>
+
+  <strong>&lt;CsScore&gt;</strong>
+    ; originally tone.sco
+    f1 0 8192 10 1
+    i1 0 1 20000 1000 ;play one second of one kHz tone
+    e
+  <strong>&lt;/CsScore&gt;</strong>
+
+  <strong>&lt;/CsoundSynthesizer&gt;</strong>
+</pre>
+
+<h2>Command Line Parameter File</h2>
+<p>If the file <strong>.csoundrc</strong> exists, it will be used to set the command line parameters. These can be overridden. It uses the same form as a <strong>.csd</strong> file. Lines beginning with <strong>#</strong> or <strong>;</strong> are treated as comments.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../command/pc.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="preproc.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Unified File Format</font>
+</body>
+
+</html>

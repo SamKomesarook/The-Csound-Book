@@ -1,0 +1,75 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Composing &quot;Invade Areas Where Nothing's Definite&quot;</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">42. Composing <I>Invade Areas
+Where Nothing's Definite</I></FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Derek Pierce</FONT> (<FONT FACE="Times New Roman">aka
+Beatsystem)</FONT></H2>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<H3><FONT FACE="Times New Roman">Introduction</FONT></H3>
+
+<P><FONT FACE="Times New Roman">I am currently employed as Senior
+Music Technician at <A HREF="http://www.Bathspa.ac.uk/">Bath Spa
+University College.</A>&nbsp; My main interest is in computer
+music, particularly the use of Csound.&nbsp; When I was asked
+to contribute a piece, I wanted to produce a work that had something
+in common with a track from my lastest CD&nbsp; </FONT><FONT COLOR="#ff0000"
+ FACE="Times New Roman,Georgia,Times">&quot;BEATSYSTEM 2297 &quot;</FONT><FONT
+ FACE="Times New Roman">, released September 1997 on EM:T Records.
+The result is a piece that uses the same source material and similar
+processes to the similarly named track on the CD. I am particularly
+interested in the possibilities of granular synthesis - I like
+the fluid textures it can produce, and the variety of ways in
+which it can be implemented.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">Composition</FONT></H3>
+
+<P><FONT FACE="Times New Roman">&nbsp;The composition &quot;Invade
+areas where nothing's definite&quot; uses three different opcodes
+in csound all of which read the same source file -&nbsp; John
+Cage speaking the words of the title. The first one I have called
+a&nbsp; <A HREF="DynPitch.orc">&quot; Dynamic pitch shift instrument&quot;</A>.
+This reads a table containing <A HREF="cage.wav">&quot;cage.wav&quot;</A>
+at varying speed, producing a lowering of pitch over time. The
+score for this instrument was generated using the program &quot;CMASK&quot;;
+this produced the constant grainsize but variable-pitch score
+that was needed.</FONT></P>
+
+<P><FONT FACE="Times New Roman">&nbsp;The second instrument, a
+<A HREF="DynGran.orc">&quot; Dynamic Granulation instrument&quot;
+</A>, uses the <A HREF="granule.html">granule</A> opcode to produce
+a granular synthesis texture in which both the gap between the
+grains and their length vary over time - i.e. the gaps get shorter
+and so do the lengths. These grains are extracted from the source
+file, moving only in a forward direction, and written to the new
+lengthened output. Their length is shortened from .3msec to .002msec
+over the duration set in p3, i.e. 174 seconds. The gaps between
+these grains reduce from .2msec to .002msec, again during time
+p3. A small offset is added so that both channels are slightly
+different, giving an enhanced stereo image from two mono outputs.<BR>
+Whilst all this takes place another instrument,&nbsp;<A HREF="SndWarp.orc">
+&quot; Soundwarp instrument&quot;</A>, based on Richard Karpen's
+<A HREF="sndwarp.html">sndwarp</A> opcode, is busy stretching
+the 3 second source to 180 seconds. This instrument is copied
+and the outputs placed in the left and right channels of the final
+piece. One channel stretches the original slightly less than the
+other, giving a phasing effect.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The combined effect of these three
+instruments is, I believe, very interesting. There seem to be
+artifacts produced that enhance the overall perception of the
+piece. I believe that learning to use Csound is well worth the
+effort involved as it gives the composer a unique palette with
+which to construct wonderful soundscapes.<BR>
+<HR ALIGN=LEFT></FONT>
+
+</BODY>
+</HTML>

@@ -1,0 +1,85 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>igoto, tigoto, kgoto, goto, if, timout</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../syntax/mult.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="reinit.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#flow" class="toqr">
+Instrument Control: Program Flow Control</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>igoto, tigoto, kgoto, goto, if, timout</h2>
+
+<pre>
+           <strong>igoto</strong>      label
+           <strong>tigoto</strong>     label
+           <strong>kgoto</strong>      label
+           <strong>goto</strong>       label
+           <strong>if</strong>         ia  R  ib  <strong>igoto</strong>  label
+           <strong>if</strong>         ka  R  kb  <strong>kgoto</strong>  label
+           <strong>if</strong>         ia  R  ib  <strong>goto</strong>   label
+           <strong>timout</strong>     istrt, idur, label
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>where <em>label</em> is in the same instrument block and is not an expression, and where <em>R</em> is one of the Relational operators (<strong>&lt;</strong>,<strong> =</strong>, <strong>&lt;=</strong>, <strong>==</strong>, <strong>!=</strong>) (and <strong>=</strong> for convenience, see also under <a href="../syntax/conditn.htm">Conditional Values</a>).
+</p>
+<p>These statements are used to control the order in which statements in an instrument block are to be executed. i-time and p-time passes can be controlled separately as follows:
+</p>
+<p><strong>igoto</strong> &#8211; During the i-time pass only, unconditionally transfer control to the statement labeled by <em>label</em>.
+</p>
+<p><strong>tigoto</strong> &#8211; similar to <strong>igoto</strong>, but effective only during an i-time pass at which a new note is being 'tied' onto a previously held note (see <a href="../score/i.htm"><strong>i Statement</strong></a>); no-op when a tie has not taken place. Allows an instrument to skip initialization of units according to whether a proposed tie was in fact successful (see also <a href="../syntax/assign.htm"><strong>tival</strong></a>,<a href="../sigmod/delayr.htm"><strong> delay</strong></a>).
+</p>
+<p><strong>kgoto</strong> &#8211; During the p-time passes only, unconditionally transfer control to the statement labeled by <em>label</em>.
+</p>
+<p><strong>goto</strong> &#8211; (combination of <strong>igoto</strong> and <strong>kgoto</strong>) Transfer control to <em>label</em> on every pass.
+</p>
+<p><strong>if...igoto</strong> &#8211; conditional branch at i-time, depending on the truth value of the logical expression <em>ia</em> <strong>R</strong> <em>ib</em>. The branch is taken only if the result is true.
+</p>
+<p><strong>if...kgoto</strong> &#8211; conditional branch during p-time, depending on the truth value of the logical expression <em>ka</em> <strong>R</strong> <em>kb</em>. The branch is taken only if the result is true.
+</p>
+<p><strong>if...goto</strong> &#8211; combination of the above. Condition tested on every pass. Note that when <strong>if</strong> tests a k-rate variable, the <strong>if</strong> test and the <strong>goto</strong> will be ignored during the i-time pass, even if the k-rate variable has already been assigned an appropriate value by an earlier <strong>init</strong> statement.
+</p>
+<p><strong>timout</strong> &#8211; conditional branch during p-time, depending on elapsed note time. <em>istrt</em> and <em>idur</em> specify time in seconds. The branch to <em>label</em> will become effective at time <em>istrt</em>, and will remain so for just <em>idur</em> seconds. Note that <strong>timout</strong> can be reinitialized for multiple activation within a single note (see example under <a href="reinit.htm"><strong>reinit</strong></a>).
+</p>
+<h3>Example</h3>
+
+
+<pre>    <strong>if</strong> k3  p5 + 10 <strong>kgoto</strong> next</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../syntax/mult.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="reinit.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#flow" class="toqr">
+Instrument Control: Program Flow Control</font></a>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+	<title>setctrl, control</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="follow2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="button.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>setctrl, control</h2>
+<pre>
+          <strong>setctrl</strong>     inum, kval, itype
+  kr      <strong>control</strong>     knum
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Configurable slider controls for realtime user input. Requires Winsound or TCL/TK.</p>
+<p><strong>setctrl</strong> sets a slider to a specific value, or sets a minimum or maximum range.</p>
+<p><strong>control</strong> reads a slider's value. </p>
+<h3>Initialization</h3>
+<p><em>inum</em> &#8211; number of the slider to set</p>
+<p><em>itype</em> &#8211; type of value sent to the slider as follows:
+	<ul>
+		<li>1 &#8211; set the current value. Initial value is 0.</li>
+		<li>2  &#8211; set the minimum value. Default is 0.</li>
+		<li>3  &#8211; set the maximum value. Default is 127.</li>
+		<li>4  &#8211; set the label. (New in Csound version 4.09)</li>
+	</ul></p>
+
+
+<h3>Performance</h3>
+
+<p><em>kval</em> &#8211; value to be sent to the slider</p>
+
+<p>Calling <strong>setctrl</strong> or <strong>control</strong> will create a new slider on the screen. There is no theoretical limit to the number of sliders. Windows and TCL/TK use only integers for slider values, so the values may need rescaling. GUIs usually pass values at a fairly slow rate, so it may be advisable to pass the output of control through <strong>port</strong>.</p>
+
+<h3>Example</h3>
+<pre>
+#define SLIDERNUM # 6 #
+
+          <strong>instr</strong> 1
+          <strong>kgoto</strong>      continue        ; We don't want to configure sliders at k-rate!
+
+  ; Set min=10, max=1000, actual=20
+          <strong>setctrl</strong>    $SLIDERNUM., 20, 0
+          <strong>setctrl</strong>    $SLIDERNUM., 10, 1
+          <strong>setctrl</strong>    $SLIDERNUM., 1000, 2
+ continue:
+  kcHz    <strong>control</strong>    $SLIDERNUM.  ; Read values with smoothing
+  kcHz    <strong>port</strong>       kcHz, .02
+; ... etc
+          <strong>endin</strong>
+</pre>
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath, Codemist. Ltd.<br>
+Bath, UK<br>
+May, 2000<br>
+New in Csound version 4.06
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="follow2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="button.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</font></a>
+</body>
+
+</html>

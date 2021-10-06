@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+	<title>tbvcf</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="lpf18.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="lineto.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>tbvcf</h2>
+<pre>
+  ar      <strong>tbvcf</strong>      asig, xfco, xres, kdist, kasym
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>This opcode attempts to model some of the filter characteristics of a Roland TB303 voltage-controlled filter. Euler's method is used to approximate the system, rather than traditional filter methods. Cutoff frequency, Q, and distortion are all coupled. Empirical methods were used to try to unentwine,  but frequency is only approximate as a result. Future fixes for some problems with this opcode may break existing orchestras relying on this version of <strong>tbvcf</strong>.</p>
+
+<h3>Performance</h3>
+
+<p><em>asig</em> &#8211; input signal. Should be normalized to &plusmn;1.</p>
+
+<p><em>xfco</em> &#8211; filter cutoff frequency. Optimum range is 10,000 to 1500. Values below 1000 may cause problems.</p>
+
+<p><em>xres</em> &#8211; resonance or Q. Typically in the range 0 to 2.</p>
+
+<p><em>kdist</em> &#8211; amount of distortion. Typical value is 2. Changing <em>kdist</em> significantly from 2 may cause odd interaction with <em>xfco</em> and <em>xres</em>.</p>
+
+<p><em>kasym</em> &#8211; asymmetry of resonance. Typically in the range 0 to 1.</p>
+
+<h3>Example</h3>
+<pre>
+;---------------------------------------------------------
+; TBVCF Test
+; Coded by Hans Mikelson December, 2000
+;---------------------------------------------------------
+  <strong>sr</strong>      =  44100   ; Sample rate
+  <strong>kr</strong>      =  4410   ; Kontrol rate
+  <strong>ksmps</strong>   =  10   ; Samples/Kontrol period
+  <strong>nchnls</strong>  =  2        ; Normal stereo
+  <strong>zakinit</strong>    50, 50
+
+          <strong>instr</strong> 10
+
+  idur    =          p3                                ; Duration
+  iamp    =          p4                                ; Amplitude
+  ifqc    =          <strong>cpspch</strong>(p5)                        ; Pitch to frequency
+  ipanl   =          <strong>sqrt</strong>(p6)                          ; Pan left
+  ipanr   =          <strong>sqrt</strong>(1-p6)                        ; Pan right
+  iq      =          p7
+  idist   =          p8
+  iasym   =          p9
+
+  kdclck  <strong>linseg</strong>     0, .002, 1, idur-.004, 1, .002, 0 ; Declick envelope
+
+  kfco    <strong>expseg</strong>     10000, idur, 1000                 ; Frequency envelope
+
+  ax      <strong>vco</strong>        1, ifqc, 2, 1                     ; Square wave
+  ay      <strong>tbvcf</strong>      ax, kfco, iq, idist, iasym        ; TB-VCF
+  ay      <strong>buthp</strong>      ay/1, 100                         ; Hi-pass
+
+          <strong>outs</strong>       ay*iamp*ipanl*kdclck, ay*iamp*ipanr*kdclck
+          <strong>endin</strong>
+
+  f1 0 65536 10 1
+  ; TeeBee Test
+  ;   Sta  Dur  Amp    Pitch Pan  Q    Dist1 Asym
+  i10 0    0.2  32767  7.00  .5   0.0  2.0   0.0
+  i10 0.3  0.2  32767  7.00  .5   0.8  2.0   0.0
+  i10 0.6  0.2  32767  7.00  .5   1.6  2.0   0.0
+  i10 0.9  0.2  32767  7.00  .5   2.4  2.0   0.0
+  i10 1.2  0.2  32767  7.00  .5   3.2  2.0   0.0
+  i10 1.5  0.2  32767  7.00  .5   4.0  2.0   0.0
+  i10 1.8  0.2  32767  7.00  .5   0.0  2.0   0.25
+  i10 2.1  0.2  32767  7.00  .5   0.8  2.0   0.25
+  i10 2.4  0.2  32767  7.00  .5   1.6  2.0   0.25
+  i10 2.7  0.2  32767  7.00  .5   2.4  2.0   0.25
+  i10 3.0  0.2  32767  7.00  .5   3.2  2.0   0.25
+  i10 3.3  0.2  32767  7.00  .5   4.0  2.0   0.25
+  i10 3.6  0.2  32767  7.00  .5   0.0  2.0   0.5
+  i10 3.9  0.2  32767  7.00  .5   0.8  2.0   0.5
+  i10 4.2  0.2  32767  7.00  .5   1.6  2.0   0.5
+  i10 4.5  0.2  32767  7.00  .5   2.4  2.0   0.5
+  i10 4.8  0.2  32767  7.00  .5   3.2  2.0   0.5
+  i10 5.1  0.2  32767  7.00  .5   4.0  2.0   0.5
+  i10 5.4  0.2  32767  7.00  .5   0.0  2.0   0.75
+  i10 5.7  0.2  32767  7.00  .5   0.8  2.0   0.75
+  i10 6.0  0.2  32767  7.00  .5   1.6  2.0   0.75
+  i10 6.3  0.2  32767  7.00  .5   2.4  2.0   0.75
+  i10 6.6  0.2  32767  7.00  .5   3.2  2.0   0.75
+  i10 6.9  0.2  32767  7.00  .5   4.0  2.0   0.75
+  i10 7.2  0.2  32767  7.00  .5   0.0  2.0   1.0
+  i10 7.5  0.2  32767  7.00  .5   0.8  2.0   1.0
+  i10 7.8  0.2  32767  7.00  .5   1.6  2.0   1.0
+  i10 8.1  0.2  32767  7.00  .5   2.4  2.0   1.0
+  i10 8.4  0.2  32767  7.00  .5   3.2  2.0   1.0
+  i10 8.7  0.2  32767  7.00  .5   4.0  2.0   1.0
+</pre>
+
+<h3>Author</h3>
+<p>Hans Mikelson<br>
+December, 2000 &#8211; January, 2001<br>
+New in Csound 4.10</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="lpf18.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="lineto.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</font></a>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>mandol</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="marimba.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gogobel.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#models" class="toqr">
+Signal Generators: Models and Emulations</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>mandol</h2>
+
+
+<pre>
+  ar      <strong>mandol</strong>     kamp, kfreq, kpluck, kdetune, kgain, ksize, ifn[, iminfreq]
+  </pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>An emulation of a mandolin.<br>
+</p>
+<h3>Initialization</h3>
+<p><em>ifn</em> &#8211; table number containing the pluck wave form. The file &quot;mandpluk.aiff&quot; is suitable for this.
+</p>
+<p><em>iminfreq</em> &#8211; Lowest frequency to be played on the note. If it is omitted it is taken to be the same as the initial <em>kfreq</em>.
+</p>
+<h3>Performance</h3>
+<p><em>kamp</em> &#8211; Amplitude of note.
+</p>
+<p><em>kfreq</em> &#8211; Frequency of note played.
+</p>
+<p><em>kpluck</em> &#8211; The pluck position, in range 0 to 1. Suggest 0.4.
+</p>
+<p><em>kgain</em> &#8211; the loop gain of the model, in the range 0.97 to 1.
+</p>
+<p><em>kdetune </em> &#8211; The proportional detuning between the two strings. Suggested range 1 and 0.9.
+</p>
+<p><em>ksize</em> &#8211; The size of the body of the mandolin. Range 0 to 2.
+</p>
+<h3>Author</h3>
+<p>John ffitch (after Perry Cook)<br>
+University of Bath, Codemist Ltd.<br>
+Bath, UK<br>
+New in Csound version 3.47<br>
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="marimba.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gogobel.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#models" class="toqr">
+Signal Generators: Models and Emulations</font></a>
+</body>
+
+</html>

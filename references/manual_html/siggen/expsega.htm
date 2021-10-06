@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<html>
+<head>
+	<title>expsega</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0">
+		</td>
+		<td width="45" align="right">
+			<img src="../next.gif" width="38" height="18" alt="Next Page" border="0">
+		</td>
+	</tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Category</font>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>expsega</h2>
+<pre>
+  ar      <strong>expsega</strong>   ia, idur1, ib[, idur2, ic[...]]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>An exponential segment generator operating at a-rate. This unit is almost identical to <strong>expseg</strong>, but more precise when defining segments with very short durations (i.e., in a percussive attack phase) at audio rate.</p>
+<p>Note that the old <a href="../siggen/line.htm"><strong>expseg</strong></a> opcode does not operate correctly at audio rate when segments are shorter than a k-period.</p>
+<h3>Initialization</h3>
+<p><em>ia</em> &#8211; starting value. Zero is illegal.</p> 
+<p><em>ib</em>, <em>ic</em>, etc. &#8211; value after <em>idur1</em> seconds, etc. must be non-zero and must agree in sign with <em>ia</em>.</p>
+<p><em>idur1</em> &#8211; duration in seconds of first segment. A zero or negative value will cause all initialization to be skipped.</p>
+<p><em>idur2</em>, <em>idur3</em>, etc. &#8211; duration in seconds of subsequent segments. A zero or negative value will terminate the initialization process with the preceding point, permitting the last defined line or curve to be continued indefinitely in performance. The default is zero.</p>
+
+<h3>Performance</h3>
+
+<p>These units generate control or audio signals whose values can pass through two or more specified points. The sum of <em>dur</em> values may or may not equal the instrument's performance time. A shorter performance will truncate the specified pattern, while a longer one will cause the last defined segment to continue on in the same direction.</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+Category</font>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+	<title>waveset</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="phaser1.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="bbcut.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#effects" class="toqr">
+Signal Modifiers: Special Effects</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>waveset</h2>
+<pre>
+  ar      <strong>waveset</strong>      ain, krep
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>A simple time stretch obtained by repeating cycles.</p>
+
+<h3>Performance</h3>
+<p><em>krep</em> &#8211; number of times to repeat each cycle.</p>
+<p>The input is read and each complete cycle (two zero-crossings) is repeated <em>krep</em> times.</p>
+<p>There is an internal buffer as the output is slower that the input. Some care is taken that the buffer is not too short, but there may be strange effects.</p>
+
+<h3>Example</h3>
+<pre>
+          <strong>instr</strong> 1
+  a1      <strong>soundin</strong>     &quot;input.wav&quot;
+
+  a2      <strong>waveset</strong>     a1, p4
+          <strong>out</strong>         a2
+          <strong>endin</strong>
+
+</pre>
+
+<h3>Author</h3>
+<p>John ffitch<br> 
+University of Bath, Codemist Ltd.<br>
+Bath, UK<br>
+February, 2001<br>
+New in Csound version 4.11</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="phaser1.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="bbcut.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#effects" class="toqr">
+Signal Modifiers: Special Effects</font></a>
+</body>
+
+</html>

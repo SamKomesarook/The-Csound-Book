@@ -1,0 +1,71 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>printk2</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="printk.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="flashtxt.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#printing" class="toqr">
+Signal Input and Output: Printing and Display</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>printk2</h2>
+
+<pre>
+          <strong>printk2</strong>   kvar[, numspaces]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Initialization</h3>
+<p><em>numspaces</em> &#8211; number of space characters printed before the value of kvar
+</p>
+<h3>Performance</h3>
+<p><em>kvar</em> &#8211; signal to be printed
+</p>
+<p>Derived from Robin Whittle's <strong>printk</strong>, prints a new value of <em>kvar</em> each time <em>kvar</em> changes. Useful for monitoring MIDI control changes when using sliders.
+</p>
+
+<p><em>WARNING</em>! don't use this opcode with normal, continuously variant k-signals, because it can hang the computer, as the rate of printing is too fast.
+</p>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+1998 (New in Csound version 3.48)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="printk.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="flashtxt.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#printing" class="toqr">
+Signal Input and Output: Printing and Display</font></a>
+</body>
+
+</html>

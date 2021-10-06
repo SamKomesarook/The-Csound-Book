@@ -1,0 +1,63 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.03 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>CEC_midi</title>
+	</head>
+
+	<body>
+		<center>
+		</center>
+		<center>
+			<img src="help.gif"></center>
+		<center>
+			<h4><b><a href="index.html">HELP INDEX</a></b></h4>
+		</center>
+		<center>
+			<hr>
+		</center>
+		<h4><u>NAME</u></h4>
+		<b>cmidi</b> - Creation of midi input control port.
+		<h4><u>SYNOPSIS</u></h4>
+		<pre><b>cmidi</b> name ?options?</pre>
+		<h4><u>OPTIONS</u></h4>
+		<tt><b>-label</b>&nbsp;&nbsp;&nbsp; <i>character string<br>
+		</i></tt><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i>will replace the name label besides or underneath the slider.<i> ;default&nbsp;&nbsp;&nbsp;&nbsp; none</i>
+		<p><tt><b>-event</b>&nbsp;&nbsp;&nbsp; <i>pbend | touch | veloc | notnum |ctrl[1-127]</i></tt><i>&nbsp;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i>determines the rtype of midi event that will control the parameter <i>;default&nbsp;&nbsp;&nbsp;&nbsp; notnum</i><br>
+		<br>
+		<tt><b>-channel</b>&nbsp; <i>1 to 16<br>
+		</i></tt><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i>the channel; number on which this event will arrive<br>
+		<tt><b>-min</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>int | float<br>
+		</i></tt><i>&nbsp;&nbsp;</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the minimum value of the slider&nbsp;<i> ;default&nbsp;&nbsp;&nbsp;&nbsp; 0</i><br>
+		<i>&nbsp;<br>
+		</i><tt><b>-max</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>int | float<br>
+		</i></tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; determines the maximum value of the slider&nbsp;<i> ;default&nbsp;&nbsp;&nbsp;&nbsp; 127</i>
+		<p><tt><b>-init</b>&nbsp;&nbsp;&nbsp;&nbsp; <i>int | float between min and max<br>
+		</i></tt><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i>determines the initial value of the slider.<i>&nbsp; ;default&nbsp;&nbsp;&nbsp;&nbsp; 0 | -min</i><br>
+		<i></i>&nbsp;
+		<h4><u>DESCRIPTION</u></h4>
+		The <b>cmidi</b> command creates an automatic Csound midi setup where the value of a midi event is passed on to the orchestra via a global &quot;gk[name]&quot; variable. The <b>cmidi</b> object varies from other Cecilia objects in that it does not create an interface object except a &quot;lag time&quot; slider that smoothes continuous midi input. The <b>cmidi</b> object is meant to be used primarily as an interface to a JLCooper MidiFader unit but will understand any kind of midi channel voice message. The values from the midi events (0-127) will be scaled between <b>min</b> and <b>max </b>.
+		<p>When the orchestra and score are compiled, the <b>cmidi</b> object creates its own instruments to preprocess midi information within Csound. This is not normally seen by the user.
+		<p>Remember that a midi instrument must be launched with a midi note-on message for it to transmit any data. Therefor, if a pitch bend message is used to control a variable, the pitchbend data will be accepted <b>only</b> if there is a currently active midi note. A good way to get around this problem is to program the desired JLCooper fader to delivers midi note-on messages. The user can then specify the velocity received as the data carrier. This way, a note-on message will always be sent along with the desired velocity data.
+		<p>A regular <b>cslider</b> is always produced along with a <b>cmidi</b>. That slider is used to set a portamento or lag value for the midi data. The portamento value is issued automatically at init time only.
+		<p>An option menu is also produced with the options: <b>practice, midi_record, playback, load and save</b>. The user can record any midi event with <b>midi_record</b> and replay them with <b>playback</b>. A given stream can be saved under any name with <b>save</b> and recalled with <b>load</b>. <b>Practice</b> allows to simply play the sliders without recording.
+		<p>&nbsp;<b>It is compulsory</b>, when using the <b>cmidi</b> object to also declare a &quot;total_time&quot; <b>cslider</b>.&nbsp;<br>
+		<br>
+		<h4><u>EXAMPLE</u></h4>
+		The definition:
+		<pre>&nbsp;<b>cmidi</b> pitch -ev veloc -ch 16&nbsp; -min 0 -max 45 -init 10</pre>
+		sets up a midi input stream that communicates with the orchestra through the global variable&nbsp; <i>&quot;gkpitch&quot;</i> along with a <i>portamento</i> slider named <i>lag-pitch</i>. Data will be read from the velocity value of any note-on message received on channel 16. The data will be scaled, on a base of 0 to 127 to the a value between 0 and 45. The value of <i>gkpitch</i> is initialized at 10.
+		<p>The definition:
+		<pre>&nbsp;<b>cec_midi</b> amp -ev ctrl38 -ch 16 -min .5 -max 10 -init 10</pre>
+		sets up a midi input stream named <i>&quot;gkamp&quot;</i> along with a <i>portamento</i> slider named <i>lag-amp</i>. Data will be read from the value of controller #38 received on channel 16. <b>No data will be received</b> if there is no currently active note on channel 16. A midi keyboard or another computer can be used to send midi note-on events just before the controller data is needed.&nbsp;<br>
+		<br>
+		<br>
+		<br>
+		<hr>
+		<br>
+		Copyright 1996&nbsp; - 97
+	</body>
+
+</html>

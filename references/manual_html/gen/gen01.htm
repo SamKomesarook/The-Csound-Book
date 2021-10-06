@@ -1,0 +1,88 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN01</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="top.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen02.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#file" class="toqr">
+<strong>GEN</strong> Routines: File Access</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN01</h2>
+
+
+<pre>  <strong>f</strong>#  time  size  1  filcod  skiptime  format  channel</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This subroutine transfers data from a soundfile into a function table.
+</p>
+<h3>Initialization</h3>
+<p><em>size</em> &#8211; number of points in the table. Ordinarily a power of 2 or a power-of-2 plus 1 (see <a href="../score/f.htm"><strong>f statement</strong></a>); the maximum tablesize is 16777216 (2<sup><small>24</small></sup>) points. If the source soundfile is of type AIFF, allocation of table memory can be <em>deferred</em> by setting this parameter to 0; the size allocated is then the number of points in the file (probably not a power-of-2), and the table is not usable by normal oscillators, but it is usable by a <a href="../siggen/loscil.htm"><strong>loscil</strong></a> unit. An AIFF source can also be mono or stereo.
+</p>
+<p><em>filcod</em> &#8211; integer or character-string denoting the source soundfile name. An integer denotes the file <strong>soundin</strong>.<em>filcod</em> ; a character-string (in double quotes, spaces permitted) gives the filename itself, optionally a full pathname. If not a full path, the file is sought first in the current directory, then in that given by the environment variable SSDIR (if defined) then by SFDIR. See also <a href="../sigio/in.htm"><strong>soundin</strong></a>.
+</p>
+<p><em>skiptime</em> &#8211; begin reading at <em>skiptime</em> seconds into the file.
+</p>
+<p><em>channel</em> &#8211; channel number to read in. 0 denotes read all channels.
+</p>
+<p><em>format</em> &#8211; specifies the audio data-file format:
+</p>
+<pre>
+  1 - 8-bit signed character    4 - 16-bit short integers 
+  2 - 8-bit A-law bytes         5 - 32-bit long integers 
+  3 - 8-bit U-law bytes         6 - 32-bit floats
+</pre>
+<p>If <em>format</em> = 0 the sample format is taken from the soundfile header, or by default from the CSound <a href="../command/desc.htm"><strong>-o</strong> command flag</a>.
+</p>
+<h3>Note</h3>
+<p>Reading stops at end-of-file or when the table is full. Table locations not filled will contain zeros.
+</p>
+<p>If p4 is positive, the table will be post-normalized (rescaled to a maximum absolute value of 1 after generation). A negative p4 will cause rescaling to be skipped.
+</p>
+<h3>Examples</h3>
+
+<pre>
+  <strong>f</strong>   1  0  8192  1  23  0  4
+  <strong>f</strong>   2  0  0  -1  &quot;trumpet  A#5&quot;  0  4 
+</pre>
+<p>The tables are filled from 2 files, &quot;soundin.23&quot; and &quot;trumpet A#5&quot;, expected in SSDIR or SFDIR. The first table is pre-allocated; the second is allocated dynamically, and its rescaling is inhibited.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="top.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen02.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#file" class="toqr">
+<strong>GEN</strong> Routines: File Access</font></a>
+</body>
+
+</html>

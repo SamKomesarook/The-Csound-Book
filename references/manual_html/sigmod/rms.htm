@@ -1,0 +1,79 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>rms, gain, balance</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="linen.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="dam.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#amp" class="toqr">
+Signal Modifiers: Amplitude Modifiers</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>rms, gain, balance</h2>
+
+<pre>
+  kr      <strong>rms</strong>        asig[, ihp, iskip]
+  ar      <strong>gain</strong>       asig, krms[, ihp, iskip]
+  ar      <strong>balance</strong>    asig, acomp[, ihp, iskip]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>The rms power of asig can be interrogated, set, or adjusted to match that of a comparator signal.
+</p>
+<h3>Initialization</h3>
+<p><em>ihp</em> (optional) &#8211; half-power point (in Hz) of a special internal low-pass filter. The default value is 10.
+</p>
+<p><em>iskip</em> (optional) &#8211; initial disposition of internal data space ( see <a href="port.htm"><strong>reson</strong></a>). The default value is 0.
+</p>
+<h3>Performance</h3>
+<p>rms output values <em>kr</em> will trace the <strong>rms</strong> value of the audio input <em>asig</em>. This unit is not a signal modifier, but functions rather as a signal power-gauge.
+</p>
+<p><strong>gain</strong> provides an amplitude modification of <em>asig</em> so that the output <em>ar</em> has <strong>rms</strong> power equal to <em>krms</em>. <strong>rms</strong> and <strong>gain</strong> used together (and given matching <em>ihp</em> values) will provide the same effect as <strong>balance</strong>.
+</p>
+<p><strong>balance</strong> outputs a version of <em>asig</em>, amplitude-modified so that its rms power is equal to that of a comparator signal <em>acomp</em>. Thus a signal that has suffered loss of power (eg., in passing through a filter bank) can be restored by matching it with, for instance, its own source. It should be noted that <strong>gain</strong> and <strong>balance</strong> provide amplitude modification only - output signals are not altered in any other respect.
+</p>
+<h3>Example</h3>
+
+<pre>
+  asrc    <strong>buzz</strong>       10000,440, sr/440, 1   ; band-limited pulse train
+  a1      <strong>reson</strong>      asrc, 1000,100         ; sent through
+  a2      <strong>reson</strong>      a1,3000,500            ; 2 filters
+  afin    <strong>balance</strong>    a2, asrc               ; then balanced with source
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="linen.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="dam.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#amp" class="toqr">
+Signal Modifiers: Amplitude Modifiers</font></a>
+</body>
+
+</html>

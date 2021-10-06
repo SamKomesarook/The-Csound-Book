@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>15-over.txt.html</title>
+		<header></header>
+		<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+	</head>
+
+	<body stylesrc="../admin/adpchtxt.html" bgcolor="white">
+		<h3>Overview</h3>
+		<pre>
+In its simplest form the algorithm consists of averaging each two
+successive samples of a circular buffer (or wave-table), and then
+writing the average back to the buffer as the new sample value.
+The various harmonics of whatever initial spectrum are decaying
+to an almost pure sine wave, but at different rates. 
+The initial buffer values are chosen as a function of the desired
+sound type.  Plucked strings, with high partials, are best
+obtained if the circular buffer is filled with random values.  As
+these are periodically repeated, the result is not noisy or
+hissing and, without decay algorithm, sounds like a reed organ.
+With the decay algorithm, it will sound like a plucked string.
+Using a different random buffer for each note adds a small
+variation to notes of the same pitch, resulting in even more
+natural sounding tones. 
+                        
+The implementation of the algorithm Y<sub>t</sub> = 1/2(Y<sub>t-p</sub>+Y<sub>t-p-1</sub>) is made
+extremely efficient by use of bit shifting operators.
+Multiplication is not necessary.  Thus the technique can provide
+impressive real-time performance without loss of quality.
+(Karplus et al. 1989: pp. 467-480)
+
+The process of averaging can be further specified by stretching
+the process in time, adding a roughness factor to control the
+range between pitch and noise, or combinations of both. (Jaffe et
+al. 1989: pp. 481-494) 
+
+</pre>
+	</body>
+
+</html>

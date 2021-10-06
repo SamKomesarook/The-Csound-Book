@@ -1,0 +1,728 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>QuickRef: Command Line Flags</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body text="black" link="black" vlink="black" alink="black" bgcolor="white">
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent">
+      <img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" width="10">
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="gen.htm">
+      <img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="utility.htm">
+      <img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+<hr size="1" color="#A9A9A9" noshade>
+<a class="qr" href="../command/top.htm"><h1>Command Line Flags</h1></a>
+
+<a class="qr" name="generic"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Command Line Flags: Generic</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-I</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      i-time only orch run
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-n</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      no sound onto disk
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-i <em>fnam</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      sound input filename <em>fnam</em>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-o <em>fnam</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      sound output filename <em>fnam</em>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-b <em>N</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      sample frames (or -kprds) per software sound I/O buffer
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-B <em>N</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      samples per hardware sound I/O buffer
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-A</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      create an AIFF format output soundfile
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-W</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      create a WAV format output soundfile
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-J</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      create an IRCAM format output soundfile
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-h</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      no header on output soundfile
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-c</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      8-bit signed_char sound samples
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-a</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      alaw sound samples
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-8</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      8-bit unsigned_char sound samples
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-u</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      ulaw sound samples
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-s</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      short_int sound samples
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-l</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      long_int sound samples
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-f</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      float sound samples
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-r <em>N</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      orchestra srate override
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-k <em>N</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      orchestra krate override
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-v</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      verbose orch translation
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-m <em>N</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      tty message level. <em>N = </em>Sum of: 1 = note amps, 2 = out-of-range msg, 4 = warnings
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-d</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      suppress all displays
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-g</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      suppress graphics, use ASCII displays
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-G</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      create Postscript displays of any display
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-S</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      score is in Scot format
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-x <em>fnam</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      extract from score.srt using extract file <em>fnam</em>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-t <em>N</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      use uninterpreted beats of the score, initially at tempo <em>N</em>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-L <em>dnam</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      read Line-oriented real-time score events from device <em>dnam</em>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-M <em>dnam</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      read MIDI real-time events from device <em>dnam</em>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-F <em>fnam</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      read MIDI file event stream from file <em>fnam</em>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-P <em>N</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      MIDI sustain pedal threshold (<em>N = </em>0 - 128)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-R</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      continually rewrite header while writing soundfile (WAV/AIFF)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-H/H1</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      generates a rotating line progress report
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-H2</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      generates a &quot;.&quot; every time a buffer is written.
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-H3</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      reports the size in seconds of the output.<br>In Windows, writes information to window title bar.
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-H4</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      sounds a bell for every buffer of the output written.
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-N</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      notify (ring the bell) when score or MIDI file is done
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-T</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      terminate the performance when MIDI file is done
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-D</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      defer GEN01 soundfile loads until performance time
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-z</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      List opcodes in this version
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-z1</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      List opcodes and arguments in this version
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-- <em>lognam</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      Log all text output to <em>lognam</em>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-j fnam</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      Derive console messages from database <em>fnam</em>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-Z</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      Switch on dithering of audio conversion from internal floating point to 32, 16 and 8 bit formats. (New in Csound version 4.05)
+    </td>
+  </tr>  
+  <tr>
+    <td class="qr" nowrap width="14%" valign="TOP">
+      <a class="qr" href="../command/pc.htm">
+      <strong>-K</strong></a>
+    </td>
+    <td class="qr" nowrap width="86%" valign="TOP">
+      Switch off peak chunks.
+    </td>
+  </tr>
+ 
+</table>
+
+
+<a class="qr" name="utility"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Command Line Flags: Utility Invocation</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm#utils">
+      <strong>-U sndinfo</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      run utility program <strong>sndinfo</strong>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm#utils">
+      <strong>-U hetro</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      run utility program <strong>hetro</strong>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm#utils">
+      <strong>-U lpanal</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      run utility program <strong>lpanal</strong>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm#utils">
+      <strong>-U pvanal</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      run utility program <strong>pvanal</strong>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm#utils">
+      <strong>-U cvanal</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      run utility program <strong>cvanal</strong>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm#utils">
+      <strong>-U pvlook</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      run utility program <strong>pvlook</strong>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <a class="qr" href="../command/desc.htm">
+      <strong>-C</strong></a>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      use Cscore processing of scorefile
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="pc"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Command Line Flags: PC and Windows-Specific</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="14%" valign="TOP">
+      <a class="qr" href="../command/pc.htm">
+      <strong>-j <em>num</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="86%" valign="TOP">
+      set the number of console text rows (default 25)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="14%" valign="TOP">
+      <a class="qr" href="../command/pc.htm">
+      <strong>-J <em>num</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="86%" valign="TOP">
+      set the number of console text columns (default 80)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="14%" valign="TOP">
+      <a class="qr" href="../command/pc.htm">
+      <strong>-q <em>num</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="86%" valign="TOP">
+      WAVE OUT device id number (use only if more WAVE devices are installed)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="14%" valign="TOP">
+      <a class="qr" href="../command/pc.htm">
+      <strong>-p <em>num</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="86%" valign="TOP">
+      number of WAVE OUT buffers (default 4; max. 40)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="14%" valign="TOP">
+      <a class="qr" href="../command/pc.htm">
+      <strong>-O</strong></a>
+    </td>
+    <td class="qr" nowrap width="86%" valign="TOP">
+      suppresses all console text output for better real-time performance
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="14%" valign="TOP">
+      <a class="qr" href="../command/pc.htm">
+      <strong>-e</strong></a>
+    </td>
+    <td class="qr" nowrap width="86%" valign="TOP">
+      allows any sample rate (to use only with WAVE cards supporting this feature)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="14%" valign="TOP">
+      <a class="qr" href="../command/pc.htm">
+      <strong>-y</strong></a>
+    </td>
+    <td class="qr" nowrap width="86%" valign="TOP">
+      doesn't wait for keypress on exit
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="14%" valign="TOP">
+      <a class="qr" href="../command/pc.htm">
+      <strong>-E</strong></a>
+    </td>
+    <td class="qr" nowrap width="86%" valign="TOP">
+      allows graphic display for WCSHELL by Riccardo Bianchini
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="14%" valign="TOP">
+      <a class="qr" href="../command/pc.htm">
+      <strong>-Q <em>num</em></strong></a>
+    </td>
+    <td class="qr" nowrap width="86%" valign="TOP">
+      enable MIDI OUT. <em>num</em> (optional) = MIDI OUT port device id number
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="14%" valign="TOP">
+      <a class="qr" href="../command/pc.htm">
+      <strong>-Y</strong></a>
+    </td>
+    <td class="qr" nowrap width="86%" valign="TOP">
+      suppresses real-time WAVE OUT for better MIDI OUT timing performance
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="14%" valign="TOP">
+      <a class="qr" href="../command/pc.htm">
+      <strong>-*</strong></a>
+    </td>
+    <td class="qr" nowrap width="86%" valign="TOP">
+      yields control to the system until audio output buffer is full
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="mac"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Command Line Flags: Macintosh-Specific</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <strong>-q <em>sampdir</em></strong>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      set the directory for finding samples
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <strong>-Q <em>analdir</em></strong>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      set the directory for finding analyses
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <strong>-X <em>snddir</em></strong>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      set the directory for saving sound files
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <strong>-V <em>num</em></strong>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      set screen buffer size
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <strong>-E <em>num</em></strong>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      set number of graphs saved
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <strong>-p</strong>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      play on finishing
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <strong>-e <em>num</em></strong>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      set rescaling factor
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <strong>-w</strong>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      set recording of MIDI data
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <strong>-y <em>num</em></strong>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      set rate for progress display
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="19%" valign="TOP">
+      <strong>-Y <em>num</em></strong>
+    </td>
+    <td class="qr" nowrap width="81%" valign="TOP">
+      set rate for profile display
+    </td>
+  </tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent">
+      <img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" width="10">
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="gen.htm">
+      <img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="utility.htm">
+      <img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+</body>
+</html>

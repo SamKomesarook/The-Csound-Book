@@ -1,0 +1,2157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<!--last modified on Monday, October 18, 1999 12:56 AM -->
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Creating and Using a Platform-Independent GUI for Csound in Java</TITLE>
+  <META NAME="Author" CONTENT="Michael Gogins">
+</HEAD>
+<BODY BGCOLOR="#eeeeee" LINK="#0000ee" ALINK="#ff0000" VLINK="#551a8b">
+
+<H1>8. Creating and Using a Platform-Independent GUI for Csound
+in Java</H1>
+
+<H1>Michael Gogins</H1>
+
+<P>This chapter develops and presents ScoreManager (<A HREF="ScoreManager.bat">click
+here to run stand-alone</A>), a complete, working, graphical user
+interface for Csound written in platform-independent Java. This
+chapter also shows how to use ScoreManager to simplify writing
+score generating programs. ScoreManager is designed to meet the
+following requirements:</P>
+
+<OL>
+  <LI>Enable musicians to run Csound entirely from the familiar
+  &quot;menu, window, dialog box&quot; style of graphical user
+  interface.
+  <LI>Maintain libraries containing any number of Csound instrument
+  and function definitions.
+  <LI>Produce, from such a library, arrangements of selected instruments.
+  <LI>Manage Csound scores and display piano-roll type sketches
+  of them, with the ability to rescale scores along selected dimensions,
+  for example to transpose pitch or change tempo.
+  <LI>Keep all instrument definitions, function statements, note
+  statements, command-line options, and the arrangement for a composition
+  in one text file.
+  <LI>Serve as a plug-in score manager component for score generating
+  programs.
+  <LI>Run, as a standalone program, an applet, or a plugin class,
+  on any computer with a Java virtual machine.
+</OL>
+
+<P>This chapter also illustrates some basic principles of object-oriented
+software design, and some useful techniques for making cross-platform,
+multi-purpose Java classes. After working through this chapter,
+you should be able not only to use ScoreManager as a standalone
+program, as a component in your own software, and as an applet,
+but also to extend or adapt the program for your own purposes.</P>
+
+<P>ScoreManager was developed using Microsoft Visual J++ for Java
+version 1.0 and Symantec Visual Caf&eacute;, version 1.0, and
+modified using Borland JBuilder 3.0 and JDK version 1.2. At this
+point, you need Java Development Kit 1.2 or the Java Runtime Environment
+1.2 to run ScoreManager.</P>
+
+<P>The Template.osc file contains a J.S. Bach score and Csound
+orchestra together with a number of Csound instrument definitions
+that can be used to render the other pieces in this chapter or
+in &quot;Algorithmic Score Generators.&quot;</P>
+
+<P>Although the CD-ROM version of this chapter contains embedded
+applets to demonstrate ScoreManager and how to use it in score
+managers, these applets may not be able to save or load files
+due to the security restrictions of current Web browsers. In the
+future, Web browsers will probably allow users to set the level
+of security they desire so that applets can read and write files
+on their computers.</P>
+
+<P>In the meantime, fortunately, at least on Windows computers
+on which the JDK or JRE has been installed, every applet in this
+chapter can be run in standalone mode from this Web page by clicking
+on the corresponding &quot;standalone mode&quot; link, which opens
+a batch file that runs the applet outside the browser. In this
+mode, every applet is completely functional and can read files,
+write files, and run Csound.</P>
+
+<P>On other computers, the applets can still be run in standalone
+mode by setting up the classpath to include Silence.ScoreManager,
+and running the Java virtual machine with the applet&#146;s class
+name, as described below.</P>
+
+<H3>Basic Design</H3>
+
+<P>Books on software engineering tend to assume that the functional
+<I>requirements</I>, usually a more complex list of the same sort
+as above, are fixed. In reality, functional requirements are seldom
+complete or clear until after several cycles of actually making
+the program, discovering how it really works or does not work,
+finding new things the program really ought to do, finding that
+other things are in reality too difficult to make, and otherwise
+rethinking the requirements.</P>
+
+<P>The basic design decision for this project was to focus on
+making it easier to use Csound as a software synthesizer for algorithmic
+composition. That meant designing a score manager that would plug
+into composition programs, display piano-roll sketches of the
+generated scores, and quickly arrange and synthesize those scores
+using Csound - the list above. It also meant discarding requirements
+for graphical editing of scores, translating Csound scores to
+and from MIDI sequences, and so on.</P>
+
+<P>Since it was easy to do, the score manager was also designed
+to run as a stand-alone program.</P>
+
+<H2>High-Level Layers</H2>
+
+<P><IMG SRC="DESIGN.GIF" WIDTH="702" HEIGHT="465" ALIGN="BOTTOM"
+BORDER="0" NATURALSIZEFLAG="0"></P>
+
+<H4>Figure 1. ScoreManager Interfaces.</H4>
+
+<P>In software engineering, a complex system is often conceived
+as layers of software ranging from user input and output at the
+top, to files and the operating system at the bottom. Designers
+frequently start with a simple conception of these layers, which
+is then increasingly refined, until the connections between the
+layers end up defining the interfaces of the classes. The initial
+scheme for ScoreManager is shown in Figure 1.</P>
+
+<H2>Refinement of Layers</H2>
+
+<P>The next step of refinement is to consider the interfaces between
+the user and the score manager, and between the score manager
+and Csound. The interface to Csound is already determined. Therefore,
+refining the interface between the score manager and Csound before
+doing anything else reduces the number of options to be considered
+in refining the other layers.</P>
+
+<P>The interface to Csound consists of an operating system command
+line with the following inputs:</P>
+
+<OL>
+  <LI>Command-line options.
+  <LI>An orchestra (&quot;<I>orc</I>&quot;) file, containing instrument
+  definitions (&quot;<I>instr</I>&quot; statements) and some synthesis
+  options.
+  <LI>A score (&quot;<I>sco</I>&quot;) file, containing function
+  definitions (&quot;<I>f</I>&quot; statements) and note definitions
+  (&quot;<I>i</I>&quot; statements).
+</OL>
+
+<P>In the context of algorithmic composition, one orchestra may
+be used for many scores, which means that several scores might
+use one set of function statements. To suit this purpose, the
+score file was divided into a function statement section and a
+note statement section, producing the following set of inputs:</P>
+
+<OL>
+  <LI>Command-line options.
+  <LI>Orchestra (&quot;<I>orc</I>&quot;) file, containing instrument
+  definitions (&quot;<I>instr</I>&quot; statements).
+  <LI>Function definitions (&quot;<I>f</I>&quot; statements).
+  <LI>Note definitions (&quot;<I>i</I>&quot; statements).
+</OL>
+
+<P>Also in the context of algorithmic composition, it is handy
+to have a single large orchestra that can be re-used with many
+scores. Therefore, the orchestra file was made into an instrument
+library, and an &quot;arrangement&quot; section was added for
+assigning instrument numbers only to those instrument definitions
+actually used in the score, further dividing the inputs:</P>
+
+<OL>
+  <LI>Command-line options.
+  <LI>Instrument library (&quot;<I>instr</I>&quot; statements with
+  names).
+  <LI>Arrangement (names of instruments for instrument numbers).
+  <LI>Function definitions (&quot;f<I>&quot;</I> statements).
+  <LI>Note definitions (&quot;<I>i</I>&quot; statements).
+</OL>
+
+<P>Finally, in the context of algorithmic composition, it is convenient
+to have an easy facility for rescaling generated scores in tempo,
+pitch, and loudness, so a target scale section and actual scale
+section were added to the inputs. It is handy to remember the
+filename. It turned out to be a good idea to separate command-line
+options relating to the soundfile format and compilation from
+those relating to the score. And finally, it is nice to have a
+little score with a varied set of notes that can be used for quickly
+testing new or altered instrument definitions. This gives:</P>
+
+<OL>
+  <LI>Filename (not saved).
+  <LI>Function definitions (&quot;<I>f</I>&quot; statements).
+  <LI>Instrument library (&quot;<I>instr</I>&quot; statements with
+  names).
+  <LI>Arrangement (names of instruments for instrument numbers).
+  <LI>Note definitions (&quot;<I>i</I>&quot; statements).
+  <LI>Target scale (minimum and range on each dimension).
+  <LI>Actual scale (minimum and range on each dimension).
+  <LI>Soundfile options.
+  <LI>Score options.
+  <LI>Test score.
+</OL>
+
+<P>Experience shows this is all that really needs to be stored.
+These, then, become the basic member objects of the ScoreManager
+class (Listing 1).</P>
+
+<H4>Listing 1. Data Members of ScoreManager.</H4>
+
+<PRE>public class ScoreManager
+{
+	public filename;
+	public functions;
+	public instruments;
+	public arrangement;
+	public notes;
+	public scaleTargetMinima;
+	public scaleTargetRanges;
+	public scaleActualMinima;
+	public scaleActualRanges;
+	public soundfileOptions;
+	public scoreOptions;
+	public instrumentTestScore;
+};</PRE>
+
+<P>The next step in refining the design is to examine each member
+object and analyze it into atomic data elements. At this point,
+the facilities of the language itself become relevant. Some of
+the objects are single units and can already be assigned types.
+There is no need to break the function definitions up into separate
+strings, or for that matter the test score. That gives Listing
+2.</P>
+
+<H4>Listing 2. Data Members of ScoreManager (Refined).</H4>
+
+<PRE>public class ScoreManager
+{
+	public String filename;
+	public String functions;
+	public instruments;
+	public arrangement;
+	public notes;
+	public scaleTargetMinima;
+	public scaleTargetRanges;
+	public scaleActualMinima;
+	public scaleActualRanges;
+	public soundfileOptions;
+	public scoreOptions;
+	public String instrumentTestScore;
+};</PRE>
+
+<P>Each instrument definition must be a separate object, but again
+there is no need to break each definition up into separate lines
+of text, so each definition can be a single string. However, it
+should be given a name, which suggests using an associative array
+for the instrument library. Again, the Java util package provides
+a collection class for this purpose, Properties. The arrangement
+should assign to any collection of instrument names a series of
+numbers, and this can be done implicitly by ordering the names
+in a Vector of strings. Similarly, the command line options can
+be implemented as Properties objects, as shown in Listing 3.</P>
+
+<H4>Listing 3. Data Members of ScoreManager (Further Fefined).</H4>
+
+<PRE>public class ScoreManager
+{
+	public File filename;
+	public String functions;
+	public Properties instruments;
+	public Vector arrangement;
+	public notes;
+	public scaleTargetMinima;
+	public scaleTargetRanges;
+	public scaleActualMinima;
+	public scaleActualRanges;
+	public Properties soundfileOptions;
+	public Properties scoreOptions;
+	public String instrumentTestScore;
+};</PRE>
+
+<H2>Implementing Notes</H2>
+
+<P>The only objects not yet assigned types are those having to
+do with notes. What is a Csound note statement? It has several
+ways of defining pitch, the ability to include strings, a variable
+number of fields, and on top of all that the scot score translator
+syntax with continuation and incrementation operators. At this
+point programming experience suggests it is not necessary to implement
+all these features. What features are really required?</P>
+
+<P>In my work with algorithmic composition, I have evolved a &quot;<I>note
+space</I>&quot; of six dimensions including instrument number,
+starting time, duration, pitch in linear octaves, loudness in
+decibels, and stereo pan. Such a space is easy to graph and to
+rescale. A more complete implementation of Csound note syntax
+might be more useful for some composers, but also would vastly
+complicate the business of displaying and rescaling scores. Therefore,
+ScoreManager does not implement 8ve.pc notation for pitch, scot
+syntax, or strings. A note statement is just a vector of real
+numbers that starts with an &quot;<I>i</I> &quot;, implying a
+Note class. In Java, arrays are objects with a length element,
+so it is easy to implement a Note class that can dynamically resize
+itself. The resize() function allows the user to resize the object
+without destroying existing pfields. The entire java file for
+the Note class is shown in Listing 4.</P>
+
+<H4>Listing 4. The Note Class.</H4>
+
+<PRE>package Silence.ScoreManager;
+//	S I L E N C E
+//	A system for making music on computers by means of software alone.
+//	Copyright (C) 1997 by Michael Gogins. All rights reserved.
+//	P U R P O S E
+//	A platform-independent graphical user interface for Csound.
+import java.util.*;
+import java.io.*;
+
+//  	Notes must be able to copy themselves in order to have
+//  	value semantics instead of reference semantics.
+//  	Therefore, Note must implement the Cloneable interface.
+public class Note implements Cloneable
+{
+    	private double pfields[];
+    	// 	 By default, a Note has 6 pfields, but this can be changed.
+	public Note()
+	{
+    		pfields = new double[6];
+	}
+	//  	A Note can create itself from a Csound note statement.
+	public Note(String buffer)
+	{
+		stringSet(buffer);
+	}
+	//  	Copy the value of this.
+	public Object clone()
+	{
+		Note buffer = new Note();
+    		buffer.pfields = new double[pfields.length];
+   		System.arraycopy(pfields, 0, buffer.pfields, 0, pfields.length);
+    		return buffer;
+	}
+    	//  	Translate this into a Csound note statement.
+	public String stringGet()
+	{
+		String string = new String(&quot;i&quot;);
+		for(int i = 0, n = pfields.length; i &lt; n; ++i)
+		{
+	    		//  Java calls an implicit string conversion here.
+			string = string + &quot; &quot; + pfields[i];
+		}
+		return string;
+	}
+    	//  	Translate this into a Csound note statement,
+    	//  	and round pitch off to equal temperament.
+	public String stringGet(double temperament)
+	{
+		String buffer = new String(&quot;i&quot;);
+		double temperedPitch;
+		double temperamentRound = (1 / temperament) / 2;
+		for(int i = 0, n = pfields.length; i &lt; n; ++i)
+		{
+	    		temperedPitch = pfields[i];
+			if(temperament != 0 &amp;&amp; i == 3)
+			{
+				temperedPitch = ((int)((temperedPitch + temperamentRound) * temperament)) / temperament;
+			}
+			buffer = buffer + &quot; &quot; + temperedPitch;
+		}
+		return buffer;
+	}
+	//  	Change the number of pfields
+	//  	without destroying their values.
+	public void resize(int newCount)
+	{
+    		if(newCount &lt;= 0)
+    		{
+        			pfields = null;
+        			return;
+    		}
+    		double buffer[] = new double[newCount];
+    		int oldCount;
+    		if(pfields == null)
+        		{
+            		oldCount = 0;
+        		}
+        		else
+    		{
+        			oldCount = pfields.length;
+        			System.arraycopy(pfields, 0, buffer, 0, Math.min(oldCount, newCount));
+        		}
+    		for(int i = oldCount; i &lt; newCount; ++i)
+    		{
+       			buffer[i] = 0;
+    		}
+    		pfields = buffer;
+	}
+	//  	Typical Java syntax for setting an element.
+	public void setElementAt(double value, int i)
+	{
+    		if(pfields == null)
+    		{
+        			resize(i + 1);
+    		}
+    		else if (i &gt;= pfields.length)
+    		{
+        			resize(i + 1);
+    		}
+    		pfields[i] = value;
+	}
+	//  	Typical Java syntax for getting an element.
+	public double elementAt(int i)
+	{
+    		return pfields[i];
+	}
+	public void append(double value)
+	{
+		if(pfields == null)
+		{
+        			setElementAt(value, 0);
+    		}
+    		else
+    		{
+        			setElementAt(value, pfields.length);
+    		}
+	}
+	public int size()
+	{
+    		return pfields.length;
+	}
+    	//  	Set the value of this from a Csound note statement.
+	public void stringSet(String newValue)
+	{
+		pfields = null;
+		try
+		{
+			newValue = newValue.substring(newValue.indexOf(&quot;i&quot;) + 1);
+		}
+		catch(StringIndexOutOfBoundsException sioobException)
+		{
+		}
+		Double buffer;
+		for(StringTokenizer tokenizer = new StringTokenizer(newValue); tokenizer.hasMoreTokens(); )
+		{
+			buffer = Double.valueOf(tokenizer.nextToken());
+	    		append(buffer.doubleValue());
+		}
+	}
+    	//  	Functions for getting and setting individual pfields.
+	public double instrumentGet()
+	{
+		return pfields[0];
+	}
+	public void instrumentSet(double newValue)
+	{
+		pfields[0] = newValue;
+	}
+	public double startGet()
+	{
+		return pfields[1];
+	}
+	public void startSet(double newValue)
+	{
+		pfields[1] = newValue;
+	}
+	public double lengthGet()
+	{
+		return pfields[2];
+	}
+	public void lengthSet(double newValue)
+	{
+		pfields[2] = newValue;
+	}
+	public double octaveGet()
+	{
+		return pfields[3];
+	}
+	public void octaveSet(double newValue)
+	{
+		pfields[3] = 0;
+	}
+	//  	Set and get pitch as a MIDI key number (middle C = 60).
+	public void midiKeySet(double newValue)
+	{
+		pfields[3] = ((newValue - 60.0) / 12.0) + 8.0;
+	}
+	public double midiKeyGet()
+	{
+		return ((pfields[3] - 8.0) * 12.0) + 60.0;
+	}
+	public double decibelsGet()
+	{
+		return pfields[5];
+	}
+	public void decibelsSet(double newValue)
+	{
+		pfields[4] = newValue;
+	}
+	public double panGet()
+	{
+		return pfields[5];
+	}
+	public void panSet(double newValue)
+	{
+		pfields[5] = newValue;
+	}
+	//  	Read the value of this from a Csound text stream.
+	public void read(DataInputStream stream) throws IOException
+	{
+		String buffer = stream.readLine();
+		stringSet(buffer);
+	}
+	//  	Write the value of this to a Csound text stream.
+	public void write(PrintStream stream) throws IOException
+	{
+		stream.println(stringGet());
+	}
+	//  	This is the function that is normally used to write
+    	//  	Csound scores.
+    	//  	Write the value of this to a Csound text stream
+    	//  	and round pitch off to equal temperament.
+	public void write(PrintStream stream, double temperament) throws IOException
+	{
+		stream.println(stringGet(temperament));
+	}
+};</PRE>
+
+<P>The minima and maxima of the target and actual sizes of note
+space can then each be represent by a Note. As far as Csound is
+concerned the score doesn&#146;t need to be sorted, so the score
+object itself can be just a Vector of Notes (Listing 5).</P>
+
+<H4>Listing 5. Data Members for ScoreManager (Complete).</H4>
+
+<PRE>public class ScoreManager
+{
+	public File filename;
+	public String functions;
+	public Properties instruments;
+	public Vector arrangement;
+	public Vector notes;
+	public Note scaleTargetMinima;
+	public Note scaleTargetRanges;
+	public Note scaleActualMinima;
+	public Note scaleActualRanges;
+	public Properties soundfileOptions;
+	public Properties scoreOptions;
+	public String instrumentTestScore;
+};</PRE>
+
+<P>Musicians who prefer different semantics for note statements
+can still use ScoreManager, as long as their note statements consist
+of 6 or more numeric pfields. ScoreManager will still load, edit,
+save, and run such scores. They may, however, not display intelligibly.</P>
+
+<P>This completes the data design for the score manager.</P>
+
+<H2>Refinement of the User Interface</H2>
+
+<P>A good choice for the next step in the design process is to
+create the user interface for creating and editing data. Playing
+with user interfaces provides a good feeling for whether or not
+data designs are correct. Again, experience suggests keeping the
+user interface as simple as possible, and following standard patterns.</P>
+
+<P>One choice is whether to use a multiple document interface,
+in which the a master window can open any number of score managers,
+or a single document interface. On a modern personal computer
+it is easy to run multiple instances of a program, which does
+the same thing as the multiple document interface, and a single
+document interface is simpler to implement. So single document
+interface it is: a main window showing a piano-roll sketch of
+the score with a menu.</P>
+
+<P>The design of such a menus follows standard patterns: a File
+menu, a Help menu, etc. After playing around with alternatives,
+I simply added a separate menu for each of the main objects in
+the score manager, and renamed the File menu to Score, to get:</P>
+
+<OL>
+  <LI>Score
+  <LI>Functions
+  <LI>Orchestra
+  <LI>Notes
+  <LI>Soundfile
+</OL>
+
+<P>The Score menu deals with all the data in one file, so it has
+the &quot;Open&quot; and &quot;Save as&quot; commands usually
+found on File menus, as well as &quot;Import&quot; and &quot;Export&quot;
+commands. The other menus each have commands for importing and
+exporting their associated data, and for opening up dialog boxes
+to edit it. The main frame window is shown in Figure 2.<BR>
+<BR>
+<IMG SRC="Main.gif" ALIGN="BOTTOM" BORDER="0"></P>
+
+<H4>Figure 2. Main Frame Window.</H4>
+
+<H3>Orchestra and Arrangement Editor</H3>
+
+<P>The non-routine parts of the user interface are the instrument
+library and arrangement objects. I decided to put both the instruments
+and the library in a single dialog box from which the arrangement
+could be edited, as well as new instruments created and existing
+ones edited (Figure 3).<BR>
+<BR>
+<IMG SRC="Orchestra.gif" WIDTH="587" HEIGHT="458" ALIGN="BOTTOM"
+BORDER="0" NATURALSIZEFLAG="0"></P>
+
+<H4>Figure 3. Orchestra Editor.</H4>
+
+<P>The instrument definition editor is a separate dialog box with
+a single multi-line text field (Figure 4).<BR>
+<BR>
+<IMG SRC="Instrument.gif" WIDTH="585" HEIGHT="456" ALIGN="BOTTOM"
+BORDER="0" NATURALSIZEFLAG="0"></P>
+
+<H4>Figure 4. Instrument Editor.</H4>
+
+<H2>Implementing Application, Component, Applet</H2>
+
+<P>Since the score manager should be usable in as many contexts
+as possible, it is convenient that Visual J++ has a wizard that
+generates an applet that can run either embedded in a Web page,
+or as a standalone application, with its own graphical user interface
+independent of the host (Listing 6).</P>
+
+<H4>Listing 6. Data Members of ScoreManager.</H4>
+
+<PRE>public class ScoreManager extends Applet implements Runnable
+{
+	//	Csound data members.
+	public File filename;
+	public String functions;
+	public Properties instruments;
+	public Vector arrangement;
+	public Vector notes;
+	public Note scaleTargetMinima;
+	public Note scaleTargetRanges;
+	public Note scaleActualMinima;
+	public Note scaleActualRanges;
+	public Properties soundfileOptions;
+	public Properties scoreOptions;
+	public String instrumentTestScore;
+	//	User interface members.
+	//	Generated by Visual J++.
+	IDR_MENU idrMenu;
+	ScoreManagerFrame scoreManagerFrame;</PRE>
+
+<P>Following the standard pattern, it is a good idea to keep the
+data in ScoreManager, which is a &quot;model&quot; class for managing
+the data, and separate the graphical user interface into a &quot;view&quot;
+class for presenting the data, the ScoreManagerFrame main frame
+window. Then the menu command events are handled by ScoreManagerFrame,
+and each dialog command event handler creates a single dialog
+box. Implementing the Function Dialog</P>
+
+<P>In Visual J++, the resource studio allows one to visually design
+menus and dialog boxes, and there is a utility that translates
+these resources into Java classes based on the Abstract Windowing
+Toolkit. These are &quot;dialog layout&quot; classes that manage
+the presentation of windows and controls on the screen, but do
+nothing else. The key implementation detail is to derive from
+Dialog another class that handles the data and events for the
+associated layout. For example, to edit function definitions (Listing
+7).</P>
+
+<H4>Listing 7. Function Definition Dialog Class.</H4>
+
+<PRE>class DialogFunctions extends Dialog
+{
+	//	This is a reference to the ScoreManager
+	//	that has the data to be edited.
+	ScoreManager scoreManager;
+	//	This is a reference to the control layout class
+	//	generated by Visual J++ from the dialog resource.
+	IDD_DIALOG_FUNCTIONS iddDialog;
+	DialogFunctions(ScoreManagerFrame mainFrameWindow)
+	{
+		//	The Dialog constructor enables this dialog
+		//	to receive and handle events from the main frame window.
+		super(mainFrameWindow, &quot;Edit functions&quot;, true);
+		//	Now we have a reference in this dialog to the data it edits.
+		scoreManager = mainFrameWindow.scoreManager;
+		//	Set the background color for the dialog layout to use.
+		setBackground(Color.lightGray);
+		//	This constructs the control layout object
+		//	and plugs the Dialog into it.
+		iddDialog = new IDD_DIALOG_FUNCTIONS(this);
+		//	This actually creates all the controls on the screen.
+		iddDialog.CreateControls();
+		//	Put the function definitions into text box for editing them.
+		iddDialog.IDC_EDIT_FUNCTIONS.setText(scoreManager.functions);
+		//	Move away from the top corner.
+		move(50, 50);
+	}
+	public boolean handleEvent(Event event)
+	{
+		switch(event.id)
+		{
+			case Event.WINDOW_DESTROY:
+				hide();
+				return true;
+			case Event.ACTION_EVENT:
+				if(event.target instanceof Button)
+				{
+					String string = ((Button)event.target).getLabel();
+					if(string.equals(&quot;&amp;Ok&quot;))
+					{
+						//	Put the edited data back in ScoreManager.
+						scoreManager.functions = iddDialog.IDC_EDIT_FUNCTIONS.getText();
+						hide();
+						return true;
+					}
+					else if(string.equals(&quot;&amp;Cancel&quot;))
+					{
+						hide();
+						return true;
+					}
+				}
+			}
+			return super.handleEvent(event);
+		}
+	}
+};</PRE>
+
+<H3>Implementing Object Persistence</H3>
+
+<P>The user interface classes having been defined although not
+completely implemented, which provides additional confidence in
+the design of the score manager data, we now return to the Csound
+interface and both design and implement the functions for getting
+data on and off the disk, and for running Csound.</P>
+
+<P>This is because it is good to design all parts of a system
+in advance, but not so good to overdesign them. The design of
+each component depends upon the design of several others. The
+implementation of any component may reveal wrong assumptions or
+missing requirements in other components that use it. Thus, it
+is often wise to actually implement fundamental components before
+finishing the design of those that use them. In particular, having
+real data to play with while designing the rest of a system repeatedly
+proves to save oodles of time.</P>
+
+<P>There is a more or less standard pattern for these functions:</P>
+
+<OL>
+  <LI>On the graphical user interface level, &quot;Save as&quot;
+  and &quot;Open&quot; commands to store and restore an entire
+  score to or from a named file, and &quot;Import&quot; to add
+  the contents of a named file to the contents of the score already
+  in memory, with &quot;Export&quot; for symmetry with &quot;Import&quot;
+  though it is the same as &quot;Save as&quot;.
+  <LI>On the object level, load and save to save an object to a
+  named file or to add the contents of a named file to the contents
+  of an object. There are load and save functions not only for
+  the score as a whole, but also for its independent parts, e.g.
+  separately for the &quot;orc&quot; and &quot;sco&quot; files,
+  and separately for the function statements and note statements
+  in the &quot;sco&quot; file.
+  <LI>Also on the object level, read and write to save an object
+  to a stream, or to add the contents of a stream to the contents
+  of an object. Again there are read and write functions not only
+  for the score as a whole, but also separately for its independent
+  parts.
+  <LI>It is a functional requirement for the score file to be a
+  text file. This is so that the user can edit scores either with
+  a text editor, or by writing other programs. Furthermore, the
+  function statements, note statements, and instrument definitions
+  must be are stored exactly as they would be in a native Csound
+  file. To make it easier for the program to parse the score, each
+  section is delimited with tags in the same way as an HTML file.
+  All tags are prefixed &quot;Cs&quot; to disambiguate them from
+  other tags, which the file parser ignores, so that the user can
+  put other data, delimited by non-&quot;Cs&quot; tags, into the
+  score files, e.g. parameters for algorithmic composition programs.
+  For example, the arrangement and notes objects might be stored
+  like this: <pre>&lt;CsArrangement&gt; Cook Rhodes electric piano
+  model Cook tubular bell model &lt;/CsArrangement&gt; &lt;CsNotes&gt;
+  i 1.85611 0 2 6 56.7858 -0.0851161 i 1.48748 0.24024 6 6.58333
+  59.4452 -0.0486344 i 1.32231 0.48048 2 7.25 62.1084 1.05109 &lt;/CsNotes&gt;
+  </pre>
+  <LI>The top-level read function, the file parser, can then simply
+  read the score file line by line. When it finds a &quot;Cs&quot;
+  tag, it calls the corresponding lower-level read function, which
+  in turn reads the score file line by line until it finds the
+  ending &quot;/Cs&quot; tag and returns to the higher-level read
+  function. For example, when the &quot;/CsNotes&quot; tag is encountered
+  in the ScoreManager.read(DataInputStream dataStream) function,
+  ScoreManager just starts reading lines of text and creating Notes
+  from them until the &quot;/CsNotes&quot; tag is encountered.
+</OL>
+
+<P>In a completely and thoroughly object-oriented design, each
+file tag would be associated with a specific class. In other words,
+there would be an arrangement class, not just a Vector of Strings,
+and there would be a Score class, not just a Vector of Notes.
+But for the purposes of ScoreManager, that is overkill. The only
+object that really needs to be a separately derived class is Note.</P>
+
+<H3>Refinement of the Object Interface</H3>
+
+<P>The standalone application interfaces to ScoreManager are now
+finished. We turn to the object interface, that is, the boundary
+between client applications such as algorithmic composition programs
+and ScoreManager as a server component in those applications.
+Component objects come in two basic varieties: those which expose
+only an object interface, and those which expose not only an object
+interface but also a graphical user interface, that is, they display
+windows and handle events in the context of the client. Since
+ScoreManager already has a complete user interface of its own,
+it is possible and desirable, in the interests of simplicity,
+to limit the graphical user interface of ScoreManager to opening
+the main frame window as a dialog (Listing 8).</P>
+
+<H4>Listing 8. ScoreManager Data and GUI Members</H4>
+
+<PRE>public class ScoreManager extends Applet implements Runnable
+{
+	//	Csound data members.
+	public File filename;
+	public String functions;
+	public Properties instruments;
+	public Vector arrangement;
+	public Vector notes;
+	public Note scaleTargetMinima;
+	public Note scaleTargetRanges;
+	public Note scaleActualMinima;
+	public Note scaleActualRanges;
+	public Properties soundfileOptions;
+	public Properties scoreOptions;
+	public String instrumentTestScore;
+	//	User interface members.
+	//	Generated by Visual J++.
+	IDR_MENU idrMenu;
+	ScoreManagerFrame frame;
+	//	Object interface to graphical user interface.
+	public int openWindow();
+};</PRE>
+
+<P>It is necessary to distinguish between exiting from the application
+when running standalone and merely closing the window when running
+as an object in another application. Therefore the &quot;Exit&quot;
+command exits from the Java virtual machine, but the frame window&#146;s
+&quot;Close&quot; command merely hides the window.</P>
+
+<P>The main business of the ScoreManagerFrame class is to handle
+menu command events and dispatch them to the appropriate functions
+of ScoreManager, and to display the piano-roll picture of the
+score with the ScoreManagerFrame.paint function, which copies
+the frame window display area to memory, gets a graphics context
+for that memory drawing surface, draws lines to represent the
+notes, and then copies the finished drawing back onto the frame
+window display. The functional requirement here is not to graphically
+edit scores, but to provide a quick sketch of scores that have
+been generated algorithmically. To this end, the piano roll display
+shows the entire score in one window, without scrolling. Each
+instrument&#146;s notes are a different color, and the louder
+the note, the brighter it is.</P>
+
+<P>The other object interfaces have mainly to do with reading
+and writing scores and the various sorts of Csound files, actually
+running Csound and playing the compiled soundfile, and managing
+notes. Managing notes is, after all, the main business of ScoreManager.
+Again, the functional requirement is to simplify the writing algorithmic
+of composition programs. What do such programs do? They typically
+produce a series of notes, or they read a series of notes from
+somewhere, transform them, and put them back. The design pattern
+is that of a vector: functions are needed to add a note, to get
+and set a note, and to remove a note. It is also valuable to be
+able to append one score to another, and to rescale scores. We
+have defined a more or less standard six-field note, but we also
+need the ability to work with notes having any number of fields.
+The best way to do this is to provide functions for managing notes
+either as six double parameters, or as Note objects which can
+have any number of pfields.</P>
+
+<PRE>public void noteAdd(double instrument, double start, double length, double octave, double decibels, double pan);
+public void noteAdd(Note note);
+public boolean noteGet(int subscript, double instrument, double start, double length, double octave, double decibels, double pan);
+public Note noteGet(int subscript);
+public boolean noteSet(int subscript, double instrument, double start, double length, double octave, double decibels, double pan);
+public boolean noteSet(Note note, int subscript);
+public boolean noteDelete(int subscript);</PRE>
+
+<P>The following functions implement the ability to find the size
+of a score, to set the size, or to delete all the notes:</P>
+
+<PRE>public void noteCountSet(int newValue);
+public int noteCountGet();
+public void notesDelete();</PRE>
+
+<P>In many styles of algorithmic composition it is useful to work
+with small sections of music that are then combined:</P>
+
+<PRE>public boolean scoreAdd(ScoreManager source);
+public boolean scoreAppend(ScoreManager source);</PRE>
+
+<P>Additionally, we wish to be able to find the size of scores
+and store the results in Score.scaleActualMinima and Score.scaleActualRanges,
+and to rescale rescale scores on any or all dimensions specified
+in Score.scaleTargetMinima and Score.scaleTargetRanges:</P>
+
+<PRE>public boolean scaleActualFind();
+public boolean scaleTargetToActualSet();
+public boolean scaleActualToTargetSet();</PRE>
+
+<P>Finally, there are the methods for shelling out to the operating
+system to execute Csound itself, and stop it from executing:</P>
+
+<PRE>public boolean soundfileRender;
+public boolean soundfileStopRendering();</PRE>
+
+<P>As it happens, doing this is not so straightforward on Windows,
+because the Java virtual machine overfills the stderr and stdout
+file buffers of most console programs and causes them silently
+to go into limbo. Fortunately, there is a reasonable workaround,
+which is to assign stdin and stderr to Java streams and pull any
+data that Csound writes to them out of them again as quickly as
+possible, printing it to the Java console as it goes. This works
+well enough, and is done in the ProcessConsole class:</P>
+
+<PRE>public void ProcessConsole.exec(String command);
+public void ProcessConsole.destroy();</PRE>
+
+<P>It is worth noting that ScoreManager assumes the Csound program
+is named Winsound. If you want to use DirectCsound or Consound,
+you will need to rename it to Winsound.</P>
+
+<P>This completes the design of ScoreManager. We have now wrapped
+up Csound so that it not only has a GUI, but can be plugged into
+other software as an object.</P>
+
+<H2>Using ScoreManager Standalone</H2>
+
+<P>If you are running on Microsoft Windows, you must make sure
+that the Windows version of Csound, &quot;winsound.exe,&quot;
+is located in your operating system command path. This is because
+the Java virtual machines available to me for Windows cannot exec
+console programs. On other operating systems, you must either
+create an executable command named &quot;winsound&quot;, for example
+by renaming Csound to &quot;winsound&quot;, or you must modify
+the code in the ScoreManager.csoundCommand() function to use &quot;csound&quot;
+in place of &quot;winsound&quot;.</P>
+
+<P>At the present time, Java applets running in the context of
+Web browsers are limited in functionality, especially if they
+are loaded from a network. In that case, applets cannot open files
+on the client computer, which certainly limits the usefulness
+of ScoreManager as an applet. However, in the future, these security
+restrictions should be opened up to control by the user. At that
+time, after relaxing the browser&#146;s security restrictions,
+you should be able to load ScoreManager as an applet from the
+Internet and then use it to create and manage score files on your
+own computer.</P>
+
+<P>Of course, ScoreManager can also be run as a standalone application
+using a Java virtual machine, i.e. interpreter, on your computer.
+In that case, either the Java virtual machine should be run from
+the directory where the ScoreManager.class file is located, or
+the directory where the ScoreManager classes are located should
+be added to the Java CLASSPATH environment variable.</P>
+
+<P>The best way to do this is to create a batch file. Because
+all Java classes in this project are members of packages, it is
+necessary to be in a directory just above the package in order
+to execute the class. The following sample batch file does this
+to run ScoreManager:</P>
+
+<PRE></PRE>
+
+<BLOCKQUOTE>
+  <PRE>
+cd \Gogins\Gogins
+jre\bin\java GoginsChapters.ScoreManager.ScoreManager</PRE>
+</BLOCKQUOTE>
+
+<PRE></PRE>
+
+<P>On Windows, such a batch file can be put into a shortcut icon
+on the Windows desktop or the Start menu to run with a single
+mouse click.</P>
+
+<H3>Creating and Compiling Scores</H3>
+
+<P>To create a score file and compile it into a soundfile using
+ScoreManager, perform the following steps:</P>
+
+<UL>
+  <LI>Either create instrument definitions using the &quot;Orchestra&quot;
+  menu &quot;Edit orchestra&quot; dialog &quot;New&quot; button,
+  or import an &quot;orc&quot; file using the &quot;Import orchestra&quot;
+  command. This creates a library of named instrument definitions.
+  <LI>Either create the function definitions needed by the instrument
+  definitions using the &quot;Functions&quot; menu &quot;Edit functions&quot;
+  command, or import them from a &quot;sco&quot; file using the
+  &quot;Import functions&quot; command. You will need to verify
+  that each instrument definition function table parameter has
+  a corresponding &quot;f&quot; statement in the &quot;Edit functions&quot;
+  dialog. You will also need to verify that the instrument definitions
+  are consistent with the soundfile options in the &quot;Soundfile&quot;
+  menu &quot;Soundfile options&quot; dialog. In particular, the
+  soundfile has to agree with the instrument definitions concerning
+  the number of audio channels; in other words, the &quot;nchnls&quot;
+  soundfile option must be consistent with the &quot;out&quot;,
+  &quot;outs&quot;, or &quot;outq&quot; opcodes in your instrument
+  definitions.
+  <LI>If you like, when you have built up a good collection of
+  instrument definitions and functions, delete all the notes from
+  the score and save it as a &quot;Template.osc&quot; score file
+  that you can import into new scores. Think of it as a Csound
+  patch library.
+  <LI>To modify instrument definitions, use the &quot;Orchestra&quot;
+  menu &quot;Edit orchestra&quot; dialog &quot;Edit&quot; button
+  to bring up the &quot;Edit instrument definition&quot; dialog.
+  You may perform a quick sound check of the instrument by selecting
+  the &quot;Test&quot; button to bring up a test dialog, where
+  you can enter a test score, render the soundfile using the current
+  instrument definition and test score, and play the result.
+  <LI>Either create the notes using the &quot;Notes&quot; menu
+  &quot;Edit notes&quot; command, or import them from a &quot;sco&quot;
+  file using the &quot;Import notes&quot; command.
+  <LI>Create an arrangement using the &quot;Orchestra&quot; menu
+  &quot;Edit orchestra&quot; command &quot;Add,&quot; &quot;Up&quot;,
+  and &quot;Down&quot; buttons. You will need to verify that each
+  instrument statement&#146;s instrument number, i.e. pfield 1,
+  has a corresponding instrument number in the &quot;Edit orchestra&quot;
+  dialog&#146;s &quot;Arrangement&quot; list. If necessary, you
+  can use the &quot;Notes&quot; menu &quot;Scale&quot; command
+  to rescale the instrument numbers to fit your arrangement.
+  <LI>Save the score file using the &quot;Score&quot; menu &quot;Save
+  as&quot; command.
+  <LI>Select the &quot;Soundfile&quot; menu &quot;Render soundfile&quot;
+  command. This will save the arrangement as an &quot;orc&quot;
+  file, save the functions and notes together as a &quot;sco&quot;
+  file, and execute Csound using the options set in the &quot;Soundfile&quot;
+  menu &quot;Soundfile options&quot; dialog.
+  <LI>When the soundfile is finished, select the &quot;Soundfile&quot;
+  menu &quot;Play soundfile&quot; command. This will invoke the
+  proper operating system command to play the soundfile (see below).
+</UL>
+
+<H3>Playing Soundfiles</H3>
+
+<P>Although Java is intended to serve as a cross-platform multimedia
+programming language, its audio facilities are actually quite
+rudimentary and are limited to 8 bit &quot;au&quot; soundfiles.
+When ScoreManager is running as an applet, it would be possible
+to use the MIME extension of the soundfile name to invoke a helper
+application or plugin to play the soundfile. However, ScoreManager
+needs to run as a standalone program as well as an applet. Therefore,
+ScoreManager uses external programs to play sounds. In order to
+do this, ScoreManager must be told the name of the appropriate
+sound player program so that it can be executed as an operating
+system command. Select the &quot;Soundfile&quot; menu &quot;Soundfile
+options&quot; dialog and enter the name of the sound player application
+in the &quot;Sound player&quot; field. This field has a default
+value of &quot;MPLAYER&quot;, which is the sound player utility
+program that comes with Microsoft Windows, so on Windows, you
+should not actually need to do anything.</P>
+
+<P>For other operating systems, you will need to enter the appropriate
+program in this field for each score file. As an alternative,
+make a copy of your operating system&#146;s sound player program
+and rename it &quot;MPLAYER&quot;, or create a script with this
+name, and you will not need to enter this value in each score.</P>
+
+<H2>Using ScoreManager to Simplify Writing Score Generators</H2>
+
+<P>In order to make ScoreManager easier to use as a component
+in other applications, it has been made into a package. A package,
+in Java, is a means for bundling all the classes in a system into
+a single entity that the Java virtual machine can find and load.
+Packages consist of the executable &quot;.class&quot; files that
+are generated when source code &quot;.java&quot; files are compiled.
+Thus, Java packages are similar to libraries in other programming
+languages. Java packages assume that:</P>
+
+<OL>
+  <LI>Packages can be hierarchical. For example, the top-level
+  &quot;java&quot; package contains the &quot;awt&quot; package,
+  which in turn contains the &quot;image&quot; package. These hierarchies
+  are delimited with periods, e.g. &quot;java.awt.image&quot;.
+  <LI>Each package corresponds to a directory of the same name
+  in the file system. For example, the class files of package &quot;java.awt.image&quot;
+  are stored in the directory &quot;java/awt/image&quot;.
+  <LI>The source code for each class file is usually stored in
+  a module with the same name as the class, but ending in &quot;.java&quot;.
+  For example, the source code for the class &quot;java.awt.image.ColorModel&quot;
+  is stored in the module &quot;java/awt/image/ColorModel.java&quot;.
+  <LI>Each source module in a package begins with a package declaration,
+  for example the first line in the ColorModel.java file is &quot;package
+  java.awt.image;&quot;
+  <LI>The directories and files of a package can be stored in the
+  form of an archive, that is, a &quot;zip&quot; file. This reduces
+  the hierarchy of directories and files to a single, manageable
+  file of smaller size.
+  <LI>The java class loader uses the &quot;CLASSPATH&quot; environment
+  variable to locate the top of the package hierarchy. Then it
+  searches the directory tree to find the class file required.
+  Finally, if the package is an archive, the loader unzips the
+  class file.
+</OL>
+
+<P>ScoreManager is only one component of Silence, my software
+system for algorithmic composition and synthesis. Therefore, I
+have created a Silence directory, that contains a ScoreManager
+package, and zipped them up into a Silence archive. The archive,
+by the way, contains a great deal of non-Java material as well;
+but the Java class loader simply ignores it. In other words, every
+java file for ScoreManager begins with the declaration &quot;package
+Silence.ScoreManager;&quot;, and both the java files and the class
+files for ScoreManager are stored in /Silence/ScoreManager, which
+in turn is archived in Silence.zip.</P>
+
+<P>Applet 1 is the first sample score generator from the &quot;Algorithmic
+Score Generators&quot; chapter of this book. It is a very simple
+score generator based on the logistic equation, which uses chaos
+theory to generate scores. This form of the program generates
+the orchestra file and the score file directly, and is shown in
+Listing 9a. A version of this program in Microsoft QuickBASIC
+is shown in Listing 9b, and a version in ANSI C is shown in Listing
+9c.</P>
+
+<H4>Applet 1. Simple Logistic Equation Score Generator.</H4>
+
+<P><BR>
+
+<APPLET CODE="LogMuse.class" CODEBASE="GoginsChapters/ScoreGenerators/LogMuse/"
+WIDTH="302" HEIGHT="102" ALIGN="BOTTOM">
+</APPLET></P>
+
+<H4><A HREF="LogMuse.bat">Logistic Equation Score Generator Running
+Stand-Alone</A></H4>
+
+<H4><EMBED SRC="logmuse.mp3" WIDTH="300" HEIGHT="45" ALIGN="BOTTOM"
+autoplay="false"></H4>
+
+<H4>Listing 9a. Simple Logistic Equation Score Generator in Java.</H4>
+
+<PRE>//  S I L E N C E
+//  A system for making music on computers by means of software alone.
+//  Copyright (C) 1997 by Michael Gogins. All rights reserved.
+import java.io.*;
+import java.awt.*;
+import java.applet.*;
+//  A simple logistic equation score generator.
+public class LogMuse extends Applet
+{
+    public String argumentValues[];
+    //  All Java standalone programs must have
+    //  a static main() function.
+    public static void main(String argv[])
+    {
+        LogMuse logMuse = new LogMuse();
+        logMuse.argumentValues = argv;
+        Frame frame = new Frame();
+        frame.add(logMuse);
+        frame.show();
+        logMuse.init();
+        frame.resize(logMuse.size().width + frame.insets().left * 2, logMuse.size().height + frame.insets().top);
+        logMuse.mp3e(frame.insets().left, frame.insets().top);
+        logMuse.start();
+    }
+    public void generate()
+    {
+		//  Variables for the generator.
+		double c;
+		double y;
+		double y1;
+		int i;
+		int n;
+		//  Variables for music.
+		//  The dimensions that are not generated have default values.
+		double instrument = 1;
+		double start;
+		double length = 2;
+		double octave;
+		double decibels = 70;
+		double pan = 0;
+		//  Mapping coefficients.
+		double pulse = .25;
+		double bass = 6;
+		double range = 4;
+		//  Variables for rendering the score.
+		FileOutputStream fileOutputStream = null;
+		PrintStream printStream = null;
+		//  You can paste a Csound instrument definition right into BASIC code like this.
+		String orchestra =
+			&quot;sr =    44100\n&quot;
+			+ &quot;kr =    44100\n&quot;
+			+ &quot;ksmps =     1\n&quot;
+			+ &quot;nchnls =    2\n&quot;
+			+ &quot;\n&quot;
+			+ &quot;; Frequency modulation instrument.\n&quot;
+			+ &quot;instr 1\n&quot;
+			+ &quot;; LOGGING\n&quot;
+			+ &quot;; p1 = Instrument\n&quot;
+			+ &quot;; p2 = Start\n&quot;
+			+ &quot;; p3 = Length\n&quot;
+			+ &quot;; p4 = Octave\n&quot;
+			+ &quot;; p5 = Decibels\n&quot;
+			+ &quot;; p6 = Pan\n&quot;
+			+ &quot;print p2, p3, p4, p5, p6\n&quot;
+			+ &quot;\n&quot;
+			+ &quot;; INITIALIZATION\n&quot;
+			+ &quot;iwavetable = 1\n&quot;
+			+ &quot;imodulator = .5\n&quot;
+			+ &quot;ifmamplitude = 1\n&quot;
+			+ &quot;index = 1.375\n&quot;
+			+ &quot;iattack = .025\n&quot;
+			+ &quot;irelease = .125\n&quot;
+			+ &quot;isustain = p3  - (iattack + irelease)\n&quot;
+			+ &quot;if isustain &gt; 0 goto longenvelope\n&quot;
+			+ &quot;isustain = 0.03\n&quot;
+			+ &quot;p3 = iattack + isustain + irelease\n&quot;
+			+ &quot;longenvelope:\n&quot;
+			+ &quot;ifrequency = cpsoct(p4)\n&quot;
+			+ &quot;icarrier =  .998\n&quot;
+			+ &quot;icarrierb =  1.002\n&quot;
+			+ &quot;; Normalize to 80 dB = ampdb(80).\n&quot;
+			+ &quot;iamplitude = ampdb(p5) * 15848.926 / 12729.0\n&quot;
+			+ &quot;ileftpan = (0.5 - p6) / 2.0\n&quot;
+			+ &quot;irightpan = (0.5 + p6) / 2.0\n&quot;
+			+ &quot;\n&quot;
+			+ &quot;; KONTROL\n&quot;
+			+ &quot;kindenv expseg .00001, iattack, 1, isustain, .1, irelease, .00001\n&quot;
+			+ &quot;kindex = kindenv * index * ifmamplitude\n&quot;
+			+ &quot;\n&quot;
+			+ &quot;; AUDIO\n&quot;
+			+ &quot;aouta foscili iamplitude, ifrequency, icarrier, imodulator, kindex, iwavetable\n&quot;
+			+ &quot;aoutb foscili iamplitude, ifrequency, icarrierb, imodulator, kindex, iwavetable\n&quot;
+			+ &quot;afmout = (aouta + aoutb) * kindenv * 2.556\n&quot;
+			+ &quot;outs ileftpan * afmout, irightpan * afmout\n&quot;
+			+ &quot;endin\n&quot;;
+		//	Try to read c from the command line, otherwise use a default.
+		try
+		{
+			Double buffer = new Double(argumentValues[1]);
+			c = buffer.doubleValue();
+		}
+		catch(ArrayIndexOutOfBoundsException e)
+		{
+			c = .5;
+		}
+		catch(NullPointerException e)
+		{
+			c = .5;
+		}
+		//	Try to read n from the command line, otherwise use a default.
+		try
+		{
+			Integer buffer = new Integer(argumentValues[2]);
+			n = buffer.intValue();
+		}
+		catch(ArrayIndexOutOfBoundsException e)
+		{
+			n = 100;
+		}
+		catch(NullPointerException e)
+		{
+			n = 100;
+		}
+		//  Create a score file.
+		try
+		{
+			fileOutputStream = new FileOutputStream(&quot;test.sco&quot;);
+			printStream = new PrintStream(fileOutputStream);
+			//  Initial value of y.
+			y = .5;
+			//  Write the initial state of the system as a Csound comment.
+			printStream.println(&quot;; Hello Csound!\n; c = &quot; + c + &quot;\n; y = &quot; + y + &quot;\n; n = &quot; + n);
+			//  GENERATE THE SCORE
+			//  Write the function table for the instrument.
+			printStream.println(&quot;f 1 0 16384 10 1 ; High-fidelity sine wave.&quot;);
+			//  Iterate to write the notes.
+			for(i = 0; i &lt; n; ++i)
+			{
+				////////////////////////////////////////////////////////////////////
+				//  GENERATION
+				y1 = y * c * 4 * (1.0 - y);
+				//  MAPPING
+				start = i * pulse;
+				octave = bass + y1 * range;
+				//  Round off to 12 tone equal temperament.
+				octave = ((int)(octave * 12.0 + .5)) / 12.0;
+				//  RENDERING
+				//  Write a note into the Csound score.
+				printStream.println(&quot;i &quot; + instrument + &quot; &quot; + start + &quot; &quot; + length + &quot; &quot; + octave + &quot; &quot; + decibels + &quot; &quot; + pan);
+				//  Iterate.
+				y = y1;
+				////////////////////////////////////////////////////////////////////
+			}
+			//  RENDER THE SOUNDFILE
+			//  Write the orchestra file.
+			fileOutputStream = new FileOutputStream(&quot;test.orc&quot;);
+			printStream = new PrintStream(fileOutputStream);
+			printStream.println(orchestra);
+			printStream.close();
+			//  Render the generated files using Csound.
+			Runtime runtime = Runtime.getRuntime();
+			Process process = runtime.exec(&quot;winsound -WsRo LogMuse.wav test.orc test.sco&quot;);
+			try
+			{
+				process.waitFor();
+			}
+			catch(Exception e)
+			{
+				System.out.println(e.getMessage());
+			}
+			//  PLAY THE SOUNDFILE
+			runtime.exec(&quot;MPLAYER LogMuse.wav&quot;);
+		}
+		catch(IOException e)
+		{
+			System.out.println(e.getMessage());
+		}
+    }
+	public void init()
+	{
+		super.init();
+		//{{INIT_CONTROLS
+		setLayout(null);
+		addNotify();
+		resize(302,102);
+		setFont(new Font(&quot;TimesRoman&quot;, Font.BOLD, 12));
+		buttonGenerate = new java.awt.Button(&quot;Generate&quot;);
+		buttonGenerate.reshape(12,48,276,36);
+		buttonGenerate.setFont(new Font(&quot;TimesRoman&quot;, Font.BOLD, 16));
+		add(buttonGenerate);
+		labelScoreGenerator = new java.awt.Label(&quot;Logistic Equation Score Generator version 1&quot;);
+		labelScoreGenerator.reshape(0,12,300,30);
+		labelScoreGenerator.setFont(new Font(&quot;TimesRoman&quot;, Font.BOLD, 14));
+		add(labelScoreGenerator);
+		//}}
+	}
+	public boolean handleEvent(Event event)
+	{
+		if (event.target == buttonGenerate &amp;&amp; event.id == Event.ACTION_EVENT)
+		{
+			generate();
+			return true;
+		}
+		return super.handleEvent(event);
+	}
+	//{{DECLARE_CONTROLS
+	java.awt.Button buttonGenerate;
+	java.awt.Label labelScoreGenerator;
+	//}}
+}</PRE>
+
+<H4>Listing 9b. Simple Logistic Equation Score Generator in Microsoft
+QuickBASIC.</H4>
+
+<PRE>'       L O G M U S E
+'       A simple algorithmic score generator for Csound in QuickBASIC.
+'       Michael Gogins
+'       21 January 1997
+
+'       Variables for the generator.
+DIM c AS DOUBLE
+DIM y AS DOUBLE
+DIM y1 AS DOUBLE
+DIM i AS INTEGER
+DIM n AS INTEGER
+'       Variables for music.
+'       The dimensions that are not generated have default values.
+DIM instrument AS DOUBLE
+instrument = 1#
+DIM start AS DOUBLE
+DIM length AS DOUBLE
+length = 2#
+DIM octave AS DOUBLE
+DIM decibels AS DOUBLE
+decibels = 70#
+DIM pan AS DOUBLE
+pan = 0#
+'       Mapping coefficients.
+DIM pulse AS DOUBLE
+pulse = .25#
+DIM bass AS DOUBLE
+bass = 6#
+DIM range AS DOUBLE
+range = 4#
+'       Variables for rendering the score.
+DIM file AS INTEGER
+'       You can paste a Csound instrument definition right into BASIC code like this.
+DIM orchestra AS STRING
+orchestra = &quot;sr =    44100&quot; + CHR$(10)
+orchestra = orchestra + &quot;kr =    44100&quot; + CHR$(10)
+orchestra = orchestra + &quot;ksmps =     1&quot; + CHR$(10)
+orchestra = orchestra + &quot;nchnls =    2&quot; + CHR$(10)
+orchestra = orchestra + &quot;&quot; + CHR$(10)
+orchestra = orchestra + &quot;; Frequency modulation instrument.&quot; + CHR$(10)
+orchestra = orchestra + &quot;instr 1&quot; + CHR$(10)
+orchestra = orchestra + &quot;; LOGGING&quot; + CHR$(10)
+orchestra = orchestra + &quot;; p1 = Instrument&quot; + CHR$(10)
+orchestra = orchestra + &quot;; p2 = Start&quot; + CHR$(10)
+orchestra = orchestra + &quot;; p3 = Length&quot; + CHR$(10)
+orchestra = orchestra + &quot;; p4 = Octave&quot; + CHR$(10)
+orchestra = orchestra + &quot;; p5 = Decibels&quot; + CHR$(10)
+orchestra = orchestra + &quot;; p6 = Pan&quot; + CHR$(10)
+orchestra = orchestra + &quot;print p2, p3, p4, p5, p6&quot; + CHR$(10)
+orchestra = orchestra + &quot;&quot; + CHR$(10)
+orchestra = orchestra + &quot;; INITIALIZATION&quot; + CHR$(10)
+orchestra = orchestra + &quot;iwavetable = 1&quot; + CHR$(10)
+orchestra = orchestra + &quot;imodulator = .5&quot; + CHR$(10)
+orchestra = orchestra + &quot;ifmamplitude = 1&quot; + CHR$(10)
+orchestra = orchestra + &quot;index = 1.375&quot; + CHR$(10)
+orchestra = orchestra + &quot;iattack = .025&quot; + CHR$(10)
+orchestra = orchestra + &quot;irelease = .125&quot; + CHR$(10)
+orchestra = orchestra + &quot;isustain = p3  - (iattack + irelease)&quot; + CHR$(10)
+orchestra = orchestra + &quot;if isustain &gt; 0 goto longenvelope&quot; + CHR$(10)
+orchestra = orchestra + &quot;isustain = 0.03&quot; + CHR$(10)
+orchestra = orchestra + &quot;p3 = iattack + isustain + irelease&quot; + CHR$(10)
+orchestra = orchestra + &quot;longenvelope:&quot; + CHR$(10)
+orchestra = orchestra + &quot;ifrequency = cpsoct(p4)&quot; + CHR$(10)
+orchestra = orchestra + &quot;icarrier =  .998&quot; + CHR$(10)
+orchestra = orchestra + &quot;icarrierb =  1.002&quot; + CHR$(10)
+orchestra = orchestra + &quot;; Normalize to 80 dB = ampdb(80).&quot; + CHR$(10)
+orchestra = orchestra + &quot;iamplitude = ampdb(p5) * 15848.926 / 12729.0&quot; + CHR$(10)
+orchestra = orchestra + &quot;ileftpan = (0.5 - p6) / 2.0&quot; + CHR$(10)
+orchestra = orchestra + &quot;irightpan = (0.5 + p6) / 2.0&quot; + CHR$(10)
+orchestra = orchestra + &quot;&quot; + CHR$(10)
+orchestra = orchestra + &quot;; KONTROL&quot; + CHR$(10)
+orchestra = orchestra + &quot;kindenv expseg .00001, iattack, 1, isustain, .1, irelease, .00001&quot; + CHR$(10)
+orchestra = orchestra + &quot;kindex = kindenv * index * ifmamplitude&quot; + CHR$(10)
+orchestra = orchestra + &quot;&quot; + CHR$(10)
+orchestra = orchestra + &quot;; AUDIO&quot; + CHR$(10)
+orchestra = orchestra + &quot;aouta foscili iamplitude, ifrequency, icarrier, imodulator, kindex, iwavetable&quot; + CHR$(10)
+orchestra = orchestra + &quot;aoutb foscili iamplitude, ifrequency, icarrierb, imodulator, kindex, iwavetable&quot; + CHR$(10)
+orchestra = orchestra + &quot;afmout = (aouta + aoutb) * kindenv * 2.556&quot; + CHR$(10)
+orchestra = orchestra + &quot;outs ileftpan * afmout, irightpan * afmout&quot; + CHR$(10)
+orchestra = orchestra + &quot;endin&quot; + CHR$(10)
+'       Buffer for writing note statements.
+DIM buffer AS STRING
+c = .75#
+n = 100
+'       Create a score file.
+file = FREEFILE
+OPEN &quot;test.sco&quot; FOR OUTPUT AS file
+'       Initial value of y.
+y = .5#
+'       Write the initial state of the system as a Csound comment.
+PRINT #file, &quot;; Hello Csound!&quot;
+PRINT #file, &quot;; c = &quot; + STR$(c)
+PRINT #file, &quot;; y = &quot; + STR$(y)
+PRINT #file, &quot;; n = &quot; + STR$(n)
+'       GENERATE THE SCORE
+'       Write the function table for the instrument.
+PRINT #file, &quot;f 1 0 16384 10 1 ; High-fidelity sine wave.&quot;
+'       Iterate to write the notes.
+FOR i = 1 TO n
+	' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' '
+	'       GENERATION
+	y1 = y * c * 4# * (1# - y)
+	'       MAPPING
+	start = i * pulse
+	octave = bass + y1 * range
+	'       Round off to 12 tone equal temperament.
+	octave = INT(octave * 12# + 0.5#) / 12#
+	'       RENDERING
+	'       Write a note into the Csound score.
+	PRINT #file, USING &quot;i #####.###### #####.###### #####.###### #####.###### ####.###### #####.######&quot;; instrument; start; length; octave; decibels; pan
+	'       Iterate.
+	y = y1
+	' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' '
+NEXT
+CLOSE #file
+'       RENDER THE SOUNDFILE
+'       Write the orchestra file.
+file = FREEFILE
+OPEN &quot;test.orc&quot; FOR OUTPUT AS file
+PRINT #file, orchestra
+CLOSE #file
+'       Render the generated files using Csound.
+SHELL &quot;Csound -RWso LogMuse.wav test.orc test.sco&quot;
+'       PLAY THE SOUNDFILE
+SHELL &quot;MPLAYER test.wav&quot;</PRE>
+
+<H4>Listing 9c. Simple Logistic Equation Score Generator in ANSI
+C.</H4>
+
+<PRE>//  L O G M U S E
+//  A simple algorithmic score generator for Csound in ANSI C.
+//  Michael Gogins
+//  21 January 1997
+
+//	Almost all C programs include these header files.
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+//	All C console programs have a main() function.
+int main(int argc, const char *argv[], const char *envp[])
+{
+	//  Variables for the generator.
+	double c;
+	double y;
+	double y1;
+	int i;
+	int n;
+	//  Variables for music.
+	//  The dimensions that are not generated have default values.
+	double instrument = 1;
+	double start;
+	double length = 2;
+	double octave;
+	double decibels = 70;
+	double pan = 0;
+	//  Mapping coefficients.
+	double pulse = .25;
+	double bass = 6;
+	double range = 4;
+	//  Variables for rendering the score.
+	FILE *file;
+	//  You can paste a Csound instrument definition right into C code like this.
+	char orchestra[] = 
+		&quot;sr =    44100\n&quot;
+		&quot;kr =    44100\n&quot;
+		&quot;ksmps =     1\n&quot;
+		&quot;nchnls =    2\n&quot;
+		&quot;\n&quot;
+		&quot;; Frequency modulation instrument.\n&quot;
+		&quot;instr 1\n&quot;
+		&quot;; LOGGING\n&quot;
+		&quot;; p1 = Instrument\n&quot;
+		&quot;; p2 = Start\n&quot;
+		&quot;; p3 = Length\n&quot;
+		&quot;; p4 = Octave\n&quot;
+		&quot;; p5 = Decibels\n&quot;
+		&quot;; p6 = Pan\n&quot;
+		&quot;print p2, p3, p4, p5, p6\n&quot;
+		&quot;\n&quot;
+		&quot;; INITIALIZATION\n&quot;
+		&quot;iwavetable = 1\n&quot;
+		&quot;imodulator = .5\n&quot;
+		&quot;ifmamplitude = 1\n&quot;
+		&quot;index = 1.375\n&quot;
+		&quot;iattack = .025\n&quot;
+		&quot;irelease = .125\n&quot;
+		&quot;isustain = p3  - (iattack + irelease)\n&quot;
+		&quot;if isustain &gt; 0 goto longenvelope\n&quot;
+		&quot;isustain = 0.03\n&quot;
+		&quot;p3 = iattack + isustain + irelease\n&quot;
+		&quot;longenvelope:\n&quot;
+		&quot;ifrequency = cpsoct(p4)\n&quot;
+		&quot;icarrier =  .998\n&quot;
+		&quot;icarrierb =  1.002\n&quot;
+		&quot;; Normalize to 80 dB = ampdb(80).\n&quot;
+		&quot;iamplitude = ampdb(p5) * 15848.926 / 12729.0\n&quot;
+		&quot;ileftpan = (0.5 - p6) / 2.0\n&quot;
+		&quot;irightpan = (0.5 + p6) / 2.0\n&quot;
+		&quot;\n&quot;
+		&quot;; KONTROL\n&quot;
+		&quot;kindenv expseg .00001, iattack, 1, isustain, .1, irelease, .00001\n&quot;
+		&quot;kindex = kindenv * index * ifmamplitude\n&quot;
+		&quot;\n&quot;
+		&quot;; AUDIO\n&quot;
+		&quot;aouta foscili iamplitude, ifrequency, icarrier, imodulator, kindex, iwavetable\n&quot;
+		&quot;aoutb foscili iamplitude, ifrequency, icarrierb, imodulator, kindex, iwavetable\n&quot;
+		&quot;afmout = (aouta + aoutb) * kindenv * 2.556\n&quot;
+		&quot;outs ileftpan * afmout, irightpan * afmout\n&quot;
+		&quot;endin\n&quot;;
+	//	Try to read c from the command line, otherwise use a default.
+	if(argc &gt; 1)
+	{
+		c = atof(argv[1]);
+	}
+	else
+	{
+		c = .91954;
+	}
+	//	Try to read n from the command line, otherwise use a default.
+	if(argc &gt; 2)
+	{
+		n = atoi(argv[2]);
+	}
+	else
+	{
+		n = 100;
+	}
+	//  Create a score file.
+	file = fopen(&quot;test.sco&quot;, &quot;w+&quot;);
+	//  Initial value of y.
+		y = .5;
+	//  Write the initial state of the system as a Csound comment.
+	fprintf(file, &quot;; Hello Csound!\n; c = %g\n; y = %g\n; c = %d\n&quot;, c, y, n);
+	//  GENERATE THE SCORE
+	//  Write the function table for the instrument.
+	fprintf(file, &quot;f 1 0 16384 10 1 ; High-fidelity sine wave.\n&quot;);
+	//  Iterate to write the notes.
+	for(i = 0; i &lt; n; ++i)
+	{
+		////////////////////////////////////////////////////////////////////
+		//  GENERATION
+		y1 = y * c * 4 * (1.0 - y);
+		//  MAPPING
+		start = i * pulse;
+		octave = bass + y1 * range;
+		//  Round off to 12 tone equal temperament.
+		octave = ((int)(octave * 12.0 + .5)) / 12.0;
+		//  RENDERING
+		//  Write a note into the Csound score.
+		fprintf(file, &quot;i %0.9g %0.9g %0.9g %0.9g %0.9g %0.9g\n&quot;, instrument, start, length, octave, decibels, pan);
+		//  Iterate.
+		y = y1;
+		////////////////////////////////////////////////////////////////////
+	}
+	fclose(file);
+	//  RENDER THE SOUNDFILE
+	//  Write the orchestra file.
+	file = fopen(&quot;test.orc&quot;, &quot;w+&quot;);
+	fprintf(file, orchestra);
+	fclose(file);
+	//  Render the generated files using Csound.
+	system(&quot;winsound -RWso LogMuse.wav test.orc test.sco&quot;);
+	//  PLAY THE SOUNDFILE
+	system(&quot;MPLAYER test.wav&quot;);
+	return 0;
+}</PRE>
+
+<P>This program can be changed to use ScoreManager, instead of
+managing the orchestra and score directly, as follows:</P>
+
+<OL>
+  <LI>Note how the main() function creates an instance of the applet
+  class, creates a frame, adds the applet to it, and calls Applet.init()
+  and Applet.show(); all this is done just as a Web browser would
+  to start an applet. This is what enables the same class to serve
+  as both an applet and a standalone application. However, the
+  Applet.init() function must be changed so that it does not call
+  addNotify() when running standalone.
+  <LI>The data for the score generator are moved out of the main()
+  function and made into members of the class.
+  <LI>The class creator initializes these member variables, and
+  reads the orchestra into its ScoreManager object from a template
+  &quot;osc&quot; file.
+  <LI>The score generating code is put into a separate generate()
+  function.
+  <LI>The generate() function adds the note pfields to the ScoreManager
+  object instead of printing them into a &quot;sco&quot; file.
+  <LI>After generating a score, the generate() function opens the
+  ScoreManager window so that the user can interactively examine,
+  rescale, arrange, and render the score.
+</OL>
+
+<P>The reworked program is considerably simpler than the original,
+as shown in Listing 10, and it does a great deal more.</P>
+
+<H4>Applet 2. Simple Logistic Equation Score Generator using ScoreManager.</H4>
+
+<P><BR>
+
+<APPLET CODE="LogMuseSM.class" CODEBASE="GoginsChapters/ScoreGenerators/LogMuseSM/"
+WIDTH="302" HEIGHT="102" ALIGN="BOTTOM">
+</APPLET></P>
+
+<H4><A HREF="LogMuseSM.bat">Logistic Equation Score Generator
+Using ScoreManager Running Stand-Alone.</A></H4>
+
+<H4>Listing 10. Simple Logistic Equation Score Generator using
+ScoreManager.</H4>
+
+<PRE>//  S I L E N C E
+//  A system for making music on computers by means of software alone.
+//  Copyright (C) 1997 by Michael Gogins. All rights reserved.
+import java.io.*;
+import java.awt.*;
+import java.applet.*;
+//  Import the ScoreManager package.
+import Silence.ScoreManager.ScoreManager;
+//  A simple logistic equation score generator.
+public class LogMuseSM extends Applet
+{
+    //  Reference to the ScoreManager.
+    public ScoreManager scoreManager;
+    //  All Java standalone programs must have
+    //  a static main() function.
+    public static void main(String argv[])
+    {
+        LogMuseSM logMuse = new LogMuseSM();
+        Frame frame = new Frame();
+        frame.add(logMuse);
+        frame.show();
+        logMuse.init();
+        frame.resize(logMuse.size().width + frame.insets().left * 2, logMuse.size().height + frame.insets().top);
+        logMuse.mp3e(frame.insets().left, frame.insets().top);
+        logMuse.start();
+    }
+    public LogMuseSM()
+    {
+        scoreManager = new ScoreManager();
+    }
+    public void generate()
+    {
+		//  Variables for the generator.
+		double c;
+		double y;
+		double y1;
+		int i;
+		int n;
+		//  Variables for music.
+		//  The dimensions that are not generated have default values.
+		double instrument = 1;
+		double start;
+		double length = 2;
+		double octave;
+		double decibels = 70;
+		double pan = 0;
+		//  Mapping coefficients.
+		double pulse = .25;
+		double bass = 6;
+		double range = 4;
+		//	Try to read c from the command line, otherwise use a default.
+		try
+		{
+			Double buffer = new Double(argumentValues[1]);
+			c = buffer.doubleValue();
+		}
+		catch(ArrayIndexOutOfBoundsException e)
+		{
+			c = .98473;
+		}
+		catch(NullPointerException e)
+		{
+			c = .98473;
+		}
+		//	Try to read n from the command line, otherwise use a default.
+		try
+		{
+			Integer buffer = new Integer(argumentValues[2]);
+			n = buffer.intValue();
+		}
+		catch(ArrayIndexOutOfBoundsException e)
+		{
+			n = 1000;
+		}
+		catch(NullPointerException e)
+		{
+			n = 1000;
+		}
+		//  Create a score file.
+		//  Initial value of y.
+		y = .5;
+		//  GENERATE THE SCORE
+		//  Delete any existing notes.
+		scoreManager.notesDelete();
+		//  Iterate to write the notes.
+		for(i = 0; i &lt; n; ++i)
+		{
+			////////////////////////////////////////////////////////////////////
+			//  GENERATION
+			y1 = y * c * 4 * (1.0 - y);
+			//  MAPPING
+			start = i * pulse;
+			octave = bass + y1 * range;
+			//  Round off to 12 tone equal temperament.
+			octave = ((int)(octave * 12.0 + .5)) / 12.0;
+			//  RENDERING
+			//  Write a note into the Csound score.
+			scoreManager.noteAdd(instrument, start, length, octave, decibels, pan);
+			//  Iterate.
+			y = y1;
+			////////////////////////////////////////////////////////////////////
+		}
+		//  RENDER THE SOUNDFILE
+		//  Render the generated files using ScoreManager.
+		scoreManager.openWindow();
+   }
+    public void init()
+    {
+		super.init();
+		//{{INIT_CONTROLS
+		setLayout(null);
+		addNotify();
+		resize(302,102);
+		setFont(new Font(&quot;TimesRoman&quot;, Font.BOLD, 12));
+		buttonGenerate = new java.awt.Button(&quot;Generate&quot;);
+		buttonGenerate.reshape(12,48,276,36);
+		buttonGenerate.setFont(new Font(&quot;TimesRoman&quot;, Font.BOLD, 16));
+		add(buttonGenerate);
+		labelScoreGenerator = new java.awt.Label(&quot;Logistic Equation Score Generator version 2&quot;);
+		labelScoreGenerator.reshape(0,12,300,30);
+		labelScoreGenerator.setFont(new Font(&quot;TimesRoman&quot;, Font.BOLD, 14));
+		add(labelScoreGenerator);
+		//}}
+	}
+	public boolean handleEvent(Event event)
+	{
+		if (event.target == buttonGenerate &amp;&amp; event.id == Event.ACTION_EVENT)
+		{
+			generate();
+			return true;
+		}
+		return super.handleEvent(event);
+	}
+	//{{DECLARE_CONTROLS
+	java.awt.Button buttonGenerate;
+	java.awt.Label labelScoreGenerator;
+	//}}
+}</PRE>
+
+<P>But the program can easily be improved a great deal more by
+adding a new dialog with which the user can interactively, and
+repeatedly, change the parameters for the score generator. With
+Symantec Visual Caf&eacute;, creating a dialog like this is extremely
+easy. I used the Visual Caf&eacute; &quot;Interaction&quot; feature
+to create event handlers for the four buttons. Caf&eacute; uses
+tags such as //{{CONNECTION and //}} to identify the sections
+of code that it generates.</P>
+
+<P>The program uses the same pattern for loading and saving parameter
+files as ScoreManager uses within itself: an HTML-like, tagged,
+hierarchical text file. This enables the program to store ScoreManager
+files within its own files. Listing 11 shows the final form of
+the complete logistic equation score generating program. This
+program can actually be used to make music, and more sophisticated
+examples of this pattern are discussed in &quot;Algorithmic Score
+Generators.&quot;</P>
+
+<H4>Applet 3. Simple Logistic Equation Score Generator with Dialog.</H4>
+
+<P><BR>
+
+<APPLET CODE="LogMuseDialog.class" CODEBASE="GoginsChapters/ScoreGenerators/LogMuseDialog/"
+WIDTH="400" HEIGHT="219" ALIGN="BOTTOM">
+</APPLET></P>
+
+<H4><A HREF="LogMuseDialog.bat">Logistic Equation Score Generator
+with Dialog Running Stand-Alone</A></H4>
+
+<H4><BR>
+Listing 11. Simple Logistic Equation Score Generator with Dialog.</H4>
+
+<PRE>//  S I L E N C E
+//  A system for making music on computers by means of software alone.
+//  Copyright (C) 1997 by Michael Gogins. All rights reserved.
+import java.io.*;
+import java.awt.*;
+import java.util.*;
+import java.applet.*;
+//  Import the ScoreManager Csound front end.
+import Silence.ScoreManager.ScoreManager;
+//  Simple logistic equation score generator with parameter dialog.
+public class LogMuseDialog extends Applet
+{
+    //  Running as standalone application rather than applet?
+    boolean standAlone;
+    //  Reference for command-line arguments.
+    String argumentValues[];
+	//  Score manager object.
+    public ScoreManager scoreManager;
+	//  Variables for the generator.
+	double c;
+	double y;
+	double y1;
+	int i;
+	int n;
+	//  Variables for music.
+	double instrument;
+	double start;
+	double length;
+	double octave;
+	double decibels;
+	double pan;
+	//  Mapping coefficients.
+	double pulse;
+	double bass;
+	double range;
+	//	All Java applications must have a static main() function.
+    public static void main(String argv[])
+    {
+    	//  Create an instance of the applet class.
+        LogMuseDialog logMuseDialog = new LogMuseDialog();
+        logMuseDialog.standAlone = true;
+        //  An applet running standalone must have a frame.
+        Frame frame = new Frame();
+        frame.add(logMuseDialog);
+        logMuseDialog.init();
+        logMuseDialog.start();
+        frame.resize(logMuseDialog.size());
+        frame.show();
+    }
+    public LogMuseDialog()
+    {
+        standAlone = false;
+        //  Create the Score Manager object.
+		scoreManager = new ScoreManager();
+    }
+	public void init()
+	{
+		//  Open the user interface.
+		super.init();
+		//  Variables for music.
+		//  The dimensions that are not generated have default values.
+		instrument = 1;
+		start = 0;
+		length = 2;
+		octave = 0;
+		decibels = 70;
+		pan = 0;
+		//  Mapping coefficients.
+		pulse = .25;
+		bass = 6;
+		range = 4;
+		//	Try to read c from the command line, otherwise use a default.
+		try
+		{
+			Double buffer = new Double(argumentValues[0]);
+			c = buffer.doubleValue();
+		}
+		catch(NullPointerException e)
+		{
+			c = .998;
+		}
+		catch(ArrayIndexOutOfBoundsException e)
+		{
+			c = .998;
+		}
+		//	Try to read n from the command line, otherwise use a default.
+		try
+		{
+			Integer buffer = new Integer(argumentValues[1]);
+			n = buffer.intValue();
+		}
+		catch(NullPointerException e)
+		{
+			n = 1000;
+		}
+		catch(ArrayIndexOutOfBoundsException e)
+		{
+			n = 1000;
+		}
+		//{{INIT_CONTROLS
+		setLayout(null);
+		//  This condition must be re-inserted after Visual Cafe
+		//  removes it.
+		if(!standAlone)
+		{
+		    addNotify();
+		}
+		resize(400,201);
+		setFont(new Font(&quot;TimesRoman&quot;, Font.BOLD, 14));
+		labelApplet = new java.awt.Label(&quot;Logistic Equation Score Generator version 3&quot;,Label.CENTER);
+		labelApplet.reshape(0,36,384,19);
+		add(labelApplet);
+		labelIterationCount = new java.awt.Label(&quot;Number of iterations&quot;);
+		labelIterationCount.reshape(0,108,183,19);
+		add(labelIterationCount);
+		labelConstant = new java.awt.Label(&quot;Constant&quot;);
+		labelConstant.reshape(0,72,183,19);
+		add(labelConstant);
+		buttonGenerate = new java.awt.Button(&quot;Generate&quot;);
+		buttonGenerate.reshape(204,156,84,32);
+		add(buttonGenerate);
+		buttonScore = new java.awt.Button(&quot;Score&quot;);
+		buttonScore.reshape(300,156,84,32);
+		add(buttonScore);
+		buttonSave = new java.awt.Button(&quot;Save&quot;);
+		buttonSave.reshape(108,156,84,32);
+		add(buttonSave);
+		buttonLoad = new java.awt.Button(&quot;Load&quot;);
+		buttonLoad.reshape(12,156,84,32);
+		add(buttonLoad);
+		textFieldIterationCount = new java.awt.TextField();
+		textFieldIterationCount.reshape(204,108,180,24);
+		add(textFieldIterationCount);
+		textFieldConstant = new java.awt.TextField();
+		textFieldConstant.reshape(204,72,180,24);
+		add(textFieldConstant);
+		//}}
+		dataToDialog();
+	}
+	//{{DECLARE_CONTROLS
+	java.awt.Label labelApplet;
+	java.awt.Label labelIterationCount;
+	java.awt.Label labelConstant;
+	java.awt.Button buttonGenerate;
+	java.awt.Button buttonScore;
+	java.awt.Button buttonSave;
+	java.awt.Button buttonLoad;
+	java.awt.TextField textFieldIterationCount;
+	java.awt.TextField textFieldConstant;
+	//}}
+    void dataToDialog()
+    {
+        textFieldConstant.setText(String.valueOf(c));
+        textFieldIterationCount.setText(String.valueOf(n));
+    }
+    void dataFromDialog()
+    {
+        Double buffer = new Double(textFieldConstant.getText());
+        c = buffer.doubleValue();
+        buffer = new Double(textFieldIterationCount.getText());
+        n = buffer.intValue();
+    }
+	void buttonGenerate_Clicked(Event event)
+	{
+    	//{{CONNECTION
+		generate();
+		//}}
+	}
+	void buttonScore_Clicked(Event event)
+	{
+    	//{{CONNECTION
+		scoreManager.openWindow();
+		//}}
+	}
+	void buttonSave_Clicked(Event event)
+	{
+    	//{{CONNECTION
+		save();
+		//}}
+	}
+	void buttonLoad_Clicked(Event event)
+	{
+    	//{{CONNECTION
+		load();
+		//}}
+	}
+	public boolean handleEvent(Event event)
+	{
+		if (event.target == buttonLoad &amp;&amp; event.id == Event.ACTION_EVENT)
+		{
+			buttonLoad_Clicked(event);
+			return true;
+		}
+		if (event.target == buttonSave &amp;&amp; event.id == Event.ACTION_EVENT)
+		{
+			buttonSave_Clicked(event);
+			return true;
+		}
+		if (event.target == buttonGenerate &amp;&amp; event.id == Event.ACTION_EVENT)
+		{
+			buttonGenerate_Clicked(event);
+			return true;
+		}
+		if (event.target == buttonScore &amp;&amp; event.id == Event.ACTION_EVENT)
+		{
+			buttonScore_Clicked(event);
+			return true;
+		}
+		return super.handleEvent(event);
+    }
+    //  Event handlers:
+    //  Generate a score.
+	public void generate()
+	{
+	    dataFromDialog();
+	    //  Erase existing notes.
+	    scoreManager.notesDelete();
+		//  Initial value of y.
+		y = .5;
+		//  GENERATE THE SCORE
+		//  Iterate to generate the notes.
+		for(i = 0; i &lt; n; ++i)
+		{
+			////////////////////////////////////////////////////////////////////
+			//  GENERATION
+			y1 = y * c * 4 * (1.0 - y);
+			//  MAPPING
+			start = i * pulse;
+			octave = bass + y1 * range;
+			//  RENDERING
+			//  Write the note into the ScoreManager.
+			scoreManager.noteAdd(instrument, start, length, octave, decibels, pan);
+			//  Iterate.
+			y = y1;
+			////////////////////////////////////////////////////////////////////
+		}
+		//  RENDERING
+		//  Graphical user interface for arrangement, rescaling, actual rendering, etc.
+		scoreManager.openWindow();
+    }
+    public void load()
+    {
+		try
+		{
+			FileDialog fileDialog = new FileDialog(null, &quot;Load&quot;, FileDialog.LOAD);
+			fileDialog.show();
+			String filename = fileDialog.getFile();
+			if(filename == null)
+			{
+				return;
+			}
+			FileInputStream fileInputStream = new FileInputStream(filename);
+			DataInputStream dataInputStream = new DataInputStream(fileInputStream);
+			for(;;)
+			{
+				String buffer = dataInputStream.readLine();
+				if(buffer.startsWith(&quot;&lt;CsLogMuse&gt;&quot;))
+				{
+					for(;;)
+					{
+						buffer = dataInputStream.readLine();
+						StringTokenizer stringTokenizer = new StringTokenizer(buffer);
+						String name = stringTokenizer.nextToken();
+						String value = null;
+						if(name.startsWith(&quot;c&quot;))
+						{
+							c = Double.valueOf(stringTokenizer.nextToken()).doubleValue();
+						}
+						else if(name.startsWith(&quot;n&quot;))
+						{
+							n = Double.valueOf(stringTokenizer.nextToken()).intValue();
+						}
+						else if(name.startsWith(&quot;&lt;CsScoreManager&gt;&quot;))
+						{
+							scoreManager.read(dataInputStream);
+						}
+						else if(name.startsWith(&quot;&lt;/CsLogMuse&gt;&quot;))
+						{
+							dataInputStream.close();
+							fileInputStream.close();
+							dataToDialog();
+							return;
+						}
+					}
+				}
+			}
+		}
+		catch(IOException e)
+		{
+			System.out.println(e.getMessage());
+		}
+    }
+    public void save()
+    {
+		try
+		{
+		    //  Get data from user interface.
+		    dataToDialog();
+		    //  Get file to save to.
+			FileDialog fileDialog = new FileDialog(null, &quot;Save&quot;, FileDialog.SAVE);
+			fileDialog.setFile(&quot;*.lm&quot;);
+			fileDialog.show();
+			if(fileDialog.getFile() == null)
+			{
+				return;
+			}
+			String pathname = fileDialog.getDirectory() + fileDialog.getFile();
+			int i = pathname.indexOf(&quot;.&quot;);
+			if(i != -1)
+			{
+				pathname = pathname.substring(0, i);
+			}
+			pathname = pathname + &quot;.lm&quot;;
+			//  Typical pattern for tag-delimited text storage.
+			FileOutputStream fileOutputStream = new FileOutputStream(pathname);
+			PrintStream printStream = new PrintStream(fileOutputStream);
+			printStream.println(&quot;&lt;CsLogMuse&gt;&quot;);
+			printStream.println(&quot;c &quot; + c);
+			printStream.println(&quot;n &quot; + n);
+			scoreManager.write(printStream);
+			printStream.println(&quot;&lt;/CsLogMuse&gt;&quot;);
+			printStream.close();
+			fileOutputStream.close();
+		}
+		catch(IOException e)
+		{
+			System.out.println(e.getMessage());
+		}
+    	}
+}</PRE>
+
+</BODY>
+</HTML>

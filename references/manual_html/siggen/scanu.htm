@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Emaileft: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+	<title>scanu</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="scantop.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="scans.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#scanned" class="toqr">
+Signal Generators: Scanned Synthesis</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>scanu</h2>
+<pre>
+          <strong>scanu</strong>      init, irate, ifnvel, ifnmass, ifnstif, ifncentr, ifndamp, kmass, kstif, kcentr, kdamp, ileft, iright, kpos, kstrngth, ain, idisp, id
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+
+<p>Compute the waveform and the wavetable for use in scanned synthesis.</p>
+
+<h3>Initialization</h3>
+
+<p><em>init</em> &#8211; the initial position of the masses.  If this is a negative number, then the absolute of <em>init</em> signifies the table to use as a hammer shape.  If <em>init</em> &gt; 0, the length of it should be the same as the intended mass number, otherwise it can be anything.</p>
+
+<p><em>ifnvel</em> &#8211; the ftable that contains the initial velocity for each mass.  It should have the same size as the intended mass number.</p>
+
+<p><em>ifnmass</em> &#8211; ftable that contains the mass of each mass.  It should have the same size as the intended mass number.</p>
+
+<p><em>ifnstif</em> &#8211; ftable that contains the spring stiffness of each connection. It should have the same size as the square of the intended mass number.  The data ordering is a row after row dump of the connection matrix of the system.</p>
+
+<p><em>ifncentr</em> &#8211; ftable that contains the centering force of each mass. It should have the same size as the intended mass number.</p>
+
+<p><em>ifndamp</em> &#8211; the ftable that contains the damping factor of each mass. It should have the same size as the intended mass number.</p>
+
+<p><em>ileft</em> &#8211; If <em>init</em> &lt; 0, the position of the left hammer (<em>ileft</em> = 0 is hit at leftmost, <em>ileft</em> = 1 is hit at rightmost).</p>
+
+<p><em>iright</em> &#8211; If <em>init</em> &lt; 0, the position of the right hammer (<em>iright</em> = 0 is hit at leftmost, <em>iright</em> = 1 is hit at rightmost).</p>
+
+
+<p><em>idisp</em> &#8211; If 0, no display of the masses is provided.</p>
+
+<p><em>id</em> &#8211;  If positive, the ID of the opcode.  This will be used to point the scanning opcode to the proper waveform maker.  If this value is negative, the absolute of this value is the wavetable on which to write the waveshape. That wavetable can be used later from an other opcode to generate sound.  The initial contents of this table will be destroyed.</p>
+
+
+<h3>Performance</h3>
+
+<p><em>kmass</em> &#8211; scales the masses</p>
+
+<p><em>kstif</em> &#8211; scales the spring stiffness</p>
+
+<p><em>kcentr</em> &#8211; scales the centering force</p>
+
+<p><em>kdamp</em> &#8211; scales the damping</p>
+
+<p><em>kpos</em> &#8211; position of an active hammer along the string (<em>kpos</em> = 0 is leftmost, <em>kpos</em> = 1 is rightmost).  The shape of the hammer is determined by <em>init</em> and the power it pushes with is <em>kstrngth</em>.</p>
+
+<p><em>kstrngth</em> &#8211; power that the active hammer uses</p>
+
+<p><em>ain</em> &#8211; audio input that adds to the velocity of the masses. Amplitude should not be too great.</p>
+
+<h3>Example</h3>
+<p>For an <a href="scans.htm#scanexamp">example</a>, see the documentation on <strong>scans</strong>.</p>
+
+<h3>Author</h3>
+<p>Paris Smaragdis<br>
+MIT Media Lab<br>
+Boston, Massachussetts USA<br>
+March, 2000 (New in Csound version 4.05)</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="scantop.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="scans.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#scanned" class="toqr">
+Signal Generators: Scanned Synthesis</font></a>
+
+
+</body>
+
+</html>

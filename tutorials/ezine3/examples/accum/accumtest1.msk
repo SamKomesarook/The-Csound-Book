@@ -1,0 +1,38 @@
+{; accumtest1.sco
+ ; © Dami‡n Keller. November 1998. 
+ ; Using CMask in ecological modeling.
+ 
+f1	0	1024	7	0	512	1	512	0
+f2 0 8193 -1 "bot.sd2" 0 4 1  
+f3 0 8193 -1 "bot.sd2" 0 4 1
+
+}
+; accum limit: the initial boundaries 
+; have more weight than the final boundaries.
+
+f 0 5  
+
+p1 	const 1
+
+p2 	rnd uni  			; grain rate
+	accum limit [.2 .001] [.07 .01]  init 0   
+	prec 5
+
+p3 	const 1 			; grain duration
+	prec 5
+	
+p4 	range .5 1 			; grain amplitude  	
+	prec 5
+
+p5	range .9 1.1		; grain frequency
+	prec 5
+
+p6	range .9 1.1		; grain frequency
+	prec 5
+	
+p7	range 2 3			; sound file
+	prec 0
+	
+p8	range 2 3			; sound file
+	prec 0
+

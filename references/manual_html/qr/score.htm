@@ -1,0 +1,406 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>QuickRef: Score Syntax</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body text="black" link="black" vlink="black" alink="black" bgcolor="white">
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" width="10">
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="sigio.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="gen.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<a class="qr" href="../score/top.htm"><h1>Score Syntax</h1></a>
+
+<a class="qr" name="statements"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Score Syntax: Statements</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/f.htm">
+      <strong>f</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      &quot;table number&quot; &quot;action time&quot; &quot;size&quot; &quot;GEN routine&quot; arg1[ arg2...arg...]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/f.htm">
+      <strong>f0</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      &quot;action time&quot; (Dummy ftable for padding score sections with silence and reporting on progress of long running jobs).
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/b.htm">
+      <strong> b </strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      &quot;base clock time&quot; (Effective prior to score sorting. This time base is pre-warped.)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/v.htm">
+      <strong> v </strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      &quot;time warp factor&quot; (Locally variable time warping of score events.)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/t.htm">
+      <strong>t</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      0 &quot;initial tempo&quot; &quot;time in beats&quot; &quot;tempo2&quot;[&quot;time in beats&quot; &quot;tempo3&quot; &quot;time in...]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/a.htm">
+      <strong>a</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      0 &quot;begin time advance in beats&quot; &quot;duration of time advance in beats&quot;
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/i.htm">
+      <strong>i</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      &quot;instrument number&quot; &quot;start&quot; &quot;duration&quot; [p4 p5 p...]
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/s.htm">
+      <strong>s</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (marks end of section and restarts score counting from time 0)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/m.htm">
+      <strong>m</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      &quot;score location name&quot; (marks a score section with a name)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/n.htm">
+      <strong>n</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      &quot;score location name&quot; (named score section is re-read into the score file at this location)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/r.htm">
+      <strong>r</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      &quot;integer repeat count&quot; &quot;a macro name&quot; (begins a new repeating sections)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/e.htm">
+      <strong>e</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (marks end of score - optional)
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="pfield"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Score Syntax: P-Field Substitution</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/top.htm">
+      <strong> . </strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (carries same p-field value from preceding &quot;<strong>i</strong>&quot; statement with like instrument #)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/top.htm">
+      <strong> + </strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (determines current start from sum of preceeding durations by adding p2 + p3 from previous &quot;<strong>i</strong>&quot; statement. legal in p2 only.)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/top.htm">
+      <strong>^+</strong><em>x</em></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (determines current start of instrument from sum of preceeding written event by adding last p2 to <em>x. </em>legal in p2 only.)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/top.htm">
+      <strong>^-</strong><em>x</em></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (determines current start of instrument from sum of preceeding written event by subtracting <em>x </em>from last p2<em>. </em>legal in p2 only.)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/nextp.htm">
+      <strong>np</strong><em>x</em></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (replace with p-field(x) value from next note statement illegal in p1 p2 p3.)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/nextp.htm">
+      <strong>pp</strong><em>x</em></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (replace with p-field(x) value from previous note statement illegal in p1 p2 p3.)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/ramp.htm">
+      <strong> &lt; </strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (p-field replaced by value derived from linear interpolation between previous and subsequent &quot;anchor&quot; values in same p-field. illegal in p1 p2 p3)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/ramp.htm">
+      <strong> &gt; </strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (p-field replaced by value derived from linear interpolation between previous and subsequent &quot;anchor&quot; values in same p-field. illegal in p1 p2 p3)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/ramp.htm">
+      <strong> ) </strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (p-field replaced by value derived from exponential interpolation between previous and subsequent &quot;anchor&quot; values in same p-field. illegal in p1 p2 p3)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/ramp.htm">
+      <strong> ( </strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (p-field replaced by value derived from exponential interpolation between previous and subsequent &quot;anchor&quot; values in same p-field. illegal in p1 p2 p3)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/ramp.htm">
+      <strong> ~ </strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (p-field replaced by value derived from random value in the range between previous and subsequent &quot;anchor&quot; values in same p-field. illegal in p1 p2 p3)
+    </td>
+  </tr>
+</table>
+
+
+<a class="qr" name="expressions"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Score Syntax: Expressions</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/eval.htm">
+      <strong>[</strong><em>x<strong>+</strong>y</em><strong>]</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (add value <em>x</em> to value<em> y </em>within a p-field. Note expressions must be in <strong>[</strong>brackets<strong>]</strong>)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/eval.htm">
+      <strong>[</strong><em>x<strong>-</strong>y</em><strong>]</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (subtract value <em>y</em> from value<em> x </em>within a p-field. Note expressions must be in <strong>[</strong>brackets<strong>]</strong>)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/eval.htm">
+      <strong>[</strong><em>x<strong>*</strong>y</em><strong>]</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (multiply value <em>x</em> by value<em> y </em>within a p-field. Note expressions must be in <strong>[</strong>brackets<strong>]</strong>)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/eval.htm">
+      <strong>[</strong><em>x<strong>/</strong>y</em><strong>]</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (divide value <em>x</em> by value<em> y </em>within a p-field. Note expressions must be in <strong>[</strong>brackets<strong>]</strong>)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/eval.htm">
+      <strong>[</strong><em>x<strong>%</strong>y</em><strong>]</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (value <em>x</em> remainder value<em> y </em>within a p-field. Note expressions must be in <strong>[</strong>brackets<strong>]</strong>)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/eval.htm">
+      <strong>[</strong><em>x<strong>^</strong>y</em><strong>]</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (power of value <em>x</em> to value<em> y </em>within a p-field. Note expressions must be in <strong>[</strong>brackets<strong>]</strong>)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/eval.htm">
+      <strong> [</strong>@<em>x</em><strong>]</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (next power-of-two greater than or equal to <em>x</em>. Note expressions must be in <strong>[</strong>brackets<strong>]</strong>)
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="10%" valign="TOP">
+      <a class="qr" href="../score/eval.htm">
+      <strong>[@@</strong><em>x</em><strong>]</strong></a>
+    </td>
+    <td class="qr" nowrap width="90%" valign="TOP">
+      (next power-of-two-plus-one greater than or equal to <em>x</em>. Note expressions must be in <strong>[</strong>brackets<strong>]</strong>)
+    </td>
+  </tr>
+</table>
+
+<a class="qr" name="macros"><hr size="2" color="#A9A9A9" noshade></a>
+<h2>Score Syntax:  Macros</h2>
+<table cellspacing="0" border="0" cellpadding="7" width="637">
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../score/macros.htm">
+      <strong>#define</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      NAME # replacement text #
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../score/macros.htm">
+      <strong>#define</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      NAME(a'b'c) # replacement text # 
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="89%" valign="TOP" colspan="2">
+      <a class="qr" href="../score/macros.htm">
+      <strong>$NAME.</strong></a>
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../score/macros.htm">
+      <strong>#undef</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      NAME
+    </td>
+  </tr>
+  <tr>
+    <td class="qr" nowrap width="11%" valign="TOP">&nbsp;
+    </td>
+    <td class="qr" nowrap width="16%" valign="TOP">
+      <a class="qr" href="../score/mult.htm">
+      <strong>#include</strong></a>
+    </td>
+    <td class="qr" nowrap width="73%" valign="TOP">
+      &quot;filename&quot;
+    </td>
+  </tr>
+</table>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table align="right" cellpadding="1" cellspacing="1" border="0">
+  <tr>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+    </td>
+    <td class="qr" width="10">
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="sigio.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+    </td>
+    <td class="qr" width="45" align="right">
+      <a class="qr" href="gen.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+    </td>
+  </tr>
+</table>
+<font size="-2" color="black" face="Verdana, Arial, Helvetica, Century Gothic">
+The Csound Quick Reference
+
+</body>
+</html>

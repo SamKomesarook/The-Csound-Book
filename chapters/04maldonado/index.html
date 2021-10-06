@@ -1,0 +1,2045 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>MIDI Instrument Designs for Real-time Performance</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">3. MIDI Instrument Designs for
+Real Time Performance</FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Gabriel Maldonado</FONT></H2>
+
+<P><FONT FACE="Times New Roman">Real time control is an indispensable
+feature in my concept of making music. Csound is a very powerful
+tool, though, at least in first versions, it was a non-real time
+oriented synthesis language. I added some MIDI IN and OUT opcodes
+to make structure-generation and synthesis processes control easier.
+In this article I give you some examples of .orc and .sco files
+and a source analysis of some of these opcodes in Csound.</FONT></P>
+
+<H3><FONT FACE="Times New Roman">New Opcodes</FONT></H3>
+
+</h3>
+
+<P><FONT FACE="Times New Roman">In the first part of this chapter
+I will describe the usefulness of Csound of both MIDI IN and MIDI
+OUT opcodes in real time operations.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Why new MIDI IN opcodes? Barry
+Vercoe already added most MIDI IN opcodes in 1992 release of Csound.
+My new opcodes only support control-change messages, which are
+very useful for changing Instrument parameters of any kind during
+the real time performance. MIDI protocol supports 128 control
+numbers for channel. So it is possible to control in real time
+up to 128 different parameters in the same Csound Instrument via
+MIDI. For example it is possible to change insturment vibrato
+speed and depth, and at the same time to change amplitude, carrier/modulating
+ratio and modulation index in an FM intrument, as well as envelope
+speed and depth of other parameters. In score activated instruments
+it is not possible to use control-change opcodes directly because
+Csound crashes if you attempt to activate them by the score: instruments
+containing control-change opcodes can be activated only by MIDI
+note-on messages. However it is possible to use them to change
+a global variable which can be accessed by a score activated instrument.
+Another example of using control-change messages is to change
+performance tempo while a sco is executing. (The source of this
+example is provided below).</FONT></P>
+
+<P><FONT FACE="Times New Roman">Barry Vercoe&#146;s original control-change
+opcodes are:</FONT></P>
+
+<P><I><FONT FACE="Times New Roman">ival<B> </B></FONT></I><B><FONT
+ FACE="Times New Roman">midictrl<I> </I></FONT></B><I><FONT FACE="Times New Roman">inum</FONT></I></P>
+
+<P><I><FONT FACE="Times New Roman">kval<B> </B></FONT></I><B><FONT
+ FACE="Times New Roman">midictrl<I> </I></FONT></B><I><FONT FACE="Times New Roman">inum</FONT></I></P>
+
+<P><FONT FACE="Times New Roman">They get the current value (0
+- 127) of a specified MIDI controller <B><I>inum</I></B> at <B>i</B>
+or <B>k</B>-rates. Unfortunately MIDI protocol only supports 7-bit-integer
+parameters. For this limitation I implemented new control-change
+opcodes. These opcodes now support:</FONT></P>
+
+<DIR>
+  <P><FONT FACE="Times New Roman">&#149; Scaling of integer MIDI
+  values to floating point values in a user <B>k</B>-time variable
+  minimum-maximum range</FONT>
+  <P><FONT FACE="Times New Roman">&#149; Raw input values remapping
+  by means of table-interpolated indexing</FONT>
+  <P><FONT FACE="Times New Roman">&#149; Increased resolution up
+  to 21-bit by joining more MIDI control numbers to control the
+  same parameter.</FONT>
+</DIR>
+
+<P><FONT FACE="Times New Roman">These new opcodes make real time
+orc-files shorter and easier to implement and to read by eliminating
+additional lines for calculating scaled parameter adjustment.
+For a detailed description of the syntax of these opcodes, read
+the appendix of this chapter titled &quot;New MIDI Opcodes Syntax
+.&quot;&nbsp;<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">MIDI In-Based Instruments</FONT></H3>
+
+<P><FONT FACE="Times New Roman">In this section I give you some
+.orc and .sco files with real time samples of <B>(i)midicXX</B>
+opcodes. The first example is quite simple: an orchestra with
+two oscillators. The frequency of one oscillator is fixed and
+is determined by MIDI note-number, while the frequency of the
+second oscillator can vary continuously by means of MIDI controller
+number 1 (modulation-wheel) so the frequency ratio of the two
+oscillator can be adjusted at any moment by the user.</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Simple Use of <I>midic7</I>
+Controlling Frequency</FONT></H3>
+
+<P><FONT FACE="Times New Roman">&nbsp;<IMG SRC="figures/01.gif"
+HEIGHT="272" WIDTH="411" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.1</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Block diagram of <I>instr 401</I>, a 2 oscillator midi instrument
+with mod-wheel control of pitch.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="464" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"></TD>
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">instr
+      401</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">cpsmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">iamp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">ampmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">2000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">ikoct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT SIZE="-1" FACE="Courier New">;2
+      octaves transposition factor</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">kfratio</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">midic7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">1,
+      1, ikoct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT SIZE="-1" FACE="Courier New">;mod.wheel
+      controls tranposition</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT SIZE="-1" FACE="Courier New">;range:
+      no transp. Up 2 octaves</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">a1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">iamp,
+      ifreq,1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">a2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">iamp,
+      ifreq*kfratio, 1&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT SIZE="-1" FACE="Courier New">;2<sup>nd</sup>
+      oscil is transposed by kfratio</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">a1+a2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="51%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE><FONT FACE="Times New Roman"><BR>
+</FONT><TABLE BORDER="0" CELLSPACING="0" WIDTH="464" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="7%"><FONT SIZE="-1" FACE="Courier New">f1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">128</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT SIZE="-1" FACE="Courier New">10</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="3%"><FONT SIZE="-1" FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="66%"><FONT SIZE="-1" FACE="Courier New">;sine
+      table</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="7%"><FONT SIZE="-1" FACE="Courier New">f0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">3600</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="3%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="66%"><FONT SIZE="-1" FACE="Courier New">;allows
+      1 hour of real time playing</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="7%"><FONT SIZE="-1" FACE="Courier New">e</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="3%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="66%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.2</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Orchestra and score code for <I>instr 401</I> featuring the midic7
+scalable controller opcode</FONT><FONT FACE="Times New Roman">.</FONT></P>
+
+<P><FONT FACE="Times New Roman">As you can see in instrument 401,
+a <B>midic7</B> opcode is used to allow transposing the second
+oscillator up to two octaves high (factor 4). Line 2 of instrument
+401's score contains an <I>f0</I> statement. This statement is
+used to create an action time with no associated action. This
+prevent Csound session to terminate before 3600 seconds are elapsed,
+allowing 1 hour of real time performance. MIDI real time oriented
+instruments are activated by using note-on messages. So no<B><I>
+</I>i</B> statements are necessary in the score. I remember you
+that Csound instruments containing MIDI control-change opcodes
+can be activated only by note-on messages. Any attempt to activate
+them via <B>i</B> statement in the score, will produce a crash
+of the program.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The following orc shows the use
+of<B><I> </I>midic14</B> opcode.</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Simple Use of <I>midic14</I>
+to Control <I>oscili</I> Frequency (No Table Indexing)</FONT></H3>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/02.gif" HEIGHT="485"
+WIDTH="526" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.3</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Block diagram of <I>instr 402</I>, an addition synthesis instrument
+with 14-bit midi controler modulation of pitch.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="500" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">402</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT SIZE="-1" FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">cpsmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT SIZE="-1" FACE="Courier New">iamp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">ampmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">1000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT SIZE="-1" FACE="Courier New">ikoct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">16</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">;4
+      octaves transposition factor</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT SIZE="-1" FACE="Courier New">ioneup3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">1/3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT SIZE="-1" FACE="Courier New">itwoup3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">2/3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT SIZE="-1" FACE="Courier New">kfratio</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">midic14</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">1,
+      2, 1/ikoct-1, ikoct-1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">;modulation-wheel
+      controls msb&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">;and
+      breath-control controls lsb&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">;tranposition
+      range: -4 up to&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT SIZE="-1" FACE="Courier New">ifreq1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">;+4
+      octaves base freq</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT SIZE="-1" FACE="Courier New">kfreq2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">ifreq*(1+kfratio*ioneup3)&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">;freq
+      transposed 1/3 of kfratio</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT SIZE="-1" FACE="Courier New">kfreq3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">ifreq*(1+kfratio*itwoup3)&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">;freq
+      transposed 2/3 of kfratio</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT SIZE="-1" FACE="Courier New">kfreq4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">ifreq*(1+kfratio)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">;freq
+      transposed 3/3 of kfratio</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT SIZE="-1" FACE="Courier New">a1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">iamp,
+      ifreq1, 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">;1<sup>st</sup>
+      oscil with base freq</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT SIZE="-1" FACE="Courier New">a2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">iamp,
+      kfreq2, 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">;2<sup>nd</sup>
+      is transposed 1/3 of kfratio</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT SIZE="-1" FACE="Courier New">a3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">iamp,
+      kfreq3, 1&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">;3<sup>rd</sup>
+      is transposed 2/3 of kfratio</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT SIZE="-1" FACE="Courier New">a4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">iamp,
+      kfreq4, 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">;4<sup>th</sup>
+      is transposed by kfratio&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT SIZE="-1" FACE="Courier New">a1+a2+a3+a4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="11%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="32%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.4 </FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Orchestra
+code of <I>instr 402</I> featuring the midic14 opcode used to
+route control data from controllers 1 and 4.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The score for instrument 2 is
+identical to the one for instrument 1, so refer to it.</FONT></P>
+
+<P><FONT FACE="Times New Roman">This instrument outputs the sum
+of four oscillators. The first oscillator has a fixed frequency
+(<I>ifreq1</I>) determined by the MIDI note-number (<B>cpsmidi</B>
+opcode). The last oscillator frequency (<I>kfreq4</I>) is obtained
+by a transposition factor (<I>kfratio</I>) controlled by a <B>midic14</B>
+opcode. The most significant byte controller parameter is assigned
+to MIDI controller #1 (mod-wheel), while the less significant
+one is assigned to controller #2 (breath-control). Now the range
+is quite larger than in the previous orc: 8 octaves (from -4 to
+4 octaves i.e. from 1/16 to 16). So, to obtain more precision,
+I used a <B>midic14</B> rather than a <B>midic7</B> opcode. The
+other two oscillator frequencies are scaled to respectively 1/3
+and 2/3 of factor <I>kfreqratio</I>. A curious characteristic
+of this instrument is that frequcncy intervals among oscillators
+are always rational (i.e. always harmonic). If you run this instrument
+you will note that with transposition factors above 1, slider
+control behaves quite well, while, when using fractional transposition
+factors (from 1/16 up to 1), a little movement will produce a
+frequency shift too big to control with precision. To fix this
+problem, I will give you a new instrument almost identical to
+the previous one.</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Simple Use of <I>midic14</I>
+Controlling <I>oscili</I> Frequency with Table Indexing for Best
+Covering of Slider-Center Range</FONT></H3>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="468" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">instr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT SIZE="-1" FACE="Courier New">403</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">cpsmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">iamp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">ampmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT SIZE="-1" FACE="Courier New">1000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">ikoct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT SIZE="-1" FACE="Courier New">16</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT SIZE="-1" FACE="Courier New">;4
+      octaves transposition factor</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">ioneup3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT SIZE="-1" FACE="Courier New">1/3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier New">itwoup3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT SIZE="-1" FACE="Courier New">2/3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE><TABLE BORDER="0" CELLSPACING="0" WIDTH="504" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">kfratio</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">midic14</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">1,
+      2, 1/ikoct-1, ikoct-1, 2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="41%"><FONT SIZE="-1" FACE="Courier New">;mod.wheel
+      controls msb and&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="41%"><FONT SIZE="-1" FACE="Courier New">;breath
+      con. controls lsb&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="41%"><FONT SIZE="-1" FACE="Courier New">;tranposition
+      range: -4 up to</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="41%"><FONT SIZE="-1" FACE="Courier New">;+4
+      octaves table n.2 indexing</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">ifreq1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="41%"><FONT SIZE="-1" FACE="Courier New">;base
+      freq</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">kfreq2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">ifreq*(1+kfratio*ioneup3)&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="41%"><FONT SIZE="-1" FACE="Courier New">;freq
+      transposed 1/3 of kfratio</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">kfreq3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">ifreq*(1+kfratio*itwoup3)&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="41%"><FONT SIZE="-1" FACE="Courier New">;freq
+      transposed 2/3 of kfratio</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">kfreq4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">ifreq*(1+kfratio)&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="41%"><FONT SIZE="-1" FACE="Courier New">;freq
+      transposed 3/3 of kfratio</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">a1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">iamp,ifreq1,1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="41%"><FONT SIZE="-1" FACE="Courier New">;1st
+      oscil with base freq</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">a2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">iamp,kfreq2,1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="41%"><FONT SIZE="-1" FACE="Courier New">;2nd
+      is transposed 1/3 of kfratio</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">a3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">iamp,kfreq3,1&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="41%"><FONT SIZE="-1" FACE="Courier New">;3rd
+      is transposed 2/3 of kfratio</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">a4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">iamp,kfreq4,1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="41%"><FONT SIZE="-1" FACE="Courier New">;4th
+      is transposed by kfratio&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">a1+a2+a3+a4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="41%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="41%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.5</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Orchestra code of <I>instr 403</I> which maps controller data
+through a table.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The only difference between instrument
+402 and instrument<B> </B>403 is that <B>midic14</B> now uses
+table indexing (with interpolation). The optional parameter ifn
+is now filled with number 2 to make reference to function table
+num 2. Here is the sco we see the simple use of <B>midic14</B>
+controlling <B>oscili</B> frequency use table indexing for best
+covering of slider-center range,<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="356" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier">f1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT SIZE="-1" FACE="Courier">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier">512</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="13%"><FONT SIZE="-1" FACE="Courier">10</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="28%"><FONT SIZE="-1" FACE="Courier">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="33%"><FONT SIZE="-1" FACE="Courier">;sine
+      table</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">and a table indexed by <B>midic14</B>
+from 1/16 to 1 to 16.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="482" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier">f2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT SIZE="-1" FACE="Courier">513</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="4%"><FONT SIZE="-1" FACE="Courier">7</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="3"><FONT SIZE="-1" FACE="Courier">0.0625
+      256 1 256 16</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier">f0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier">3600</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%">&nbsp;</TD> 
+    <TD VALIGN="TOP" COLSPAN="3">&nbsp;</TD>
+     
+    <TD VALIGN="TOP" WIDTH="50%"><FONT SIZE="-1" FACE="Courier">;allows
+      1 hour of real time playing</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier">e</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="7%">&nbsp;</TD> 
+    <TD VALIGN="TOP" COLSPAN="2">&nbsp;</TD>
+     
+    <TD VALIGN="TOP" COLSPAN="2">&nbsp;</TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">As you can see, a half of the
+table space is filled with continuous values from 1/16 up to 1,
+while the other half is filled with values starting from 1 up
+to 16. This eliminates the problem arisen in instrument 402</FONT></P>
+
+<P><FONT FACE="Times New Roman">Now I give you an intrument that
+uses <B>imidic7</B> at <B>i</B>-rate (orc 4). This instrument
+is a combination of four different instruments. One of the four
+instruments can be choosen at init-time through the current value
+of <B>ijump</B>, a <B>i</B>-rate variable modified by <B>imidic7</B>
+opcode, which operates as a switch for enabling one of the four
+instruments.</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">&quot;Four in One&quot;
+Example: Using <I>midic7</I> as a Switch for Several Instruments<BR>
+</FONT></H3>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="491" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">instr
+      404</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="61%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">inum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">notnum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="61%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">icps</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">cpsmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="61%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">iamp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">ampmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">4000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="61%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="61%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">ijump</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">imidic7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">1,
+      0, 4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="61%"><FONT SIZE="-1" FACE="Courier New">;switch
+      four Instruments at init time (range 0-4)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="61%"><FONT SIZE="-1" FACE="Courier New">;1=instr1,
+      2=instr2, 3=instr3, 4=instr4</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">kctr1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">midic7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">2,
+      0, 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="61%"><FONT SIZE="-1" FACE="Courier New">;scales
+      different instr. parameters (range 0-1)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">kctr2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">midic7&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">4,
+      0, 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="61%"><FONT SIZE="-1" FACE="Courier New">;scales
+      different instr. parameters (range 0-1)</FONT></TD> 
+  </TR>
+</TABLE><TABLE BORDER="0" CELLSPACING="0" WIDTH="491" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="39%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="39%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT SIZE="-1" FACE="Courier New">if
+      ijump&gt;1&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT SIZE="-1" FACE="Courier New">goto
+      two</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="39%"><FONT SIZE="-1" FACE="Courier New">;imidic7
+      dependent jump</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="17%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="39%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE><B><FONT FACE="Times New Roman">Simple oscillator plus
+amplitude envelope</FONT></B><FONT FACE="Times New Roman"> </FONT><TABLE
+BORDER="0" CELLSPACING="0" WIDTH="491" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">kmp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">linenr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT SIZE="-1" FACE="Courier New">iamp,
+      .01, 1, .03</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="40%"><FONT SIZE="-1" FACE="Courier New">;ampenv</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">a1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT SIZE="-1" FACE="Courier New">kmp,
+      icps, 2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="40%"><FONT SIZE="-1" FACE="Courier New">;audio
+      oscillator</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">goto</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT SIZE="-1" FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="40%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="40%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">two:</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">if
+      ijump&gt;2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="36%"><FONT SIZE="-1" FACE="Courier New">goto
+      three</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="40%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE><B><FONT FACE="Times New Roman">FM synthesis</FONT></B><FONT
+ FACE="Times New Roman"> </FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="500" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">kmp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">linenr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="55%"><FONT SIZE="-1" FACE="Courier New">iamp,
+      .04, .2, .03</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT SIZE="-1" FACE="Courier New">;ampenv</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">kndx</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="55%"><FONT SIZE="-1" FACE="Courier New">0,
+      30, .6, 10</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT SIZE="-1" FACE="Courier New">;mod
+      index control</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">a1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">foscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="55%"><FONT SIZE="-1" FACE="Courier New">kmp,
+      icps*.25, 2, kctr1*4, kndx*kctr2, 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">goto</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="55%"><FONT SIZE="-1" FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="55%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">three:</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">if
+      ijump&gt;3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="55%"><FONT SIZE="-1" FACE="Courier New">goto
+      four</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="20%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE><B><FONT FACE="Times New Roman">Ring modulation and clipping
+synthesis</FONT></B><FONT FACE="Times New Roman"> </FONT><TABLE
+BORDER="0" CELLSPACING="0" WIDTH="491" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">kmp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">linenr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">iamp,
+      .04, .2,. 03&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">;ampenv</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">kamp2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">iamp*.5,
+      .25, 11</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">;clipping
+      control</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">am1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">oscili&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">kmp*.01,
+      icps, 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">;carrier</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">am2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">oscili&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">kmp*kctr1*.1,
+      icps*kctr2*2+.5, 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">;modulator</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">a1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">am1*am2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">;ring
+      modulation</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">a1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">limit&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">a1,
+      -kamp2, kamp2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">;clip
+      modulation</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">a1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">a1*iamp/kamp2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT SIZE="-1" FACE="Courier New">;amplitude
+      rescaling</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">goto</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">four:</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="35%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE><B><FONT FACE="Times New Roman">Karplus-Strong synthesis</FONT></B><FONT
+ FACE="Times New Roman"> </FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="491" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">kmp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">linenr</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="38%"><FONT SIZE="-1" FACE="Courier New">iamp*5,
+      0, .2, .03&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="42%"><FONT SIZE="-1" FACE="Courier New">;ampenv</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">a1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">pluck</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="38%"><FONT SIZE="-1" FACE="Courier New">kmp,
+      icps, 10000, 5, 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="42%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">out:</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="38%"><FONT SIZE="-1" FACE="Courier New">a1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="42%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="38%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="42%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT FACE="Times New Roman">Figure 4.6</FONT></B><FONT
+ FACE="Times New Roman"> Orchestra code for <I>instr 404</I>,
+a design which uses the mod-wheel to switch between 1 of 4 different
+synthesizer methods.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The next .orc and .sco files show
+the way for implementing a score-oriented orchestra, whose tempo
+can be modified in real time by means of MIDI.</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Using MIDI Controller
+1 to Change Score Tempo in Real-Time</FONT></H3>
+
+<P><I><FONT FACE="Times New Roman">WARNING!</FONT></I><FONT FACE="Times New Roman">
+Set <I>-t</I> flag when testing this .orc! play a MIDI note to
+activate instr 401 if you want change score tempo.</FONT></P>
+
+<P><FONT FACE="Times New Roman">&nbsp;&nbsp;<IMG SRC="figures/03.gif"
+HEIGHT="153" WIDTH="136" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">Figure 4.7</FONT></B><FONT
+ FACE="Times New Roman"> Block diagram of <I>instr 405</I> which
+uses a midi controller to control the tempo of a score file.</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Tempo Controller
+Instrument</FONT></H3>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="351" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">instr&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT SIZE="-1" FACE="Courier New">405</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">k1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">midic7&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT SIZE="-1" FACE="Courier New">1,
+      30, 500</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">tempo</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT SIZE="-1" FACE="Courier New">k1,
+      60</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="63%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.8</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Orchestra of <I>instr 405</I> illustrating the use of the tempo
+opcode under the variable control of the modulation wheel controller
+1</FONT><FONT FACE="Times New Roman">.</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Simple Random Pitch
+Instrument</FONT></H3>
+
+<P><FONT FACE="Times New Roman">&nbsp;<IMG SRC="figures/04.gif"
+HEIGHT="245" WIDTH="124" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.9</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Block diagram of <I>instr406</I> a random pitch instrument.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="365" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">instr&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT SIZE="-1" FACE="Courier New">406</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="22%"><FONT SIZE="-1" FACE="Courier New">ifreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">ilinrand&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT SIZE="-1" FACE="Courier New">1500</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="22%"><FONT SIZE="-1" FACE="Courier New">a1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT SIZE="-1" FACE="Courier New">p4,
+      ifreq+550, 1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT SIZE="-1" FACE="Courier New">a1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="22%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.10</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Orchestra and score code of <I>instr 406</I>, and the score whole
+tempo is controlled in realtime via the modulation wheel.<BR>
+</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Using MIDI Controller
+1 Changes Score Tempo in Real-Time</FONT></H3>
+
+<P><I><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">WARNING!
+Set -t flag when testing this .sco! Play a MIDI note to activate
+instr 405 if you want change score tempo instr 405 must be allocated
+only via MIDI, otherwise Csound will crash!</FONT></I></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="329" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="7%"><FONT SIZE="-1" FACE="Courier New">f1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">512</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="7%"><FONT SIZE="-1" FACE="Courier New">10</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT SIZE="-1" FACE="Courier New">1
+      1 1&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="46%"><FONT SIZE="-1" FACE="Courier New">;audio
+      wavetable</FONT></TD> 
+  </TR>
+</TABLE><TABLE BORDER="0" CELLSPACING="0" WIDTH="383" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">i6</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">.2</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT SIZE="-1" FACE="Courier New">2000&nbsp;</FONT></TD>
+     
+    <TD VALIGN="TOP" WIDTH="63%"><FONT SIZE="-1" FACE="Courier New">;simple
+      random-pitched Instrument</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">i.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">i.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">i.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">i.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">i.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">i.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">i.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">i.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">i.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">i.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">+</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">.</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="6%"><FONT SIZE="-1" FACE="Courier New">e</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="6%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" COLSPAN="2"><FONT FACE="Courier New">&nbsp;</FONT></TD>
+     
+  </TR>
+</TABLE></P>
+
+<P><FONT FACE="Times New Roman">This instrument produces a stream
+of random-pitched notes. The speed of this note-flow can be varied
+by means of MIDI control #1 (mod-wheel). Note that two instruments
+are necessary for doing this, because a score-oriented Instrument
+cannot contain MIDI IN controller opcodes. So instrument 405,
+which contains a call to <B>midic7</B> opcode, must be activated
+by a MIDI note-on message, while instrument 406 is activated by
+the <B>i<I> </I></B>statements in sco file. If you want to play
+this example remember to set <B><I>-t</I></B> command line switch
+for enabling tempo-changes within instruments. In general, it
+is always possible to modify score-oriented instrument parameters
+by means of an additional MIDI-triggered instrument modifying
+global variables. In fact, the score-oriented instrument can access
+these global variables with no problems.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Last instrument uses <B>xtratim</B>
+and <B>release<I> </I></B>opcodes. These opcodes are very useful
+to extend a midi-activated note duration and for implementing
+complex release-oriented envelopes.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The syntax of these opcodes is:</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">xtratim<I> </I></FONT></B><I><FONT
+ FACE="Times New Roman">iextradur</FONT></I><FONT FACE="Times New Roman">
+<I>kflag<B> </B>release</I></FONT></P>
+
+<P><FONT FACE="Times New Roman">where <I>iextradur</I> is the
+extra duration added to the end of a note to allow release, and
+<I>kflag</I> is an output flag that informs whether current note
+is in the release-stage or it is not.</FONT></P>
+
+<P><FONT FACE="Times New Roman">This is the orchestra:</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Using <I>xtratim</I>
+and <I>release</I> to Implement Complex ADSR Envelopes</FONT></H3>
+
+<P><FONT FACE="Times New Roman">&nbsp;&nbsp;&nbsp;<IMG SRC="figures/05.gif"
+HEIGHT="396" WIDTH="543" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.11</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Block diagram of <I>instr 406 </I>a midi instrument featuring
+the xtratim and release opcodes.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="347" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">instr&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT FACE="Courier New">&nbsp;406</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">inum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">notnum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">icps</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">cpsmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">iamp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">ampmidi</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT SIZE="-1" FACE="Courier New">4000</FONT></TD> 
+  </TR>
+</TABLE><B><FONT FACE="Times New Roman">Complex MIDI Envelope</FONT></B><FONT
+ FACE="Times New Roman"> </FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="531" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">xtratim</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT SIZE="-1" FACE="Courier New">;extra-time,
+      i.e. release duration</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">krel</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">init</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">krel</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">release</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT SIZE="-1" FACE="Courier New">;outputs
+      release-stage flag (0 or 1 values)</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">if
+      (krel&gt;.5)</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">kgoto
+      rel</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="59%"><FONT SIZE="-1" FACE="Courier New">;if
+      in relase-stage goto relase section</FONT></TD> 
+  </TR>
+</TABLE><B><FONT FACE="Times New Roman">Attack-Sustain Section</FONT></B><FONT
+ FACE="Times New Roman"> </FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="491" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">kmp1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">linseg</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="75%"><FONT SIZE="-1" FACE="Courier New">0,
+      .03, 1, .05, 1, .07, 0, .08, .5, 4, 1, 50, 1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT SIZE="-1" FACE="Courier New">kmp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="75%"><FONT SIZE="-1" FACE="Courier New">kmp1*iamp</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="8%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="16%"><FONT SIZE="-1" FACE="Courier New">kgoto</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="75%"><FONT SIZE="-1" FACE="Courier New">done</FONT></TD> 
+  </TR>
+</TABLE><B><FONT FACE="Times New Roman">Release Section</FONT></B><FONT
+ FACE="Times New Roman"> </FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="347" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier">rel:</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="65%">&nbsp;</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier">kmp2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier">linseg</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT SIZE="-1" FACE="Courier">1,
+      .3, .2, .7, 0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier">kmp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT SIZE="-1" FACE="Courier">kmp1*kmp2*iamp</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier">done:</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="65%">&nbsp;</TD> 
+  </TR>
+</TABLE><B><FONT FACE="Times New Roman">End of Envelope Routine</FONT></B><FONT
+ FACE="Times New Roman"> </FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="347" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier New">a1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">oscili</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT SIZE="-1" FACE="Courier New">kmp,icps,1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">out</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT SIZE="-1" FACE="Courier New">a1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.12</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Ochrestra and score code of <I>instr 406</I>, A midi instrument
+with a complex ADSR envelope implemented via xtratim and release
+opcodes.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">In instrument 406 <B>xtratim</B>
+extends note duration 1 second more, and <B>release</B> tell us
+when current note will be in the release stage, returning a 1
+(in normal stage it returns 0). An <B>if ... kgoto</B> statement
+chooses one of the two envelopes according to <B>release</B> opcode
+output. Note that, in the release-stage, last value returned by
+the previous envelope is used to scale the new envelope output.
+This thing is necessary to prevent a discontinuity during the
+transition from the first to the second envelope. Here the two
+envelopes are implemented by using <B>linseg</B> opcode, but any
+envelope-oriented opcode could be used (such as <B>oscil1</B>,
+<B>oscil1i</B>, <B>line</B>, <B>expseg</B> etc.). Also any number
+of envelopes can be inserted in both the attack-sustain and release
+sections, to control in different ways various parameters of an
+instrument in parallel.<BR>
+</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">MIDI Out: Opening
+A New Field in Csound</FONT></H3>
+
+<P><FONT FACE="Times New Roman">Until now, Csound was sound synthesis
+language allowing audio-rate output only to files or directly
+to DAC. With the 1992 MIT version, MIDI IN capabilities were introduced
+for controlling real time performances, but its output was ever
+a stream of audio-samples. Now, with the new MIDI OUT opcodes
+it is possible to use Csound as a real time-MIDI-event generator
+too. All old <B>i</B> and <B>k</B>-rate opcodes of Csound can
+be used as input of the new MIDI OUT opcodes now, making Csound
+a very powerful tool for MIDI processing.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Some examples of utilization of
+the new opcodes could be:</FONT></P>
+
+<DIR>
+  <P><FONT FACE="Times New Roman">&#149;Producing complex algorythmically-generated
+  streams of MIDI events, allowing new concepts of composing and
+  interacting with MIDI instruments.</FONT>
+  <P><FONT FACE="Times New Roman">&#149;Creation of powerful fully-customized
+  MIDI effect processors such as MIDI delays, MIDI arpeggiators,
+  MIDI message remappers etc.</FONT>
+  <P><FONT FACE="Times New Roman">&#149;Changing external MIDI
+  instrument parameters in real-time during a performance.</FONT>
+  <P><FONT FACE="Times New Roman">&#149;Precise timed controlling
+  of recording-studio devices as MIDI mixers, MIDI controlled DATs
+  and ADATs etc.</FONT>
+  <P><FONT FACE="Times New Roman">&#149;Generating MIDI commands
+  to MIDI-CV interfaces to drive analog synthesizers.</FONT>
+  <P><FONT FACE="Times New Roman">&#149;Controlling non-musical
+  equipment like lights, images etc.</FONT>
+</DIR>
+
+<P><FONT FACE="Times New Roman">All MIDI OUT opcodes don&#146;t
+have any output argument because their output is directly sent
+to current MIDI OUT port. Differently from some MIDI IN opcodes,
+it is perfectly possible to use MIDI OUT opcodes in score-oriented
+instruments. So an<B><I> </I>i</B> statement in a score can activate
+an instruments containing any number and any kind of MIDI OUT
+opcodes.</FONT></P>
+
+<P><FONT FACE="Times New Roman">For a detaliled description of
+the syntax of each opcode, read the appendix of this chapter titled
+&quot;<B>New MIDI opcodes syntax&quot;</B>.<BR>
+&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">MIDI Out-Based
+Instruments</FONT></H3>
+
+<P><FONT FACE="Times New Roman">In this section I give you some
+.orc and .sco example of the new MIDI OUT opcodes. The first example
+(instrument 407) is the use of <B>ion</B> and <B>ioff</B> opcodes
+to output single-key-triggered chords.</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Chords Generated
+by Single Key</FONT></H3>
+
+<P><FONT FACE="Times New Roman">&nbsp;&nbsp;<IMG SRC="figures/06.gif"
+HEIGHT="410" WIDTH="516" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.13</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Block diagram of <I>instr 407</I> an instrument which &quot;generates&quot;
+midi events.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="365" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">instr
+      407</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">k1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">init</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT SIZE="-1" FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">ifund</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">notnum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">ifth</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT SIZE="-1" FACE="Courier New">ifund+7</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">ioct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT SIZE="-1" FACE="Courier New">ifund+12</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">ivel</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">veloc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">ion</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT SIZE="-1" FACE="Courier New">0,
+      ifund, ivel</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">ion</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT SIZE="-1" FACE="Courier New">0,
+      ifth, ivel</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">ion</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT SIZE="-1" FACE="Courier New">0,
+      ioct, ivel</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">k1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">release</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">if
+      (k1&gt;.5)&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT SIZE="-1" FACE="Courier New">kgoto
+      noteoff</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">goto
+      end</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">noteoff:</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">reinit</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT SIZE="-1" FACE="Courier New">off</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">off:</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">ioff</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT SIZE="-1" FACE="Courier New">0,
+      ifund, ivel</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">ioff</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT SIZE="-1" FACE="Courier New">0,
+      ifth, ivel</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">ioff</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT SIZE="-1" FACE="Courier New">0,
+      ioct, ivel</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT SIZE="-1" FACE="Courier New">end:</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="21%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="52%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.14</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Orchestra code of <I>instr 407</I> which generates midi messages
+to play a chord on an external midi synthesizer from Csound.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman">The three instances of <B>ion</B>
+activate the notes of the chord. The new <B>release</B> opcode
+is used to detect if current instrument instance is terminating.
+If yes, a <B>reinit</B> statement is executed to use <B>ioff</B>
+opcode in a moment other than the initial instrument instance
+creation.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The same behaviour of instrument
+407, but with a simpler code, can be achieved by using <B>iondur</B>
+opcode as you can see in instrument 408:</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Chords Generated
+by Single Key: Second Version</FONT></H3>
+
+<P><FONT FACE="Times New Roman">&nbsp;<IMG SRC="figures/07.gif"
+HEIGHT="222" WIDTH="386" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.15</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Block diagram of <I>instr 408</I> which generates external midi
+events of a finite duration as specified by the iondur opcode.<BR>
+</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="365" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="25%"><FONT SIZE="-1" FACE="Courier New">instr
+      408</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">k1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="25%"><FONT SIZE="-1" FACE="Courier New">init</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT SIZE="-1" FACE="Courier New">0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">ifund</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="25%"><FONT SIZE="-1" FACE="Courier New">notnum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">ifth</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="25%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT SIZE="-1" FACE="Courier New">ifund+7</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">ioct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="25%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT SIZE="-1" FACE="Courier New">ifund+12</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT SIZE="-1" FACE="Courier New">ivel</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="25%"><FONT SIZE="-1" FACE="Courier New">veloc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="25%"><FONT SIZE="-1" FACE="Courier New">iondur</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT SIZE="-1" FACE="Courier New">0,
+      ifund, ivel, 1000</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="25%"><FONT SIZE="-1" FACE="Courier New">iondur</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT SIZE="-1" FACE="Courier New">0,
+      ifth, ivel, 1000</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="25%"><FONT SIZE="-1" FACE="Courier New">iondur</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT SIZE="-1" FACE="Courier New">0,
+      ioct, ivel, 1000</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="10%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="25%"><FONT SIZE="-1" FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="65%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.16</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Orchestra code of <I>instr 408</I>, A midi instrument which plays
+a chord on an external midi synthesizer in a response to a single
+note on on message.</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">iondur</FONT></B><FONT FACE="Times New Roman">
+opcode has the <I>idur</I> additional argument, sending a note-off
+message after <I>idur</I> seconds. The note-off message is sent
+automatically at the deactivating-moment of the correspondent
+instrument instance (probably before than 1000 seconds) by giving
+an exaggerated value to this parameter (such as 1000).</FONT></P>
+
+<P><FONT FACE="Times New Roman">Next instrument shows a <B>koutc</B>
+opcode example:</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">MIDI-Generated
+Tremolo</FONT></H3>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/08.gif" HEIGHT="282"
+WIDTH="448" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.17</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Block diagram of <I>instr 409</I>, A midi instrument which generates
+external controller messages.</FONT></P>
+
+<H4><FONT SIZE="+1" FACE="Times New Roman,Georgia,Times">Controller
+Messages</FONT></H4>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="455" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT SIZE="-1" FACE="Courier">instr
+      409</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="47%">&nbsp;</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier">i1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT SIZE="-1" FACE="Courier">notnum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="47%">&nbsp;</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier">i3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT SIZE="-1" FACE="Courier">veloc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="47%">&nbsp;</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier">kfreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT SIZE="-1" FACE="Courier">midic7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT SIZE="-1" FACE="Courier">1,
+      1, 20</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT SIZE="-1" FACE="Courier">;mod.wheel
+      controls tremolo speed</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier">kamp</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT SIZE="-1" FACE="Courier">midic7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT SIZE="-1" FACE="Courier">2,
+      0, 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT SIZE="-1" FACE="Courier">;breath-ctrl
+      controls tremolo depth&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%"><FONT SIZE="-1" FACE="Courier">k1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT SIZE="-1" FACE="Courier">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT SIZE="-1" FACE="Courier">kamp,
+      kfreq, 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%">&nbsp;</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT SIZE="-1" FACE="Courier">koutc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT SIZE="-1" FACE="Courier">0,
+      7, 1-k1, 0, 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%"><FONT SIZE="-1" FACE="Courier">;changes
+      vol. of midi-chn 0</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT SIZE="-1" FACE="Courier">iondur</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%"><FONT SIZE="-1" FACE="Courier">0,
+      I1, I3, 1000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="47%">&nbsp;</TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="12%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="19%"><FONT SIZE="-1" FACE="Courier">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="22%">&nbsp;</TD> 
+    <TD VALIGN="TOP" WIDTH="47%">&nbsp;</TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.18</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Orchestra code for <I>instr 409</I>, a midi instrument which responds
+to 2 midi controllers and maps them to generate a different external
+controller message.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In this orc <B>iondur</B> plays
+a note and <I>koutc</I> modulates the main volume (midi-controller
+#7) of midi-channel 0, so a tremolo effect is produced. Frequency
+of tremolo can be varied in frequency via controller #1 (mod.wheel)
+messages, and in depth via controller #2 (breath-control) messages.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Next intrument (<B>orc 10</B>)
+is a simple utilization of <B>moscil</B> opcode. <B>moscil</B>
+is, together with <B>kon</B> and <B>mseq</B>, the most complex
+MIDI OUT opcode.</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Simple moscil Opcode
+Example</FONT></H3>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/09.gif" HEIGHT="326"
+WIDTH="396" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.19</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Block diagram of <I>instr 410</I>, a midi instrument which generates
+a stream of external midi note message.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="342" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">instr
+      410</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="62%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">i1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">notnum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="62%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">i3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">veloc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="62%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">kfreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">midic7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="62%"><FONT SIZE="-1" FACE="Courier New">1,
+      .02, 3</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">kdur</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">midic7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="62%"><FONT SIZE="-1" FACE="Courier New">2,
+      .5, .02</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">kpitch</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">midic7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="62%"><FONT SIZE="-1" FACE="Courier New">3,
+      0, 24</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">k1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="62%"><FONT SIZE="-1" FACE="Courier New">kpitch,
+      kfreq, 1</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">moscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="62%"><FONT SIZE="-1" FACE="Courier New">0,
+      i1+k1, I3, kdur, kdur</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="23%"><FONT SIZE="-1" FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="62%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.20</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Orchestra score for <I>instr 410</I>, a midi instrument which
+generates multiple midi note messages via the moscil opcode.</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">moscil</FONT></B><FONT FACE="Times New Roman">
+outputs a stream of MIDI notes of <I>kdur</I> duration, each followed
+by a pause of <I>kpause</I> duration. Duration, pause, pitch and
+velocity of each note can be varied at <B>k</B>-rate. In this
+case the pitch of notes is varied by means of an <B>oscil</B>
+opcode. The frequency of <B>oscil</B> is controlled by MIDI controller
+#1, while its pitch-range is controlled by MIDI controller #3.
+Duration and pause of each note are controlled by MIDI controller
+#2. The time range of note-repeat cycle is from 1/25 of second
+(0.02x2 secs) to 1 second (0.5x2 secs).</FONT></P>
+
+<P><FONT FACE="Times New Roman">Next example will use <B>kon</B>
+opcode (see instrument 412)</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Using <I>kon</I>
+to Play a Diatonic Scale</FONT></H3>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="figures/10.gif" HEIGHT="605"
+WIDTH="397" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.21</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Block diagram of <I>instr 411</I>, a midi instrument which repeatedly
+&quot;loops&quot; through a table and generates a sequencer of
+external midi note-on messages.</FONT></P>
+
+<P><FONT FACE="Times New Roman"></FONT><TABLE BORDER="0" CELLSPACING="0"
+WIDTH="455" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">instr
+      411</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">i1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">notnum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">i3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">veloc</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">kfreq</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">midic7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT SIZE="-1" FACE="Courier New">1,
+      .02, 3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">kpitch</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">midic7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT SIZE="-1" FACE="Courier New">2,
+      0, 14</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">ktempo</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">midic7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT SIZE="-1" FACE="Courier New">3,
+      .2, 25</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">knum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT SIZE="-1" FACE="Courier New">kpitch,
+      kfreq, 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">knum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT SIZE="-1" FACE="Courier New">knum-11</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT SIZE="-1" FACE="Courier New">;offset
+      for C4 correspondence</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">koct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">limit</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT SIZE="-1" FACE="Courier New">knum+i1,
+      0, 96</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">koct</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">table</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT SIZE="-1" FACE="Courier New">koct,
+      2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">knote</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">wrap</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT SIZE="-1" FACE="Courier New">knum+i1,
+      0, 7</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">knote</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">table</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT SIZE="-1" FACE="Courier New">knote,
+      3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">knum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">=</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT SIZE="-1" FACE="Courier New">koct+knote&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">krythm</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">oscil</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT SIZE="-1" FACE="Courier New">1,
+      ktempo, 4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">knum</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">samphold</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT SIZE="-1" FACE="Courier New">knum,
+      krythm</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">kon</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT SIZE="-1" FACE="Courier New">0,
+      knum, i3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="18%"><FONT SIZE="-1" FACE="Courier New">endin</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="30%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="43%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE><FONT FACE="Times New Roman"><BR>
+</FONT><TABLE BORDER="0" CELLSPACING="0" WIDTH="473" CELLPADDING="0">
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">f1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">0
+      512 10</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">1
+      1 1 1</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="49%"><FONT SIZE="-1" FACE="Courier New">;melody
+      shape</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">f2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">0
+      128 -17</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">0
+      -24 7 -12 14 0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="49%"><FONT SIZE="-1" FACE="Courier New">;octaves</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">21
+      12 28 24 35 36</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="49%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">42
+      48 49 60 56 72</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="49%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">63
+      84 70 96 77 108</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="49%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">f3</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">0
+      16 -2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">0
+      2 4 5 7 9 11</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="49%"><FONT SIZE="-1" FACE="Courier New">;C
+      major scale</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">f4</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">0
+      16 -2</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT SIZE="-1" FACE="Courier New">1
+      0 0 0 0 0 0 0 1 0 0 0 1 0 0 0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="49%"><FONT SIZE="-1" FACE="Courier New">;rythm
+      shape</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">f0</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT SIZE="-1" FACE="Courier New">50000</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="49%"><FONT SIZE="-1" FACE="Courier New">;allows
+      rt midi playing for 50000 seconds</FONT></TD> 
+  </TR>
+  <TR>
+    <TD VALIGN="TOP" WIDTH="9%"><FONT SIZE="-1" FACE="Courier New">e</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="15%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="27%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+    <TD VALIGN="TOP" WIDTH="49%"><FONT FACE="Courier New">&nbsp;</FONT></TD> 
+  </TR>
+</TABLE></P>
+
+<P><B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">Figure
+4.22</FONT></B><FONT SIZE="-1" FACE="Times New Roman,Georgia,Times">
+Orchestra and score code of <I>instr 411</I>, a midi instrument
+which utilize the wrap and limit opcode to send a stream of external
+note-on messages.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The<B> kon</B> opcode is in certain
+ways similar to <B>moscil</B>. Both send a stream of note-on and
+note-off messages to MIDI OUT port. The difference is that <B>kon</B>
+does not have duration neither pause parameters. So new note on-off
+messages are generated when any of its parameter changes. So continuous
+curves used as parameter-controls may cause a very big on/off
+messages amount. Eventually, I suggest to use step functions generated
+by means of <B>GEN<I> </I>17</B> to square the output of other
+continuous control signals.</FONT></P>
+
+<P><FONT FACE="Times New Roman">This protects from possible MIDI
+buffer overloading, and can give a more accurate control of the
+range of generated events. In this case <B>GEN 17</B> and <B>GEN
+2 </B>are used to generate step function to index a diatonic scale:
+<I>f2</I> contains the octaves and <B>f3</B> contains the tone/half-tone
+structure.<I>f4</I> contains the rhythm skeleton. The value of
+pitch is processed by two oscillators: the first generate raw
+output (<I>knum</I>). The variable <I>knum</I> is used as index
+of table #2 (octaves) and table #3 (diatonic scale). The opcodes
+<B>limit</B> (by Robin Whittle) and <B>wrap</B> (by me) are very
+useful to limit and to wrap-around index-values that exceed a
+non-power-of-two number. <I>knum</I> is then sampled at <I>krythm</I>-tics
+rate and sent to <B>kon</B>.</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Conclusion</FONT></H3>
+
+<P><FONT FACE="Times New Roman">In this chapter I introduced some
+of new MIDI IN, MIDI OUT, real-time-envelope-related and new useful
+opcodes, and I provided some simple .orc and .sco examples to
+learn using them.</FONT></P>
+
+<P><FONT FACE="Times New Roman">With all these opcodes, the user
+can explore new ways of interacting with Csound. MIDI OUT is a
+new exciting and never seen feature of Csound. Control your favourite
+MIDI synth with Csound-generated algorythms! Run two instances
+of Csound in the same computer, the first outputting MIDI events
+only and the second generating audio signals in real time! The
+first instance could control an external synth toghether with
+a second Csound instance in parallel! You can build complex networks
+of internal and external MIDI-message flows. I invite all of you
+to experiment and to make wonderful live Csound-based concerts!</FONT>
+
+</BODY>
+</HTML>

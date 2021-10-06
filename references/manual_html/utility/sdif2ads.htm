@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+	<title>sdif2ads</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvlook.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="dnoise.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/utility.htm#sdif2ads" class="toqr">
+Utilities: File Conversion</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>sdif2ads</h2>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+
+<p>Convert files Sound Description Interchange Format (SDIF) to the format usable by Csound's <strong>adsyn</strong> opcode. As of Csound Version 4.16, <strong>sdif2ads</strong> was available only as a standalone program for Windows console and DOS.
+</p>
+<pre>  <strong>Csound -U sdif2ads</strong> [flags] infilename outfilename</pre>
+<p><em>-s</em>N &#8211; apply amplitude scale factor N</p>
+<p><em>-p</em>N &#8211; keep only the first N partials. Limited to 1024 partials. The source partial track indices are used directly to select internal storage. As these can be arbitrary values, the maximum of 1024 partials may not be realized in all cases.</p>
+<p><em>-r</em> &#8211; byte-reverse output file data. The byte-reverse option  is there to facilitate transfer across platforms, as Csound's <a href="hetro.htm#fileformat"><strong>adsyn</strong></a> file format is not portable.</p>
+
+<p>If the filename passed to <a href="hetro.htm"><strong>hetro</strong></a> has the extension <em>.sdif</em>, data will be written in SDIF format as 1TRC frames of additive synthesis data. The utility program <strong>sdif2ads</strong> can be used to convert any SDIF file containing a stream of 1TRC data to the Csound <a href="hetro.htm#fileformat"><strong>adsyn</strong></a> format. <strong>sdif2ads</strong> allows the user to limit the number of partials retained, and to apply an amplitude scaling factor. This is often necessary, as the SDIF specification does not, as of the release of <strong>sdif2ads</strong>, require amplitudes to be within a particular range. <strong>sdif2ads</strong> reports information about the file to the console, including the frequency range.</p>
+<p>The main advantages of SDIF over the <strong>adsyn</strong> format, for Csound users, is that SDIF files are fully portable across platforms (data is &quot;big-endian&quot;), and do not have the duration limit of 32.76 seconds imposed by the 16 bit <strong>adsyn</strong> format. This limit is necessarily imposed by <strong>sdif2ads</strong>. Eventually, SDIF reading will be incorporated directly into <strong>adsyn</strong>, thus enabling files of any length (subject to system memory limits) to be analysed and processed.</p>
+<p>Users should remember that the SDIF formats are still under development. While the 1TRC format is now fairly well established, it can still change.</p>
+<p>For detailed information on  the Sound Description Interchange Format, refer to the CNMAT website:</p>
+<a href="http://cnmat.CNMAT.Berkeley.EDU/SDIF" target="_blank"><pre>http://cnmat.CNMAT.Berkeley.EDU/SDIF</pre></a>
+<p>Some other SDIF resources (including a viewer) are available via the NC_DREAM website:</p>
+<a href="http://www.bath.ac.uk/~masjpf/NCD/dreamhome.html" target="_blank"><pre>http://www.bath.ac.uk/~masjpf/NCD/dreamhome.html</pre></a>
+
+<h3>Author</h3>
+<p>Richard Dobson<br>
+Somerset, England<br>
+August, 2000<br>
+New in Csound version 4.08
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvlook.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="dnoise.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/utility.htm#sdif2ads" class="toqr">
+Utilities: File Conversion</font></a>
+</body>
+
+</html>

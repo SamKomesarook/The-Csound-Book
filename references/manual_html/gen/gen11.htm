@@ -1,0 +1,79 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN11</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen09.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen12.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#sine" class="toqr">
+<strong>GEN</strong> Routines: Sine/Cosine Generators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN11</h2>
+
+<pre>
+<strong>  f</strong>  #    time    size    11    nh    [lh    [r]]   </pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This subroutine generates an additive set of cosine partials, in the manner of Csound generators <a href="../siggen/buzz.htm"><strong>buzz</strong></a> and <a href="../siggen/buzz.htm"><strong>gbuzz</strong></a>.
+</p>
+<h3>Initialization</h3>
+<p><em>size </em> &#8211; number of points in the table. Must be a power of 2 or power-of-2 plus 1 (see <a href="../score/f.htm"><strong>f statement</strong></a>).
+</p>
+<p><em>nh </em> &#8211; number of harmonics requested. Must be positive.
+</p>
+<p><em>lh </em>(optional) &#8211; lowest harmonic partial present. Can be positive, zero or negative. The set of partials can begin at any partial number and proceeds upwards; if <em>lh</em> is negative, all partials below zero will reflect in zero to produce positive partials without phase change (since cosine is an even function), and will add constructively to any positive partials in the set. The default value is 1
+</p>
+<p><em>r </em>(optional) &#8211; multiplier in an amplitude coefficient series. This is a power series: if the <em>lh</em>th partial has a strength coefficient of A the (<em>lh</em> + n)th partial will have a coefficient of A * r<small><sup>n</sup></small>, i.e. strength values trace an exponential curve. <em>r</em> may be positive, zero or negative, and is not restricted to integers. The default value is 1.
+</p>
+<h3>Note </h3>
+<p>This subroutine is a non-time-varying version of the CSound <strong>buzz </strong>and <strong>gbuzz</strong> generators, and is similarly useful as a complex sound source in subtractive synthesis. With <em>lh</em> and <em>r</em> present it parallels <strong>gbuzz</strong>; with both absent or equal to 1 it reduces to the simpler <strong>buzz</strong> (i.e. <em>nh</em> equal-strength harmonic partials beginning with the fundamental).
+</p>
+<p>Sampling the stored waveform with an oscillator is more efficient than using dynamic buzz units. However, the spectral content is invariant, and care is necessary lest the higher partials exceed the Nyquist during sampling to produce foldover.
+</p>
+<h3>Examples</h3>
+
+<pre>
+  <strong>f</strong>  1    0    2049   11    4 
+  <strong>f</strong>  2    0    2049   11    4    1    1 
+  <strong>f</strong>  3    0    2049  -11    7    3   .5  
+</pre>
+<p>The first two tables will contain identical band-limited pulse waves of four equal-strength harmonic partials beginning with the fundamental. The third table will sum seven consecutive harmonics, beginning with the third, and at progressively weaker strengths (1, .5, .25, .125 . . .). It will not be post-normalized.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen09.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen12.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#sine" class="toqr">
+<strong>GEN</strong> Routines: Sine/Cosine Generators</font></a>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>oscil, oscili, oscil3</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="phasrbnk.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="poscil.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#basicoscils" class="toqr">
+Signal Generators: Basic Oscillators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>oscil, oscili, oscil3</h2>
+
+
+<pre>
+  kr      <strong>oscil</strong>      kamp, kcps, ifn[, iphs]
+  kr      <strong>oscili</strong>     kamp, kcps, ifn[, iphs]
+  kr      <strong>oscil3</strong>     kamp, kcps, ifn[, iphs]
+  ar      <strong>oscil</strong>      xamp, xcps, ifn[, iphs]
+  ar      <strong>oscili</strong>     xamp, xcps, ifn[, iphs]
+  ar      <strong>oscil3</strong>     xamp, xcps, ifn[, iphs]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Table <em>ifn</em> is incrementally sampled modulo the table length and the value obtained is multiplied by <em>amp</em>.
+</p>
+<h3>Initialization</h3>
+<p><em>ifn</em> &#8211; function table number. Requires a wrap-around guard point.
+</p>
+<p><em>iphs</em> (optional) &#8211; initial phase of sampling, expressed as a fraction of a cycle (0 to 1). A negative value will cause phase initialization to be skipped. The default value is 0.
+</p>
+<h3>Performance</h3>
+<p>The <strong>oscil</strong> units output periodic control (or audio) signals consisting of the value of <em>kamp</em>(<em>xamp</em>)times the value returned from control rate (audio rate) sampling of a stored function table. The internal phase is simultaneously advanced in accordance with the <em>kcps</em> or <em>xcps</em> input value. While the amplitude and frequency inputs to the k-rate <strong>oscils</strong> are scalar only, the corresponding inputs to the audio-rate <strong>oscils</strong> may each be either scalar or vector, thus permitting amplitude and frequency modulation at either sub-audio or audio frequencies.
+</p>
+
+<p><strong>oscili</strong> differs from <strong>oscil</strong> in that the standard procedure of using a truncated phase as a sampling index is here replaced by a process that interpolates between two successive lookups. Interpolating generators will produce a noticeably cleaner output signal, but they may take as much as twice as long to run. Adequate accuracy can also be gained without the time cost of interpolation by using large stored function tables of 2K, 4K or 8K points if the space is available. <strong>oscil3</strong> is experimental, and is identical to <strong>oscili</strong>, except that it uses cubic interpolation. (New in Csound version 3.50.)
+</p>
+<h3></h3>
+
+
+<h3>Example</h3>
+
+<pre>
+  k1      <strong>oscil</strong>      10, 5, 1 ; 5 Hz vibrato
+  a1      <strong>oscil</strong>      5000, 440 + k1, 1 ; around A440 + -10 Hz
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="phasrbnk.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="poscil.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#basicoscils" class="toqr">
+Signal Generators: Basic Oscillators</font></a>
+</body>
+
+</html>

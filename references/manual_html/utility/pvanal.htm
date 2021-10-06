@@ -1,0 +1,108 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.10.-->
+<html>
+<head>
+   <title>pvanal</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="lpanal.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="cvanal.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/utility.htm#pvanal" class="toqr">
+Utilities: Analysis File Generation</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>pvanal</h2>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description </h3>
+<p>Fourier analysis for the Csound <a href="../siggen/adsyn.htm"><strong>pvoc</strong></a> generator
+</p>
+<pre>  <strong>csound -U pvanal</strong> [flags] infilename outfilename</pre>
+<p>or
+</p>
+<pre>  <strong>pvanal</strong> [flags] infilename outfilename</pre>
+<p><strong>pvanal</strong> converts a soundfile into a series of short-time Fourier transform (STFT) frames at regular timepoints (a frequency-domain representation). The output file can be used by <a href="../siggen/adsyn.htm"><strong>pvoc</strong></a> to generate audio fragments based on the original sample, with timescales and pitches arbitrarily and dynamically modified. Analysis is conditioned by the flags below. A space is optional between the flag and its argument.
+</p>
+<p>As of Csound 4.14, the standard <strong>pvanal</strong> program has been extended to enable a PVOC-EX format file to be created, using the existing interface. This format supports streaming <strong>pvoc</strong> opcodes by Richard Dobson, introduced in Csound 4.14. See &quot;<a href="../syntax/sigtypes.htm#fsig">Orchestra Signal Types</a>&quot; for an explanation of the streaming <strong>pvoc</strong> <em>fsig</em>.</p>
+
+<p>To create a PVOC-EX file, the file name must be given the required extension, <strong><tt>.pvx</tt></strong>. For PVOC-EX files, the FFT size need not be a power-of-two as is required for the original form of <strong><tt>.pv&nbsp;</tt></strong> files. Any positive value is accepted, although odd numbers will be rounded up internally. However, power-of-two sizes are still preferred under most conditions.</p>
+
+<p>For PVOC-EX files, channel select flags are ignored. All source channels will be analysed and written to the output file, up to a compiler-set limit of eight channels. The analysis window size (<em>iwinsize</em>) is set internally to double the FFT size.</p>
+
+<p>All the original <strong>pvoc</strong> opcodes can now read a PVOC-EX file, as well as the native non-portable file format. As the PVOC-EX file uses a double-size analysis window, users may find that this gives a useful improvement in quality, for some sounds and processes, despite the fact that the resynthesis does not use the same window size.</p>
+
+<p>Apart from the window size parameter, the main difference between the original <strong><tt>.pv</tt></strong> format and the new <strong><tt>.pvx</tt></strong> is in the amplitude range of analysis frames. Rescaling is applied, so that no significant difference in output level is experienced, whichever file format is used. However, a slight loss of amplitude may still occur, since the use of the double window size modifies frame amplitudes. The resynthesis code does not compenate for this size difference.  Note that all the original <strong>pvoc</strong> opcodes expect a mono analysis file, so multichannel PVOC-EX files will be rejected.</p>
+
+<p><em>-s srate </em> &#8211; sampling rate of the audio input file. This will over-ride the srate of the soundfile header, which otherwise applies. If neither is present, the default is 10000.
+</p>
+<p><em>-c channel </em> &#8211; channel number sought. The default is 1.
+</p>
+<p><em>-b begin</em> &#8211; beginning time (in seconds) of the audio segment to be analyzed. The default is 0.0
+</p>
+<p><em>-d duration </em> &#8211; duration (in seconds) of the audio segment to be analyzed. The default of 0.0 means to the end of the file.
+</p>
+<p><em>-n frmsiz</em> &#8211; STFT frame size, the number of samples in each Fourier analysis frame. Must be a power of two, in the range 16 to 16384. For clean results, a frame must be larger than the longest pitch period of the sample. However, very long frames result in temporal &quot;smearing&quot; or reverberation. The bandwidth of each STFT bin is determined by sampling rate / frame size. The default framesize is the smallest power of two that corresponds to more than 20 milliseconds of the source (e.g. 256 points at 10 kHz sampling, giving a 25.6 ms frame).
+</p>
+<p><em>-w windfact</em> &#8211; Window overlap factor. This controls the number of Fourier transform frames per second. Csound's <a href="../siggen/adsyn.htm"><strong>pvoc</strong></a> will interpolate between frames, but too few frames will generate audible distortion; too many frames will result in a huge analysis file. A good compromise for windfact is 4, meaning that each input point occurs in 4 output windows, or conversely that the offset between successive STFT frames is framesize/4. The default value is 4. Do not use this flag with <em>-h</em>.
+</p>
+<p><em>-h hopsize</em> &#8211; STFT frame offset. Converse of above, specifying the increment in samples between successive frames of analysis (see also <a href="lpanal.htm"><strong>lpanal</strong></a>). Do not use with <em>-w</em>.
+</p>
+<h3>Example</h3>
+
+<pre>  <strong>pvanal</strong> asound pvfile</pre>
+<p>will analyze the soundfile &quot;asound&quot; using the default frmsiz and windfact to produce the file &quot;pvfile&quot; suitable for use with pvoc.
+</p>
+<h3></h3>
+
+<h3>Files</h3>
+<p>The output file has a special <strong>pvoc</strong> header containing details of the source audio file, the analysis frame rate and overlap. Frames of analysis data are stored as float, with the magnitude and 'frequency' (in Hz) for the first N/2 + 1 Fourier bins of each frame in turn. 'Frequency' encodes the phase increment in such a way that for strong harmonics it gives a good indication of the true frequency. For low amplitude or rapidly moving harmonics it is less meaningful.
+</p>
+<h3>Diagnostics</h3>
+<p>Prints total number of frames, and frames completed on every 20th.
+</p>
+<h3>Author </h3>
+<p>Dan Ellis<br>
+MIT Media Lab<br>
+Cambrige, Massachussetts<br>
+1990
+</p>
+
+<p>Richard Dobson (PVOC-EX extensions)<br>
+Somerset, England<br>
+August, 2001<br>
+New in Csound 4.14</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="lpanal.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="cvanal.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/utility.htm#pvanal" class="toqr">
+Utilities: Analysis File Generation</font></a>
+</body>
+
+</html>

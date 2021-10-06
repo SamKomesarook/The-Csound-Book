@@ -1,0 +1,86 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>ftlen, ftlptim, ftsr, nsamp</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../siggen/duserrnd.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../siggen/tableng.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/table.htm#queries" class="toqr">
+Function Table Control: Table Queries</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>ftlen, ftlptim, ftsr, nsamp</h2>
+
+<pre>
+          <strong>ftlen</strong>(x)   (init-rate args only)
+          <strong>ftlptim</strong>(x) (init-rate args only)
+          <strong>ftsr</strong>(x)    (init-rate args only)
+          <strong>nsamp</strong>(x)   (init-rate args only)
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Where the argument within the parentheses may be an expression. These value converters return information about a stored function table.  The result can be a term in a further expression.</p>
+
+<h3>Performance</h3>
+
+<p><strong>ftlen</strong>(<em>x</em>) &#8211; returns the size (number of points, excluding guard point) of stored function table, number <em>x</em>. While most units referencing a stored table will automatically take its size into account (so tables can be of arbitrary length), this function reports the actual size if that is needed. Note that <strong>ftlen</strong> will always return a power-of-2 value, i.e. the function table guard point (see <a href="../score/f.htm"><strong>f Statement</strong></a>) is not included.As of Csound version 3.53, <strong>ftlen</strong> works with deferred function tables (see <a href="../gen/GEN01.htm"><strong>GEN01</strong></a>).
+</p>
+
+<p><strong>ftlptim</strong>(<em>x</em>)<strong> </strong>- returns the loop segment start-time (in seconds) of stored function table number <em>x</em>. This reports the duration of the direct recorded attack and decay parts of a sound sample, prior to its looped segment. Returns zero (and a warning message) if the sample does not contain loop points.
+</p>
+
+<p><strong>ftsr</strong>(<em>x</em>) &#8211; returns the sampling-rate of a <strong>GEN01</strong> or <strong>GEN22</strong> generated table. The sampling-rate is determined from the header of the original file. If the original file has no header, or the table was not created by these two GENs <strong>ftsr</strong> returns 0. New in Csound version 3.49.
+</p>
+
+<p><strong>nsamp</strong>(<em>x</em>) &#8211; returns the number of samples loaded into stored function table number <em>x</em> by <strong>GEN01</strong> or <strong>GEN22</strong>. This is useful when a sample is shorter than the power-of-two function table that holds it. New in Csound version 3.49.
+</p>
+
+<h3>Authors</h3>
+<p>Barry Vercoe<br>
+MIT<br>
+Cambridge, Massachussetts<br>
+1997
+</p>
+
+<p>Gabriel Maldonado (<strong>ftsr</strong>, <strong>nsamp</strong>)<br>
+Italy<br>
+October, 1998<br>
+</P>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../siggen/duserrnd.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../siggen/tableng.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/table.htm#queries" class="toqr">
+Function Table Control: Table Queries</font></a>
+</body>
+
+</html>

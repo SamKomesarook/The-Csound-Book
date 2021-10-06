@@ -1,0 +1,115 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>ziw, zkw, zaw, ziwm, zkwm, zawm</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="zakinit.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="zir.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/zak.htm" class="toqr">
+Zak Patch System</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>ziw, zkw, zaw, ziwm, zkwm, zawm</h2>
+
+<pre>
+          <strong>ziw</strong>       isig, indx
+          <strong>zkw</strong>       ksig, kndx
+          <strong>zaw</strong>       asig, kndx
+          <strong>ziwm</strong>      isig, indx[, imix]
+          <strong>zkwm</strong>      ksig, kndx[, kmix]
+          <strong>zawm</strong>      asig, kndx[, kmix]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Write to a location in zk space at either i-rate or k-rate, or a location in za space at a-rate. Writing can be with, or without, mixing.
+</p>
+<h3>Initialization</h3>
+<p><em>indx </em> &#8211; points to the zk location location to which to write.
+</p>
+<p><em>isig</em> &#8211; initializes the value of the zk location.
+</p>
+<h3>Performance</h3>
+<p><em>kndx </em> &#8211; points to the zk or za location to which to write.
+</p>
+<p><em>ksig - </em>value to be written to the zk location.
+</p>
+<p><em>asig </em> &#8211; value to be written to the za location.
+</p>
+<p><strong>ziw</strong> writes <em>isig</em> into the zk variable specified by <em>indx</em>.
+</p>
+<p><strong>zkw</strong> writes <em>ksig</em> into the zk variable specified by <em>kndx</em>.
+</p>
+<p><strong>zaw</strong> writes <em>asig</em> into the za variable specified by <em>kndx</em>.
+</p>
+<p>These opcodes are fast, and always check that the index is within the range of zk or za space. If not, an error is reported, 0 is returned, and no writing takes place.
+</p>
+<p><strong>ziwm</strong>, <strong>zkwm</strong>, and <strong>zawm</strong> are mixing opcodes, i.e. they add the signal to the current value of the variable. If no <em>imix</em> is specified, mixing always occurs, but if <em>imix</em> is specified, <em>imix</em> = 0 will cause overwriting, like <strong>ziw</strong>, <strong>zkw</strong>, and <strong>zaw</strong>, and any other value will cause mixing.
+</p>
+<p><em>Caution</em>: When using the mixing opcodes <strong>ziwm</strong>, <strong>zkwm</strong>, and <strong>zawm</strong>, care must be taken that the variables mixed to, are zeroed at the end (or start) of each k- or a-cycle. Continuing to add signals to them, can cause their values can drift to astronomical figures.
+</p>
+<p>One approach would be to establish certain ranges of zk or za variables to be used for mixing, then use <strong>zkcl</strong> or <strong>zacl</strong> to clear those ranges.
+</p>
+<h3></h3>
+
+<h3>Examples</h3>
+
+<pre>
+<strong>instr</strong> 1
+          <strong>zkw</strong>        kzoom, p8      ; p8 in the score line determines<strong> w</strong>here 
+                                    ; in zk space kzoom is written
+<strong>endin 
+</strong>
+<strong>
+instr</strong> 2
+           <strong>zkw</strong>       kzoom, 7       ; always writes kzoom to zk location 7
+<strong>endin</strong>
+
+<strong>instr</strong> 3
+  kxxx    <strong>phasor</strong>     1
+  kdest   <strong>=</strong>          40 + kxxx * 16 ; This will write azoom to locations 40 to 55
+          <strong>zaw</strong>        azoom, kdest   ; on a one second scan cycle
+<strong>endin</strong>
+</pre>
+
+<h3>Author</h3>
+<p>Robin Whittle<br>
+Australia<br>
+May 1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="zakinit.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="zir.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/zak.htm" class="toqr">
+Zak Patch System</font></a>
+</body>
+
+</html>

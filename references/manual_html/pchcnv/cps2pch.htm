@@ -1,0 +1,104 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>cps2pch, cpsxpch</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="octpch.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="cpstun.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/pitch.htm#tuning" class="toqr">
+Pitch Convertors: Tuning Opcodes</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>cps2pch, cpsxpch</h2>
+
+<pre>
+  icps     <strong>cps2pch</strong>    ipch, iequal
+  icps     <strong>cpsxpch</strong>    ipch, iequal, irepeat, ibase
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Converts a pitch-class notation into cycles-per-second (Hz) for equal divisions of the octave (for <strong>cps2pch</strong>) or for equal divisions of any interval. There is a restriction of no more than 100 equal divisions.
+</p>
+<h3>Initialization</h3>
+<p><em>ipch</em> &#8211; Input number of the form 8ve.pc, indicating an 'octave' and which note in the octave.
+</p>
+<p><em>iequal</em> &#8211; if positive, the number of equal intervals into which the 'octave' is divided. Must be less than or equal to 100. If negative, is the number of a table of frequency multipliers.
+</p>
+<p><em>irepeat</em> &#8211; Number indicating the interval which is the 'octave.' The integer 2 corresponds to octave divisions, 3 to a twelfth, 4 is two octaves, and so on. This need not be an integer, but must be positive.
+</p>
+<p><em>ibase</em> &#8211; The frequency which corresponds to pitch 0.0
+</p>
+<p><strong>Note</strong>:
+</p>
+<ol>
+	<li><p>The following are essentially the same</p>
+
+<pre>
+  ia  =  <strong>cpspch</strong>(8.02)
+  ib     <strong>cps2pch</strong>  8.02, 12
+  ic     <strong>cpsxpch</strong>  8.02, 12, 2, 1.02197503906
+</pre></li>
+	<li>These are opcodes not functions</li>
+	<li>Negative values of <em>ipch</em> are allowed, but not negative <em>irepeat</em>, <em>iequal</em> or <em>ibase</em>.</li>
+</ol>
+<h3>Example</h3>
+
+<pre>
+  inote  <strong>cps2pch  </strong>p5, 19                    ; convert oct.pch to
+                                                             ; cps in 19ET
+  inote  <strong>cpsxpch</strong>  p5, 12, 3, 261.62561      ; Pierce scale centered
+                                                             ; on middle A
+  inote  <strong>cpsxpch  </strong>p5, 21, 4, 16.35160062496 ; 10.5ET scale
+</pre>
+<p>The use of a table allows exotic scales by mapping frequencies in a table. For example the table:
+</p>
+<pre>  f2 0 16 -2 1 1.1 1.2 1.3 1.4 1.6 1.7 1.8 1.9</pre>
+<p>can be used with:
+</p>
+<pre>  ip  <strong>cps2pch  </strong>p4, -2</pre>
+<p>to get a 10 note scale of unequal divisions.
+</p>
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath/Codemist Ltd. Gabriel Maldonado<br>
+Italy<br>
+1998 (New in Csound version 3.492)<br>
+Bath, UK<br>
+1997<br>
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="octpch.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="cpstun.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/pitch.htm#tuning" class="toqr">
+Pitch Convertors: Tuning Opcodes</font></a>
+</body>
+</html>

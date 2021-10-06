@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+	<title>mpulse</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="vco.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="adsyn.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#dynspecoscils" class="toqr">
+Signal Generators: Dynamic Spectrum Oscillators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>mpulse</h2>
+<pre>
+  ar      <strong>mpulse</strong>      kamp, kfreq[, ioffset]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Generate a set of impulses. of amplitude <em>kamp</em> at frequency <em>kfreq</em>.  The first impulse is  after a delay of <em>ioffset</em> seconds. The value of <em>kfreq</em> is read only after an impulse, so it is the interval to the next impulse at the time of an impulse.</p>
+<h3>Initialization</h3>
+<p><em>ioffset</em> &#8211; the delay before the first impulse. If it is negative, the value is taken as the number of samples, otherwise it is in seconds. Default is zero.</p>
+
+<h3>Performance</h3>
+<p><em>kamp</em> &#8211; amplitude of the impulses generated</p>
+<p><em>kfreq</em> &#8211; frequency of the impulse train</p>
+<p>After the initial delay, an impulse of <em>kamp</em> amplitude is generated as a single sample.  Immediately after generating the impulse, the time of the next one is calculated.  If <em>kfreq</em> is zero, there is an infinite wait to the next impulse.  If <em>kfreq</em> is negative, the frequency is counted in samples rather than seconds.</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="vco.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="adsyn.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#dynspecoscils" class="toqr">
+Signal Generators: Dynamic Spectrum Oscillators</font></a>
+</body>
+
+</html>

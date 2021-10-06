@@ -1,0 +1,85 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN09, GEN10, GEN19</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen08.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen11.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#sine" class="toqr">
+<strong>GEN</strong> Routines: Sine/Cosine Generators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN09, GEN10, GEN19</h2>
+
+<pre>
+  <strong>f</strong>   #    time    size   9      pna    stra   phsa   pnb   strb   phsb . . .  
+  <strong>f</strong>   #    time    size  10      str1   str2   str3   str4 . . . .  
+  <strong>f</strong>   #    time    size  19      pna    stra   phsa   dcoa  pnb    strb  phsb  dcob  .  .  .  
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>These subroutines generate composite waveforms made up of weighted sums of simple sinusoids. The specification of each contributing partial requires 3 pfields using <strong>GEN09</strong>, 1 using <strong>GEN10</strong>, and 4 using <strong>GEN19</strong>.
+</p>
+<h3>Initialization</h3>
+<p><em>size </em> &#8211; number of points in the table. Must be a power of 2 or power-of-2 plus 1 (see <a href="../score/f.htm"><strong>f statement</strong></a>).
+</p>
+<p><em>pna, pnb</em>, etc. &#8211; partial no. (relative to a fundamental that would occupy <em>size</em> locations per cycle) of sinusoid a, sinusoid b, etc. Must be positive, but need not be a whole number, i.e., non-harmonic partials are permitted. Partials may be in any order.
+</p>
+<p><em>stra, strb</em>, etc. &#8211; strength of partials <em>pna, pnb</em>, etc. These are relative strengths, since the composite waveform may be rescaled later. Negative values are permitted and imply a 180 degree phase shift.
+</p>
+<p><em>phsa, phsb</em>, etc. &#8211; initial phase of partials <em>pna, pnb,</em> etc., expressed in degrees.
+</p>
+<p><em>dcoa, dcob</em>, etc. &#8211; DC offset of partials <em>pna, pnb</em>, etc. This is applied <em>after</em> strength scaling, i.e. a value of 2 will lift a 2-strength sinusoid from range [-2,2] to range [0,4] (before later rescaling).
+</p>
+<p><em>str1, str2, str3,</em> etc. &#8211; relative strengths of the fixed harmonic partial numbers 1,2,3, etc., beginning in p5. Partials not required should be given a strength of zero.
+</p>
+<h3>Note </h3>
+<p>These subroutines generate stored functions as sums of sinusoids of different frequencies. The two major restrictions on <strong>GEN10</strong> that the partials be harmonic and in phase do not apply to <strong>GEN09</strong> or <strong>GEN19</strong>.
+</p>
+<p>In each case the composite wave, once drawn, is then rescaled to unity if p4 was positive. A negative p4 will cause rescaling to be skipped.
+</p>
+<h3>Examples</h3>
+
+<pre>
+  <strong>f</strong>    1    0    1024      9    1    3      0    3    1    0    9   .3333    180 
+  <strong>f</strong>    2    0    1024     19    .5   1    270    1 
+</pre>
+<p>f1 combines partials l, 3 and 9 in the relative strengths in which they are found in a square wave, except that partial 9 is upside down. f 2 creates a rising sigmoid [0 - 2]. Both will be rescaled.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen08.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen11.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#sine" class="toqr">
+<strong>GEN</strong> Routines: Sine/Cosine Generators</font></a>
+</body>
+
+</html>

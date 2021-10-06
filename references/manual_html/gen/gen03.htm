@@ -1,0 +1,78 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN03</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen02.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen04.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#waveshaping" class="toqr">
+<strong>GEN</strong> Routines: Waveshaping</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN03</h2>
+
+<pre>
+  <strong>f</strong>  #  time  size  3  xval1  xval2  c0  c1  c2  .  .  .  cn   </pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This subroutine generates a stored function table by evaluating a polynomial in x over a fixed interval and with specified coefficients.
+</p>
+<h3>Initialization</h3>
+<p><em>size </em> &#8211; number of points in the table. Must be a power of 2 or a power-of-2 plus 1.
+</p>
+<p><em>xval1, xval2 </em> &#8211; left and right values of the x interval over which the polynomial is defined (<em>xval1</em> &lt; <em>xval2</em>). These will produce the 1st stored value and the (power-of-2 plus l)th stored value respectively in the generated function table.
+</p>
+<p><em>c0, c1, c2, ... cn</em> &#8211; coefficients of the nth-order polynomial
+</p>
+<p><em>c0 + c1x + c2x2 + . . . + cnxn</em>
+</p>
+<p>Coefficients may be positive or negative real numbers; a zero denotes a missing term in the polynomial. The coefficient list begins in p7, providing a current upper limit of 144 terms.
+</p>
+<h3>Note </h3>
+<p>The defined segment [fn(<em>xval1</em>), fn(<em>xval2</em>)] is evenly distributed. Thus a 512-point table over the interval [-1,1] will have its origin at location 257 (at the start of the 2nd half). Provided the extended guard point is requested, both fn(-1) and fn(1) will exist in the table.
+</p>
+<p><strong>GEN03</strong> is useful in conjunction with <a href="../siggen/table.htm"><strong>table</strong></a> or <a href="../siggen/table.htm"><strong>tablei</strong></a> for audio waveshaping (sound modification by non-linear distortion). Coefficients to produce a particular formant from a sinusoidal lookup index of known amplitude can be determined at preprocessing time using algorithms such as Chebyshev formulae. See also <a href="GEN13.htm"><strong>GEN13</strong></a>.
+</p>
+<h3>Example</h3>
+
+<pre>  <strong>f</strong> 1 0 1025 3 -1 1 5 4 3 2 2 1</pre>
+<p>This calls <strong>GEN03</strong> to fill a table with a 4th order polynomial function over the x-interval -1 to 1. The origin will be at the offset position 512. The function is post-normalized.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen02.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen04.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#waveshaping" class="toqr">
+<strong>GEN</strong> Routines: Waveshaping</font></a>
+</body>
+
+</html>

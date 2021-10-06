@@ -1,0 +1,442 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Composing with Csound: &quot;adeson TN&quot;</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">37. Composing with Csound: <I><A
+HREF="adesontn/adesontn.htm">adeson TN</A></I></FONT></H1>
+
+<H2><FONT FACE="Times New Roman">Magdalena Klapper</FONT></H2>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Introduction</FONT></H3>
+
+<P><FONT FACE="Times New Roman">I started working with Csound
+two years ago. After some experiences with other musical programmes
+I had at that time, I remember it as a meeting with the real world
+of computer music. So I made friends with Csound at once and became
+fond of it for the liberty it gives me as a composer working with
+this programme.</FONT></P>
+
+<P><FONT FACE="Times New Roman">&quot;adeson TN&quot; is my first
+piece composed with Csound. The basic idea of this piece was to
+process the voice of my very good friend and excellent jazz singer
+Kinga Studnicka in many various ways.&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Preparations</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The realisation of &quot;adeson
+TN&quot; is mainly based on the processing of recorded and sampled
+sounds. I prepared three groups of sound material for this piece.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The first group contained recordings
+of Kinga's voice, which were made in sound proof chamber at the
+University of Mining and Metallurgy in Cracow. I recorded one
+by one the letters of the Polish alphabet, each in three versions:
+whisper, speech and scream.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The second group consisted of
+about ten sounds of gongs, which differed in length, pitch and
+tone colour. These sounds make up the background of the piece.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The last group contained sounds
+registered from medical equipment during an echocardiographical
+examination of the heart. These sounds were not used directly
+in the piece, but their purpose was to modify other sounds. Two
+very important features of these recordings were a very wide spectrum
+and a stable but not periodical (!) pulse. After filtering the
+echo-sounds were used as control signals in Csound to form an
+envelope of single harmonics amplitudes of computer generated
+sound. What is the most important, it breaks out the sound periodicity.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The basic principle for &quot;adeson
+TN&quot; was to take human speech as an instrument rather then
+a source of information. A word (a group of letters) has its musical
+colour, and it does not matter whether it means something or not
+from the linguistic point of view. Such an approach allows the
+group of letters from the title to be the musical theme of the
+piece.&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Initiation</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The first part of the piece is
+a theme introduction.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The theme was constructed of seven
+letters (vowels and consonants) ,which were chosen so as jointly
+to create an interesting structure. It should be stressed that
+not only the tone colour but also the element of rhythm is of
+importance here. Vowels and consonants form two alternating groups
+in the theme. They are always placed opposite one another during
+the theme exposition, for instance by a different localisation
+in space. They also accrue separately. The theme envelope usually
+passes from an undetermined, uncertain situation, which is expressed
+by using whispered, noisy sounds, towards concretization illustrated
+as an estimation of pitch (through spoken sounds to screams at
+the end).</FONT></P>
+
+<P><FONT FACE="Times New Roman">In this part voice processing
+causing a timbre deformation is rather limited, to let a listener
+easily recognise the speech. What gives rise to interest in a
+listener is an untypical and modified amplitude of spoken sounds,
+which is something new and not natural. In the next part of the
+piece a direction of timbre processing is much more advanced and
+leads to a complete change of tone colour and character of voice
+sounds, as it almost can not be associated with speech. So the
+purpose of the first part is to show the theme and other musical
+material and also to prepare a listener for later forthcoming
+changes.</FONT></P>
+
+<P><FONT FACE="Times New Roman">We should try at the moment to
+look at how the above mentioned principles of the structure of
+the piece are realised when using Csound algorithms.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Working on speech processing in
+the first part of the piece I used most often instruments number
+1, 2, 5, 6 and 9. A few of them may seem to be quite similar but
+they differ in some important details. All of these instruments
+read sound file using 'soundin' or 'loscil' opcodes.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 1 simply reads sounds
+and places them in one particular point in space between the left
+and right loudspeaker. Simple amplitude modification is also possible.
+Instrument 2 lets the sound move fluently in space, which gives
+more extensive possibilities, than in instrument 1. We can observe
+in this example, in spite of its triteness, how the musical material
+can be developed step by step in the piece.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 2 lets us also change
+the sound pitch in a simple way. The main purpose of this instrument
+is to create (by discreet pitch transposition) various human voice
+timbres. We have recordings of one person voice, but in the piece
+we can compose a crowd of speaking people (men, women or children),
+or even something like a singing choir, if we wish. This way of
+changing the pitch causes a change of sound duration, because
+of how the 'loscil' opcode acts. Usually this is a rather undesirable
+effect, but in this particular case the pitch change after the
+transposition is small enough (to not deform sound too much) to
+let the duration change of the sound remain unnoticed by a listener.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 5 extends our possibility
+of sound processing with a more advanced amplitude modification.
+The amplitude is controlled by a periodical signal, the pattern
+of which is held in a score table, and may be repeated with a
+frequency changing in different ways. Also sound frequency in
+this instrument may be changed fluently, so we can obtain the
+effect of glissandi. Instrument 6 is almost the same as instrument
+5, but it offers a very specific amplitude modification. The amplitude
+control signal has two segments of linear or exponential shape.
+Besides the combinations lin-lin and exp-exp, which are not unusual,
+there are also possible mixed combinations lin-exp and exp-lin
+in amplitude envelope, which are much more interesting from the
+musical point of view.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 9 takes in great part
+in the development of the element of rhythm in the first part
+of the piece. This algorithm uses 'comb' opcode, which adds to
+the sound an iterated echoes. Then the sound (with echo) is filtered
+by two band-pass filters with different centre frequencies. The
+band widths are large at the beginning and gradually narrow, which
+produces an effect of sound division. At first, the echoes are
+well-ordered and became more and more irregular for further sounds.
+This irregularity is obtained by overlapping firs two, then three
+sounds (played of instrument 9) with different echo frequencies.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Now we can sum up how the group
+of voice sounds is introduced and processed in the first part
+of the piece. The character of speech is altered from whisper
+at the very beginning (the first theme exposition) to screams
+in the first part climax (the echo series are presented at that
+moment) and then back to whisper, but a little deformed to prepare
+a listener to the next part of the piece. The voice is processed
+mainly in the direction of amplitude modifications and building
+compact structures of many sounds (talking crowds), to let a listener
+recognise a speech, but also to attract his attention.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In the first part of the piece
+the sounds which originate from recorded gongs also appear. Their
+aim was to create a background and musical setting of the theme.
+Sounds based on gongs are mysterious, even a little sinister and
+do not resemble anything of the real word. They have a character
+of very singular, colourful noise. Let us focus on how these sounds
+were constructed with Csound.</FONT></P>
+
+<P><FONT FACE="Times New Roman">There is no special instrument
+in the orchestra to produce these gong-sounds. They are clusters,
+which came into existence by transposition of a sample of gong
+to different pitches and then putting together the result. So
+the method is extremely simple, but the musical effect quite fascinating
+(mainly because of the gong sound properties). The structure of
+the gong-cluster is shown in the picture below.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="fig1.gif" WIDTH="600"
+HEIGHT="314" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">Figure 1.</FONT></B><FONT FACE="Times New Roman">
+The structure of the cluster based on the gong sample. The gong
+sample is a single line in the right of left side of the picture
+The beginnings of all the transposed samples (reversed in the
+left and not reversed in the right side) meet at the middle of
+the cluster.<BR>
+&nbsp;&nbsp;</FONT></P>
+
+<P><FONT FACE="Times New Roman">Because the sound of a gong has
+quite a wide spectrum, the clusters made of a gong sample has
+a character of noise, rather then a set of distinguishable pitches.
+The pitch transposition of gong sample results in the change of
+its duration. As all the samples meet together at one point in
+the middle of the sound (like the picture shows), higher frequencies
+appear later and decay earlier then lower, which causes an effect
+of the sound approaching and receding. Additionally, components
+of the cluster differ in the left-right side localisation. So
+the movement of sound has two dimensions: front-back and left-right
+(in the second case every partial moves separately). The relation
+of pitches of the cluster components creates sense of specific
+harmony, expressed by the colour of noise. Pitch intervals which
+were employed in cluster construction were minor and major 3rds
+and major 2nds (the frequency scaling factors 3/4, 4/5, 5/6 were
+used during sample reading with the 'loscil' opcode). Major triads
+were used most often.&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Playing with Sound</FONT></H3>
+
+<P><FONT FACE="Times New Roman">After acquainting a listener with
+the musical material in the first part (sounds and tones, but
+also musical structures), further work on the piece was an excellent
+and amusing play with sound for me. I indulged myself in far interference
+into the sound structure and strong deformation of its character,
+especially the tone colour. I have also in consideration a development
+and processing of the musical motifs from the first part.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In the second part I used much
+more letters then the seven in the theme. There are a few directions
+of speech treatment in this part.</FONT></P>
+
+<P><FONT FACE="Times New Roman">One direction is a continuation
+of the way from the firs part. Voice is not deformed very much,
+so it may be recognised easily, however more letters (different
+tones) are involved now. Letters are arranged in phrases of precisely
+chosen tone colour and rhythm, so they create a sense of mystery
+and anxiety. The principle of altering from whisper to scream
+is abided here as well.</FONT></P>
+
+<P><FONT FACE="Times New Roman">There are compact sound structures
+also created, based on one letter iterated with the irregular,
+fast rhythm, different amplitude and space localisation. It makes
+an effect, which may be compared to a choir of persons, who mimic
+each other. Such structures (each of them based on other letter)
+are overlapped, which is a source of a strong tension increase
+in the piece, and is used to create local and global climaxes.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Before we pass on to another direction
+of speech treatment let us focus on the instrument 10 from the
+orchestra file for a while. This instrument is the most important
+algorithm of speech processing I have designed for this piece.
+It is based on an additive analysis and resynthesis. Sound files
+of recorded voice were analysed with usage of &quot;hetro&quot;
+utility programme, which created for every sound file its accessory
+file with the results of an additive analysis. The analysis results
+were used by instrument 10 to resynthesize the sound files with
+possibility of fluent modification of the amplitude, frequency
+and speed of contributing partials. What effect is obtained as
+the result of this process, from the musical point of view? First
+of all, instrument 10 is able to transpose voice to different
+pitches without any change of its duration, and on the contrary,
+the duration may be changed with no pitch transposition (in other
+words, change of the pitch and change of the length are independent).
+Secondary, an additive analyse cause an interesting spectrum deformation,
+especially in case of unvoiced speech sounds, what is connected
+with speech sounds properties. The analysis parameters selection
+caused &quot;combing out&quot; from sampled speech sounds 30 to
+50 harmonics. Other components and additional murmurs were cut
+off. It concerns especially unvoiced speech sounds because its
+non harmonic spectrum was changed to harmonic, which caused a
+of large deformation of its tone. This deformation may be so extreme,
+that a listener could not guess that the sound origins from the
+speech sample.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 10 was used to create
+two classes of sounds.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The first class consists of clusters
+built of vocal sounds transposed to different pitches. On the
+contrary to the gong-clusters from the first part, components
+of these clusters have audible pitch and create substantial harmonisation.
+The most often used intervals are minor and major 3rds, like in
+the firs part. The pitch of each component is not stable, but
+revolves near the basic frequency, which brings a significant
+diversity.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Sounds of the second class appear
+in the climax of the piece. They combine the two methods mentioned
+above: the compact sound structures and the additive analysis
+and resynthesis of voice. Sounds of speech based on simple voice
+samples reading are gradually (with time) replaced by the same
+voice samples processed with the 'adsyn' opcode (instrument 10),
+which gives an effect of growing unreality of the sound. In the
+climax of the piece this process is employed in different structures
+(based on letters from the theme) at the same time.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The background of the second part
+of the piece is very uniform. It is created of samples of gong
+sounds, which are read and processed with instrument 4.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 4 reads samples from
+a score table using 'table' opcode. The index of the table is
+a control signal, so the sample may be read with fluent change
+of speed. The shape of the index control signal is also read from
+a score table with the 'table' opcode, but in this case the interpolating
+version of this opcode must be used.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The shapes of index signal I prepared
+to process gong samples, consist of linear segments with different
+gradients (like in the picture below).</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="fig2.gif" WIDTH="513"
+HEIGHT="202" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">Figure 2.</FONT></B><FONT FACE="Times New Roman">
+The example of the index control signal. The sample is read from
+the end and changes the speed of reading three times with the
+charge of the reading direction.<BR>
+&nbsp;<BR>
+&nbsp;</FONT></P>
+
+<P><FONT FACE="Times New Roman">What is the interpretation of
+using the signal like this one? The speed of sound reading within
+one segment of the index control signal is constant, because of
+its linear shape. But various gradients of segments define the
+change of corresponded speeds. Additionally, a rising line means
+the direction of reading from the beginning to the end, a sloping
+line - the opposite direction. So gong samples are read piecemeal,
+forward or backward, with the abrupt change of speed. Because
+of the characteristic amplitude of a gong sample (short, steep
+attack and long, slow decay), reading of this sample with a variable
+direction produces long sounds with temporary amplitude accumulation
+and subsidence.</FONT></P>
+
+<P><FONT FACE="Times New Roman">There are two levels of gong sounds
+produced in the same time during all the second part. One of them
+consists of higher and faster changing sounds, the other one contains
+of lower sounds, which amplitude changes are slower. Sounds of
+both levels begin and end independently of themselves, and their
+amplitude maximums &quot;miss&quot; each other. This process creates
+the irregular, but uniform background.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Sounds of gong transposed to low
+frequencies get a very beautiful, &quot;sandish reflection&quot;
+in tone colour within high frequency range. Thank to this and
+to the noisy character of gong sounds the background of the second
+part has an unique tone and creates an impression of large space.</FONT></P>
+
+<P><FONT FACE="Times New Roman">In the second part a new group
+of sounds also appear. They are based on the samples of echocardiographical
+examination of the heart. The purpose of involving these samples
+is to create a sound in a border-line of synthesis and recorded
+material, it means the sound, which is synthesised by the computer,
+but some elements of natural sounds are employed to this synthesis.
+The advantage of such an approach is creation of the sound, which
+has an unique tone colour (synthesised by the computer algorithm
+and quite different from real word sounds), but also is devoid
+of monotony connected with a periodical character of electronic
+sounds.</FONT></P>
+
+<P><FONT FACE="Times New Roman">I designed two Csound algorithms
+to obtain this purpose: instrument 7, and its more advanced version
+- instrument 8.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 7 generates a series
+of sine harmonics. Harmonics are added in a loop, so the number
+of the partials may be large, different for each sound and may
+change with time (the loop condition is a control variable). Every
+partial has its individual amplitude modification, which shape
+is taken from the recorded &quot;echo-heart&quot; sound. &quot;Echo-heart&quot;
+samples after reading by the 'soundin' opcode are divided into
+many signals (as many as generated partials) by filtering the
+source file with the different bands. In other words, the amplitude
+control signal of partial x is the &quot;echo-heart&quot; signal
+filtered by the band-pass filter with the central frequency equal
+to the frequency of partial x. The filter band width is inversely
+proportional to the number of partials. Thanks to this approach,
+values of particular amplitudes are adequate to a frequency distribution
+in the spectrum of the &quot;echo-heart&quot; sound. The &quot;echo-heart&quot;
+signal has still very irregular amplitude after filtering (noisy
+character), so it must be smoothing a little before partials modulation
+(to not deform harmonic spectrum of generated sound very much).
+Instruments 7 and 8 are examples of amplitude modulation. The
+signals of filtered &quot;echo-heart&quot; change as well the
+partials amplitudes as the spectrum of generated sound (so it
+is already not strictly harmonic). If the amplitude modification
+signal has a noisy character, a lot of additional frequencies
+appear in generated sound, and it gets a noisy character too (what
+is rather unwonted). There are three methods of smoothing possible
+in instrument 7: based on 'rms', 'downsamp' and 'integ' opcodes.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Instrument 8 limits the number
+of harmonics to eleven, however their frequencies may move. This
+possibility of fluent frequency change (different for different
+partials) is one more step in the harmony envelope. All partials
+are divided into two groups, and there are two rules (functions)
+of frequency change defined, one for each group. It creates an
+interesting effect of fast sound variability. The picture below
+shows an example structure of a sound generated with instrument
+8.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><IMG SRC="fig3.gif" WIDTH="607"
+HEIGHT="348" NATURALSIZEFLAG="3" ALIGN="BOTTOM"></FONT></P>
+
+<P><B><FONT FACE="Times New Roman">Figure 3.</FONT></B><FONT FACE="Times New Roman">
+The example of the harmonics frequencies movement.<BR>
+&nbsp;&nbsp;</FONT></P>
+
+<P><FONT FACE="Times New Roman">The main advantage of &quot;echo-heart&quot;
+sounds is their pulse (connected with heart beating). Sounds generated
+with instrument 7 and 8 adopt this property, so they also have
+the meaning as a rhythmical element in the piece, apart from an
+interesting tone and sense of harmony.</FONT></P>
+
+<P><FONT FACE="Times New Roman">The second part leads to the climax
+of the piece and then to the return of the theme in its basic
+form, which brings the piece to the end.&nbsp;</FONT></P>
+
+<H3><FONT FACE="Times New Roman,Georgia,Times">Conclusion</FONT></H3>
+
+<P><FONT FACE="Times New Roman">The piece has a classical form
+ABA'C. Part A (described as the first one) and part B (described
+as the second one) stand in contrast with each other. This contrast
+is obtained mainly by enveloping and processing in the part B,
+the music material and ideas introduced in the part A. Returning
+of the theme in the piece climax closes the form. But only the
+very beginning of the firs part is repeated (A'). The piece is
+closed by the short fragment based on the gong sounds from the
+second part, which lets the piece to gradually fade away. The
+major triad appears at the very end to sum up the direction of
+harmony envelope in the piece (C).</FONT></P>
+
+<P><FONT FACE="Times New Roman">My work with Csound is always
+subordinate to the musical effect, and this is why I design most
+of my orchestra instruments for the particular piece from the
+beginning. Working with a recorded material, I do my best to exploit
+its unique properties.</FONT></P>
+
+<P><FONT FACE="Times New Roman">But what I like in working with
+Csound very much (because it is festinating and amusing) is a
+contribution of fortune. My best algorithms designed with Csound
+are result of either hard work and long searches, or simply accidental
+mistake.</FONT></P>
+
+<P><FONT FACE="Times New Roman"><HR ALIGN=LEFT></FONT></P>
+
+<DL>
+  <DT><FONT FACE="Times New Roman">&quot;adeson TN&quot;</FONT>
+  <DD><FONT FACE="Times New Roman">Csound orchestra file</FONT>
+  <DD><FONT FACE="Times New Roman">Csound score file - first part</FONT>
+  <DT><A HREF="collage/collage.htm"><FONT FACE="Times New Roman">&quot;Collage&quot;</FONT></A>
+  <DD><FONT FACE="Times New Roman">Csound orchestra file</FONT>
+  <DD><FONT FACE="Times New Roman">Csound score file</FONT>
+</DL>
+
+</BODY>
+</HTML>

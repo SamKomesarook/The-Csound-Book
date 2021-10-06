@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version xxxx-->
+<html>
+<head>
+	<title>inx, in32, inch, inz</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="in.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="out.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#input" class="toqr">
+Signal Input and Output: Input</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>inx, in32, inch, inz</h2>
+<pre>
+   ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8,          <strong>inx</strong>
+   ar9, ar10, ar11, ar12, ar13, ar14, ar15, ar16
+
+   ar1, ar2, ar3, ar4, ar5, ar6, ar7, ar8,          <strong>in32</strong>
+   ar9, ar10, ar11, ar12, ar13, ar14, ar15, ar16, 
+   ar17, ar18, ar19, ar20, ar21, ar22, ar23, ar24,
+   ar25, ar26, ar27, ar28, ar29, ar30, ar31, ar32
+
+   ar1                                              <strong>inch</strong>  ksig1
+
+                                                    <strong>inz</strong>   ksig1
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>These units read multi-channel audio data from an external device or stream.</p>
+
+<h3>Performance</h3>
+<p><strong>inx</strong> and <strong>in32</strong> read 16 and 32 channel inputs, respectively.</p>
+<p><strong>inch</strong> reads from a numbered channel determined by <em>ksig1</em> into <em>a1</em>.</p>
+<p><strong>inz</strong> reads audio samples in <strong>nchnls</strong> into a ZAK array starting at <em>ksig1</em>.</p>
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath/Codemist Ltd.<br>
+Bath, UK<br>
+May, 2000 (New in Csound Version 4.16)
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="in.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="out.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#input" class="toqr">
+Signal Input and Output: Input</font></a>
+</body>
+
+</html>

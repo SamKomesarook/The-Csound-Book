@@ -1,0 +1,66 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta name="GENERATOR" content="Mozilla/4.04 [en] (X11; I; IRIX 6.3 IP32) [Netscape]">
+		<title>Jump Start</title>
+	</head>
+
+	<body>
+		<center>
+			&nbsp;</center>
+		<center>
+			<table cols="3" width="100%" nosave>
+				<tr align="CENTER" valign="CENTER" nosave>
+					<td align="LEFT" valign="TOP" nosave><b><a href="main.html">&lt;--</a></b></td>
+					<td align="CENTER" valign="CENTER" nosave><a href="index.html"><img src="help.gif"></a></td>
+					<td align="RIGHT" valign="TOP" nosave><b><font color="#000000"><a href="tut1.html">--&gt;</a></font></b></td>
+				</tr>
+			</table>
+		</center>
+		<center>
+			<h2><b>JUMPSTART</b></h2>
+		</center>
+		<center>
+			<a href="#cec">Using CECILIA</a></center>
+		<center>
+			<a href="#csound">Just Csound</a></center>
+		<center>
+			<a href="#modules">Building CECILIA Modules</a></center>
+		<center>
+			&nbsp;</center>
+		<center>
+			<hr>
+		</center>
+		&nbsp;<a name="cec"></a>
+		<ul>
+			<li><b>You want to make sounds. <font size="-2"><a href="#">top</a></font></b>
+			<p>Choose one of the modules in the <b>New</b> cascade in the <b>File</b> menu. Choose an input sound if a soundfile selector appears. Muck around with the graphs and other objects. Read the documentation on the chosen module in the <b>Help</b> menu &quot;<i>About this module...</i>&quot;. Specify an sr, ksmps and number of channels in the main window. The number of channels should normally match the number of channels in the loaded soundfile. You can specify a soundfile name to write if you choose to write to disk. Select &quot;<i>DAC</i> or &quot;<i>Disk</i>&quot; in the Main window. Hit <i>Play</i> in the main window or do the hot-keys in any window.
+			<p>Let go into details with our <a href="tut1.html">first Tutorial.</a><br>
+			&nbsp;
+			<hr width="100%">
+			<br>
+			<a name="csound"></a>
+			<li><b>You want to do straight Csound. <font size="-2"><a href="#">top</a></font></b>
+			<p>&nbsp;You can open up an existing orc/sco pair. The documents will be placed in a temporary module and saved as Csound documents when you save. Do <b>Open</b> under <b>File...</b> and select the orchestra you wish to use. The score sharing the same prefix as the orchestra will automatically open as well. When you save in the editor, your orc/sco pair will be returned to two separate text documents. You can save to a single CECILIA module document by choosing <b>Save as...</b>
+			<p>For new documents, choose <b>Module</b> under the <b>New</b> cascade in the <b>File</b> menu. The editor opens up. Write in a mono, stereo or quad orchestra. Use the <b>Button-3</b> opcode-insert feature that lets you paste preformatted opcodes from the manual.<b><i> Do *not* specify headers in your orchestra(s)</i></b>. In order to use your new module, you must have defined a legal orchestra. Specify a sampling rate , ksmps and number of channels in the main window. The number of channels should match the number of channels implicit in the editor &quot;pane&quot; you chose to program your orchestra. If you choose to write to disk, CECILIA will propose a soundfile name but you can specify your own. Select &quot;<i>DAC</i> or &quot;<i>Disk</i>&quot; in the Main window. Hit <i>Play</i> in the main window or do the hot-keys in any window.
+			<p>&nbsp;If you wish to save your new orc/sco pair as separate Csound documents, you can choose <b>Export as Csound</b> under the <b>File</b> menu of the editor.
+			<p>&nbsp;<b>Note:</b> Any comments <b>before</b> the orchestra header will be discarded by CECILIA when you save as Csound documents.
+			<p>The two Csound temp files used for actual computations are always computed from the current contents of the editor. Hence, changes do <b>not</b> need to be saved before computation. You will be surprised at how much time this saves.
+			<p>The number of channels in the computation is determined by the &quot;channels&quot; variable in the Main window. Hence the editor offers three different window panes to edit mono, stereo or quad versions of the same module. The &quot;channels&quot; will instruct CECILIA on which of these versions to take. This variable will automatically change when you click into a different editor pane.
+			<p><a href="tut2.html">Let's go into details</a>
+			<p>
+			<hr width="100%">
+			<br>
+			<a name="modules"></a>
+			<li><b>You want to build a CECILIA module. <font size="-2"><a href="#">top</a></font></b>
+			<p>Start with the two steps above to familiarize yourself with CECILIA. Choose one of the BuiltIn modules in the cascade in the <b>File menu</b>. Choose <b>Show source editor</b> under the Windows menu. Open the <b>tk_interface</b> editor pane by selecting it in the <b>Sections</b> menu of the editor. See how it is done. Pay attention to how the variables are declared and substituted in the orchestra and/or the score. Quite simple, really. Complete description of object syntax is available under the <b>Help</b> menu in the editor window.
+			<p>When you change something in the <b>tk_interface</b>, you must <b>save</b> and <b>reinit</b> (<b>File </b>menu) your module for the changes to show up.
+			<p>The <b>info</b> editor panel lets you document your module. Anything entered here will appear in the &quot;About this module&quot; dialog in the interface <b>Help</b> menu.
+			<p>Once you have built and tested your module, you can have it appear under the <b>New</b> cascade in the <b>File</b> menu by specifying a directory in the <b>Preferences</b> dialog. Any directory entered in one of the four entries will be parsed when the Update Menu command is select in the <b>New </b>sacade under <b>File</b> menu. Otherwise it will be scanned at startup time and its contents will appear in the <b>New</b> cascade.
+			<p><a href="tut3.html">Let's go into details</a>
+		</ul>
+		<hr>
+	</body>
+
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>70_01_2.sco.html</title>
+		<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+	</head>
+
+	<body stylesrc="../admin/adpsco.html" bgcolor="white">
+		<pre>
+; *********************************************************************
+; ACCCI:  70_01_2.SCO
+; coded:  Ron Parks 6/96
+
+	
+; GEN functions ******************************************************* 
+; waveform
+; input source: C major scale created using a simple FM .orc/.sco
+f71  0   65536   1	&quot;fmbrass1.aiff&quot;  0  0  1
+
+; envelopes
+; itrnsfn: pitch transposition line function  
+; 12 = one octave higher, -12 = one octave lower, 0 = no transposition
+f40  0  4096  -7          0      4096   0     
+  
+; iampfn: iamp line functions       
+f31  0  4096  -7          1230   4096   1230
+f32  0  4096  -7           900   4096    900
+
+; granular parametes
+; imiigtfn
+f34  0  4096  -7  .001 4096  .001   ; minimum inter-grain time
+; imxigtfn   
+f35  0  4096  -7  .01  4096  .01    ; maximum inter-grain time
+; imiglfn 
+f36  0  4096  -7  .02  4096  .02    ; minimum grain length
+; imxglfn
+f37  0  4096  -7  .05  4096  .05    ; maximum grain length
+; grain envelope 
+f39  0  4096   7          0 1024 1 2048 1 1024 0
+
+
+; pointers
+; line generator for read pointer
+f45	0	4096	7	0   4096  1
+; irvar: random variation read pointer
+f46	0  	4096  	-7  	0   4096  0    ; no variation
+f47     0       4096    -7      .1  4096  .1   ; 100ms variation
+
+; Overview of Variables ***********************************************
+;           most of the values are set in the GEN functions above
+;           in the instrument they therefore appear with 'fn' appended
+;           eg. iamp becomes iampfn
+;
+; itrns     grain transposition in semitones
+;           12 = one octave higher, -12 = one octave lower
+; iamp      amplitude of overall event
+; ifns      grain sound file source table number
+; imiigt    minimum inter-grain time
+; imxigt    maximum inter-grain time
+; imigl	    minimum grain length
+; imxgl	    maximum grain length
+; iseed	    seed value for randh
+; ige       grain envelope
+; irvar     amount of random variation around read pointer
+; ifnrp     line function for read pointer
+        
+
+; score ***************************************************************
+; section 1
+; This is a basic granular resynthesis of the original soundfile.
+
+;  start   dur trns amp fns miigt mxigt migl mxgl seed ge rvar fnrp
+i1  0       1  40   31  71  34    35    36   37	  .001 39  46  45   
+i1 .01      .   .    .   .   .     .     .    .   .002  .   .   . 
+i1 .02      .   .    .   .   .     .     .    .   .003  .   .   . 
+i1 .03      .   .    .   .   .     .     .    .   .004  .   .   . 
+i1 .04      .   .    .   .   .     .     .    .   .005  .   .   . 
+i1 .05      .   .    .   .   .     .     .    .   .006  .   .   . 
+i1 .06      .   .    .   .   .     .     .    .   .007  .   .   . 
+i1 .07      .   .    .   .   .     .     .    .   .008  .   .   . 
+i1 .08      .   .    .   .   .     .     .    .   .009  .   .   . 
+s
+
+; section 2
+; This example is ten times as long as the original soundfile 
+; with no pitch alteration.
+
+;  start   dur trns amp fns miigt mxigt migl mxgl seed ge rvar fnrp
+i1  1      10  40   31  71  34    35    36   37	  .001 39  46  45   
+i1  1.01    .   .    .   .   .     .     .    .   .002  .   .   . 
+i1  1.02    .   .    .   .   .     .     .    .   .003  .   .   . 
+i1  1.03    .   .    .   .   .     .     .    .   .004  .   .   . 
+i1  1.04    .   .    .   .   .     .     .    .   .005  .   .   . 
+i1  1.05    .   .    .   .   .     .     .    .   .006  .   .   . 
+i1  1.06    .   .    .   .   .     .     .    .   .007  .   .   . 
+i1  1.07    .   .    .   .   .     .     .    .   .008  .   .   . 
+i1  1.08    .   .    .   .   .     .     .    .   .009  .   .   . 
+s 
+
+; section 3
+; This example is ten times as long as the original soundfile 
+; with +-100 ms variation around the read pointer
+; and a much higher grain density
+
+;  start   dur trns amp fns miigt mxigt migl mxgl seed ge rvar fnrp
+i1  1      10  40   32  71  34    35    36   37	  .001 39  47  45   
+i1  1.01    .   .    .   .   .     .     .    .   .002  .   .   . 
+i1  1.02    .   .    .   .   .     .     .    .   .003  .   .   . 
+i1  1.03    .   .    .   .   .     .     .    .   .004  .   .   . 
+i1  1.04    .   .    .   .   .     .     .    .   .005  .   .   . 
+i1  1.05    .   .    .   .   .     .     .    .   .006  .   .   . 
+i1  1.06    .   .    .   .   .     .     .    .   .007  .   .   . 
+i1  1.07    .   .    .   .   .     .     .    .   .008  .   .   . 
+i1  1.08    .   .    .   .   .     .     .    .   .009  .   .   . 
+i1  1.09    .   .    .   .   .     .     .    .   .010  .   .   . 
+i1  1.10    .   .    .   .   .     .     .    .   .011  .   .   . 
+i1  1.11    .   .    .   .   .     .     .    .   .012  .   .   . 
+i1  1.12    .   .    .   .   .     .     .    .   .013  .   .   . 
+i1  1.13    .   .    .   .   .     .     .    .   .014  .   .   . 
+i1  1.14    .   .    .   .   .     .     .    .   .015  .   .   . 
+i1  1.15    .   .    .   .   .     .     .    .   .016  .   .   . 
+i1  1.16    .   .    .   .   .     .     .    .   .017  .   .   . 
+i1  1.17    .   .    .   .   .     .     .    .   .018  .   .   . 
+i1  1.18    .   .    .   .   .     .     .    .   .019  .   .   . 
+i1  1.19    .   .    .   .   .     .     .    .   .020  .   .   . 
+i1  1.20    .   .    .   .   .     .     .    .   .021  .   .   . 
+i1  1.21    .   .    .   .   .     .     .    .   .022  .   .   . 
+i1  1.22    .   .    .   .   .     .     .    .   .023  .   .   . 
+i1  1.23    .   .    .   .   .     .     .    .   .024  .   .   . 
+i1  1.24    .   .    .   .   .     .     .    .   .025  .   .   . 
+e
+</pre>
+	</body>
+
+</html>

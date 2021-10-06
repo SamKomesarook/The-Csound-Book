@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+	<title>hsboscil</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="adsynt.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="oscbnk.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#additive" class="toqr">
+Signal Generators: Additive Synthesis/Resynthesis</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>hsboscil</h2>
+<pre>
+  ar      <strong>hsboscil</strong>  kamp, ktone, kbrite, ibasfreq, iwfn, ioctfn[, ioctcnt[, iphs]]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>An oscillator which takes tonality and brightness as arguments, relative to a base frequency.</p>
+
+<h3>Initialization</h3>
+<p><em>ibasfreq</em> &#8211; base frequency to which tonality and brighness are relative</p>
+<p><em>iwfn</em> &#8211; function table of the waveform, usually a sine</p>
+<p><em>ioctfn</em> &#8211; function table used for weighting the octaves, usually something like:</p>
+<pre>  f1 0  1024  -19  1  0.5  270  0.5</pre>
+<p><em>ioctcnt</em> &#8211; number of octaves used for brightness blending. Must be in the range 2 to 10. Default is 3.</p>
+<p><em>iphs</em> &#8211; initial phase of the oscillator. If <em>iphs</em> = -1, initialization is skipped.</p>
+
+<h3>Performance</h3>
+
+<p><em>kamp</em> &#8211; amplitude of note</p>
+<p><em>ktone</em> &#8211; cyclic tonality parameter relative to <em>ibasfreq</em> in logarithmic octave, range 0 to 1, values &gt; 1 can be used, and are internally reduced to <strong>frac</strong>(<em>ktone</em>).</p>
+<p><em>kbrite</em> &#8211; brightness parameter relative to <em>ibasfreq</em>, achieved by weighting <em>ioctcnt</em> octaves. It is scaled in such a way, that a value of 0 corresponds to the orignal value of <em>ibasfreq</em>, 1 corresponds to one octave above <em>ibasfreq</em>, -2 corresponds to two octaves below <em>ibasfreq</em>, etc. <em>kbrite</em> may be fractional.</p>
+
+<p><strong>hsboscil</strong> takes tonality and brightness as arguments, relative to a base frequency (<em>ibasfreq</em>). Tonality is a cyclic parameter in the logarithmic octave, brightness is realized by mixing multiple weighted octaves. It is useful when tone space is understood in a concept of polar coordinates.</p>
+<p>Making <em>ktone</em> a line, and <em>kbrite</em> a constant, produces Risset's glissando.</p>
+<p>Oscillator table <em>iwfn</em> is always read interpolated. Performance time requires about <em>ioctcnt</em> * <strong>oscili</strong>.</p>
+
+<h3>Examples</h3>
+
+<pre>
+  giwave    <strong>ftgen</strong>      1, 0, 1024, 10, 1, 1, 1, 1         ; synth wave
+  giblend   <strong>ftgen</strong>      2, 0, 1024, -19, 1, 0.5, 270, 0.5  ; blending window
+  
+ <strong>instr</strong> 1                                                   ; endless glissando
+  ktona     <strong>line</strong>       0,10,1
+  asig      <strong>hsboscil</strong>   10000, ktona, 0, 200, giwave, giblend, 5
+            <strong>out</strong>        asig
+ <strong>endin</strong>
+  
+ <strong>instr</strong> 2                                                   ; MIDI instrument: all octaves sound alike,
+  itona     <strong>octmidi</strong>                                       ; velocity is mapped to brightness
+  ibrite    <strong>ampmidi</strong>    3
+  ibase     =          cpsoct(6)
+  kenv      <strong>expon</strong>      20000, 1, 100
+  asig      <strong>hsboscil</strong>   kenv, itona, ibrite, ibase, giwave, giblend, 5
+            <strong>out</strong>        asig
+ <strong>endin</strong>
+</pre>
+
+<h3>Author</h3>
+<p>Peter Neub&auml;cker<br>
+Munich, Germany<br>
+August, 1999<br>
+New in Csound version 3.58</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="adsynt.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="oscbnk.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#additive" class="toqr">
+Signal Generators: Additive Synthesis/Resynthesis</font></a>
+</body>
+
+</html>

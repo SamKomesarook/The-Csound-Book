@@ -1,0 +1,186 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>hilbert</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="svfilter.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="butterhp.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>hilbert</h2>
+
+<pre>
+  ar1, ar2  <strong>hilbert</strong>  asig
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>An IIR implementation of a Hilbert transformer.
+</p>
+<h3>Performance</h3>
+<p><em>asig</em> &#8211; input signal</p>
+<p><em>ar1</em> &#8211; cosine output of <em>asig</em></p>
+<p><em>ar2</em> &#8211; sine output of <em>asig</em></p>
+<p><strong>hilbert</strong> is an IIR filter based implementation of a broad-band 90 degree phase difference network. The input to <strong>hilbert</strong> is an audio signal, with a frequency range from 15 Hz to 15 kHz. The outputs of <strong>hilbert</strong> have an identical frequency response to the input (i.e. they sound the same), but the two outputs have a constant phase difference of 90 degrees, plus or minus some small amount of error, throughout the entire frequency range. The outputs are in quadrature.
+</p>
+<p><strong>hilbert</strong> is useful in the implementation of many digital signal processing techniques that require a signal in phase quadrature. <em>ar1</em> corresponds to the cosine output of <strong>hilbert</strong>, while <em>ar2</em> corresponds to the sine output. The two outputs have a constant phase difference throughout the audio range that corresponds to the phase relationship between cosine and sine waves.
+</p>
+<p>Internally, <strong>hilbert</strong> is based on two parallel 6th-order allpass filters. Each allpass filter implements a phase lag that increases with frequency; the difference
+between the phase lags of the parallel allpass filters at any given point is approximately 90 degrees.
+</p>
+<p>Unlike an FIR-based Hilbert transformer, the output of <strong>hilbert</strong> does not have a linear phase response. However, the IIR structure used in <strong>hilbert</strong> is far more efficient to compute, and the nonlinear phase response can be used in the creation of interesting audio effects, as in the second example below.
+</p>
+<h3>Examples</h3>
+<p>The first example implements frequency shifting, or single sideband amplitude modulation. Frequency shifting is similar to ring modulation, except the upper and lower sidebands are separated into individual outputs. By using only one of the outputs, the input signal can be &quot;detuned,&quot; where the harmonic components of the signal are shifted out of harmonic alignment with each other, e.g. a signal with harmonics at 100, 200, 300, 400 and 500 Hz, shifted up by 50 Hz, will have harmonics at 150, 250, 350, 450, and 550 Hz.
+</p>
+<pre>
+  <strong>sr</strong>      = 44100
+  <strong>kr</strong>      = 4410
+  <strong>ksmps</strong>   = 10
+  <strong>nchnls</strong>  = 2
+  
+<strong>instr</strong> 1
+  
+  idur          =         p3
+  ibegshift     =         p4      ; initial amount of frequency shift - can be positive or negative
+  iendshift     =         p5      ; final amount of frequency shift - can be positive or negative
+  
+  kfreq         <strong>linseg</strong>    ibegshift, idur, iendshift ; A simple envelope for determining the amount of frequency shift.
+  
+ 
+  ain           <strong>soundin</strong>   &quot;supertest.wav&quot; ; Use the sound of your choice.
+  
+ 
+  areal, aimag	<strong>hilbert</strong>	 ain              ; Phase quadrature output derived from input signal.
+  
+ 
+  asin          <strong>oscili</strong>  1, kfreq, 1       ; Quadrature oscillator.
+  acos          <strong>oscili</strong>  1, kfreq, 1, .25
+  
+ 
+  amod1         =       areal * acos      ; Trigonometric identity - see references for further details.
+  amod2         =       aimag * asin
+  
+                                  
+                                  
+                                  
+                                               ; Both sum and difference frequencies can be output at once.
+  aupshift      =       (amod1 + amod2) * 0.7  ; aupshift corresponds to the sum frequencies, while 
+  adownshift    =       (amod1 - amod2) * 0.7  ; adownshift corresponds to the difference frequencies. 
+                                               ; Notice that the adding of the two together is identical
+                <strong>outs</strong>    aupshift, aupshift     ; to the output of ring modulation.
+  
+endin
+  
+ ; a simple score
+  f1 0 16384 10 1                 ; sine table for quadrature oscillator
+  i1 0 29 0 200                   ; starting with no shift, ending with all
+                                  ; frequencies shifted up by 200 Hz.
+  i1 30 29 0 -200                 ; starting with no shift, ending with all
+                                  ; frequencies shifted up by 200 Hz.
+  e
+</pre>
+<p>The second example is a variation of the first, but with the output being fed back into the input. With very small shift amounts (i.e. between 0 and +-6 Hz), the result is a sound that has been described as a &quot;barberpole phaser&quot; or &quot;Shepard tone phase shifter.&quot; Several notches appear in the spectrum, and are constantly swept in the direction opposite that of the shift, producing a filtering effect that is reminiscent of Risset's &quot;endless glissando.&quot;
+</p>
+<pre>
+  <strong>sr</strong>      = 44100
+  <strong>kr</strong>      = 44100                 ; kr MUST be set to sr for &quot;barberpole&quot; effect
+  <strong>ksmps</strong>   = 1
+  <strong>nchnls</strong>  = 2
+  
+<strong>instr</strong> 2
+  
+  afeedback     <strong>init</strong>    0         ; initialization of feedback
+  
+  idur          =       p3
+  ibegshift     =       p4        ; initial amount of frequency shift - can be positive or negative
+  iendshift     =       p5        ; final amount of frequency shift - can be positive or negative
+  ifeed         =       p6        ; amount of feedback - the higher the number, the more pronounced
+                                  ; the effect. Experiment to see at what point oscillation occurs
+                                  ; (often a factor of 1.4 is the maximum feedback before oscillation).
+  
+  kfreq         <strong>linseg</strong>  ibegshift, idur, iendshift
+  ain           <strong>soundin</strong> &quot;supertest.wav&quot;
+  areal, aimag	<strong>hilbert</strong> ain
+
+  asin          <strong>oscili</strong>  1, kfreq, 1
+  acos          <strong>oscili</strong>  1, kfreq, 1, .25
+  
+  amod1         =       areal * acos
+  amod2         =       aimag * asin
+  
+  aupshift      =       (amod1 + amod2) * 0.7
+  adownshift    =       (amod1 - amod2) * 0.7
+  
+  afeedback     =       (amod1 - amod2) * .5 * ifeed ; feedback taken from downshift output
+  
+                <strong>outs</strong>    aupshift, aupshift
+  
+<strong>endin</strong>
+  
+  ; a simple score
+  f1 0 16384 10 1                 ; sine table for quadrature oscillator
+  i2 0  29 -.3 -.3 1.4            ; upwards sweep, at a rate of .3 times a second,
+  lots of feedback
+  i2 30 30  .1  .1 1.4            ; downwards sweep, .3 times a second, lots of feedback
+  i2 60 29   5  -5 1.4            ; sweep goes from .3 time a second, descending in pitch,
+                                  ; to .3 times a second ascending in pitch, with a
+                                  ; large amount of feedback.
+  e
+</pre>
+
+
+<h3>Technical History</h3>
+<p>The use of phase-difference networks in frequency shifters was pioneered by Harald Bode.<small><sup>1</sup></small> Bode and Bob Moog provide an excellent description of the implementation and use of a frequency shifter in the analog realm in;<small><sup>2</sup></small> this would be an excellent first source for those that wish to explore the possibilities of single sideband modulation. Bernie Hutchins provides more applications of the frequency shifter, as well as a detailed technical analysis.<small><sup>3</sup></small> A recent paper by Scott Wardle<small><sup>4</sup></small> describes a digital implementation of a frequency shifter, as well as some unique applications.
+</p>
+<h3>References</h3>
+<ol>
+	<li>H. Bode, &quot;Solid State Audio Frequency Spectrum Shifter.&quot; AES Preprint No. 395 (1965).</li>
+	<li>H. Bode and R.A. Moog, &quot;A High-Accuracy Frequency Shfiter for Professional Audio Applications.&quot; <em>Journal of the Audio Engineering Society</em>, July/August 1972, vol. 20, no. 6, p. 453.</li>
+	<li>B. Hutchins. <em>Musical Engineer's Handbook</em> (Ithaca, NY: Electronotes, 1975), ch. 6a.</li>
+	<li>S. Wardle, &quot;A Hilbert-Transformer Frequency Shifter for Audio.&quot; Available online at <a href="http://www.iua.upf.es/dafx98/papers/">http://www.iua.upf.es/dafx98/papers/</a>.</li>
+</ol>
+<h3>Author</h3>
+<p>Sean Costello<br>
+Seattle, Washington<br>
+1999<br>
+New in Csound version 3.55
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="svfilter.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="butterhp.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</font></a>
+</body>
+
+</html>

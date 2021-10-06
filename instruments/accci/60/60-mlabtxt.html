@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>60-mlab.txt.html</title>
+		<header></header>
+		<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+	</head>
+
+	<body stylesrc="../admin/adptxt.html" bgcolor="white">
+		<h3>The MIT Media Lab Phase Vocoder</h3>
+		<pre>
+This phase vocoder is split into an analysis and a synthesis
+part.  The analysis part is done by the program pvanal.  It
+produces a phase vocoder analysis file with the special
+file header (see below), including information about the source
+sound, analysis framesize and the overlap factor.
+
+Following this header, the analysis data is stored as float, with
+magnitudes and frequencies in turn for the first N/2+1 Fourier
+bins of each frame.  We wrote a few programs to investigate the
+phase vocoder algorithm on its analysis side.
+
+The source codes of these programs are not included here, but
+they are shipped with the Internet version of the catalogue.
+Written in C and not depending on audio hardware, the programs
+work on any Csound platform.  Here is a short summary of their
+function.
+
+  -channels [analysis file] 
+     reads file, data displayed per channel         
+  -frames   [analysis file]
+     reads file, data displayed per frame
+  -magnitud [analysis file]
+     reads file, data displayed per frame,
+     above threshold magnitude only
+  -wrapped  [analysis file]
+     reads file, displays the value of phase
+     and intermediate variables on the way to the
+     approximated frequency.   
+
+Sample runs of two of these programs are shown on the following
+pages.  The data flood is large and illustrates  the need for
+specific display programs, adapted to purpose and nature of the
+sound material at hand.  The ability to skip a number of analysis
+frames can further reduce the stream of data.
+
+The program flow of pvanal gives a crude picture of this
+FFT-based phase vocoder, avoiding the necessity to go too deeply
+into the intricate network of source files. 
+
+The meaningful part is the FFT loop of pvanal.c, where
+amplitude/time values are transformed into amplitude/frequency
+values.  The loop functions are found in the source dsputil.c and
+the buffers below are central in the this Fourier transform
+procedure.  We have looked into the phase/frequency conversion in
+greater detail on page 172.  
+
+The interpolation mechanism used by the PVOC unit generator
+during re-synthesis has not been covered in this catalogue.  It is
+paramount to a fruitful understanding of this synthesis
+technique.
+</pre>
+	</body>
+
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+	<title>lpf18</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="filter2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="tbvcf.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>lpf18</h2>
+<pre>
+  ar      <strong>lpf18</strong>      asig, kfco, kres, kdist
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Implementation of a 3 pole sweepable resonant lowpass filter.</p>
+
+<h3>Performance</h3>
+<p><em>kfco</em> &#8211; the filter cutoff frequency in Hz. Should be in the range 0 to sr/2.</p>
+
+<p><em>kres</em> &#8211; the amount of resonance. Self-oscillation occurs when <em>kres</em> is approximately 1. Shoujld usually be in the range 0 to 1, however, values slightly greater than 1 are possible for more sustained oscillation and an &quot;overdrive&quot; effect.</p>
+
+<p><em>kdist</em> &#8211; amount of distortion. <em>kdis</em>t = 0 gives a clean output. <em>kdist</em> &gt; 0 adds <strong>tanh</strong>() distortion controlled by the filter parameters, in such a way that both low cutoff and high resonance increase the distortion amount. Some experimentation is encouraged.</p>
+
+<p><strong>lpf18</strong> is a digital emulation of a 3 pole (18 dB/oct.) lowpass filter capable of self-oscillation with a built-in distortion unit. It is really a 3-pole version of <strong>moogvcf</strong>, retuned, recalibrated and with some performance improvements. The tuning and feedback tables use no more than 6 adds and 6 multiplies per control rate. The distortion unit, itself, is based on a modified <strong>tanh</strong>() function driven by the filter controls.</p>
+
+<p><strong>Note</strong>: This filter requires that the input signal be normalized to one.</p>
+
+<h3>Author</h3>
+<p>Josep M Comajuncosas<br>
+Spain<br>
+December, 2000<br>
+New in Csound Version 4.16</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="filter2.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="tbvcf.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#stdfilters" class="toqr">
+Signal Modifiers: Standard Filters</font></a>
+</body>
+
+</html>

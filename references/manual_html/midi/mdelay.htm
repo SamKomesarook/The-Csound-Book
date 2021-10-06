@@ -1,0 +1,74 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>mdelay</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="nrpn.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="mclock.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#message" class="toqr">
+MIDI Support: MIDI Message Output</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>mdelay</h2>
+
+<pre>
+            <strong>mdelay</strong>     kstatus, kchan, kd1, kd2, kdelay
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>A MIDI delay opcode.
+</p>
+<h3>Performance</h3>
+<p><em>kstatus</em> &#8211; status byte of MIDI message to be delayed
+</p>
+<p><em>kchan</em> &#8211; MIDI channel (1-16)
+</p>
+<p><em>kd1</em> &#8211; first MIDI data byte
+</p>
+<p><em>kd2</em> &#8211; second MIDI data byte
+</p>
+<p><em>kdelay</em> &#8211; delay time in seconds
+</p>
+<p>Each time that <em>kstatus</em> is other than zero, <strong>mdelay</strong> outputs a MIDI message to the MIDI out port after <em>kdelay</em> seconds. This opcode is useful in implementing MIDI delays. Several instances of <strong>mdelay</strong> can be present in the same instrument with different argument values, so complex and colorful MIDI echoes can be implemented. Further, the delay time can be changed at k-rate.
+</p>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+November, 1998 (New in Csound version 3.492)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="nrpn.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="mclock.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#message" class="toqr">
+MIDI Support: MIDI Message Output</font></a>
+</body>
+</html>

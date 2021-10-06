@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version xxxx-->
+<html>
+<head>
+	<title>outx, out32, outc, outch, outz</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="out.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="dumpk.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#output" class="toqr">
+Signal Input and Output: Output</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>outx, out32, outc, outch, outz</h2>
+<pre>
+          <strong>outx</strong>       asig1, asig2, asig3, asig4, asig5, asig6, asig7, asig8, asig9, asig10, asig11, asig12, asig13, asig14, asig15, asig16
+          <strong>out32</strong>      asig1, asig2, asig3, asig4, asig5, asig6, asig7, asig8, asig10, asig11, asig12, asig13, asig14, asig15, asig16, asig17, asig18, asig19, asig20, asig21, asig22, asig23, asig24, asig25, asig26, asig27, asig28, asig29, asig30, asig31, asig32
+          <strong>outc</strong>       asig1[, asig2,...]
+          <strong>outch</strong>      ksig1, asig1, ksig2, asig2, ...
+          <strong>outz</strong>       ksig1
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>These units write multi-channel audio data to an external device or stream.</p>
+
+<h3>Performance</h3>
+<p><strong>outx</strong> and <strong>out32</strong> output 16 and 32 channels of audio.</p>
+<p><strong>outc</strong> outputs as many channels as provided.  Any channels greater than <strong>nchnls</strong> are ignored, and zeros are added as necessary</p>
+<p><strong>outch</strong> outputs <em>asig1</em> on the channel determined by <em>ksig1</em>, <em>asig2</em> on the channel determined by <em>ksig2</em>, etc.</p>
+<p><strong>outz</strong> outputs from a ZAK array, for <strong>nchnls</strong> of audio.</p>
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath/Codemist Ltd.<br>
+Bath, UK<br>
+May, 2000 (New in Csound Version 4.16)
+</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="out.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="dumpk.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#output" class="toqr">
+Signal Input and Output: Output</font></a>
+</body>
+
+</html>

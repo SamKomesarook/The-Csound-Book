@@ -1,0 +1,116 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- An HTML Edition of the Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>rnd31</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="rand.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="x.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a href="../qr/siggen.htm#noise" class="toqr">
+Signal Generators: Random (Noise) Generators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>rnd31</h2>
+
+<pre>
+  ir      <strong>rnd31</strong>      iscl, irpow[, iseed]
+  kr      <strong>rnd31</strong>      kscl, krpow[, iseed]
+  ar      <strong>rnd31</strong>      kscl, krpow[, iseed]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+
+<p>31-bit bipolar random generators with controllable distribution. These units are portable, in that using the same seed value will generate the same random sequence on all systems. The distribution of generated random numbers can be varied at k-rate.</p>
+
+<h3>Initialization</h3>
+
+<p><em>irpow</em> &#8211; controls the random distribution of grain frequency. If <em>irpow</em> is positive, the distribution (where x is in the range -1 to 1) is:<br>
+<tt style="line-height: 1.5">&nbsp;&nbsp;<strong>abs</strong>(x)<span style="font-size:smaller;vertical-align:super">(1/<em>irpow</em>)-1</span></tt></p>
+<p>For negative <em>irpow</em> values, the distribution is:<br>
+<tt style="line-height: 1.5">&nbsp;&nbsp;(1 - <strong>abs</strong>(x))<span style="font-size:smaller;vertical-align:super">(-1/<em>irpow</em>)-1</span></tt></p>
+<p>Setting <em>irpow</em> to -1, 0, or 1 will result in uniform distribution. This is also faster to calculate.</p>
+
+<p><em>iseed</em> &#8211; seed value for the random number generator. <em>iseed</em> must be a positive integer in the range 1 to 2147483646 (2<span style="font-size:smaller;vertical-align:super">31</span> - 2)). <em>iseed</em> is global for i-rate output, but local for k- and a-rate output. If <em>iseed</em> &lt;= 0, the current time is used as the seed (Default). </p>
+
+<p><em>iscl</em> &#8211; output scale. The random numbers are generated in the range <em>-iscl</em> to <em>iscl</em>.</p>
+
+<h3>Performance</h3>
+
+<p><em>krpow</em> &#8211; same as <em>irpow</em>, except can be varied at k-rate</p>
+
+<p><em>kscl</em> &#8211; same as <em>iscl</em>, except can be varied at k-rate</p>
+
+<p>Although seed values up to 2147483646 are allowed, smaller values (&lt;10<span style="font-size:smaller;vertical-align:super">5</span>) are recommended for portability. Larger integers may be rounded to different values if 32-bit floats are used.</p>
+
+<p>Seeding from the current time will generate a different random sequence with each call, even if there are multiple calls of <strong>rnd31</strong> in a very short period. In the a- and k-rate versions, the seed is set at opcode initialization. With i-rate output, if <em>iseed</em> &lt;= 0, it will seed from the current time in the first call, and return the next value from the random sequence in successive calls.</p>
+
+<p>Positive seed values are set at all i-rate calls. i-rate <strong>rnd31</strong> with a positive seed will always produce the same output value. This is intentional. To get different values, use <em>iseed</em> = 0 in successive calls, which will return the next value from the random sequence.</p>
+
+
+<h3>Examples</h3>
+
+<p>The following example produces a-rate random numbers in the range -2 to 2 with triangle distribution, seeded from the current time.</p>
+<pre>
+  a1      <strong>rnd31</strong>      2, -0.5
+	
+</pre>
+<p>The following example produces k-rate random numbers in the range -1 to 1 with uniform distribution and a seed value of 10.</p>
+<pre>
+  k1      <strong>rnd31</strong>      1, 0, 10
+</pre>
+
+<p>The following example produces i-rate random numbers with linear distribution and a seed value of 7. Note that <em>iseed</em> = 7 was used only in the first call.</p>
+<pre>
+  i1      <strong>rnd31</strong>      1, 0.5, 7
+  i2      <strong>rnd31</strong>      1, 0.5
+  i3      <strong>rnd31</strong>      1, 0.5
+</pre>
+<p>The same as above but seeding from the current time.</p>
+<pre>
+  i1      <strong>rnd31</strong>      1, 0.5, 0
+  i2      <strong>rnd31</strong>      1, 0.5
+  i3      <strong>rnd31</strong>      1, 0.5
+</pre>
+
+<h3>Author</h3>
+<p>Istvan Varga<br>
+November, 2001<br>
+New in Csound 4.16</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="rand.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="x.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a href="../qr/siggen.htm#noise" class="toqr">
+Signal Generators: Random (Noise) Generators</a>
+</body>
+
+</html>

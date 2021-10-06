@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- This  particular HTML Edition of the Csound Manual is maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16-->
+<html>
+<head>
+	<title>GEN16</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen15.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen17.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#line" class="toqr">
+GEN Routines: Line/Exponential Segment Generators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN16</h2>
+<pre>
+  <strong>f</strong>  #    time    size    16    beg    dur    type    end
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Creates a table from <em>beg</em> value to <em>end</em> value of <em>dur</em> steps.</p>
+<h3>Initialization</h3>
+<p><em>size</em> &#8211; number of points in the table. Must be a power of 2 or a power-of-2 plus 1 (see <a href="../score/f.htm"><strong>f statement</strong></a>). The normal value is power-of-2 plus 1.
+</p>
+<p><em>beg</em> &#8211; starting value
+</p>
+<p><em>dur</em> &#8211; number of segments
+</p>
+<p><em>type</em> &#8211; if 0, a straight line is produced. If non-zero, then <strong>GEN16</strong> creates the following curve, for <em>dur</em> steps:<br>
+</p>
+<pre>   beg + (end - beg) * (1 - exp( i*type/(dur-1) )) / (1 - exp(type))</pre>
+<p><em>end</em> &#8211; value after <em>dur</em> segments
+</p>
+
+<h3>Note</h3>
+<p>If <em>type</em> &gt; 0, there is a slowly rising, fast decaying (convex)
+curve, while if <em>type</em> &lt; 0, the curve is fast rising, slowly decaying
+(concave). See also <a href="../siggen/transeg.htm"><strong>transeg</strong></a>.
+</p>
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath, Codemist. Ltd.<br>
+Bath, UK<br>
+October, 2000<br>
+New in Csound version 4.09</p>
+
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen15.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen17.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#line" class="toqr">
+GEN Routines: Line/Exponential Segment Generators</font></a>
+</body>
+
+</html>

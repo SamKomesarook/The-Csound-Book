@@ -1,0 +1,423 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>&quot;Collage&quot; - orchestra file</title>
+	</head>
+
+	<body bgcolor="white">
+		Click <a href="collage.orc">here</a> to download the plain text orchestra file
+		<ul>
+			<li><a href="#instr1">Instrument 1</a>
+			<li><a href="#instr2">Instrument 2</a>
+			<li><a href="#instr21">Instrument 21</a>
+			<li><a href="#instr22">Instrument 22</a>
+			<li><a href="#instr3">Instrument 3</a>
+			<li><a href="#instr4">Instrument 4</a>
+			<li><a href="#instr100">Instrument 100</a>
+			<li><a href="#instr101">Instrument 101</a>
+			<li><a href="#instr102">Instrument 102</a>
+		</ul>
+		<p><a href="../index.htm">Back</a> to the article.
+		<hr>
+		</p>
+		<pre><font face="Courier New">;Magdalena Klapper, &quot;Collage&quot; - orchestra file</font>
+
+<font face="Courier New">;  instruments:</font>
+<font face="Courier New">; - instr   1 - noise generator</font>
+<font face="Courier New">; - instr   2 - reads sound files and makes sound constructions,</font>
+<font face="Courier New">; - instr  21 - reads sound files</font>
+<font face="Courier New">; - instr  22 - as abowe with exp envelope</font>
+<font face="Courier New">; - instr   3 - guitar</font>
+<font face="Courier New">; - instr   4 - fof (balls)  </font>
+<font face="Courier New">; - instr 100 - reverb</font>
+<font face="Courier New">; - instr 101 - comb</font>
+<font face="Courier New">; - instr 102 - delay</font>
+
+<font face="Courier New">sr = 30000;</font>
+<font face="Courier New">kr = 3000;</font>
+<font face="Courier New">ksmps = 10;</font>
+<font face="Courier New">nchnls = 2;</font>
+<font face="Courier New">gaout100 init 0 ;effekt 100   reverb</font>
+<font face="Courier New">gaout101 init 0 ;effekt 101  comb </font>
+<font face="Courier New">gaout102 init 0 ;effekt 102 delay</font>
+
+<font face="Courier New"><a name="instr1"></a>; -------- instrument 1 :;p1 - instr number</font>
+<font face="Courier New">;p2 - start time</font>
+<font face="Courier New">;p3 - duration</font>
+<font face="Courier New">;p4 - width of noise band	 </font>
+<font face="Courier New">;p5 - amplitude (vibrato)</font>
+<font face="Courier New">;p6 - time of amplitude rise (vibrato)</font>
+<font face="Courier New">;p7 - time of amplitude decay (vibrato)</font>
+<font face="Courier New">;p8 - value of vibrato frequency at the beginning, if equol 0 -no vibrato</font>
+<font face="Courier New">;p9 - middle value of vibrato frequncy</font>
+<font face="Courier New">;p10 - value of vibrqto frequency at the end</font>
+<font face="Courier New">;p11 - time of first vibrato frequency change</font>
+<font face="Courier New">;p12 - value of filtr central frequency at the beginning</font>
+<font face="Courier New">;p13 - middle value of filtr central frequency</font>
+<font face="Courier New">;p14 - value of filtr central frequency at the end</font>
+<font face="Courier New">;p15 - time of filst changa of filtr central frequency</font>
+<font face="Courier New">;p16 - bandwidth at the baginning</font>
+<font face="Courier New">;p17 - middle bandwidth</font>
+<font face="Courier New">;p18 - bandwidth at the end</font>
+<font face="Courier New">;p19 - time of first bandwidth change</font>
+<font face="Courier New">;p20 - balance 1 ( 1 - 0 )</font>
+<font face="Courier New">;p21 - balance 2 ( 1 - 0 )</font>
+<font face="Courier New">;p22 - time of sound moveing ( from balance 1 to balance 2 )</font>
+<font face="Courier New">;p23 - log.value, if 1 - global reverb</font>
+<font face="Courier New">;p24 - log.value, if 1 - global comb</font>
+<font face="Courier New">;p25 - log.value, if 1 - global delay</font>
+<font face="Courier New">;p26 - vibrato function nr</font>
+
+<font face="Courier New">instr 1	                        <a href="diag_1.gif">;instrument 1 - block diagram</a></font>
+<font face="Courier New">iwhite = p4</font>
+<font face="Courier New">ivamp = p5</font>
+<font face="Courier New">ivadel = p6</font>
+<font face="Courier New">ivarel = p7</font>
+<font face="Courier New">ivf1 = p8</font>
+<font face="Courier New">ivf2 = p9</font>
+<font face="Courier New">ivf3 = p10</font>
+<font face="Courier New">ivt1 = p11</font>
+<font face="Courier New">ivt2 = p3 - ivt1</font>
+<font face="Courier New">iffsr1 = p12</font>
+<font face="Courier New">iffsr2 = p13</font>
+<font face="Courier New">iffsr3 = p14</font>
+<font face="Courier New">iffts1 = p15</font>
+<font face="Courier New">iffts2 = p3 - iffts1</font>
+<font face="Courier New">ifpasm1 = p16</font>
+<font face="Courier New">ifpasm2 = p17</font>
+<font face="Courier New">ifpasm3 = p18</font>
+<font face="Courier New">ifpt1 = p19</font>
+<font face="Courier New">ifpt2 = p3 - ifpt1</font>
+<font face="Courier New">ibal1 = p20</font>
+<font face="Courier New">ibal2 = p21</font>
+<font face="Courier New">ibdur = p22</font>
+<font face="Courier New">ifnr  = p26</font>
+<font face="Courier New">kvamp    linen    ivamp, ivadel, p3, ivarel</font>
+<font face="Courier New">kvfrq    linseg   ivf1, ivt1, ivf2, ivt2, ivf3</font>
+<font face="Courier New">aampv    oscil    kvamp, kvfrq, ifnr</font>
+<font face="Courier New">aszum    rand     iwhite</font>
+<font face="Courier New">kffsr    linseg   iffsr1, iffts1, iffsr2, iffts2, iffsr3</font>
+<font face="Courier New">kfpasm   linseg   ifpasm1, ifpt1, ifpasm2, ifpt2, ifpasm3 </font>
+<font face="Courier New">afszum   reson    aszum, kffsr, kfpasm</font>
+<font face="Courier New">aout = (ivf1 == 0 ? afszum * kvamp : afszum * aampv)</font>
+<font face="Courier New">kbalance line     ibal1, ibdur, ibal2</font>
+<font face="Courier New">         outs     aout * kbalance, aout * (1 - kbalance)</font>
+<font face="Courier New">   if (p23 != 1)  goto bezefekt100</font>
+<font face="Courier New">gaout100 = aout</font>
+<font face="Courier New">bezefekt100:</font>
+<font face="Courier New">   if (p24 != 1)  goto bezefekt101</font>
+<font face="Courier New">gaout101 = aout</font>
+<font face="Courier New">bezefekt101:</font>
+<font face="Courier New">   if (p25 != 1)  goto bezefekt102</font>
+<font face="Courier New">gaout102 = aout</font>
+<font face="Courier New">bezefekt102:</font>
+
+<font face="Courier New">endin</font>
+<font face="Courier New">;---------------------------------------</font>
+
+<font face="Courier New"><a name="instr2"></a>; -------- instrument 2 :;p4 - repeating time at the beginning NOTICE! P4-P9 CONECTED WITH P3 </font>
+<font face="Courier New">;p5 - max value of factor 1 increase</font>
+<font face="Courier New">;p6 - factor 1</font>
+<font face="Courier New">;p7 - factor 2</font>
+<font face="Courier New">;p8 - pitch of reading sound file</font>
+<font face="Courier New">;p9 - factor of pitch change</font>
+<font face="Courier New">;p10 - balance ( 1 - 0 )</font>
+<font face="Courier New">;p11 - factor of balance change</font>
+<font face="Courier New">;p12 - amplitude </font>
+<font face="Courier New">;p13 - factor of amplitude change</font>
+<font face="Courier New">;p14 - number of table with sound file</font>
+<font face="Courier New">;p15 - log.v., if 1 - g. reverb</font>
+<font face="Courier New">;p16 - log.v., if 1 - g. comb</font>
+<font face="Courier New">;p17 - log.v., if 1 - g. delay</font>
+
+
+<font face="Courier New">instr 2</font>
+
+<font face="Courier New">itime = p4</font>
+<font face="Courier New">igranica = p5</font>
+<font face="Courier New">ind = 0</font>
+<font face="Courier New">itczyn1 = p6</font>
+<font face="Courier New">itczyn2 = p7</font>
+<font face="Courier New">ifreq = p8</font>
+<font face="Courier New">ifczyn1 = p9</font>
+<font face="Courier New">ibalance = p10</font>
+<font face="Courier New">ibczyn = p11</font>
+<font face="Courier New">iamp =p12</font>
+<font face="Courier New">iaczyn1 = p13</font>
+<font face="Courier New">reset:   timout   0, p3/itime, contin</font>
+<font face="Courier New">	 reinit   reset</font>
+<font face="Courier New">contin:  ind = ind + 1</font>
+<font face="Courier New">itime = (ind &lt;= igranica ? itime * itczyn1 : itime * itczyn2) ifreq=&quot;ifreq&quot; * ifczyn1 aout loscil iamp, ifreq, p14 iamp=&quot;iamp&quot; * iaczyn1 ibalance=&quot;(ibalance&quot; * ibczyn=&quot;=&quot; 1 ? ibalance * ibczyn : frac (ibalance * ibczyn)) rireturn outs aout * ibalance, aout * (1 - ibalance) if (p15 !=&quot;1)&quot; goto bezefekt100 gaout100=&quot;aout&quot; bezefekt100: if (p16 !=&quot;1)&quot; goto bezefekt101 gaout101=&quot;aout&quot; bezefekt101: if (p17 !=&quot;1)&quot; goto bezefekt102 gaout102=&quot;aout&quot; bezefekt102: endin ;--------------------------------------- <a name="instr21"></a>; -------- instrument 21 :</font>
+<font face="Courier New">;p4 - amplitude </font>
+<font face="Courier New">;p5 - frequency at the beginning</font>
+<font face="Courier New">;p6 - middle frequency</font>
+<font face="Courier New">;p7 - frequency at the end</font>
+<font face="Courier New">;p8 - time of first frequency charge (value 1 - 0 )</font>
+<font face="Courier New">;p9 - balance</font>
+<font face="Courier New">;p10 - number of function ( sound file</font>
+<font face="Courier New">;p11 - log.v., if 1 - g. reverb</font>
+<font face="Courier New">;p12 - log.v., if 1 - g. comb</font>
+<font face="Courier New">;p13 - log.v., if 1 - g. delay</font>
+
+<font face="Courier New">instr 21	                        <a href="diag_21.gif">;instrument 21 - block diagram</a></font>
+<font face="Courier New">ibalance = p9 </font>
+<font face="Courier New">iamp = p4</font>
+<font face="Courier New">ifcz1 = p5</font>
+<font face="Courier New">ifcz2 = p6</font>
+<font face="Courier New">ifcz3 = p7</font>
+<font face="Courier New">ift1 = p3 * p8     </font>
+<font face="Courier New">ift2 = p3 - ift1</font>
+<font face="Courier New">kfreq    linseg   ifcz1, ift1, ifcz2, ift2, ifcz3</font>
+<font face="Courier New">aout     loscil   iamp, kfreq, p10 </font>
+<font face="Courier New">         outs     aout * ibalance, aout * (1 - ibalance)</font>
+<font face="Courier New">   if (p11 != 1)  goto bezefekt100</font>
+<font face="Courier New">gaout100 = aout</font>
+<font face="Courier New">bezefekt100:</font>
+<font face="Courier New">   if (p12 != 1)  goto bezefekt101</font>
+<font face="Courier New">gaout101 = aout</font>
+<font face="Courier New">bezefekt101: </font>
+<font face="Courier New">   if (p13 != 1)  goto bezefekt102</font>
+<font face="Courier New">gaout102 = aout</font>
+<font face="Courier New">bezefekt102:</font>
+
+<font face="Courier New">endin</font>
+<font face="Courier New">;---------------------------------------</font>
+
+<font face="Courier New"><a name="instr22"></a>; -------- instrument 22 :; as instr 21, but exp amplitude envelope</font>
+
+<font face="Courier New">instr 22	                        <a href="diag_22.gif">;instrument 22 - block diagram</a></font>
+<font face="Courier New">ibalance = p9</font>
+<font face="Courier New">iamp = p4</font>
+<font face="Courier New">ifcz1 = p5</font>
+<font face="Courier New">ifcz2 = p6</font>
+<font face="Courier New">ifcz3 = p7</font>
+<font face="Courier New">ift1 = p3 * p8     </font>
+<font face="Courier New">ift2 = p3 - ift1</font>
+<font face="Courier New">kamp     expon    .001, p3, iamp</font>
+<font face="Courier New">kfreq    linseg   ifcz1, ift1, ifcz2, ift2, ifcz3</font>
+<font face="Courier New">aout     loscil   kamp, kfreq, p10 ;</font>
+<font face="Courier New">         outs     aout * ibalance, aout * ( 1 - ibalance ) ;</font>
+<font face="Courier New">   if (p11 != 1)  goto bezefekt100</font>
+<font face="Courier New">gaout100 = aout</font>
+<font face="Courier New">bezefekt100:</font>
+<font face="Courier New">   if (p12 != 1)  goto bezefekt101</font>
+<font face="Courier New">gaout101 = aout</font>
+<font face="Courier New">bezefekt101:</font>
+<font face="Courier New">   if (p13 != 1)  goto bezefekt102</font>
+<font face="Courier New">gaout102 = aout</font>
+<font face="Courier New">bezefekt102:</font>
+
+<font face="Courier New">endin</font>
+<font face="Courier New">;---------------------------------------</font>
+
+<font face="Courier New"><a name="instr3"></a>; -------- instrument 3 :;p4  amplitude</font>
+<font face="Courier New">;p5  frequency</font>
+<font face="Courier New">;p6  function number </font>
+<font face="Courier New">;p7  method number ( 1, 2, 3, 4, 5, 6 )</font>
+<font face="Courier New">;p8  first value of frequency change</font>
+<font face="Courier New">;p9  second value of frequency change</font>
+<font face="Courier New">;p10 time of first frequency change</font>
+<font face="Courier New">;p11 rise</font>
+<font face="Courier New">;p12 decay</font>
+<font face="Courier New">;p13 vibrato function number</font>
+<font face="Courier New">;p14 vibrato frequency at the beginning</font>
+<font face="Courier New">;p15 first value of vibrato frequency change</font>
+<font face="Courier New">;p16 second value of vibrato frequency change</font>
+<font face="Courier New">;p17 time of first frequency vibrato change</font>
+<font face="Courier New">;p18 amplitude of vibrato</font>
+<font face="Courier New">;p19 rise of vibrato</font>
+<font face="Courier New">;p20 decay of vibrato</font>
+<font face="Courier New">;p21 balance</font>
+<font face="Courier New">;p25 pluck factor 1 ,depends on the method</font>
+<font face="Courier New">;p26 pluck factor 2</font>
+<font face="Courier New">;p22 log.v., if 1 - g. reverb</font>
+<font face="Courier New">;p23 log.v., if 1 - g. comb</font>
+<font face="Courier New">;p24 log.v., if 1 - g. delay</font>
+
+
+<font face="Courier New">instr 3</font>
+
+<font face="Courier New">iamp = ampdb(p4)</font>
+<font face="Courier New">ifreq = p5</font>
+<font face="Courier New">ifnr = p6 </font>
+<font face="Courier New">imeth = p7</font>
+<font face="Courier New">iv1 = p8</font>
+<font face="Courier New">iv2 = p9</font>
+<font face="Courier New">it1 = p10</font>
+<font face="Courier New">it2 = p3 - p10</font>
+<font face="Courier New">idur = p3</font>
+<font face="Courier New">idel = p11</font>
+<font face="Courier New">irel = p12</font>
+<font face="Courier New">iparm1 = p25</font>
+<font face="Courier New">iparm2 = p26</font>
+<font face="Courier New">ivfnr = p13</font>
+<font face="Courier New">ivfreq = p14</font>
+<font face="Courier New">ivv1 = p15</font>
+<font face="Courier New">ivv2 = p16</font>
+<font face="Courier New">ivt1 = p17</font>
+<font face="Courier New">ivt2 = p3 - p17 </font>
+<font face="Courier New">ivamp = p18</font>
+<font face="Courier New">ivdel = p19</font>
+<font face="Courier New">ivrel = p20</font>
+<font face="Courier New">ibalance = p21</font>
+<font face="Courier New">ivsus = p3 - (ivdel + ivrel)</font>
+<font face="Courier New">kfreq    linseg   ifreq, it1, iv1, it2, iv2</font>
+<font face="Courier New">kamp     linen    iamp, idel, idur, irel</font>
+<font face="Courier New">kvfreq   linseg   ivfreq, ivt1, ivv1, ivt2, ivv2</font>
+<font face="Courier New">kvampl   linseg   0, ivdel, ivamp, ivsus, ivamp, ivrel, 0</font>
+<font face="Courier New">kvibr    oscil    kvampl, kvfreq, ivfnr</font>
+<font face="Courier New">   if (imeth &gt; 1) goto parametr1</font>
+<font face="Courier New">aout1    pluck    kamp, kfreq+kvibr, ifreq*.9, ifnr, imeth</font>
+<font face="Courier New">aout2    pluck    kamp, kfreq+kvibr, ifreq*1.1, ifnr, imeth</font>
+<font face="Courier New">         goto dalej</font>
+<font face="Courier New">parametr1:</font>
+<font face="Courier New">   if (imeth &gt; 3) goto parametr2</font>
+<font face="Courier New">aout1    pluck    kamp, kfreq+kvibr, ifreq*.9, ifnr, imeth, iparm1</font>
+<font face="Courier New">aout2    pluck    kamp, kfreq+kvibr, ifreq*1.1, ifnr, imeth, iparm1</font>
+<font face="Courier New">         goto dalej</font>
+<font face="Courier New">parametr2:</font>
+<font face="Courier New">aout1    pluck    kamp, kfreq+kvibr, ifreq*.9, ifnr, imeth, iparm1, iparm2</font>
+<font face="Courier New">aout2    pluck    kamp, kfreq+kvibr, ifreq*1.1, ifnr, imeth, iparm1, iparm2</font>
+<font face="Courier New">dalej:</font>
+<font face="Courier New">aout =  aout1 + aout2</font>
+<font face="Courier New">         outs     aout * ibalance, aout * ( 1 - ibalance )</font>
+<font face="Courier New">   if (p22 != 1)  goto bezefekt100</font>
+<font face="Courier New">gaout100 = aout</font>
+<font face="Courier New">bezefekt100:</font>
+<font face="Courier New">   if (p23 != 1)  goto bezefekt101</font>
+<font face="Courier New">gaout101 = aout</font>
+<font face="Courier New">bezefekt101:</font>
+<font face="Courier New">   if (p24 != 1)  goto bezefekt102</font>
+<font face="Courier New">gaout102 = aout</font>
+<font face="Courier New">bezefekt102:</font>
+
+<font face="Courier New">endin</font>
+<font face="Courier New">;---------------------------------------</font>
+
+<font face="Courier New"><a name="instr4"></a>; -------- instrument 4 :;p4 - balance at the beginning</font>
+<font face="Courier New">;p5 - time of first amplitude change</font>
+<font face="Courier New">;p6 - time of second amplitude change</font>
+<font face="Courier New">;p7 - amplitude value at the beginning</font>
+<font face="Courier New">;p8 - middle amplitude value</font>
+<font face="Courier New">;p9 - amplitude at the end</font>
+<font face="Courier New">;p10 - time of first frequency change ( exp envelope )</font>
+<font face="Courier New">;p11 - time of second frequency change</font>
+<font face="Courier New">;p12 - frequency value at the beginning</font>
+<font face="Courier New">;p13 - middle frequency value</font>
+<font face="Courier New">;p14 - frequency value at the end</font>
+<font face="Courier New">;p15 - first function number</font>
+<font face="Courier New">;p16 - second function number</font>
+<font face="Courier New">;p17 - formant frequency</font>
+<font face="Courier New">;p18 - log.v., if 1 - g. reverb</font>
+<font face="Courier New">;p19 - log.v., if 1 - g. comb</font>
+<font face="Courier New">;p20 - log.v., if 1 - g. delay</font>
+<font face="Courier New">;p21 - balance</font>
+
+
+<font face="Courier New">instr 4	                        <a href="diag_4.gif">;instrument 4 - block diagram</a></font>
+<font face="Courier New">ibalance1 = p4</font>
+<font face="Courier New">iarel = p5</font>
+<font face="Courier New">iadel = p6</font>
+<font face="Courier New">iaw1 = ampdb(p7)</font>
+<font face="Courier New">iaw2 = ampdb(p8)</font>
+<font face="Courier New">iaw3 = ampdb(p9)</font>
+<font face="Courier New">ifrel = p10</font>
+<font face="Courier New">ifdel = p11</font>
+<font face="Courier New">ifw1 = p12</font>
+<font face="Courier New">ifw2 = p13</font>
+<font face="Courier New">ifw3 = p14</font>
+<font face="Courier New">inr1 = p15</font>
+<font face="Courier New">inr2 = p16</font>
+<font face="Courier New">iff  = p17</font>
+<font face="Courier New">ibalance2 = p21</font>
+<font face="Courier New">a3       expseg   ifw1, ifrel, ifw2, ifdel, ifw3</font>
+<font face="Courier New">a2       linseg   iaw1, iarel, iaw2, iadel, iaw3</font>
+<font face="Courier New">aout     fof      a2, a3, iff, 0, 40, .003, .02, .007,  5, inr1, inr2, p3</font>
+<font face="Courier New">abalance line     ibalance1, p3, ibalance2</font>
+<font face="Courier New">         outs     aout*abalance, aout*(1-abalance)</font>
+<font face="Courier New">   if (p18 != 1)  goto bezefekt100</font>
+<font face="Courier New">gaout100 = aout</font>
+<font face="Courier New">bezefekt100:</font>
+<font face="Courier New">   if (p19 != 1)  goto bezefekt101</font>
+<font face="Courier New">gaout101 = aout</font>
+<font face="Courier New">bezefekt101:</font>
+<font face="Courier New">   if (p20 != 1)  goto bezefekt102</font>
+<font face="Courier New">gaout102 = aout</font>
+<font face="Courier New">bezefekt102:</font>
+
+<font face="Courier New">endin</font>
+<font face="Courier New">;---------------------------------------</font>
+
+<font face="Courier New"><a name="instr100"></a>; -------- instrument 100 :;p4 - reverb time</font>
+<font face="Courier New">;p5 - reverb ampliyude</font>
+<font face="Courier New">;p6 - reverb rise</font>
+<font face="Courier New">;p7 - reverb decay</font>
+
+
+<font face="Courier New">instr 100</font>
+
+<font face="Courier New">irvczas = p4</font>
+<font face="Courier New">iamp = p5</font>
+<font face="Courier New">idur = p3</font>
+<font face="Courier New">idel = p6</font>
+<font face="Courier New">irel = p7</font>
+<font face="Courier New">kramp    linen    iamp, idel, idur, irel</font>
+<font face="Courier New">arout = gaout100 * kramp</font>
+<font face="Courier New">aout     reverb   arout, irvczas</font>
+<font face="Courier New">         outs     aout * .5, aout * .5</font>
+<font face="Courier New">gaout100 = 0</font>
+
+<font face="Courier New">endin</font>
+<font face="Courier New">;---------------------------------------</font>
+
+<font face="Courier New"><a name="instr101"></a>; -------- instrument 101 :;p4 - comb time </font>
+<font face="Courier New">;p5 - comb amplitude</font>
+<font face="Courier New">;p6 - comb rise </font>
+<font face="Courier New">;p7 - comb decay</font>
+<font face="Courier New">;p8 - repeating frequency</font>
+
+
+<font face="Courier New">instr 101</font>
+
+<font face="Courier New">icmbczas = p4</font>
+<font face="Courier New">iamp = p5</font>
+<font face="Courier New">idur = p3</font>
+<font face="Courier New">idel = p6</font>
+<font face="Courier New">irel = p7  </font>
+<font face="Courier New">igest = p8</font>
+
+<font face="Courier New">kcamp    linen    iamp, idel, idur, irel</font>
+<font face="Courier New">acout = gaout101 * kcamp</font>
+<font face="Courier New">aout     comb     acout, icmbczas, igest</font>
+<font face="Courier New">         outs     aout*.5, aout*.5</font>
+<font face="Courier New">gaout101 = 0</font>
+
+<font face="Courier New">endin</font>
+<font face="Courier New">;---------------------------------------</font>
+
+<font face="Courier New"><a name="instr102"></a>; -------- instrument 102 :;p4 - time of silgle repeat</font>
+<font face="Courier New">;p5 - amplitude</font>
+<font face="Courier New">;p6 - delay rise</font>
+<font face="Courier New">;p7 - delay decay</font>
+
+
+<font face="Courier New">instr 102</font>
+
+<font face="Courier New">idczas = p4</font>
+<font face="Courier New">iamp = p5</font>
+<font face="Courier New">idur = p3 </font>
+<font face="Courier New">idel = p6</font>
+<font face="Courier New">irel = p7</font>
+<font face="Courier New">kdamp    linen    iamp, idel, idur, irel</font>
+<font face="Courier New">adout = gaout102 * kdamp</font>
+<font face="Courier New">aout     delay    adout, idczas</font>
+<font face="Courier New">         outs     aout*.5, aout*.5</font>
+<font face="Courier New">gaout102 = 0</font>
+
+<font face="Courier New">endin  </font>
+<font face="Courier New">;-------------------------------------------------</font></pre>
+	</body>
+
+</html>

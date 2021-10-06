@@ -1,0 +1,101 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>linen, linenr, envlpx, envlpxr</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="dcblock.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="rms.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#env" class="toqr">
+Signal Modifiers: Envelope Modifiers</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>linen, linenr, envlpx, envlpxr</h2>
+
+<pre>
+  kr      <strong>linen</strong>      kamp, irise, idur, idec
+  ar      <strong>linen</strong>      xamp, irise, idur, idec
+  kr      <strong>linenr</strong>     kamp, irise, idec, iatdec
+  ar      <strong>linenr</strong>     xamp, irise, idec, iatdec
+  kr      <strong>envlpx</strong>     kamp, irise, idur, idec, ifn, iatss, iatdec[, ixmod]
+  ar      <strong>envlpx</strong>     xamp, irise, idur, idec, ifn, iatss, iatdec[, ixmod]
+  kr      <strong>envlpxr</strong>    kamp, irise, idur, idec, ifn, iatss, iatdec[, ixmod[,irind]]
+  ar      <strong>envlpxr</strong>    xamp, irise, idur, idec, ifn, iatss, iatdec[, ixmod[,irind]]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p><strong>linen</strong> &#8211; apply a straight line rise and decay pattern to an input amp signal.
+</p>
+<p><strong>envlpx</strong> &#8211; apply an envelope consisting of 3 segments:
+
+<ol>
+<li>stored function rise shape</li>
+<li>modified exponential pseudo steady state</li>
+<li>exponential decay</li>
+</ol>
+</p>
+<p><strong>linenr, envlpxr </strong>- as above, except that the final segment is entered only on sensing a MIDI note release, and the note is then extended by the decay time
+</p>
+<h3>Initialization</h3>
+<p><em>irise</em> &#8211; rise time in seconds. A zero or negative value signifies no rise modification.
+</p>
+<p><em>idur</em> &#8211; overall duration in seconds. A zero or negative value will cause initialization to be skipped.
+</p>
+<p><em>idec</em> &#8211; decay time in seconds. Zero means no decay. An <em>idec</em> &gt; <em>idur</em> will cause a truncated decay.
+</p>
+<p><em>irind </em>(optional) &#8211; independence flag. If left zero, the release time (<em>idec</em>) will influence the extended life of the current note following a note-off. If non-zero, the idec time is quite independent of the note extension (see below). The default value is 0.
+</p>
+<p><em>ifn</em> &#8211; function table number of stored rise shape with extended guard point.
+</p>
+<p><em>iatss</em> &#8211; attenuation factor, by which the last value of the <strong>envlpx</strong> rise is modified during the note's pseudo steady state. A factor l causes an exponential growth, and &lt; l an exponential decay. A 1 will maintain a true steady state at the last rise value. Note that this attenuation is not by fixed rate (as in a piano), but is sensitive to a note's duration. However, if <em>iatss</em> is negative (or if steady state &lt; 4 k-periods) a fixed attenuation rate of <em>abs</em>(<em>iatss</em>) per second will be used. 0 is illegal.
+</p>
+<p><em>iatdec</em> &#8211; attenuation factor by which the closing steady state value is reduced exponentially over the decay period. This value must be positive and is normally of the order of .01. A large or excessively small value is apt to produce a cutoff which is audible. A zero or negative value is illegal.
+</p>
+<p><em>ixmod</em> (optional, between +- .9 or so) - exponential curve modifier, influencing the steepness of the exponential trajectory during the steady state. Values less than zero will cause an accelerated growth or decay towards the target (e.g. <em>subito piano</em>). Values greater than zero will cause a retarded growth or decay. The default value is zero (unmodified exponential).
+</p>
+<h3>Performance</h3>
+<p>Rise modifications are applied for the first <em>irise</em> seconds, and decay from time <em>idur - idec</em>. If these periods are separated in time there will be a steady state during which <em>amp</em> will be unmodified (<strong>linen)</strong> or modified by the first exponential pattern (<strong>envlpx</strong>). If <strong>linen</strong> rise and decay periods overlap then both modifications will be in effect for that time; in <strong>envlpx</strong> that will cause a truncated decay. If the overall duration <em>idur</em> is exceeded in performance, the final decay will continue on in the same direction, going negative for <strong>linen</strong> but tending asymptotically to zero in <strong>envlpx</strong>.
+</p>
+<p><strong>linenr</strong> is unique within Csound in containing a <strong>note-off sensor</strong> and <strong>release time extender</strong>. When it senses either a score event termination or a MIDI noteoff, it will immediately extend the performance time of the current instrument by <em>idec</em> seconds, then execute an exponential decay towards the factor <em>iatdec</em>. For two or more units in an instrument, extension is by the greatest <em>idec</em>.
+</p>
+<p><strong>linenr, envlpxr</strong> are examples of the special Csound &quot;r&quot; units that contain a note-off sensor and release time extender. Unless made independent by irind, when each senses a score event termination or a MIDI noteoff, it will immediately extend the performance time of the current instrument by idec seconds, then begin a decay (as described above) from wherever it was at the time. These &quot;r&quot; units can also be modified by MIDI noteoff velocities (see veloffs). If the <em>irind</em> flag is on (non-zero), the overall performance time is unaffected by note-off and veloff data.
+</p>
+<h3>Multiple &quot;r&quot; units </h3>
+<p>When two or more &quot;r&quot; units occur in the same instrument it is usual to have only one of them influence the overall note duration. This is normally the master amplitude unit. Other units controlling, say, filter motion can still be sensitive to note-off commands while not affecting the duration by making them independent (<em>irind</em> non-zero). Depending on their own <em>idec</em> (release time) values, independent &quot;r&quot; units may or may not reach their final destinations before the instrument terminates. If they do, they will simply hold their target values until termination. If two or more &quot;r&quot; units are simultaneously master, note extension is by the greatest <em>idec</em>.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="dcblock.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="rms.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#env" class="toqr">
+Signal Modifiers: Envelope Modifiers</font></a>
+</body>
+
+</html>

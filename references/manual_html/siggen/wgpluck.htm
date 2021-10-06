@@ -1,0 +1,96 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>wgpluck</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pluck.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="repluck.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#waveguide" class="toqr">
+Signal Generators: Waveguide Physical Modeling</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>wgpluck</h2>
+
+<pre>
+  ar      <strong>wgpluck</strong>    icps, iamp, kpick, iplk, idamp, ifilt, axcite
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>A high fidelity simulation of a plucked string, using interpolating delay-lines.
+</p>
+<h3>Initialization</h3>
+<p><em>icps</em> &#8211; frequency of plucked string
+</p>
+<p><em>iamp</em> &#8211; amplitude of string pluck
+</p>
+<p><em>iplk</em> &#8211; point along the string, where it is plucked, in the range of 0 to 1. 0 = no pluck
+</p>
+<p><em>idamp</em> &#8211; damping of the note. This controls the overall decay of the string. The greater the value of idamp1, the faster the decay. Negative values will cause an increase in output over time.
+</p>
+<p><em>ifilt</em> &#8211; control the attenuation of the filter at the bridge. Higher values cause the higher harmonics to decay faster.
+</p>
+<h3>Performance</h3>
+<p><em>kpick</em> &#8211; proportion of the way along the point to sample the output
+</p>
+<p><em>axcite</em> &#8211; signal which excites the string
+</p>
+<p>A string of frequency <em>icps</em> is plucked with amplitude <em>iamp</em> at point <em>iplk</em>. The decay of the virtual string is controlled by <em>idamp</em> and <em>ifilt</em> which simulate the bridge<em>.</em> The oscillation is sampled at the point <em>kpick</em>, and excited by the signal <em>axcite</em>.
+</p>
+<h3>Examples</h3>
+<p>The following example produces a moderately long note with rapidly decaying upper partials:
+</p>
+
+<pre>
+<strong>instr</strong>  1
+   axcite  <strong>oscil</strong>    1, 1, 1
+   apluck  <strong>wgpluck</strong>  220, 120, .5, 0, 10, 1000, axcite
+           <strong>out</strong>      apluck
+<strong>endin</strong>
+</pre>
+
+
+<p>whereas the following produces a shorter, bighter note:
+</p>
+<pre><strong>instr</strong>  1
+   axcite  <strong>oscil</strong>    1, 1, 1
+   apluck  <strong>wgpluck</strong>  220, 120, .5, 0, 30, 10, axcite
+           <strong>out</strong>      apluck
+<strong>endin</strong>
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pluck.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="repluck.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#waveguide" class="toqr">
+Signal Generators: Waveguide Physical Modeling</font></a>
+</body>
+
+</html>

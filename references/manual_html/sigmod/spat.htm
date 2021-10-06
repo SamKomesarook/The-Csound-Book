@@ -1,0 +1,270 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version x.xx.-->
+<html>
+<head>
+   <title>spat3di, spat3d, spat3dt</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="vbap.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="samphold.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#panning" class="toqr">
+Signal Modifiers: Panning and Spatialization</font></a>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>spat3di, spat3d, spat3dt</h2>
+
+<pre>
+  ar1, ar2, ar3, ar4   <strong>spat3di</strong>   asig, ix, iy, iz, idist, ifn, imode[, istor]
+  ar1, ar2, ar3, ar4   <strong>spat3d</strong>    asig, kx, ky, kz, idist, ifn, imode, imdel, iovr[, istor]
+                       <strong>spat3dt</strong>   ioutfn, kx, ky, kz, idist, ifn, imode, irlen[, iftnocl]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>These opcodes position the input sound in a 3D space, and simulate microphone pick-up of the sound source. Optional simulation of room acoustics is avaliable.</p>
+<p><strong>spat3di</strong> sets the sound source position at i-time. <strong>spat3d</strong> moves the sound source at k-rate. This movement is interpolated internally to eliminate &quot;zipper noise,&quot; as long as <strong>sr</strong> and <strong>kr</strong> are not equal. <strong>spat3dt</strong> renders the impulse response at i-time. The output of <strong>spat3dt</strong> is stored in a function table, suitable for convolution.</p>
+<p>Output is stereo or B-format. Information about B-format may be found at:<br>
+<tt style="line-height: 1.5">&nbsp;&nbsp;http://www.york.ac.uk/inst/mustech/3d_audio/ambis2.htm</tt></p>
+
+<h3>Initialization</h3>
+<p><em>ix</em> &#8211; sound source X coordinate in meters. Positive values move the source right. Negative values move the source left.</p>
+<p><em>iy</em> &#8211; sound source Y coordinate in meters. Positive values move the source toward the front wall. Negative values move the source toward the rear wall.</p>
+<p><em>iz</em> &#8211; sound source Z coordinate in meters. Positive values move the source up. Negative values move the source down.</p>
+<p><em>imode</em> &#8211; output mode as follows:<br>
+<ul>
+	<li>&nbsp;&nbsp;0 =  B-format. W output only (mono).<br>
+	<li>&nbsp;&nbsp;1 =  B-format. W and Y output.<br>
+	<li>&nbsp;&nbsp;2 =  B-format. W, X, and Y output (2D).<br>
+	<li>&nbsp;&nbsp;3 =  B-format. W, X, Y, and Z outputs (3D).<br>
+	<li>&nbsp;&nbsp;4 =  B-format. Used to simulate a pair of microphones. Output is two pairs of stereo channels.</p>
+</ul>
+<p>Mode 0 requires the least CPU power, while mode 4 requires the most. The assignment of each output depends on the mode selected as shown:</p>
+
+<table width="85%" border="0">
+	<tr align="center"><td width="10%" rowspan="6">&nbsp;</td><td rowspan="2">&nbsp;</td> <td><strong><em>imode</em> = 0</strong></td> <td><strong><em>imode</em> = 1</strong></td> <td><strong><em>imode</em> = 2</strong></td> <td><strong><em>imode</em> = 3</strong></td> <td><strong><em>imode</em> = 4</strong></td></tr>
+	<tr align="center"><td colspan="5" height="5" valign="middle"><hr size="1" noshade></td></tr>
+	<tr align="center"><td><strong><em>ar1</em></strong></td>    <td>W out</td>     <td>W out</td>     <td>W out</td>     <td>W out</td>     <td>L ch: Lo freq</td></tr>
+	<tr align="center"><td><strong><em>ar2</em></strong></td>    <td>-</td>         <td>-</td>         <td>X out</td>     <td>X out</td>     <td>L ch: Hi freq</td></tr>
+	<tr align="center"><td><strong><em>ar3</em></strong></td>    <td>-</td>         <td>Y out</td>     <td>Y out</td>     <td>Y out</td>     <td>R ch: Lo freq</td></tr>
+	<tr align="center"><td><strong><em>ar4</em></strong></td>    <td>-</td>         <td>-</td>         <td>-</td>         <td>Z out</td>     <td>R ch: Hi freq</td></tr>
+</table>
+</p>
+<p><em>idist</em> &#8211; for modes 0 to 3, unit circle distance in meters. For mode 4, distance in meters between the microphones. Recommended values are in the range 0.2 to 0.5.</p>
+<p><em>imdel</em> &#8211; maximum delay time for <strong>spat3d</strong> in seconds. This must be longer than the delay time of the latest reflection, which depends on room dimensions, sound source distance, and recursion depth. The following formula gives a safe, although somewhat overestimated, value:<br>
+<tt style="line-height: 1.5">&nbsp;&nbsp;imdel = (R + 1) * sqrt(W*W + H*H + D*D) / 340.0</tt></p>
+where R is the recursion depth, W, H, and D are the width, height, and depth of the room, respectively.</p>
+
+<p><em>iovr</em> &#8211; oversample ratio for <strong>spat3d</strong>. Acceptable values are in the range 1 - 8. Setting <em>iovr</em> higher improves quality at the expense of memory and CPU usage. The recommended value is 2.</p>
+<p><em>irlen</em> &#8211; impulse response length of reflections, in seconds. Depending on the filter parameters, values in the range 0.005 - 0.01 are suitable for most uses. Higher values result in a more accurate output, but are slower to render.</p>
+<p><em>iftnocl</em> &#8211; initial state of the the <em>ioutfn</em> as follows:
+	<ul>
+		<li>0 = clear table before writing
+		<li>1 = do not clear table before writing (mix with existing data)
+	</ul>
+Default is 0.</p>
+<p><em>istor</em> &#8211; skip initialization if non-zero. Default is 0.</p>
+<p><em>ifn</em> &#8211; a function table storing the room parameters., For free field, set <em>ifn</em> to zero or negative. Table size must be 64. The index positions in the table are:</p>
+<ul>
+	<li>0 = For spat3d and spat3di, the early reflection recursion depth. A 0 in this position indicates the sound source, a 1 indicates the first reflection, etc. The number of reflections for four walls is:<br>
+   <tt style="line-height: 1.5">&nbsp;&nbsp;N = (2*R + 2) * R</tt>
+	<li>The number of reflections for six walls is:<br>
+	<tt style="line-height: 1.5">&nbsp;&nbsp;N = (((4*R + 6)*R + 8)*R) / 3</tt>
+	<li>1 = Late reflection recursion depth (<strong>spat3dt</strong> only). spat3dt skips early reflections and renders reflections up to this level. If the early reflection recursion depth (index 0 in <em>ifn</em>) is negative, <strong>spat3d</strong> and <strong>spat3di</strong> will output zero, while <strong>spat3dt</strong> will start rendering from the sound source.
+	<li>2 = <em>imdel</em> for <strong>spat3d</strong>. If value at this index postion &gt;= 0, it overrides the <em>imdel</em> opcode argument.
+	<li>3 = <em>irlen</em> for <strong>spat3dt</strong>. If value at this index postion &gt;= 0, it overrides the <em>irlen</em> opcode argument.
+	<li>4 = <em>idist</em> value. If value at this index postion &gt;= 0, it overrides the <em>idist</em> opcode argument.
+	<li>5 = random seed. If value at this index postion is –1, the seed is taken from the current time.
+	<li>6 – 53 = eight parameters for each of the six room boundry surfaces. Index positions for each surface are shown in the table below:
+<table align="center" width="85%" cellspacing="1" cellpadding="1" border="0">
+<tr>
+    <th align="center"><font size="-1">Parameter</font></th>
+		<th align="center"><font size="-1">Valid<br>Values</font></th>
+    <th align="center"><font size="-1">Ceiling</font></th>
+    <th align="center"><font size="-1">Floor</font></th>
+    <th align="center"><font size="-1">Front<br>Wall</font></th>
+    <th align="center"><font size="-1">Rear<br>Wall</font></th>
+    <th align="center"><font size="-1">Right<br>Wall</font></th>
+    <th align="center"><font size="-1">Left<br>Wall</font></th>
+</tr>
+<tr>
+    <td colspan="8" height="3"><hr size="1" noshade></td>
+</tr>
+<tr>
+    <td align="center"><font size="-1">Enable<br>Reflections</font></td>
+		<td align="center"><font size="-1">0 = No<br>1 = Yes</font></td>
+    <td align="center"><font size="-1">6</font></td>
+    <td align="center"><font size="-1">14</font></td>
+    <td align="center"><font size="-1">22</font></td>
+    <td align="center"><font size="-1">30</font></td>
+    <td align="center"><font size="-1">38</font></td>
+    <td align="center"><font size="-1">46</font></td>
+</tr>
+<tr>
+    <td align="center"><font size="-1">Distance from<br>Listener</font></td>
+		<td align="center"><font size="-1">in<br>meters</font></td>
+    <td align="center"><font size="-1">7</font></td>
+    <td align="center"><font size="-1">15</font></td>
+    <td align="center"><font size="-1">23</font></td>
+    <td align="center"><font size="-1">31</font></td>
+    <td align="center"><font size="-1">39</font></td>
+    <td align="center"><font size="-1">47</font></td>
+</tr>
+<tr>
+    <td align="center"><font size="-1">Randomization<br>of Distance</font></td>
+		<td align="center"><font size="-1">0 to 1<br>(1/dist)</font></td>
+    <td align="center"><font size="-1">8</font></td>
+    <td align="center"><font size="-1">16</font></td>
+    <td align="center"><font size="-1">24</font></td>
+    <td align="center"><font size="-1">32</font></td>
+    <td align="center"><font size="-1">40</font></td>
+    <td align="center"><font size="-1">48</font></td>
+</tr>
+<tr>
+    <td align="center"><font size="-1">Reflection<br>Level</font></td>
+		<td align="center"><font size="-1">-1 to 1</font></td>
+    <td align="center"><font size="-1">9</font></td>
+    <td align="center"><font size="-1">17</font></td>
+    <td align="center"><font size="-1">25</font></td>
+    <td align="center"><font size="-1">33</font></td>
+    <td align="center"><font size="-1">41</font></td>
+    <td align="center"><font size="-1">49</font></td>
+</tr>
+<tr>
+    <td align="center"><font size="-1">Equalizer<br>Frequency</font></td>
+		<td align="center"><font size="-1">in Hz</font></td>
+    <td align="center"><font size="-1">10</font></td>
+    <td align="center"><font size="-1">18</font></td>
+    <td align="center"><font size="-1">26</font></td>
+    <td align="center"><font size="-1">34</font></td>
+    <td align="center"><font size="-1">42</font></td>
+    <td align="center"><font size="-1">50</font></td>
+</tr>
+<tr>
+    <td align="center"><font size="-1">Equalizer<br>Boost or Cut</font></td>
+		<td align="center"><font size="-1">1 = Off</font></td>
+    <td align="center"><font size="-1">11</font></td>
+    <td align="center"><font size="-1">19</font></td>
+    <td align="center"><font size="-1">27</font></td>
+    <td align="center"><font size="-1">35</font></td>
+    <td align="center"><font size="-1">43</font></td>
+    <td align="center"><font size="-1">51</font></td>
+</tr>
+<tr>
+    <td align="center"><font size="-1">Equalizer Q<br>(Resonance)</font></td>
+		<td align="center"><font size="-1">0.7071 =<br>None</font></td>
+    <td align="center"><font size="-1">12</font></td>
+    <td align="center"><font size="-1">20</font></td>
+    <td align="center"><font size="-1">28</font></td>
+    <td align="center"><font size="-1">36</font></td>
+    <td align="center"><font size="-1">44</font></td>
+    <td align="center"><font size="-1">52</font></td>
+</tr>
+<tr>
+    <td align="center"><font size="-1">Equalizer<br>Mode</font></td>
+		<td align="center"><font size="-1">0 = Peak<br>1 = Lo Shelf</font></td>
+    <td align="center"><font size="-1">13</font></td>
+    <td align="center"><font size="-1">21</font></td>
+    <td align="center"><font size="-1">29</font></td>
+    <td align="center"><font size="-1">37</font></td>
+    <td align="center"><font size="-1">45</font></td>
+    <td align="center"><font size="-1">53</font></td>
+</tr>
+</table>
+
+</ul>
+<h3>Performance</h3>
+
+<p><em>asig</em> &#8211; input signal</p>
+
+<p><em>ar1, ar2, ar3, ar4</em> &#8211; output signals. The format of the signal on each output is dependant on the mode used. See the description of <em>imode</em> above.</p>
+
+<p><em>kx</em> &#8211; sound source X coordinate in meters. Positive values move the source right. Negative values move the source left.</p>
+
+<p><em>ky</em> &#8211; sound source Y coordinate in meters. Positive values move the source toward the front wall. Negative values move the source toward the rear wall.</p>
+
+<p><em>kz</em> &#8211; sound source Z coordinate in meters. Positive values move the source up. Negative values move the source down.</p>
+
+<p>When <em>imode</em> = 1, the B-format output can be converted to left and right stereo as follows:</p>
+<pre>
+  aleft   = aW + 0.7071*aY
+  aright  = aW - 0.7071*aY
+</pre>
+
+<p>When <em>imode</em> = 2, the B-format output can be converted to UHJ as follows:</p>
+<pre>  aWre, aWim   <strong>hilbert</strong> aW
+  aXre, aXim   <strong>hilbert</strong> aX
+  aYre, aYim   <strong>hilbert</strong> aY
+  aWXr         =       0.0928*aXre + 0.4699*aWre
+  aWXiYr       =       0.2550*aXim - 0.1710*aWim + 0.3277*aYre
+  aleft        =       aWXr + aWXiYr
+  aright       =       aWXr - aWXiYr
+</pre>
+
+<p>When <em>imode</em> = 4, a stereo signal can be obtained by processing the output as follows:</p>
+<pre>  ar1    <strong>butterlp</strong>   ar1, kfreq
+  ar3    <strong>butterlp</strong>   ar3, kfreq
+  aLeft  =           ar1 + ar2
+  aRight =           ar3 + ar4
+</pre>
+
+<p>The optional lowpass filters change the frequency response depending on direction. For example, if the sound source is located to the left of the listener, high frequencies are attenuated in the right channel, and slightly increased in the left. The recommended value for <em>kfreq</em> is around 1000 Hz. Other filters (<strong>tone</strong>, etc.) will provide different results, and may be more suitable for a given use. This effect can be disabled by eliminating the filters.</p>
+
+<p>Note that mode 4 is most useful for listening with headphones and is also more expensive to calculate than the B-format modes (0 to 3). When using mode 4, <em>idist</em> sets the distance between the left and right microphones. For headphones, values between 0.2 and 0.25 are recommended, although higher settings, up to 0.4, may be used for wide stereo effects.</p>
+
+<p>For <strong>spat3d</strong>, the distance between the sound source and any microphone should be at least <tt>(340*18)/sr</tt> meters. Shorter distances will work, but may produce artifacts. There is no such limitation for <strong>spat3di</strong> and <strong>spat3dt</strong>.</p>
+
+<p>For <strong>spat3d</strong>, sudden changes or discontinuities in the sound source location can result in pops or clicks. Very fast movement may also degrade quality.</p>
+
+<p>Very slow performance (up to 100 times slower) may be caused by underflows. (This is also true of many other IIR opcodes, including <strong>butterlp</strong>, <strong>pareq</strong>, <strong>hilbert</strong>.) Underflows can be avoided by:</p>
+<ul>
+	<li>Mixing low level DC or noise to the input signal:
+	<pre>atmp       <strong>rnd31</strong>   1/1e24, 0, 0
+aW, aX, aY, aZ   <strong>spa3di</strong>  ain + atmp, ...
+  or
+aW, aX, aY, aZ   <strong>spa3di</strong>  ain + 1/1e24, ...</pre>
+	<li>In the case of <strong>spat3dt</strong>, which does not have an input signal, reducing <em>irlen</em>. A value of about 0.005 is suitable for most uses, although it also depends on EQ settings. If the equalizer is not used, <em>irlen</em> can be set to 0.
+</ul>
+
+
+
+<h3>Author</h3>
+<p>Istvan Varga<br>
+August 2001<br>
+New in Csound 4.13
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="vbap.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="samphold.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#panning" class="toqr">
+Signal Modifiers: Panning and Spatialization</font></a>
+</body>
+
+</html>

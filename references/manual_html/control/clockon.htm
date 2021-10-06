@@ -1,0 +1,84 @@
+
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+
+<head>
+
+	
+<title>clockon, clockoff, readclock</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+
+
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="clock.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../sigmod/pitch.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#clock" class="toqr">
+Instrument Control: Clock Control</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>clockon, clockoff, readclock</h2>
+<pre>
+          <strong>clockon</strong>   inum
+          <strong>clockoff</strong>  inum
+  ir      <strong>readclock</strong> inum
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+
+<h3>Description</h3>
+<p>Starts and stops one of a number of internal clocks, and reads the value of a clock.</p>
+
+<h3>Initialization</h3>
+<p><em>inum</em> &#8211; the number of a clock.  There are 32 clocks numbered 0 through 31. All other values are mapped to clock number 32.</p>
+
+<p><em>ir</em> &#8211; value at i-time, of the clock specified by <em>inum</em></p>
+
+<h3>Performance</h3>
+<p>Between a <strong>clockon</strong> and a <strong>clockoff</strong>, the CPU time used, is accumulated in the clock.  The precision is machine dependent, but is the millisecond range on UNIX and Windows systems.</p>
+
+<p><strong>readclock</strong> reads the current value of a clock at initialization time.</p>
+
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath/Codemist Ltd.<br>
+Bath, UK<br>
+July, 1999<br>
+New in Csound version 3.56</p>
+
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="clock.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../sigmod/pitch.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#clock" class="toqr">
+Instrument Control: Clock Control</font></a>
+</body>
+</html>
+

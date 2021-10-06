@@ -1,0 +1,75 @@
+<!doctype html public& quot; - -//////&;>
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>PC/Windows-specific flags</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="desc.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../misc/unifile.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/command.htm#pc" class="toqr">
+Command Line Flags: PC and Windows-Specific</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h3>PC/Windows-specific flags </h3>
+<dl>
+	<dt><strong>Csound</strong> -q num</dt>
+	<dd>WAVE OUT device id number (optional, use only if WAVE OUT devices are more than one)</dd>
+	<dt><strong>Csound</strong> -p num</dt>
+	<dd>number of WAVE OUT buffers (optional; default=4, maximum=40). -b (buffer length) and -p flags are related each other. Finding the optimum values for &quot;-b&quot; and &quot;-p&quot; flags requires some experimentation: more buffer length means more latency delay but also more safety from dropouts and sound interruptions (flag &quot;-B&quot; is now obsolete, don't use it). You now can drastically reduce buffer length and delay by using -e flag and 'rounded' sr and kr.</dd>
+	<dd>Note that sometimes a smaller buffer length can handle sound flow better than a larger. Only experiments can lead you toward optimal '-b' values. -b and -p flags value can now be reduced considerably by using &quot;rounded&quot; ar and kr values (for example ar=32000 and kr=320; ar=40000 and kr=400 and so on) together with -e flag. This feature has been tested only with a SB16 ASP and with an AWE32 card. Support by other cards is unknown.  Reducing &quot;-b&quot; and &quot;-p&quot; flag values means reducing latency delay and so a more interactive real-time playing.</dd>
+	<dt><strong>Csound</strong> -j num</dt>
+	<dd>console virtual text rows number.</dd>
+	<dt><strong>Csound</strong> -J num</dt>
+	<dd>console virtual text columns number.</dd>
+	<dt><strong>Csound</strong> -O (uppercase letter)</dt>
+	<dd>suppresses all printf for better real-time performance. This switch is better than '-m0' because '-m0' still leaves some message output to the console. Use both switches together for maximum performance speed.</dd>
+	<dt><strong>Csound</strong> -e</dt>
+	<dd>allows arbitrary output sample rate (for cards that support this feature).</dd>
+	<dt><strong>Csound</strong> -y</dt>
+	<dd>doesn't wait for keypress on exit.</dd>
+	<dt><strong>Csound</strong> -E</dt>
+	<dd>graphic display for WCSHELL by Riccardo Bianchini.</dd>
+	<dt><strong>Csound</strong> -Q num</dt>
+	<dd>enables MIDI OUT operations and optionally chooses device id num (if num argument is present). This flag allows parallel MIDI OUT and DAC performance. Unfortunately the real-time timing implemented in Csound is completely managed by DAC buffer sample flow. So MIDI OUT operations can present some time irregularities. These irregularities can be fully eliminated when suppressing DAC operations themselves (see -Y flag).</dd>
+	<dt><strong>Csound</strong> -Y</dt>
+	<dd>disables WAVE OUT (for better MIDI OUT timing performances). This enhances timing of MIDI out operations when used in conjunction with &quot;-Q&quot; flag. Low k-rates (max. kr=1000) are recommended for use with the &quot;-Y&quot; flag. As in Win95 maximum timer resolution is 1/1000 of second, unpredictable results can occur when using it at krates greater than 1000. Also it is very important to set only kr values in which the following division: 1000/kr produces integer results (some example: kr = 10; 20; 50; 100; 125; 200; 250 etc.) because Win95 timer only handles integer periods in milliseconds.</dd>
+	<dd>If you use a kr value that produces a non-integer result in the above formula, Csound seems to run normally but times will be not reliable. A value of kr=200 works well on most computers. Maybe with slower computers a lower value works better. Experiment! Values greater than 200 increase the overhead affecting the entire system, and do not give a notable precision improvement. A time resolution of 1/200 of sec is precise enough for almost all MIDI applications. The sr/kr/ksmps ratio must be respected, or an error message will stop the performance, even if sr value is meaningless when using &quot;-Y&quot; flag.</dd>
+	<dt><strong>Csound</strong> -*</dt>
+	<dd>compels Csound to yield control to system until audio output buffer content passes a certain threshold. Below this threshold Csound continues processing, while over this threshold Csound yields control to Windows. This gives a big enhancement in multitasking processes. Enabling this option reduces polyphony a bit when using short buffer space. So the user should increase the number ('-p' flag) and the length ('-b' flag) of buffers when setting '-*' flag. Experiment to find best values. Do not use this flag when time response to gestural actions is critical.</dd>
+</dl>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="desc.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../misc/unifile.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/command.htm#pc" class="toqr">
+Command Line Flags: PC and Windows-Specific</font></a>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>pluck</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="scans.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="wgpluck.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#waveguide" class="toqr">
+Signal Generators: Waveguide Physical Modeling</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>pluck</h2>
+
+
+<pre>
+  ar      <strong>pluck</strong>      kamp, kcps, icps, ifn, imeth[, iparm1, iparm2]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Audio output is a naturally decaying plucked string or drum sound based on the Karplus-Strong algorithms.
+</p>
+<h3>Initialization</h3>
+<p><em>icps</em> &#8211; intended pitch value in Hz, used to set up a buffer of 1 cycle of audio samples which will be smoothed over time by a chosen decay method. <em>icps</em> normally anticipates the value of
+<em>kcps</em>, but may be set artificially high or low to influence the size of the sample buffer.
+</p>
+<p><em>ifn</em> &#8211; table number of a stored function used to initialize the cyclic decay buffer. If <em>ifn</em> = 0, a random sequence will be used instead.
+</p>
+<p><em>imeth</em> &#8211; method of natural decay. There are six, some of which use parameters values that follow.
+</p>
+<ol>
+	<li>simple averaging. A simple smoothing process, uninfluenced by parameter values.</li>
+	<li>stretched averaging. As above, with smoothing time stretched by a factor of iparm1 (=1).</li>
+	<li>simple drum. The range from pitch to noise is controlled by a 'roughness factor' in iparm1 (0 to 1). Zero gives the plucked string effect, while 1 reverses the polarity of every sample (octave down, odd harmonics). The setting .5 gives an optimum snare drum.</li>
+	<li>stretched drum. Combines both roughness and stretch factors. iparm1 is roughness (0 to 1), and iparm2 the stretch factor (=1).</li>
+	<li>weighted averaging. As method 1, with iparm1 weighting the current sample (the status quo) and iparm2 weighting the previous adjacent one. iparm1 + iparm2must be &lt;= 1.</li>
+	<li>1st order recursive filter, with coefs .5. Unaffected by parameter values.</li>
+</ol>
+<p><em>iparm1, iparm2</em> (optional) &#8211; parameter values for use by the smoothing algorithms (above). The default values are both 0.
+</p>
+<h3>Performance</h3>
+<p>An internal audio buffer, filled at i-time according to <em>ifn</em>, is continually resampled with periodicity <em>kcps</em> and the resulting output is multiplied by <em>kamp</em>. Parallel with the sampling, the buffer is smoothed to simulate the effect of natural decay.
+</p>
+<p>Plucked strings (1,2,5,6) are best realized by starting with a random noise source, which is rich in initial harmonics. Drum sounds (methods 3,4) work best with a flat source (wide pulse), which produces a deep noise attack and sharp decay.
+</p>
+<p>The original Karplus-Strong algorithm used a fixed number of samples per cycle, which caused serious quantization of the pitches available and their intonation. This implementation resamples a buffer at the exact pitch given by <em>kcps</em>, which can be varied for vibrato and glissando effects. For low values of the orch sampling rate (e.g. <strong>sr</strong> = 10000), high frequencies will store only very few samples (<em>sr / icps</em>). Since this may cause noticeable noise in the resampling process, the internal buffer has a minimum size of 64 samples. This can be further enlarged by setting <em>icps</em> to some artificially lower pitch.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="scans.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="wgpluck.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/siggen.htm#waveguide" class="toqr">
+Signal Generators: Waveguide Physical Modeling</font></a>
+</body>
+
+</html>

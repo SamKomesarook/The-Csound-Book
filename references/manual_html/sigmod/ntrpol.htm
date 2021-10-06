@@ -1,0 +1,78 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>ntrpol</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="samphold.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="fold.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#sample" class="toqr">
+Signal Modifiers: Sample Level Operators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>ntrpol</h2>
+
+<pre>
+  ir      <strong>ntrpol</strong>     isig1, isig2, ipoint[, imin, imax]
+  kr      <strong>ntrpol</strong>     ksig1, ksig2, kpoint[, imin, imax]
+  ar      <strong>ntrpol</strong>     asig1, asig2, kpoint[, imin, imax]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Calculates the weighted mean value (i.e. linear interpolation) of two input signals
+</p>
+<h3>Initialization</h3>
+<p><em>imin</em> &#8211; minimum xpoint value (optional, default 0)
+</p>
+<p><em>imax</em> &#8211; maximum xpoint value (optional, default 1)
+</p>
+<h3>Performance</h3>
+<p><em>xsig1</em>, <em>xsig2</em> &#8211; input signals
+</p>
+<p><em>xpoint</em> &#8211; interpolation point between the two values
+</p>
+<p><strong>ntrpol</strong> opcode outputs the linear interpolation between two input values. <em>xpoint</em> is the distance of evaluation point from the first value. With the default values of <em>imin</em> and <em>imax</em>, (0 and 1) a zero value indicates no distance from the first value and the maximum distance from the second one. With a 0.5 value, <strong>ntrpol</strong> will output the mean value of the two inputs, indicating the exact half point between <em>xsig1</em> and <em>xsig2</em>. A 1 value indicates the maximum distance from the first value and no distance from the second one. The range of <em>xpoint</em> can be also defined with <em>imin</em> and <em>imax</em> to make its management easier.
+</p>
+<p>These opcodes are useful for crossfading two signals.
+</p>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+October, 1998 (New in Csound version 3.49)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="samphold.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="fold.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigmod.htm#sample" class="toqr">
+Signal Modifiers: Sample Level Operators</font></a>
+</body>
+
+</html>

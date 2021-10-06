@@ -1,0 +1,41 @@
+// AXCsoundExe.odl : type library source for AXCsoundExe.exe
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (AXCsoundExe.tlb).
+
+[ uuid(018CD12F-20DE-11D2-917D-00A0CC30C276), version(1.0) ]
+library AXCsoundExe
+{
+	importlib("stdole32.tlb");
+	
+
+	//  Primary dispatch interface for CAXCsoundExeDoc
+	
+	[ uuid(018CD130-20DE-11D2-917D-00A0CC30C276) ]
+	dispinterface IAXCsoundExe
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CAXCsoundExeDlgAutoProxy)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CAXCsoundExeDlgAutoProxy)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CAXCsoundExeDoc
+	
+	[ uuid(018CD12E-20DE-11D2-917D-00A0CC30C276) ]
+	coclass AXCsoundExe
+	{
+		[default] dispinterface IAXCsoundExe;
+	};
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

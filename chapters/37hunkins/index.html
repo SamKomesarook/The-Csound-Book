@@ -1,0 +1,134 @@
+<HTML>  
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Adobe PageMill 3.0 Mac">
+  <META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+  <TITLE>Via Creativa/Via Transformative, Gifts, Lux Hominum, &amp; Et Vitam Venturi III</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H1><FONT FACE="Times New Roman">35. <I>Via Creativa/Via Transformativa,
+Gifts, Lux Hominum, &amp; Et Vitam Venturi III</I></FONT></H1>
+
+<H3><FONT FACE="Times New Roman">Art Hunkins<BR>
+</FONT></H3>
+
+<P><FONT FACE="Times New Roman,Georgia,Times">Art Hunkins' interest
+in electronic music dates from the earliest days of analog synthesizers.
+He attended Bob Moog's Trumansburg, NY workshop in electronic
+music in 1965 and shortly thereafter established one of the earliest
+analog synthesizer-based university electronic music studios,
+at the University of North Carolina at Greensboro. He was studio
+director at UNCG and teacher of composition, theory and electronic
+music for 32 years, until retiring in 1997. A composer of a wide
+range of electro-acoustic (especially live-performance) and conventional
+works, he creates music that is spiritual in inspiration and meditative
+in mood. The pieces presented here are his four Csound compositions
+to date.</FONT><FONT FACE="Times New Roman"><BR>
+&nbsp;</FONT></P>
+
+<P><A HREF="viaorc.html"><B><FONT FACE="Times New Roman">VIA CREATIVA/VIA
+TRANSFORMATIVA (1990)</FONT></B></A><FONT FACE="Times New Roman">
+is his earliest Csound endeavor, completed in 1990, but having
+its roots in an NEH workshop in the 70's at the University of
+New Hampshire (using Music360 in a mainframe environment). Nearly
+20 years later it was completed on a desktop PC! It has the only
+&quot;fixed&quot; <A HREF="viasco.html">score</A> of the group,
+designed without the score preprocessor <A HREF="score11.html">Score-11</A>
+in mind. Alternating a single, built-up harmonic series with a
+seven-inharmonic bell tone, it features random modulation of sinewave
+frequency with audio-range noise; it &quot;transforms&quot; from
+pure tone to noise bands and back again (so becoming involved
+in negative sample increments).&nbsp;</FONT></P>
+
+<P><A HREF="giftsorc.html"><B><FONT FACE="Times New Roman">GIFTS
+(1991)</FONT></B></A><FONT FACE="Times New Roman"> is the second
+piece solely realized in Csound; but here Score-11 preprocessing
+is required--in this case for the basic purpose of randomizing
+start and duration times while retaining control over &quot;average
+event spacing.&quot; Several other parameters are randomized as
+well: frequency, and &quot;cloud rhythm&quot;--including whether
+&quot;clouds&quot; are repeated in total or in part. (The &quot;cloud&quot;
+instrument is <A HREF="giftsorc.html">#7</A>). A global reverb
+(<A HREF="giftsorc.html">instrument #8</A>) is used for the &quot;cloud&quot;
+only.</FONT></P>
+
+<P><FONT FACE="Times New Roman">Whereas the previous works are
+mono, both LUX HOMINUM (1994) and IN VITAM VENTURI (1995) are
+here in stereo, though they exist in mono (and several alternate)
+versions as well. (For alternate versions and further information,
+please <A HREF="mailto:abhunkin@hamlet.uncg.edu">contact the composer</A>.)
+Both make crucial use of Score-11 preprocessing, and additionally
+invite the user's involvement in customizing the realization.&nbsp;</FONT></P>
+
+<P><A HREF="luxorc.html"><B><FONT FACE="Times New Roman">LUX HOMINUM</FONT></B></A><B><FONT
+ FACE="Times New Roman"> </FONT></B><FONT FACE="Times New Roman">actually
+comprises eight variable and fixed forms (four written in &quot;straight&quot;
+Csound; four requiring Score-11 preprocessing). (A previous version
+of the work is for 2-op FM sound card and MIDI file player. In
+Cakewalk implementation, several of the randomization and user
+customizations described below are accomplished through CAL routines.)
+Two versions are presented here: a &quot;fixed&quot; version using
+<A HREF="luxsco.html">lux.sco</A> and <A HREF="luxorc.html">lux.orc</A>,
+and one in which <A HREF="luxs11.html">lux.s11</A> is to be processed
+by Score-11 and its &quot;score&quot; output paired with <A HREF="lux11orc.html">lux11.orc</A>.
+Of particular interest in the present versions is the &quot;numinous&quot;
+quality of the instruments, which is created by applying small
+amounts of random subaudio amplitude modulation to the audio signal.
+A similar technique (but in this case random <I>frequency</I>
+modulation) applies in ET VITAM VENTURI.</FONT></P>
+
+<P><FONT FACE="Times New Roman">User customizable parameters in
+LUX HOMINUM include the following: variable tempo, basic transposition
+level, choice of modulation waveform (the piece consists of simple
+FM bell tones, each based on the identical carrier frequency),
+and modulation index (for &quot;tone color&quot; control). These
+factors are fine-tuned in either .sco or .orc files. Additionally,
+tone color entry order can be manually regulated by the user in
+the .sco file.&nbsp;</FONT></P>
+
+<P><A HREF="vitamorch.html"><B><FONT FACE="Times New Roman">ET
+VITAM VENTURI III</FONT></B></A><FONT FACE="Times New Roman">
+exists in two previous--in this case live performance--incarnations:
+ET VITAM VENTURI for two Yamaha PSS480 or PSS680 synthesizers,
+and ET VITAM VENTURI II for Yamaha FB01 or TX81Z Tone Generator
+and MIDI Keyboard. The Csound rendition (III) is variable, not
+fixed, requiring Score-11 for actual <A HREF="vitamssco.html">score</A>
+generation. Its randomized elements are event start/duration and
+stereo placement. User customization comprises tempo specification,
+starting pitch (including an option for random selection), and
+several choices of modulation index (this piece too is based on
+simple bell tones).</FONT></P>
+
+<P><FONT FACE="Times New Roman">The most unique feature of ET
+VITAM VENTURI III is its invitation to the user to create his/her
+own unique bell tones. <A HREF="vitamtor.html">Vitamt.orc</A>
+and <A HREF="vitamtsc.html">.sco</A> are furnished for this purpose.
+Complete instructions for such creation are included in the <A
+HREF="vitamtsc.html">vitamt.sco</A> file (which is not to be processed
+by Score-11). From the sonic output of the vitamt files, the user
+selects the sonorities he/she prefers, and inserts the corresponding
+values in the scorefile generated by Score-11 and <A HREF="vitams11.html">vitam.s11</A>.&nbsp;</FONT></P>
+
+<P><FONT FACE="Times New Roman">As can be readily understood from
+the above commentary, the composer is particularly interested
+in <I>variable</I> and multiple renderings of his Csound and other
+electronic works. In the case of Csound, he does this by randomizing
+crucial parameters (within specified limits) and by inviting the
+user to &quot;customize&quot; realizations. A major motivation
+for these efforts is the desire to recreate in the Csound environment
+some of the &quot;you are there&quot; excitement of live (concert)
+performance, where each rendition is unique to some degree. In
+this regard, <I>MIDI-controlled, real-time</I> Csound is a new
+creative adventure on which the composer is looking to embark
+with great expectation.</FONT></P>
+
+<P><B><FONT FACE="Times New Roman">N.B</FONT></B><FONT FACE="Times New Roman">.
+A brief word about <B>Score-11</B>: for basic information about
+Score-11 and its upcoming availability in a revised version, see
+<A HREF="score11.html">score11.htm</A>. Since Score-11 user materials
+are NOT included here, files for the works discussed above always
+include traditional .sco scores--so that representative renditions
+of these compositions may be readily experienced.</FONT>
+
+</BODY>
+</HTML>

@@ -1,0 +1,81 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>cvanal</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvanal.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="sndinfo.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/utility.htm#cvanal" class="toqr">
+Utilities: Analysis File Generation</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>cvanal</h2>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Impulse Response Fourier Analysis for <a href="../sigmod/convolve.htm"><strong>convolve</strong></a> operator
+</p>
+<pre>  <strong>CSound -U cvanal</strong> [flags] infilename outfilename</pre>
+<p><strong>cvanal</strong> converts a soundfile into a single Fourier transform frame. The output file can be used by the <strong>convolve</strong> operator to perform Fast Convolution between an input signal and the original impulse response. Analysis is conditioned by the flags below. A space is optional between the flag and its argument.
+</p>
+<p><em>-s rate</em> &#8211; sampling rate of the audio input file. This will over-ride the srate of the soundfile header, which otherwise applies. If neither is present, the default is 10000.
+</p>
+<p><em>-c channel</em> &#8211; channel number sought. If omitted, the default is to process all channels. If a value is given, only the selected channel will be processed.
+</p>
+<p><em>-b begin</em> &#8211; beginning time (in seconds) of the audio segment to be analyzed. The default is 0.0
+</p>
+<p><em>-d duration</em> &#8211; duration (in seconds) of the audio segment to be analyzed. The default of 0.0 means to the end of the file.
+</p>
+<h3>Example</h3>
+
+<pre>  <strong>cvanal</strong> asound cvfile</pre>
+<p>will analyze the soundfile &quot;asound&quot; to produce the file &quot;cvfile&quot; for the use with <a href="../sigmod/convolve.htm"><strong>convolve</strong></a>.
+</p>
+<p>To use data that is not already contained in a soundfile, a soundfile converter that accepts text files may be used to create a standard audio file, e.g., the .DAT format for SOX. This is useful for implementing FIR filters.
+</p>
+<h3>Files</h3>
+<p>The output file has a special <strong>convolve</strong> header, containing details of the source audio file. The analysis data is stored as 'float', in rectangular (real/imaginary) form.
+</p>
+
+<p><strong>Note:</strong> The analysis file is <em>not</em> system independent! Ensure that the original impulse recording/data is retained. If/when required, the analysis file can be recreated.
+</p>
+<h3>Author </h3>
+<p>Greg Sullivan<br>
+(Based on algorithm given in <em>Elements Of Computer Music</em>, by F. Richard Moore.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="pvanal.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="sndinfo.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/utility.htm#cvanal" class="toqr">
+Utilities: Analysis File Generation</font></a>
+</body>
+
+</html>

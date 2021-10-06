@@ -1,0 +1,79 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>follow</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../control/tempest.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../siggen/trigger.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</font></a>
+
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>follow</h2>
+
+<pre>
+  kr      <strong>follow</strong>     asig, idt
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Envelope follower unit generator.
+</p>
+<h3>Initialization</h3>
+<p><em>idt</em> &#8211; This is the period, in seconds, that the average amplitude of <em>asig</em> is reported. If the frequency of <em>asig</em> is low then <em>idt</em> must be large (more than half the period of <em>asig</em> )
+</p>
+<h3>Performance</h3>
+<p><em>asig</em> &#8211; This is the signal from which to extract the envelope.
+</p>
+<h3>Example</h3>
+
+<pre>
+  k1      <strong>line</strong>      0, p3, 30000    ; Make k1 a simple envelope
+  a1      <strong>oscil</strong>     k1, 1000, 1     ; Make a simple signal using k1
+  ak1     <strong>follow</strong>    a1, .02         ; ak1 is now like k1
+  a2      <strong>oscil</strong>     ak1, 1000, 1    ; Make a simple signal using ak1
+          <strong>out</strong>       a2              ; Both a1 and a2 are the same
+</pre>
+<p>To avoid zipper noise, by discontinuities produced from complex envelope tracking, a lowpass filter could be used, to smooth the estimated envelope.<br>
+</p>
+<h3>Author</h3>
+<p>Paris Smaragdis<br>
+MIT, Cambridge<br>
+1995
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="../control/tempest.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="../siggen/trigger.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/instrctl.htm#sensing" class="toqr">
+Instrument Control: Sensing and Control</font></a>
+</body>
+</html>

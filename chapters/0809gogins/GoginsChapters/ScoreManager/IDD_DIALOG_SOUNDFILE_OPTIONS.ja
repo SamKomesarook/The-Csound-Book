@@ -1,0 +1,148 @@
+package GoginsChapters.ScoreManager;
+//------------------------------------------------------------------------------
+// IDD_DIALOG_SOUNDFILE_OPTIONS.java:
+//		Implementation of "control creator" class IDD_DIALOG_SOUNDFILE_OPTIONS
+//------------------------------------------------------------------------------
+import java.awt.*;
+
+public class IDD_DIALOG_SOUNDFILE_OPTIONS
+{
+	Container    m_Parent       = null;
+	boolean      m_fInitialized = false;
+	DialogLayout m_Layout;
+
+	// Control definitions
+	//--------------------------------------------------------------------------
+	Choice        IDC_COMBO_SR;
+	Choice        IDC_COMBO_KSMPS;
+	Choice        IDC_COMBO_SOUNDFILE_FORMAT;
+	Choice        IDC_COMBO_SAMPLE_FORMAT;
+	Choice        IDC_COMBO_CHANNEL_COUNT;
+	TextField     IDC_EDIT_SOUND_PLAYER;
+	TextField     IDC_EDIT_OPTIONS;
+	Button        IDCANCEL;
+	Button        IDOK;
+	Label         IDC_STATIC1;
+	Label         IDC_STATIC2;
+	Label         IDC_STATIC3;
+	Label         IDC_STATIC4;
+	Label         IDC_STATIC5;
+	Label         IDC_STATIC6;
+	Label         IDC_STATIC7;
+
+
+	// Constructor
+	//--------------------------------------------------------------------------
+	public IDD_DIALOG_SOUNDFILE_OPTIONS (Container parent)
+	{
+		m_Parent = parent;
+	}
+
+	// Initialization.
+	//--------------------------------------------------------------------------
+	public boolean CreateControls()
+	{
+		// CreateControls should be called only once
+		//----------------------------------------------------------------------
+		if (m_fInitialized || m_Parent == null)
+			return false;
+
+		// m_Parent must be extended from the Container class
+		//----------------------------------------------------------------------
+		if (!(m_Parent instanceof Container))
+			return false;
+
+		// Since a given font may not be supported across all platforms, it
+		// is safe to modify only the size of the font, not the typeface.
+		//----------------------------------------------------------------------
+	    Font OldFnt = m_Parent.getFont();
+	    if (OldFnt != null)
+	    {
+			Font NewFnt = new Font(OldFnt.getName(), OldFnt.getStyle(), 8);
+
+    		m_Parent.setFont(NewFnt);
+	    }
+
+		// All position and sizes are in dialog logical units, so we use a
+		// DialogLayout as our layout manager.
+		//----------------------------------------------------------------------
+		m_Layout = new DialogLayout(m_Parent, 194, 175);
+		m_Parent.setLayout(m_Layout);
+		m_Parent.addNotify();
+
+		Dimension size   = m_Layout.getDialogSize();
+		Insets    insets = m_Parent.insets();
+		
+		m_Parent.resize(insets.left + size.width  + insets.right,
+                        insets.top  + size.height + insets.bottom);
+
+		// Control creation
+		//----------------------------------------------------------------------
+		IDC_COMBO_SR = new Choice ();
+		m_Parent.add(IDC_COMBO_SR);
+		m_Layout.setShape(IDC_COMBO_SR, 5, 15, 90, 55);
+
+		IDC_COMBO_KSMPS = new Choice ();
+		m_Parent.add(IDC_COMBO_KSMPS);
+		m_Layout.setShape(IDC_COMBO_KSMPS, 105, 15, 85, 45);
+
+		IDC_COMBO_SOUNDFILE_FORMAT = new Choice ();
+		m_Parent.add(IDC_COMBO_SOUNDFILE_FORMAT);
+		m_Layout.setShape(IDC_COMBO_SOUNDFILE_FORMAT, 5, 45, 90, 55);
+
+		IDC_COMBO_SAMPLE_FORMAT = new Choice ();
+		m_Parent.add(IDC_COMBO_SAMPLE_FORMAT);
+		m_Layout.setShape(IDC_COMBO_SAMPLE_FORMAT, 5, 75, 90, 55);
+
+		IDC_COMBO_CHANNEL_COUNT = new Choice ();
+		m_Parent.add(IDC_COMBO_CHANNEL_COUNT);
+		m_Layout.setShape(IDC_COMBO_CHANNEL_COUNT, 5, 105, 90, 55);
+
+		IDC_EDIT_SOUND_PLAYER = new TextField ("");
+		m_Parent.add(IDC_EDIT_SOUND_PLAYER);
+		m_Layout.setShape(IDC_EDIT_SOUND_PLAYER, 5, 135, 90, 15);
+
+		IDC_EDIT_OPTIONS = new TextField ("");
+		m_Parent.add(IDC_EDIT_OPTIONS);
+		m_Layout.setShape(IDC_EDIT_OPTIONS, 105, 45, 85, 105);
+
+		IDCANCEL = new Button ("Cancel");
+		m_Parent.add(IDCANCEL);
+		m_Layout.setShape(IDCANCEL, 105, 155, 40, 15);
+
+		IDOK = new Button ("Ok");
+		m_Parent.add(IDOK);
+		m_Layout.setShape(IDOK, 150, 155, 40, 15);
+
+		IDC_STATIC1 = new Label ("Audio sampling rate (sr)", Label.CENTER);
+		m_Parent.add(IDC_STATIC1);
+		m_Layout.setShape(IDC_STATIC1, 5, 5, 85, 10);
+
+		IDC_STATIC2 = new Label ("Soundfile format", Label.CENTER);
+		m_Parent.add(IDC_STATIC2);
+		m_Layout.setShape(IDC_STATIC2, 5, 35, 85, 10);
+
+		IDC_STATIC3 = new Label ("Channel count (nchnls)", Label.CENTER);
+		m_Parent.add(IDC_STATIC3);
+		m_Layout.setShape(IDC_STATIC3, 5, 95, 85, 10);
+
+		IDC_STATIC4 = new Label ("Sample format", Label.CENTER);
+		m_Parent.add(IDC_STATIC4);
+		m_Layout.setShape(IDC_STATIC4, 5, 65, 85, 10);
+
+		IDC_STATIC5 = new Label ("Control ratio (ksmps)", Label.CENTER);
+		m_Parent.add(IDC_STATIC5);
+		m_Layout.setShape(IDC_STATIC5, 105, 5, 85, 10);
+
+		IDC_STATIC6 = new Label ("Sound player", Label.CENTER);
+		m_Parent.add(IDC_STATIC6);
+		m_Layout.setShape(IDC_STATIC6, 5, 125, 90, 10);
+
+		IDC_STATIC7 = new Label ("Other options", Label.CENTER);
+		m_Parent.add(IDC_STATIC7);
+		m_Layout.setShape(IDC_STATIC7, 105, 35, 85, 10);
+
+		m_fInitialized = true;
+		return true;
+	}
+}

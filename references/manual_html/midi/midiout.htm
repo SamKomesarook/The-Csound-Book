@@ -1,0 +1,83 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>midiout</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="midiin.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="noteon.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#generic" class="toqr">
+MIDI Support: Generic I/O</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>midiout</h2>
+
+<pre>
+          <strong>midiout</strong>    kstatus, kchan, kdata1, kdata2
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Sends a generic MIDI message to the MIDI OUT port
+</p>
+<h3>Performance</h3>
+<p><em>kstatus</em> &#8211; the type of MIDI message. Can be:
+</p>
+<ul>
+	<li>128 (note off)</li>
+	<li>144 (note on)</li>
+	<li>160 (polyphonic aftertouch)</li>
+	<li>176 (control change)</li>
+	<li>192 (program change)</li>
+	<li>208 (channel aftertouch)</li>
+	<li>224 (pitch bend)</li>
+	<li>0 when no MIDI messages must be sent to the MIDI OUT port</li>
+</ul>
+<p><em>kchan</em> &#8211; MIDI channel (1-16)
+</p>
+<p><em>kdata1, kdata2</em> &#8211; message-dependent data values
+</p>
+<p><strong>midiout</strong> has no output arguments, because it sends a message to the MIDI OUT port implicitly. It works at k-rate. It sends a MIDI message only when <em>kstatus</em> is non-zero.
+</p>
+
+<p><strong>Warning:</strong> Normally <em>kstatus</em> should be set to 0. Only when the user intends to send a MIDI message, can it be set to the corresponding message type number.
+</p>
+<h3>Author</h3>
+<p>Gabriel Maldonado<br>
+Italy<br>
+1998 (New in Csound version 3.492)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="midiin.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="noteon.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/midi.htm#generic" class="toqr">
+MIDI Support: Generic I/O</font></a>
+</body>
+</html>

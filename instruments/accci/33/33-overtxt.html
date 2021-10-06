@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="generator" content="Adobe GoLive 4">
+		<title>33-over.txt.html</title>
+		<header></header>
+		<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+	</head>
+
+	<body stylesrc="../admin/adpchtxt.html" bgcolor="white">
+		<h3>Overview</h3>
+		<pre>
+In this main group, we can only represent two out of three main
+techniques of amplitude modulation: ring modulation and
+&quot;classical&quot; amplitude modulation.  Csound does not have any
+provisions (unit generator) for single-sideband modulation. 
+
+In &quot;classical&quot; amplitude modulation, the amplitude of the
+modulator is best expressed as a function of the modulation index
+'imod' and the amplitude of the unmodulated carrier oscillator. 
+
+For example, let the signals be two sinusoids.
+
+'Imod=0': the amplitude of the modulator is zero and there is no
+modulation.  The spectrum gives the carrier.
+
+'Imod=1': 100% modulation, amplitude of the modulator equals the
+amplitude of the carrier.  Output contains the carrier frequency
+'ifqc' at the original amplitude, and two sidebands at ifqc+ifqm
+and ifqc-ifqm, both with a half of the original amplitude. 
+
+Ring modulated signals are obtained by multiplying two signals or
+by applying a wave to the amplitude input of a signal generating
+oscillator.  In both designs, the original spectrum of the
+modulating wave is split in two (or more) identical images above
+and below the carrier frequency(ies).  The main difference with
+classical AM is that the carrier frequencies do not appear in the
+output. (Dodge 1985: p.80-85)
+
+Both techniques require careful treatment of amplitude values:
+the multiplication of two amplitudes can easily lead to
+out-of-range amplitudes. 
+
+Negative frequencies are reflected into the positive frequency
+domain. 
+
+</pre>
+	</body>
+
+</html>

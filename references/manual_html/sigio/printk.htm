@@ -1,0 +1,124 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>printk, printks</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="print.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="printk2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#printing" class="toqr">
+Signal Input and Output: Printing and Display</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>printk, printks</h2>
+
+<pre>
+          <strong>printk</strong>    itime, kval, [ispace]
+          <strong>printks</strong>   &quot;txtstring&quot;, itime, kval1, kval2, kval3, kval4
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>These opcodes are intended to facilitate the debugging of orchestra code.
+</p>
+<h3>Initialization</h3>
+<p><em>itime</em> &#8211; time in seconds between printings. (Default 1 second.)
+</p>
+<p><em>ispace</em> (optional) &#8211; number of spaces to insert before printing. (Max 130.)
+</p>
+<p><em>&quot;txtstring&quot;</em> &#8211; text to be printed. Can be up to 130 characters and must be in double quotes.
+</p>
+<h3>Performance</h3>
+<p><em>kval</em>x - The k-rate values to be printed. These are specified in <em>&quot;txtstring&quot;</em> with the standard C value specifier %f, in the order given. Use 0 for those which are not used.
+</p>
+<p><strong>printk</strong> prints one k-rate value on every k-cycle, every second or at intervals specified. First the instrument number is printed, then the absolute time in seconds, then a specified number of spaces, then the <em>kval</em> value. The variable number of spaces enables different values to be spaced out across the screen - so they are easier to view.
+</p>
+<p><strong>printks</strong> prints numbers and text, with up to four printable numbers - which can be i- or k-rate values. <strong>printks</strong> is highly flexible, and if used together with cursor positioning codes, could be used to write specific values to locations in the screen as the Csound processing proceeds.
+</p>
+<p>A special mode of operation allows this <strong>printks</strong> to convert <em>kval1 </em>input parameter into a 0 to 255 value and to use it as the first character to be printed. This enables a Csound program to send arbitrary characters to the console. To achieve this, make the first character of the string a # and then, if desired continue with normal text and format specifiers. Three more format specifers may be used - they access <em>kval2, kval3</em> and <em>kval4</em>.
+</p>
+<p>Both these opcodes can be run on every k-cycle they are run in the instrument. To every accomplish this, set <em>itime </em>to 0.
+</p>
+<p>When <em>itime</em> is not 0, the opcode print on the first k-cycle it is called, and subsequently when every <em>itime </em>period has elapsed. The time cycles start from the time the opcode is initialized - typically the initialization of the instrument.
+</p>
+<h3></h3>
+
+<h3>Print Output Formatting </h3>
+<p>Standard C language printf() control characters may be used, but must be prefaced with an additional backslash:
+</p>
+<pre>
+  \\n or \\N  Newline
+  \\t or \\T  Tab
+</pre>
+<p>The standard C lanuage %f format is used to print <em>kval1, kval2, kval3</em>, and <em>kval4</em>. For example:
+</p>
+<pre>
+  %f  prints with full precision: 123.456789
+  %6.2f  prints 1234.56
+  %5.0p  prints 12345
+</pre>
+
+
+<h3>Examples</h3>
+<p>The following:
+</p>
+<pre>
+  <strong>printks </strong>\&quot;Volume = %6.2f Freq = %8.3f\n\&quot;, 0.1, kvol, kfreq, 0, 0
+</pre>
+<p>would print:
+</p>
+<pre>
+  Volume = 1234.56 Freq = 12345.678
+</pre>
+<p>The following:
+</p>
+<pre>
+  <strong>printks</strong> \&quot;#x\\y = %6.2\n\&quot;, 0.1, kxy, 0, 0, 0
+</pre>
+<p>would print a tab character followed by:
+</p>
+<pre>
+  x\y = 1234.56
+</pre>
+
+<h3>Author</h3>
+<p>Robin Whittle<br>
+Australia<br>
+May 1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="print.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="printk2.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/sigio.htm#printing" class="toqr">
+Signal Input and Output: Printing and Display</font></a>
+</body>
+
+</html>

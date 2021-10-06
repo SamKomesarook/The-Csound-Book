@@ -1,0 +1,85 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>tablekt, tableikt</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="tableng.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="tableiw.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/table.htm#selection" class="toqr">
+Function Table Control: Table Selection</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>tablekt, tableikt</h2>
+
+<pre>
+  kr      <strong>tablekt</strong>    kndx, kfn[, ixmode[, ixoff[, iwrap]]]
+  ar      <strong>tablekt</strong>    xndx, kfn[, ixmode[, ixoff[, iwrap]]]
+  kr      <strong>tableikt</strong>   kndx, kfn[, ixmode[, ixoff[, iwrap]]]
+  ar      <strong>tableikt</strong>   xndx, kfn[, ixmode[, ixoff[, iwrap]]]
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>k-rate control over table numbers.
+</p>
+<p>The standard Csound opcodes <strong>table</strong> and <strong>tablei</strong>, when producing a k- or a-rate result, can only use an init-time variable to select the table number. <strong>tablekt</strong> and <strong>tableikt</strong> accept k-rate control as well as i-time. In all other respects they are similar to the original opcodes.
+</p>
+<h3>Initialization</h3>
+<p><em>indx</em> &#8211; Index into table, either a positive number range
+</p>
+<p><em>ifn</em> &#8211; Table number. Must be &gt;= 1. Floats are rounded down to an integer.  If a table number does not point to a valid table, or the table has not yet been loaded (<a href="../gen/GEN01.htm"><strong>GEN01</strong></a>) then an error will result and the instrument will be de-activated.
+</p>
+<p><em>ixmode</em> &#8211; if 0, <em>xndx</em> and <em>ixoff</em> ranges match the length of the table. if non-zero <em>xndx</em> and <em>ixoff</em> have a 0 to 1 range. Default is 0
+</p>
+<p><em>ixoff</em> &#8211; if 0, total index is controlled directly by <em>xndx,</em> ie. the indexing starts from the start of the table. If non-zero, start indexing from somewhere else in the table. Value must be positive and less than the table length (<em>ixmode</em> = 0) or less than 1 (<em>ixmode</em> !=0). Default is 0.
+</p>
+<p><em>iwrap</em> &#8211; if <em>iwrap</em> = 0, <em>Limit mode</em>: when total index is below 0, then final index is 0.Total index above table length results in a final  index of the table length - high out of range total indexes stick at the upper limit of the table. If <em>iwrap</em> !=0, <em>Wrap mode</em>: total index is wrapped  modulo the table length so that all total indexes map into the table. For instance, in a table of length 8, <em>xndx</em> = 5 and <em>ixoff</em> = 6 gives a total index of 11, which wraps to a final  index of 3. Default is 0.
+</p>
+<h3>Performance</h3>
+<p><em>kndx</em> &#8211; Index into table, either a positive number range
+</p>
+<p><em>xndx</em> &#8211; matching the table length (<em>ixmode</em> = 0) or a 0 to 1 range (<em>ixmode</em> != 0)
+</p>
+<p><em>kfn</em> &#8211; Table number. Must be &gt;= 1. Floats are rounded down to an integer.  If a table number does not point to a valid table, or the table has not yet been loaded (<a href="../gen/GEN01.htm"><strong>GEN01</strong></a>) then an error will result and the instrument will be de-activated.
+</p>
+<h3>Author</h3>
+<p>Robin Whittle<br>
+Australia<br>
+1997
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="tableng.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="tableiw.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/table.htm#selection" class="toqr">
+Function Table Control: Table Selection</font></a>
+</body>
+
+</html>

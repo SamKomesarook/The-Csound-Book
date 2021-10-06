@@ -1,0 +1,77 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>GEN08</title>
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen06.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen09.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#line" class="toqr">
+<strong>GEN</strong> Routines: Line/Exponential Segment Generators</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>GEN08</h2>
+
+<pre>
+  <strong>f</strong>   #    time    size    8    a    n1    b    n2    c    n3    d  .  .  .    
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>This subroutine will generate a piecewise cubic spline curve, the smoothest possible through all specified points.
+</p>
+<h3>Initialization</h3>
+<p><em>size</em> &#8211; number of points in the table. Must be a power of 2 or power-of-2 plus 1 (see <a href="../score/f.htm"><strong>f statement</strong></a>).
+</p>
+<p><em>a, b, c </em>... - ordinate values of the function.
+</p>
+<p><em>n1, n2, n3</em> ... - length of each segment measured in stored values. May not be zero, but may be fractional. A particular segment may or may not actually store any values; stored values will be generated at integral points from the beginning of the function. The sum <em>n1</em> + <em>n2</em> + ... will normally equal <em>size</em> for fully specified functions.
+</p>
+<h3>Note</h3>
+<p><strong>GEN08</strong> constructs a stored table from segments of cubic polynomial functions. Each segment runs between two specified points but depends as well on their neighbors on each side. Neighboring segments will agree in both value and slope at their common point. (The common slope is that of a parabola through that point and its two neighbors). The slope at the two ends of the function is constrained to be zero (flat).
+</p>
+<p><strong>Hint</strong>: to make a discontinuity in slope or value in the function as stored, arrange a series of points in the interval between two stored values; likewise for a non-zero boundary slope.
+</p>
+<h3>Examples</h3>
+
+<pre>  <strong>f</strong>    1    0    65    8    0    16    0    16    1    16    0    16    0  </pre>
+<p>This example creates a curve with a smooth hump in the middle, going briefly negative outside the hump then flat at its ends.
+</p>
+<pre>  <strong>f</strong>    2    0    65    8    0    16    0   .1    0    15.9    1    15.9    0    .1    0    16    0  </pre>
+<p>This example is similar, but does not go negative.
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="gen06.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="gen09.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/gen.htm#line" class="toqr">
+<strong>GEN</strong> Routines: Line/Exponential Segment Generators</font></a>
+</body>
+
+</html>

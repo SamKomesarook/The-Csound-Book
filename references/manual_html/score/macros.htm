@@ -1,0 +1,139 @@
+<!doctype html public "-//W3C//DTD HTML 3.2//EN">
+<!-- The HTML Edition of the Canonical Csound Manual maintained by David M. Boothe. Email: csound@lakewoodsound.com-->
+<!--This is Version 4.16.-->
+<html>
+<head>
+   <title>Score Macros</title>
+   
+	 <LINK REL="stylesheet" TYPE="text/css" HREF="../manual.css" TITLE="formal">
+</head>
+<body bgcolor="white">
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="ramp.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="mult.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#macros" class="toqr">
+Score Syntax: Macros</a>
+
+<hr size="1" color="#A9A9A9" noshade>
+
+<h2>Score Macros</h2>
+
+<pre>
+  <strong>#define</strong>  NAME # replacement text #
+  <strong>#define</strong>  NAME(a' b' c') # replacement text #
+  <strong>$NAME.</strong>
+  <strong>#undef</strong>   NAME
+</pre>
+<hr size="2" color="#A9A9A9" noshade>
+<h3>Description</h3>
+<p>Macros are textual replacements which are made in the score as it is being presented to the system.  The macro system in Csound is a very simple one, and uses the characters # and $ to define and call macros. This can can allow for simpler score writing, and provide an elementary alternative to full score generation systems.The score macro system is similar to, but independent of, the macro system in the orchestra language.
+</p>
+<p><strong>#define</strong> NAME - defines a simple macro. The name of the macro must begin with a letter and can consist of any combination of letters and numbers. Case is significant. This form is limiting, in that the variable names are fixed.  More flexibility can be obtained by using a macro with arguments, described below.
+</p>
+<p><strong>#define</strong> NAME(<em>a' b' c'</em>) &#8211; defines a macro with arguments. This can be used in more complex situations. The name of the macro must begin with a letter and can consist of any combination of letters and numbers. Within the replacement text, the arguments can be substituted by the form: $A.  In fact, the implementation defines the arguments as simple macros.  There may be up to 5 arguments, and the names may be any choice of letters.  Remember that case is significant in macro names.
+</p>
+<p><strong>$NAME.</strong> &#8211;  calls a defined macro.  To use a macro, the name is used following a $ character.  The name is terminated by the first character which is neither a letter nor a number.  If it is necessary for the name not to terminate with a space, a period, which will be ignored, can be used to terminate the name.  The string, <strong>$NAME</strong>., is replaced by the replacement text from the definition.  The replacement text can also include macro calls.
+</p>
+<p><strong>#undef</strong> NAME - undefines a macro name. If a macro is no longer required, it can be undefined with <strong>#undef</strong> NAME.
+</p>
+<h3>Initialization</h3>
+<p><em># replacement text #</em> &#8211;  The replacement text is any character string (not containing a #) and can extend over mutliple lines. The replacement text is enclosed within the # characters, which ensure that additional characters are not inadvertently captured.
+</p>
+<h3>Performance</h3>
+<p>Some care is needed with textual replacement macros, as they can sometimes do strange things.  They take no notice of any meaning, so spaces are significant. This is why, unlike the C programming language, the definition has the replacement text surrounded by # characters. Used carefully, this simple macro system is a powerful concept, but it can be abused.
+</p>
+<h3></h3>
+
+<h3>Another Use For Macros</h3>
+<p>When writing a complex score it is sometimes all too easy to forget to what the various instrument numbers refer.  One can use macros to give names to the numbers.  For example
+</p>
+<pre>
+  <strong>#define</strong> Flute  #i1#
+  <strong>#define</strong> Whoop  #i2#
+
+  <strong>$Flute.</strong>  0  10  4000  440
+  <strong>$Whoop.</strong>  5  1
+</pre>
+
+<h3>Examples</h3>
+
+<h4>Simple Macro</h4>
+<p>a note-event has a set of p-fields which are repeated:
+</p>
+<pre>
+  <strong>#define</strong> ARGS # 1.01 2.33 138#
+  i1 0 1 8.00  1000 $ARGS
+  i1 0 1 8.01  1500 $ARGS
+  i1 0 1 8.02  1200 $ARGS
+  i1 0 1 8.03  1000 $ARGS
+</pre>
+<p>This will get expanded before sorting into:
+</p>
+<pre>
+  i1 0 1 8.00  1000 1.01 2.33 138
+  i1 0 1 8.01  1500 1.01 2.33 138
+  i1 0 1 8.02  1200 1.01 2.33 138
+  i1 0 1 8.03  1000 1.01 2.33 138
+</pre>
+<p>This can save typing, and is makes revisions easier. If there were two sets of p-fields one could have a second macro (there is no real limit on the number of macros one can define).
+</p>
+<pre>
+  <strong>#define</strong> ARGS1 # 1.01 2.33 138#
+  <strong>#define</strong> ARGS2 # 1.41 10.33 1.00#
+  i1 0 1 8.00  1000 $ARGS1
+  i1 0 1 8.01  1500 $ARGS2
+  i1 0 1 8.02  1200 $ARGS1
+  i1 0 1 8.03  1000 $ARGS2
+</pre>
+
+<h4>Macros with arguments</h4>
+
+<pre>
+  <strong>#define</strong> ARG(A) # 2.345   1.03   $A   234.9#
+  i1 0 1 8.00 1000 $ARG(2.0)
+  i1  + 1 8.01 1200 $ARG(3.0)
+</pre>
+<p>which expands to
+</p>
+<pre>
+  i1 0 1 8.00 1000 2.345   1.03   2.0   234.9
+  i1  + 1 8.01 1200 2.345   1.03   3.0   234.9
+</pre>
+
+<h3>Author</h3>
+<p>John ffitch<br>
+University of Bath/Codemist Ltd.<br>
+Bath, UK<br>
+April, 1998 (New in Csound version 3.48)
+</p>
+<hr size="2" color="#A9A9A9" noshade>
+<table  align="right" cellpadding="1" cellspacing="1" border="0">
+	<tr>
+		<td width="45" align="right">
+			<a href="../manual2.htm#contents" target="_parent"><img src="../toc.gif" width="38" height="18" alt="Use Non-Frames Version" border="0"></a>
+		</td>
+		<td width="10"></td>
+		<td width="45" align="right">
+			<a href="ramp.htm"><img src="../prev.gif" width="38" height="18" alt="Previous Page" border="0"></a>
+		</td>
+		<td width="45" align="right">
+			<a href="mult.htm"><img src="../next.gif" width="38" height="18" alt="Next Page" border="0"></a>
+		</td>
+	</tr>
+</table>
+<a class="toqr" href="../qr/score.htm#macros" class="toqr">
+Score Syntax: Macros</font></a>
+</body>
+
+</html>
